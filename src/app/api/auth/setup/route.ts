@@ -55,7 +55,6 @@ export async function POST(request: NextRequest) {
       .insert({
         name: organization_name,
         slug,
-        owner_id: user_id,
       })
       .select()
       .single();
@@ -85,27 +84,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // 4) Create default CRM stages
-    const defaultStages = [
-      { name: "Yeni Lead", position: 0, color: "#6366f1" },
-      { name: "İletişime Geçildi", position: 1, color: "#3b82f6" },
-      { name: "Teklif Gonderildi", position: 2, color: "#f59e0b" },
-      { name: "Muzakere", position: 3, color: "#8b5cf6" },
-      { name: "Kazanıldı", position: 4, color: "#22c55e" },
-      { name: "Kaybedildi", position: 5, color: "#ef4444" },
-    ];
-
-    const { error: stagesError } = await supabase.from("crm_stages").insert(
-      defaultStages.map((stage) => ({
-        ...stage,
-        organization_id: orgData.id,
-      }))
-    );
-
-    if (stagesError) {
-      console.error("Stages creation error:", stagesError);
-      // Non-critical - continue anyway
-    }
+    // CRM stages are auto-created by database trigger (create_default_stages)
 
     return NextResponse.json({
       success: true,
