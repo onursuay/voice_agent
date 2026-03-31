@@ -163,11 +163,11 @@ export default function SunumPage() {
             <div className="grid grid-cols-3 gap-3">
               <div className="rounded-lg border border-gray-200 bg-gray-50 p-3">
                 <div className="flex items-center justify-between mb-1">
-                  <span className="text-xs font-bold text-black">Resend</span>
-                  <span className="text-xs font-bold text-black">$20/ay</span>
+                  <span className="text-xs font-bold text-black">Netgsm</span>
+                  <span className="text-xs font-bold text-black">{"\u20ba"}2.172/ay</span>
                 </div>
-                <p className="text-[11px] text-black">50.000 mail/ay</p>
-                <p className="text-[10px] text-gray-500">Free: 3.000 mail/ay</p>
+                <p className="text-[11px] text-black">Netsantral + Ses Paketi</p>
+                <p className="text-[10px] text-gray-500">+GSM operat{"\u00f6"}r konu{"\u015f"}ma {"\u00fc"}creti eklenir</p>
               </div>
               <div className="rounded-lg border border-gray-200 bg-gray-50 p-3">
                 <div className="flex items-center justify-between mb-1">
@@ -179,11 +179,11 @@ export default function SunumPage() {
               </div>
               <div className="rounded-lg border border-gray-200 bg-gray-50 p-3">
                 <div className="flex items-center justify-between mb-1">
-                  <span className="text-xs font-bold text-black">Netgsm</span>
-                  <span className="text-xs font-bold text-black">~{"\u20ba"}300/ay</span>
+                  <span className="text-xs font-bold text-black">Resend</span>
+                  <span className="text-xs font-bold text-black">$20/ay</span>
                 </div>
-                <p className="text-[11px] text-black">Arama/dk bazl{"\u0131"}</p>
-                <p className="text-[10px] text-gray-500">~0.05{"\u2013"}0.10 {"\u20ba"}/dk</p>
+                <p className="text-[11px] text-black">50.000 mail/ay</p>
+                <p className="text-[10px] text-gray-500">Free: 3.000 mail/ay</p>
               </div>
             </div>
           </div>
@@ -194,16 +194,16 @@ export default function SunumPage() {
             <div className="space-y-2">
               {[
                 { label: "Supabase Pro", val: 25, color: "#22c55e" },
-                { label: "Vercel Pro", val: 20, color: "#3b82f6" },
                 { label: "ElevenLabs Creator", val: 22, color: "#8b5cf6" },
+                { label: "Vercel Pro", val: 20, color: "#3b82f6" },
                 { label: "Resend Pro", val: 20, color: "#ec4899" },
+                { label: "Netgsm ({'\u20ba'}2.172)", val: 62, color: "#f97316" },
                 { label: "OpenAI", val: 12, color: "#f59e0b" },
-                { label: "Netgsm (~{"\u20ba"}300)", val: 8, color: "#6b7280" },
               ].map((bar) => (
                 <div key={bar.label} className="flex items-center gap-2">
-                  <span className="text-[11px] text-black w-32 shrink-0">{bar.label}</span>
+                  <span className="text-[11px] text-black w-36 shrink-0">{bar.label}</span>
                   <div className="flex-1 h-4 bg-gray-200 rounded-full overflow-hidden">
-                    <div className="h-full rounded-full" style={{ width: `${(bar.val / 25) * 100}%`, backgroundColor: bar.color }} />
+                    <div className="h-full rounded-full" style={{ width: `${(bar.val / 62) * 100}%`, backgroundColor: bar.color }} />
                   </div>
                   <span className="text-[11px] font-bold text-black w-12 text-right">${bar.val}</span>
                 </div>
@@ -211,8 +211,9 @@ export default function SunumPage() {
             </div>
             <div className="mt-3 pt-2 border-t border-gray-300 flex items-center justify-between">
               <span className="text-sm font-bold text-black">TOPLAM</span>
-              <span className="text-lg font-bold text-black">~$107/ay <span className="text-[11px] font-normal">(~{"\u20ba"}3.750)</span></span>
+              <span className="text-lg font-bold text-black">~$161/ay <span className="text-[11px] font-normal">(~{"\u20ba"}5.635)</span></span>
             </div>
+            <p className="text-[10px] text-gray-500 mt-1">Netgsm {"\u20ba"}2.172 sabit + GSM operat{"\u00f6"}r konu{"\u015f"}ma {"\u00fc"}creti hari{"\u00e7"}. Kur: $1 = ~{"\u20ba"}35</p>
           </div>
 
           <p className="text-sm font-semibold text-black mb-2">SaaS Abonelik Fiyatland{"\u0131"}rmas{"\u0131"}</p>
