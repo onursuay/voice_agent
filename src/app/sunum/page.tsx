@@ -185,6 +185,36 @@ export default function SunumPage() {
                 <p>{"\u2022"} T{"\u00fc"}rk{"\u00e7"}e dahil 32 dil, 30+ ses klonu (Creator+)</p>
                 <p>{"\u2022"} E{"\u015f"} zamanl{"\u0131"} arama limiti plana g{"\u00f6"}re artar (Pro+ {"\u00f6"}nerilir)</p>
               </div>
+
+              {/* Kisi basi maliyet tablosu */}
+              <div className="mt-3 pt-2 border-t border-gray-200">
+                <p className="text-[11px] font-semibold text-black mb-1.5">1 Ki{"\u015f"}i ile G{"\u00f6"}r{"\u00fc"}{"\u015f"}me Maliyeti (AI Arama)</p>
+                <table className="w-full text-[11px]">
+                  <thead>
+                    <tr className="border-b border-gray-300">
+                      <th className="text-left py-1 font-semibold text-black">S{"\u00fc"}re</th>
+                      <th className="text-right py-1 font-semibold text-black">Creator/Pro<br/><span className="font-normal text-[10px]">($0.10/dk)</span></th>
+                      <th className="text-right py-1 font-semibold text-black">Business<br/><span className="font-normal text-[10px]">($0.08/dk)</span></th>
+                      <th className="text-right py-1 font-semibold text-black">{"\u20ba"} kar{"\u015f"}{"\u0131"}l{"\u0131"}{"\u011f"}{"\u0131"}<br/><span className="font-normal text-[10px]">(Creator)</span></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {[
+                      ["1 dakika", "$0.10", "$0.08", "\u20ba3.50"],
+                      ["3 dakika", "$0.30", "$0.24", "\u20ba10.50"],
+                      ["5 dakika", "$0.50", "$0.40", "\u20ba17.50"],
+                    ].map(([sure, creator, business, tl]) => (
+                      <tr key={sure} className="border-b border-gray-100">
+                        <td className="py-1 font-medium text-black">{sure}</td>
+                        <td className="py-1 text-right text-black">{creator}</td>
+                        <td className="py-1 text-right text-black">{business}</td>
+                        <td className="py-1 text-right font-semibold text-black">{tl}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+                <p className="text-[10px] text-gray-500 mt-1.5">{"\u00d6"}rnek: G{"\u00fc"}nde 50 ki{"\u015f"}i {"\u00d7"} ort. 3dk = 150dk/g{"\u00fc"}n = $15/g{"\u00fc"}n = ~$450/ay ({"\u20ba"}15.750). Creator plan kredisi bu durumda yetmez, Scale veya Business {"\u00f6"}nerilir.</p>
+              </div>
             </div>
 
             {/* Diger */}
