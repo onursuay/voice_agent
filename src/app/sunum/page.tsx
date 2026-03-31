@@ -473,7 +473,7 @@ export default function SunumPage() {
           <div className="bg-white rounded-2xl border border-gray-100 p-5 shadow-sm mb-4">
             <div className="flex items-end gap-6 h-44 px-4">
               {[
-                { label: "10 m\u00fc\u015fteri\n(Starter)", gelir: 290, net: 0 },
+                { label: "10 m\u00fc\u015fteri\n(Starter)", gelir: 290, net: 79 },
                 { label: "10 m\u00fc\u015fteri\n(Growth)", gelir: 790, net: 329 },
                 { label: "50 m\u00fc\u015fteri\n(mix)", gelir: 3050, net: 1389 },
                 { label: "100 m\u00fc\u015fteri\n(mix)", gelir: 6400, net: 3239 },
@@ -511,7 +511,7 @@ export default function SunumPage() {
               </thead>
               <tbody>
                 {[
-                  ["10 m\u00fc\u015fteri (Starter)", "$290", "$161", "$300", "$461", "-$171", true],
+                  ["10 m\u00fc\u015fteri (Starter)", "$290", "$161", "$50", "$211", "+$79", false],
                   ["10 m\u00fc\u015fteri (Growth)", "$790", "$161", "$300", "$461", "+$329", false],
                   ["50 m\u00fc\u015fteri (mix)", "$3.050", "$161", "$1.500", "$1.661", "+$1.389", false],
                   ["100 m\u00fc\u015fteri (mix)", "$6.400", "$161", "$3.000", "$3.161", "+$3.239", false],
@@ -533,7 +533,7 @@ export default function SunumPage() {
           {/* Break-even */}
           <div className="bg-gradient-to-r from-indigo-600 to-purple-600 rounded-2xl p-5 text-center text-white">
             <p className="text-xs text-white/70 mb-1">Break-even Noktas{"\u0131"}</p>
-            <p className="text-2xl font-extrabold">~8 m{"\u00fc"}{"\u015f"}teri (Growth) <span className="text-white/60 font-normal mx-2">veya</span> ~16 m{"\u00fc"}{"\u015f"}teri (Starter)</p>
+            <p className="text-2xl font-extrabold">~4 m{"\u00fc"}{"\u015f"}teri (Growth) <span className="text-white/60 font-normal mx-2">veya</span> ~7 m{"\u00fc"}{"\u015f"}teri (Starter)</p>
           </div>
         </section>
 

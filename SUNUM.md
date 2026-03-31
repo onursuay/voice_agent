@@ -69,19 +69,19 @@ Meta reklamlarından (Facebook, Instagram, WhatsApp, Messenger) gelen tüm lead'
 
 ---
 
-### Kazanç Modeli — SaaS Abonelik
+### Revenue Model — SaaS Subscription
 
-#### Fiyatlandırma Önerisi
+#### Pricing
 
-| Plan | Aylık | Yıllık (aylık bazda) | Yıllık Toplam | İndirim |
-|------|-------|----------------------|---------------|---------|
+| Plan | Monthly | Annual (per month) | Annual Total | Discount |
+|------|---------|-------------------|--------------|----------|
 | **Starter** | ₺999/ay | ₺799/ay | ₺9.588/yıl | %20 |
 | **Growth** | ₺1.999/ay | ₺1.599/ay | ₺19.188/yıl | %20 |
 | **Enterprise** | ₺3.999/ay | ₺3.199/ay | ₺38.388/yıl | %20 |
 
-#### Plan İçerikleri
+#### Plan Features
 
-| Özellik | Starter | Growth | Enterprise |
+| Feature | Starter | Growth | Enterprise |
 |---------|---------|--------|------------|
 | Lead limiti | 1.000/ay | 10.000/ay | Sınırsız |
 | Kullanıcı | 2 | 10 | Sınırsız |
@@ -96,38 +96,38 @@ Meta reklamlarından (Facebook, Instagram, WhatsApp, Messenger) gelen tüm lead'
 
 ---
 
-### Gelir Projeksiyonu
+### Revenue Projection
 
-#### 10 Müşteri Senaryosu
+#### 10 Customers Scenario
 
-| Senaryo | Aylık Gelir | Yıllık Gelir | Aylık Maliyet | Aylık Net |
-|---------|-------------|--------------|---------------|-----------|
+| Scenario | Monthly Revenue | Annual Revenue | Monthly Cost | Monthly Net |
+|----------|----------------|----------------|--------------|-------------|
 | 10× Starter (aylık) | ₺9.990 | ₺119.880 | ~₺2.500 | **₺7.490** |
 | 10× Growth (aylık) | ₺19.990 | ₺239.880 | ~₺4.000 | **₺15.990** |
 | 10× Growth (yıllık) | ₺15.990 | ₺191.880 | ~₺4.000 | **₺11.990** |
 
-#### 50 Müşteri Senaryosu
+#### 50 Customers Scenario
 
-| Senaryo | Aylık Gelir | Yıllık Gelir | Aylık Maliyet | Aylık Net |
-|---------|-------------|--------------|---------------|-----------|
+| Scenario | Monthly Revenue | Annual Revenue | Monthly Cost | Monthly Net |
+|----------|----------------|----------------|--------------|-------------|
 | 30 Starter + 15 Growth + 5 Enterprise | ₺79.965 | ₺959.580 | ~₺12.000 | **₺67.965** |
 | Aynı mix (yıllık abonelik) | ₺63.965 | ₺767.580 | ~₺12.000 | **₺51.965** |
 
-#### 100 Müşteri Senaryosu
+#### 100 Customers Scenario
 
-| Senaryo | Aylık Gelir | Yıllık Gelir | Aylık Maliyet | Aylık Net |
-|---------|-------------|--------------|---------------|-----------|
+| Scenario | Monthly Revenue | Annual Revenue | Monthly Cost | Monthly Net |
+|----------|----------------|----------------|--------------|-------------|
 | 50 Starter + 35 Growth + 15 Enterprise | ₺179.900 | ₺2.158.800 | ~₺25.000 | **₺154.900** |
 
 ---
 
-### Özet
+### Summary
 
-| Metrik | Değer |
+| Metric | Value |
 |--------|-------|
-| Başlangıç maliyeti | ₺0 (free tier) |
-| İlk 10 müşteride aylık net | ~₺7.500 - ₺16.000 |
-| 50 müşteride aylık net | ~₺52.000 - ₺68.000 |
-| 100 müşteride aylık net | ~₺155.000 |
-| Yıllık abonelik avantajı | Müşteriye %20 indirim, sana garanti gelir |
-| Break-even | İlk 3 müşteri (Starter plan bile altyapı maliyetini karşılar) |
+| Initial cost | ₺0 (free tier) |
+| Monthly net at 10 customers | ~₺7.500 - ₺16.000 |
+| Monthly net at 50 customers | ~₺52.000 - ₺68.000 |
+| Monthly net at 100 customers | ~₺155.000 |
+| Annual subscription benefit | 20% discount for customer, guaranteed revenue for you |
+| Break-even | First 3 customers (even Starter plan covers infra cost) |
