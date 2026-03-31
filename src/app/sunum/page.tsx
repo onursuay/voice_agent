@@ -396,9 +396,9 @@ export default function SunumPage() {
           <p className="text-[11px] text-gray-400 mb-4">Fiyatlar USD bazl{"\u0131"}. Rakip kar{"\u015f"}{"\u0131"}la{"\u015f"}t{"\u0131"}rmas{"\u0131"} a{"\u015f"}a{"\u011f"}{"\u0131"}da.</p>
           <div className="grid grid-cols-3 gap-4 mb-6">
             {[
-              { plan: "Starter", m: "$29", y: "$23", leads: "1.000", users: "3", email: "1.000", ai: "50 dk", perUser: "$9.67" },
-              { plan: "Growth", m: "$79", y: "$63", leads: "10.000", users: "10", email: "10.000", ai: "500 dk", pop: true, perUser: "$7.90" },
-              { plan: "Enterprise", m: "$149", y: "$119", leads: "S\u0131n\u0131rs\u0131z", users: "S\u0131n\u0131rs\u0131z", email: "50.000", ai: "2.000 dk", perUser: "\u2014" },
+              { plan: "Ba\u015flang\u0131\u00e7", m: "$29", y: "$23", leads: "1.000", users: "3", email: "1.000", ai: "50 dk", perUser: "$9.67" },
+              { plan: "B\u00fcy\u00fcme", m: "$79", y: "$63", leads: "10.000", users: "10", email: "10.000", ai: "500 dk", pop: true, perUser: "$7.90" },
+              { plan: "Kurumsal", m: "$149", y: "$119", leads: "S\u0131n\u0131rs\u0131z", users: "S\u0131n\u0131rs\u0131z", email: "50.000", ai: "2.000 dk", perUser: "\u2014" },
             ].map((p) => (
               <div key={p.plan} className={`rounded-2xl border-2 p-5 transition-shadow hover:shadow-lg ${p.pop ? 'border-indigo-500 bg-indigo-50/30 shadow-md shadow-indigo-100/50' : 'border-gray-200 bg-white'}`}>
                 {p.pop && <span className="inline-block bg-indigo-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-full mb-2">Pop{"\u00fc"}ler</span>}

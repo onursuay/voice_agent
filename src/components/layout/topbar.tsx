@@ -62,7 +62,10 @@ export function Topbar() {
         >
           <Menu className="h-5 w-5" />
         </button>
-        <h1 className="text-lg font-semibold text-foreground">{pageTitle}</h1>
+        <div>
+          <h1 className="text-lg font-semibold text-foreground">{pageTitle}</h1>
+          <p className="text-xs text-gray-400">Satış ekibinizin yapay zeka gücü.</p>
+        </div>
       </div>
 
       {/* Center: search */}
