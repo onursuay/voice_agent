@@ -145,18 +145,46 @@ export default function SunumPage() {
             {/* ElevenLabs */}
             <div className="rounded-lg border border-gray-200 bg-gray-50 p-3">
               <div className="flex items-center justify-between mb-1.5">
-                <span className="text-sm font-bold text-black">ElevenLabs Creator</span>
-                <span className="text-sm font-bold text-black">$22/ay</span>
+                <span className="text-sm font-bold text-black">ElevenLabs (Ses & AI Arama)</span>
+                <span className="text-sm font-bold text-black">$22+/ay</span>
               </div>
-              <div className="grid grid-cols-2 gap-x-4 gap-y-0.5 text-[11px] text-black">
-                <p>{"\u2022"} 100.000 karakter/ay TTS</p>
-                <p>{"\u2022"} 30 {"\u00f6"}zel ses klonu</p>
-                <p>{"\u2022"} Conversational AI: $0.10/dk</p>
-                <p>{"\u2022"} Geli{"\u015f"}mi{"\u015f"} ses kalitesi</p>
-                <p>{"\u2022"} Kullan{"\u0131"}lmayan kredi 2 ay devir</p>
-                <p>{"\u2022"} T{"\u00fc"}rk{"\u00e7"}e dahil 32 dil</p>
+              <p className="text-[11px] text-black mb-2">Conversational AI ile otomatik telefon g{"\u00f6"}r{"\u00fc"}{"\u015f"}mesi. Arama ba{"\u015f"}{"\u0131"}na $0.10/dk (Creator/Pro), $0.08/dk (Business y{"\u0131"}ll{"\u0131"}k).</p>
+              <table className="w-full text-[11px] mb-1">
+                <thead>
+                  <tr className="border-b border-gray-300">
+                    <th className="text-left py-1 font-semibold text-black">Plan</th>
+                    <th className="text-right py-1 font-semibold text-black">Fiyat</th>
+                    <th className="text-right py-1 font-semibold text-black">Kredi/ay</th>
+                    <th className="text-right py-1 font-semibold text-black">~TTS dk</th>
+                    <th className="text-right py-1 font-semibold text-black">AI Arama</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {[
+                    ["Free", "$0", "10K", "~10 dk", "$0.10/dk"],
+                    ["Starter", "$5", "30K", "~30 dk", "$0.10/dk"],
+                    ["Creator", "$22", "100K", "~100 dk", "$0.10/dk"],
+                    ["Pro", "$99", "500K", "~500 dk", "$0.10/dk"],
+                    ["Scale", "$330", "2M", "~2.000 dk", "$0.10/dk"],
+                    ["Business", "$1.320", "11M", "~11.000 dk", "$0.08/dk"],
+                  ].map(([plan, fiyat, kredi, tts, arama]) => (
+                    <tr key={plan} className="border-b border-gray-100">
+                      <td className={`py-1 text-black ${plan === 'Creator' ? 'font-bold' : ''}`}>{plan}</td>
+                      <td className="py-1 text-right text-black font-medium">{fiyat}</td>
+                      <td className="py-1 text-right text-black">{kredi}</td>
+                      <td className="py-1 text-right text-black">{tts}</td>
+                      <td className="py-1 text-right text-black">{arama}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+              <div className="text-[10px] text-gray-500 space-y-0.5 mt-1">
+                <p>{"\u2022"} S{"\u0131"}n{"\u0131"}rs{"\u0131"}z agent olu{"\u015f"}turma (t{"\u00fc"}m planlarda)</p>
+                <p>{"\u2022"} 10sn+ sessizlikte %95 indirim</p>
+                <p>{"\u2022"} Kullan{"\u0131"}lmayan kredi 2 ay devreder</p>
+                <p>{"\u2022"} T{"\u00fc"}rk{"\u00e7"}e dahil 32 dil, 30+ ses klonu (Creator+)</p>
+                <p>{"\u2022"} E{"\u015f"} zamanl{"\u0131"} arama limiti plana g{"\u00f6"}re artar (Pro+ {"\u00f6"}nerilir)</p>
               </div>
-              <p className="text-[10px] text-gray-500 mt-1">Business: $330/ay (2M karakter, $0.08/dk arama)</p>
             </div>
 
             {/* Diger */}
