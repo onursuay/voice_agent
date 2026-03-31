@@ -213,7 +213,38 @@ export default function SunumPage() {
                     ))}
                   </tbody>
                 </table>
-                <p className="text-[10px] text-gray-500 mt-1.5">{"\u00d6"}rnek: G{"\u00fc"}nde 50 ki{"\u015f"}i {"\u00d7"} ort. 3dk = 150dk/g{"\u00fc"}n = $15/g{"\u00fc"}n = ~$450/ay ({"\u20ba"}15.750). Creator plan kredisi bu durumda yetmez, Scale veya Business {"\u00f6"}nerilir.</p>
+              </div>
+
+              {/* Aylik senaryo tablosu */}
+              <div className="mt-3 pt-2 border-t border-gray-200">
+                <p className="text-[11px] font-semibold text-black mb-1.5">Ayl{"\u0131"}k Maliyet Senaryosu (ort. 1 dk/arama, Creator $22 + $0.10/dk)</p>
+                <table className="w-full text-[11px]">
+                  <thead>
+                    <tr className="border-b border-gray-300">
+                      <th className="text-left py-1 font-semibold text-black">G{"\u00fc"}nl{"\u00fc"}k Arama</th>
+                      <th className="text-right py-1 font-semibold text-black">Ayl{"\u0131"}k Dakika</th>
+                      <th className="text-right py-1 font-semibold text-black">Arama {"\u00dc"}creti</th>
+                      <th className="text-right py-1 font-semibold text-black">Plan + Arama</th>
+                      <th className="text-right py-1 font-semibold text-black">{"\u20ba"} Toplam</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {[
+                      ["10 arama/g\u00fcn", "300 dk", "$30", "$52/ay", "\u20ba1.820"],
+                      ["25 arama/g\u00fcn", "750 dk", "$75", "$97/ay", "\u20ba3.395"],
+                      ["50 arama/g\u00fcn", "1.500 dk", "$150", "$172/ay", "\u20ba6.020"],
+                    ].map(([arama, dk, ucret, toplam, tl]) => (
+                      <tr key={arama} className="border-b border-gray-100">
+                        <td className="py-1 font-medium text-black">{arama}</td>
+                        <td className="py-1 text-right text-black">{dk}</td>
+                        <td className="py-1 text-right text-black">{ucret}</td>
+                        <td className="py-1 text-right font-semibold text-black">{toplam}</td>
+                        <td className="py-1 text-right font-bold text-black">{tl}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+                <p className="text-[10px] text-gray-500 mt-1">Kur: $1 = ~{"\u20ba"}35. Sadece ElevenLabs maliyeti. Netgsm GSM operat{"\u00f6"}r {"\u00fc"}creti ayr{"\u0131"}ca eklenir.</p>
               </div>
             </div>
 
