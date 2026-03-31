@@ -121,11 +121,15 @@ input:focus, select:focus, textarea:focus {
 .stat-card {
   position: relative;
   overflow: hidden;
-  border-radius: 16px;
+  border-radius: 20px;
   padding: 24px;
   color: white;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   animation: float-in 0.5s ease-out both;
+  border: 1px solid rgba(255,255,255,0.08);
+  box-shadow:
+    0 4px 24px -4px rgba(0,0,0,0.3),
+    inset 0 1px 0 rgba(255,255,255,0.06);
 }
 .stat-card:nth-child(1) { animation-delay: 0ms; }
 .stat-card:nth-child(2) { animation-delay: 80ms; }
@@ -135,25 +139,59 @@ input:focus, select:focus, textarea:focus {
 .stat-card::before {
   content: '';
   position: absolute;
-  inset: 0;
-  background: linear-gradient(135deg, rgba(255,255,255,0.15) 0%, transparent 50%);
+  top: -80%;
+  left: -80%;
+  width: 260%;
+  height: 260%;
+  background: conic-gradient(
+    from 0deg,
+    transparent 0deg,
+    rgba(255,255,255,0.04) 40deg,
+    rgba(255,255,255,0.08) 80deg,
+    transparent 120deg,
+    transparent 360deg
+  );
+  animation: card-rotate 8s linear infinite;
   pointer-events: none;
 }
 
 .stat-card::after {
   content: '';
   position: absolute;
-  top: -50%;
-  right: -50%;
-  width: 100%;
+  top: 0;
+  left: -100%;
+  width: 60%;
   height: 100%;
-  background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 60%);
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255,255,255,0.06) 40%,
+    rgba(255,255,255,0.12) 50%,
+    rgba(255,255,255,0.06) 60%,
+    transparent 100%
+  );
+  animation: card-shimmer 4s ease-in-out infinite;
   pointer-events: none;
 }
 
+@keyframes card-rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes card-shimmer {
+  0%, 100% { left: -100%; opacity: 0; }
+  20% { opacity: 1; }
+  80% { opacity: 1; }
+  100% { left: 200%; opacity: 0; }
+}
+
 .stat-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 20px 40px -12px rgba(0,0,0,0.2);
+  transform: translateY(-4px) scale(1.01);
+  box-shadow:
+    0 24px 48px -12px rgba(0,0,0,0.4),
+    inset 0 1px 0 rgba(255,255,255,0.1);
+  border-color: rgba(255,255,255,0.15);
 }
 
 .stat-card .stat-icon {
@@ -163,8 +201,15 @@ input:focus, select:focus, textarea:focus {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(255,255,255,0.2);
-  backdrop-filter: blur(8px);
+  background: rgba(255,255,255,0.1);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255,255,255,0.08);
+  animation: icon-pulse 3s ease-in-out infinite;
+}
+
+@keyframes icon-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(255,255,255,0.1); }
+  50% { box-shadow: 0 0 16px 2px rgba(255,255,255,0.08); }
 }
 
 .premium-card {

@@ -21,6 +21,83 @@ export default function SunumPage() {
 
       <div className="max-w-5xl mx-auto px-8 py-10 space-y-12">
 
+        {/* ===== HERO BANNER ===== */}
+        <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#1a1a2e] via-[#16213e] to-[#0f3460] p-8 sm:p-10">
+          {/* Animated bg elements */}
+          <div className="absolute inset-0 overflow-hidden pointer-events-none">
+            <div className="absolute -top-20 -right-20 w-72 h-72 rounded-full bg-indigo-500/10 blur-3xl" />
+            <div className="absolute -bottom-16 -left-16 w-56 h-56 rounded-full bg-purple-500/10 blur-3xl" />
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 rounded-full bg-blue-500/5 blur-3xl" />
+            {/* Grid pattern */}
+            <div className="absolute inset-0 opacity-[0.03]" style={{ backgroundImage: 'linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
+            {/* Floating dots */}
+            <div className="absolute top-6 right-12 w-2 h-2 rounded-full bg-indigo-400/40 animate-pulse" style={{ animationDuration: '3s' }} />
+            <div className="absolute top-16 right-32 w-1.5 h-1.5 rounded-full bg-purple-400/30 animate-pulse" style={{ animationDuration: '4s', animationDelay: '1s' }} />
+            <div className="absolute bottom-8 left-20 w-2 h-2 rounded-full bg-blue-400/30 animate-pulse" style={{ animationDuration: '3.5s', animationDelay: '0.5s' }} />
+            <div className="absolute bottom-16 right-20 w-1 h-1 rounded-full bg-indigo-300/40 animate-pulse" style={{ animationDuration: '2.5s', animationDelay: '1.5s' }} />
+          </div>
+
+          <div className="relative z-10 flex flex-col sm:flex-row items-center gap-8">
+            <div className="flex-1">
+              <div className="inline-flex items-center gap-2 rounded-full bg-white/10 backdrop-blur-sm border border-white/10 px-3 py-1 text-[11px] font-medium text-white/80 mb-4">
+                <span className="h-1.5 w-1.5 rounded-full bg-green-400 animate-pulse" />
+                SaaS {"\u00dc"}r{"\u00fc"}n Sunumu
+              </div>
+              <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight leading-tight mb-3">
+                Lead Operasyon<br />Dashboard + CRM
+              </h1>
+              <p className="text-sm text-white/60 leading-relaxed max-w-md">
+                Meta reklamlar{"\u0131"}ndan gelen t{"\u00fc"}m lead{"\u2019"}leri tek merkezde toplay{"\u0131"}n, CRM pipeline ile y{"\u00f6"}netin, AI ile aksiyona d{"\u00f6"}n{"\u00fc"}{"\u015f"}t{"\u00fc"}r{"\u00fc"}n.
+              </p>
+              <div className="flex items-center gap-4 mt-5">
+                {[
+                  { val: "8", label: "Mod\u00fcl" },
+                  { val: "6", label: "Kanal" },
+                  { val: "7", label: "A\u015fama" },
+                  { val: "\u221e", label: "Lead" },
+                ].map((s) => (
+                  <div key={s.label} className="text-center">
+                    <p className="text-xl font-extrabold text-white">{s.val}</p>
+                    <p className="text-[10px] text-white/40 mt-0.5">{s.label}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div className="shrink-0 hidden sm:block">
+              <div className="relative w-48 h-48">
+                {/* Concentric rings */}
+                <div className="absolute inset-0 rounded-full border border-white/5 animate-[spin_20s_linear_infinite]" />
+                <div className="absolute inset-4 rounded-full border border-white/10 animate-[spin_15s_linear_infinite_reverse]" />
+                <div className="absolute inset-8 rounded-full border border-white/10 animate-[spin_25s_linear_infinite]" />
+                {/* Platform icons on ring */}
+                {[
+                  { label: "Meta", angle: 0, color: "#1877F2" },
+                  { label: "WA", angle: 72, color: "#25D366" },
+                  { label: "IG", angle: 144, color: "#E4405F" },
+                  { label: "Msg", angle: 216, color: "#0084FF" },
+                  { label: "Web", angle: 288, color: "#6366f1" },
+                ].map((p) => {
+                  const r = 76;
+                  const rad = (p.angle - 90) * (Math.PI / 180);
+                  const x = 96 + r * Math.cos(rad) - 14;
+                  const y = 96 + r * Math.sin(rad) - 14;
+                  return (
+                    <div key={p.label} className="absolute w-7 h-7 rounded-full flex items-center justify-center text-white text-[9px] font-bold shadow-lg" style={{ left: x, top: y, backgroundColor: p.color }}>
+                      {p.label}
+                    </div>
+                  );
+                })}
+                {/* Center logo */}
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="w-16 h-16 rounded-2xl bg-white/10 backdrop-blur-md flex items-center justify-center border border-white/20">
+                    <img src="/logo.png" alt="" className="h-8 brightness-0 invert opacity-80" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
         {/* ===== SECTION 1 ===== */}
         <section>
           <div className="flex items-center gap-3 mb-5">
