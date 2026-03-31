@@ -9,7 +9,11 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title: "Yo Dijital Lead CRM",
-  description: "Lead yonetimi ve CRM platformu - Yo Dijital",
+  description: "Lead yönetimi ve CRM platformu - Yo Dijital",
+  icons: {
+    icon: "/favicon-32.png",
+    apple: "/logo.png",
+  },
 };
 
 export default function RootLayout({
