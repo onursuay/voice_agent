@@ -102,6 +102,13 @@ input:focus, select:focus, textarea:focus {
   animation: skeleton-pulse 1.5s ease-in-out infinite;
 }
 
+/* Gradient text animation */
+@keyframes gradient-shift {
+  0% { background-position: 0% center; }
+  50% { background-position: 100% center; }
+  100% { background-position: 0% center; }
+}
+
 /* Premium Dashboard Styles */
 @keyframes shimmer {
   0% { background-position: -200% 0; }
