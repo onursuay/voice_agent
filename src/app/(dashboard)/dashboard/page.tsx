@@ -12,10 +12,10 @@ import Link from 'next/link';
 import type { Lead } from '@/lib/types';
 
 const GRADIENTS = [
-  'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-  'linear-gradient(135deg, #11998e 0%, #38ef7d 100%)',
-  'linear-gradient(135deg, #fc5c7d 0%, #6a82fb 100%)',
-  'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
+  'linear-gradient(135deg, #0ea5e9 0%, #2563eb 100%)',
+  'linear-gradient(135deg, #10b981 0%, #059669 100%)',
+  'linear-gradient(135deg, #ef4444 0%, #dc2626 100%)',
+  'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)',
 ];
 
 export default function DashboardPage() {
