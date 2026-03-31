@@ -392,12 +392,13 @@ export default function SunumPage() {
           </div>
 
           {/* SaaS Fiyatlandirma */}
-          <p className="text-sm font-semibold mb-3">SaaS Abonelik Fiyatland{"\u0131"}rmas{"\u0131"}</p>
-          <div className="grid grid-cols-3 gap-4 mb-8">
+          <p className="text-sm font-semibold mb-1">SaaS Abonelik Fiyatland{"\u0131"}rmas{"\u0131"}</p>
+          <p className="text-[11px] text-gray-400 mb-4">Fiyatlar USD bazl{"\u0131"}. Rakip kar{"\u015f"}{"\u0131"}la{"\u015f"}t{"\u0131"}rmas{"\u0131"} a{"\u015f"}a{"\u011f"}{"\u0131"}da.</p>
+          <div className="grid grid-cols-3 gap-4 mb-6">
             {[
-              { plan: "Starter", m: "\u20ba999", y: "\u20ba799", leads: "1.000", users: "2", email: "1.000", ai: "50 dk" },
-              { plan: "Growth", m: "\u20ba1.999", y: "\u20ba1.599", leads: "10.000", users: "10", email: "10.000", ai: "500 dk", pop: true },
-              { plan: "Enterprise", m: "\u20ba3.999", y: "\u20ba3.199", leads: "S\u0131n\u0131rs\u0131z", users: "S\u0131n\u0131rs\u0131z", email: "50.000", ai: "2.000 dk" },
+              { plan: "Starter", m: "$29", y: "$23", leads: "1.000", users: "3", email: "1.000", ai: "50 dk", perUser: "$9.67" },
+              { plan: "Growth", m: "$79", y: "$63", leads: "10.000", users: "10", email: "10.000", ai: "500 dk", pop: true, perUser: "$7.90" },
+              { plan: "Enterprise", m: "$149", y: "$119", leads: "S\u0131n\u0131rs\u0131z", users: "S\u0131n\u0131rs\u0131z", email: "50.000", ai: "2.000 dk", perUser: "\u2014" },
             ].map((p) => (
               <div key={p.plan} className={`rounded-2xl border-2 p-5 transition-shadow hover:shadow-lg ${p.pop ? 'border-indigo-500 bg-indigo-50/30 shadow-md shadow-indigo-100/50' : 'border-gray-200 bg-white'}`}>
                 {p.pop && <span className="inline-block bg-indigo-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-full mb-2">Pop{"\u00fc"}ler</span>}
@@ -407,30 +408,77 @@ export default function SunumPage() {
                   <span className="text-sm text-gray-500">/ay</span>
                 </div>
                 <p className="text-[11px] text-gray-500 mt-1">Y{"\u0131"}ll{"\u0131"}k: {p.y}/ay <span className="font-semibold text-green-600">%20 indirim</span></p>
+                <p className="text-[10px] text-gray-400">Ki{"\u015f"}i ba{"\u015f"}{"\u0131"}: {p.perUser}/kullan{"\u0131"}c{"\u0131"}</p>
                 <div className="mt-3 pt-3 border-t border-gray-200 space-y-1.5 text-[11px] text-gray-600">
                   <p>{"\u2713"} {p.leads} lead/ay</p>
                   <p>{"\u2713"} {p.users} kullan{"\u0131"}c{"\u0131"}</p>
                   <p>{"\u2713"} {p.email} e-posta/ay</p>
                   <p>{"\u2713"} {p.ai} AI arama</p>
+                  <p>{"\u2713"} Pipeline & Kanban</p>
+                  <p>{"\u2713"} CSV/XLSX import</p>
+                  <p>{"\u2713"} Otomasyonlar</p>
                 </div>
               </div>
             ))}
           </div>
 
+          {/* Rakip Karsilastirma */}
+          <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden mb-8">
+            <div className="px-4 py-3 bg-gray-50 border-b border-gray-100">
+              <p className="text-sm font-semibold">Rakip Kar{"\u015f"}{"\u0131"}la{"\u015f"}t{"\u0131"}rmas{"\u0131"} <span className="text-[11px] font-normal text-gray-400">(ki{"\u015f"}i ba{"\u015f"}{"\u0131"} ayl{"\u0131"}k fiyat)</span></p>
+            </div>
+            <table className="w-full text-xs">
+              <thead>
+                <tr className="border-b border-gray-100">
+                  <th className="text-left px-4 py-2 font-semibold">Platform</th>
+                  <th className="text-right px-4 py-2 font-semibold">Ba{"\u015f"}lang{"\u0131"}{"\u00e7"}</th>
+                  <th className="text-right px-4 py-2 font-semibold">Orta</th>
+                  <th className="text-right px-4 py-2 font-semibold">Enterprise</th>
+                  <th className="text-center px-4 py-2 font-semibold">AI Arama</th>
+                  <th className="text-center px-4 py-2 font-semibold">Fiyatlama</th>
+                </tr>
+              </thead>
+              <tbody>
+                {[
+                  { name: "HubSpot", start: "$15", mid: "$50", ent: "$150+", ai: "\u2717", model: "Ki\u015fi ba\u015f\u0131", highlight: false },
+                  { name: "Pipedrive", start: "$14", mid: "$49", ent: "$79", ai: "\u2717", model: "Ki\u015fi ba\u015f\u0131", highlight: false },
+                  { name: "Salesforce", start: "$25", mid: "$100", ent: "$175", ai: "\u2717", model: "Ki\u015fi ba\u015f\u0131", highlight: false },
+                  { name: "Zoho CRM", start: "$14", mid: "$40", ent: "$65", ai: "\u2717", model: "Ki\u015fi ba\u015f\u0131", highlight: false },
+                  { name: "Bitrix24", start: "$49", mid: "$99", ent: "$199", ai: "\u2717", model: "Sabit (5-50 user)", highlight: false },
+                  { name: "Yo Dijital", start: "$29", mid: "$79", ent: "$149", ai: "\u2713", model: "Sabit (org)", highlight: true },
+                ].map((r) => (
+                  <tr key={r.name} className={`border-b border-gray-50 ${r.highlight ? 'bg-indigo-50/50' : 'hover:bg-gray-50/50'}`}>
+                    <td className={`px-4 py-2 font-semibold ${r.highlight ? 'text-indigo-700' : ''}`}>{r.name}</td>
+                    <td className="px-4 py-2 text-right">{r.start}/ay</td>
+                    <td className="px-4 py-2 text-right">{r.mid}/ay</td>
+                    <td className="px-4 py-2 text-right">{r.ent}/ay</td>
+                    <td className={`px-4 py-2 text-center ${r.ai === '\u2713' ? 'text-green-600 font-bold' : 'text-red-400'}`}>{r.ai}</td>
+                    <td className="px-4 py-2 text-center text-gray-500">{r.model}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            <div className="px-4 py-2.5 bg-gray-50 border-t border-gray-100">
+              <p className="text-[10px] text-gray-500">{"\u2022"} Rakipler ki{"\u015f"}i ba{"\u015f"}{"\u0131"} fiyatland{"\u0131"}r{"\u0131"}r (10 ki{"\u015f"}i = 10x fiyat). Yo Dijital sabit organizasyon baz{"\u0131"}nda fiyatland{"\u0131"}r{"\u0131"}r.</p>
+              <p className="text-[10px] text-gray-500">{"\u2022"} Hi{"\u00e7"}bir rakip dahili AI arama sunmuyor {"\u2014"} 3. parti entegrasyon gerektirir (+$50-200/ay ek maliyet).</p>
+              <p className="text-[10px] text-gray-500">{"\u2022"} Meta lead form + WhatsApp + IG DM entegrasyonu rakiplerde ek {"\u00fc"}cretli veya mevcut de{"\u011f"}il.</p>
+            </div>
+          </div>
+
           {/* Gelir-Gider */}
           <p className="text-sm font-semibold mb-1">Gelir-Gider Projeksiyonu</p>
-          <p className="text-[11px] text-gray-400 mb-4">Sabit: {"\u20ba"}5.635/ay. M{"\u00fc"}{"\u015f"}teri ba{"\u015f"}{"\u0131"} AI arama: 10 arama/g{"\u00fc"}n {"\u00d7"} 1dk {"\u00d7"} 30g{"\u00fc"}n = {"\u20ba"}1.050/ay ek maliyet.</p>
+          <p className="text-[11px] text-gray-400 mb-4">Sabit altyap{"\u0131"}: $161/ay. M{"\u00fc"}{"\u015f"}teri ba{"\u015f"}{"\u0131"} AI arama: 10 arama/g{"\u00fc"}n {"\u00d7"} 1dk {"\u00d7"} $0.10 {"\u00d7"} 30g{"\u00fc"}n = $30/ay ek maliyet.</p>
 
           {/* Chart */}
           <div className="bg-white rounded-2xl border border-gray-100 p-5 shadow-sm mb-4">
             <div className="flex items-end gap-6 h-44 px-4">
               {[
-                { label: "10 m\u00fc\u015fteri\n(Starter)", gelir: 9990, net: 0 },
-                { label: "10 m\u00fc\u015fteri\n(Growth)", gelir: 19990, net: 3805 },
-                { label: "50 m\u00fc\u015fteri\n(mix)", gelir: 79965, net: 21830 },
-                { label: "100 m\u00fc\u015fteri\n(mix)", gelir: 179900, net: 69265 },
+                { label: "10 m\u00fc\u015fteri\n(Starter)", gelir: 290, net: 0 },
+                { label: "10 m\u00fc\u015fteri\n(Growth)", gelir: 790, net: 329 },
+                { label: "50 m\u00fc\u015fteri\n(mix)", gelir: 3050, net: 1389 },
+                { label: "100 m\u00fc\u015fteri\n(mix)", gelir: 6400, net: 3239 },
               ].map((d) => {
-                const max = 179900;
+                const max = 6400;
                 return (
                   <div key={d.label} className="flex-1 flex flex-col items-center gap-2">
                     <div className="w-full flex items-end justify-center gap-1.5 h-36">
@@ -463,10 +511,10 @@ export default function SunumPage() {
               </thead>
               <tbody>
                 {[
-                  ["10 m\u00fc\u015fteri (Starter)", "\u20ba9.990", "\u20ba5.635", "\u20ba10.550", "\u20ba16.185", "-\u20ba6.195", true],
-                  ["10 m\u00fc\u015fteri (Growth)", "\u20ba19.990", "\u20ba5.635", "\u20ba10.550", "\u20ba16.185", "+\u20ba3.805", false],
-                  ["50 m\u00fc\u015fteri (mix)", "\u20ba79.965", "\u20ba5.635", "\u20ba52.500", "\u20ba58.135", "+\u20ba21.830", false],
-                  ["100 m\u00fc\u015fteri (mix)", "\u20ba179.900", "\u20ba5.635", "\u20ba105.000", "\u20ba110.635", "+\u20ba69.265", false],
+                  ["10 m\u00fc\u015fteri (Starter)", "$290", "$161", "$300", "$461", "-$171", true],
+                  ["10 m\u00fc\u015fteri (Growth)", "$790", "$161", "$300", "$461", "+$329", false],
+                  ["50 m\u00fc\u015fteri (mix)", "$3.050", "$161", "$1.500", "$1.661", "+$1.389", false],
+                  ["100 m\u00fc\u015fteri (mix)", "$6.400", "$161", "$3.000", "$3.161", "+$3.239", false],
                 ].map(([s, g, sabit, ai, m, n, isNeg]) => (
                   <tr key={s as string} className="border-b border-gray-50 hover:bg-gray-50/50">
                     <td className="px-4 py-2.5 font-medium">{s as string}</td>
@@ -480,12 +528,12 @@ export default function SunumPage() {
               </tbody>
             </table>
           </div>
-          <p className="text-[10px] text-gray-400 mb-6">AI arama kullanmayan m{"\u00fc"}{"\u015f"}terilerde arama maliyeti s{"\u0131"}f{"\u0131"}rd{"\u0131"}r. GSM operat{"\u00f6"}r {"\u00fc"}creti hari{"\u00e7"}.</p>
+          <p className="text-[10px] text-gray-400 mb-6">AI arama maliyeti: m{"\u00fc"}{"\u015f"}teri ba{"\u015f"}{"\u0131"} 10 arama/g{"\u00fc"}n {"\u00d7"} 1dk {"\u00d7"} $0.10 {"\u00d7"} 30 = $30/ay. Kullanmayan m{"\u00fc"}{"\u015f"}terilerde s{"\u0131"}f{"\u0131"}r.</p>
 
           {/* Break-even */}
           <div className="bg-gradient-to-r from-indigo-600 to-purple-600 rounded-2xl p-5 text-center text-white">
             <p className="text-xs text-white/70 mb-1">Break-even Noktas{"\u0131"}</p>
-            <p className="text-2xl font-extrabold">~15 m{"\u00fc"}{"\u015f"}teri (Starter) <span className="text-white/60 font-normal mx-2">veya</span> ~8 m{"\u00fc"}{"\u015f"}teri (Growth)</p>
+            <p className="text-2xl font-extrabold">~8 m{"\u00fc"}{"\u015f"}teri (Growth) <span className="text-white/60 font-normal mx-2">veya</span> ~16 m{"\u00fc"}{"\u015f"}teri (Starter)</p>
           </div>
         </section>
 
