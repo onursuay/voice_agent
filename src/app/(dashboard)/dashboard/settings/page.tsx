@@ -1,0 +1,690 @@
+'use client';
+
+import { useEffect, useState, useCallback } from 'react';
+import { createClient } from '@/lib/supabase/client';
+import { useAppStore } from '@/lib/store';
+import { Tabs } from '@/components/ui/tabs';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { ROLE_LABELS } from '@/lib/types';
+import type { Organization, Profile, OrganizationMember, CrmStage, UserRole } from '@/lib/types';
+import {
+  Building2,
+  Users,
+  GitBranch,
+  User,
+  Save,
+  Plus,
+  Trash2,
+  ChevronUp,
+  ChevronDown,
+  Upload,
+  UserPlus,
+  AlertCircle,
+  Check,
+} from 'lucide-react';
+
+type SettingsTab = 'organization' | 'members' | 'pipeline' | 'profile';
+
+const TABS = [
+  { key: 'organization', label: 'Organizasyon', icon: <Building2 className="h-4 w-4" /> },
+  { key: 'members', label: 'Uyeler', icon: <Users className="h-4 w-4" /> },
+  { key: 'pipeline', label: 'Pipeline Aşamaları', icon: <GitBranch className="h-4 w-4" /> },
+  { key: 'profile', label: 'Profil', icon: <User className="h-4 w-4" /> },
+];
+
+const ROLE_COLORS: Record<UserRole, 'indigo' | 'purple' | 'blue' | 'green' | 'yellow' | 'gray'> = {
+  owner: 'indigo',
+  admin: 'purple',
+  sales_manager: 'blue',
+  sales_rep: 'green',
+  analyst: 'yellow',
+  readonly: 'gray',
+};
+
+const STAGE_COLOR_OPTIONS = [
+  '#6366f1', '#3b82f6', '#8b5cf6', '#f59e0b', '#f97316',
+  '#22c55e', '#ef4444', '#ec4899', '#14b8a6', '#6b7280',
+];
+
+export default function SettingsPage() {
+  const { session, stages, setStages } = useAppStore();
+  const [activeTab, setActiveTab] = useState<SettingsTab>('organization');
+
+  // Org state
+  const [org, setOrg] = useState<Organization | null>(null);
+  const [orgName, setOrgName] = useState('');
+  const [orgSaving, setOrgSaving] = useState(false);
+  const [orgSuccess, setOrgSuccess] = useState(false);
+
+  // Members state
+  const [members, setMembers] = useState<OrganizationMember[]>([]);
+  const [membersLoading, setMembersLoading] = useState(false);
+
+  // Pipeline state
+  const [localStages, setLocalStages] = useState<CrmStage[]>([]);
+  const [newStageName, setNewStageName] = useState('');
+  const [newStageColor, setNewStageColor] = useState('#6366f1');
+  const [pipelineSaving, setPipelineSaving] = useState(false);
+  const [pipelineSuccess, setPipelineSuccess] = useState(false);
+  const [stageLeadCounts, setStageLeadCounts] = useState<Record<string, number>>({});
+
+  // Profile state
+  const [profile, setProfile] = useState<Profile | null>(null);
+  const [profileName, setProfileName] = useState('');
+  const [profilePhone, setProfilePhone] = useState('');
+  const [profileSaving, setProfileSaving] = useState(false);
+  const [profileSuccess, setProfileSuccess] = useState(false);
+
+  // Feedback messages
+  const [error, setError] = useState('');
+
+  const supabase = createClient();
+
+  // Load org data
+  useEffect(() => {
+    if (!session) return;
+    setOrg(session.organization);
+    setOrgName(session.organization.name);
+  }, [session]);
+
+  // Load profile
+  useEffect(() => {
+    if (!session) return;
+    setProfile(session.user);
+    setProfileName(session.user.full_name);
+    setProfilePhone(session.user.phone || '');
+  }, [session]);
+
+  // Load stages
+  useEffect(() => {
+    setLocalStages([...stages].sort((a, b) => a.position - b.position));
+  }, [stages]);
+
+  // Load members
+  const loadMembers = useCallback(async () => {
+    if (!session) return;
+    setMembersLoading(true);
+    try {
+      const res = await fetch('/api/members');
+      if (res.ok) {
+        const data = await res.json();
+        setMembers(data);
+      }
+    } catch (err) {
+      console.error('Members fetch error:', err);
+    } finally {
+      setMembersLoading(false);
+    }
+  }, [session]);
+
+  // Load lead counts per stage
+  const loadStageLeadCounts = useCallback(async () => {
+    if (!session) return;
+    try {
+      const { data: leads } = await supabase
+        .from('leads')
+        .select('stage_id')
+        .eq('organization_id', session.organization.id);
+
+      if (leads) {
+        const counts: Record<string, number> = {};
+        leads.forEach((l) => {
+          if (l.stage_id) {
+            counts[l.stage_id] = (counts[l.stage_id] || 0) + 1;
+          }
+        });
+        setStageLeadCounts(counts);
+      }
+    } catch (err) {
+      console.error('Stage lead counts error:', err);
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [session]);
+
+  useEffect(() => {
+    if (activeTab === 'members') loadMembers();
+    if (activeTab === 'pipeline') loadStageLeadCounts();
+  }, [activeTab, loadMembers, loadStageLeadCounts]);
+
+  // Clear feedback messages after delay
+  useEffect(() => {
+    if (orgSuccess || profileSuccess || pipelineSuccess) {
+      const timer = setTimeout(() => {
+        setOrgSuccess(false);
+        setProfileSuccess(false);
+        setPipelineSuccess(false);
+      }, 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [orgSuccess, profileSuccess, pipelineSuccess]);
+
+  useEffect(() => {
+    if (error) {
+      const timer = setTimeout(() => setError(''), 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [error]);
+
+  // ========================
+  // SAVE HANDLERS
+  // ========================
+
+  const saveOrganization = async () => {
+    if (!session || !orgName.trim()) return;
+    setOrgSaving(true);
+    setError('');
+    try {
+      const { error: updateErr } = await supabase
+        .from('organizations')
+        .update({ name: orgName.trim() })
+        .eq('id', session.organization.id);
+
+      if (updateErr) throw new Error(updateErr.message);
+      setOrgSuccess(true);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Organizasyon guncellenemedi');
+    } finally {
+      setOrgSaving(false);
+    }
+  };
+
+  const saveProfile = async () => {
+    if (!session || !profileName.trim()) return;
+    setProfileSaving(true);
+    setError('');
+    try {
+      const { error: updateErr } = await supabase
+        .from('profiles')
+        .update({
+          full_name: profileName.trim(),
+          phone: profilePhone.trim() || null,
+        })
+        .eq('id', session.user.id);
+
+      if (updateErr) throw new Error(updateErr.message);
+      setProfileSuccess(true);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Profil guncellenemedi');
+    } finally {
+      setProfileSaving(false);
+    }
+  };
+
+  // Pipeline operations
+  const moveStage = (index: number, direction: 'up' | 'down') => {
+    const updated = [...localStages];
+    const targetIndex = direction === 'up' ? index - 1 : index + 1;
+    if (targetIndex < 0 || targetIndex >= updated.length) return;
+
+    [updated[index], updated[targetIndex]] = [updated[targetIndex], updated[index]];
+    updated.forEach((s, i) => (s.position = i));
+    setLocalStages(updated);
+  };
+
+  const addStage = async () => {
+    if (!newStageName.trim()) return;
+    setError('');
+    try {
+      const res = await fetch('/api/stages', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: newStageName.trim(),
+          color: newStageColor,
+        }),
+      });
+      if (!res.ok) {
+        const data = await res.json();
+        throw new Error(data.error || 'Aşama eklenemedi');
+      }
+      const newStage = await res.json();
+      setLocalStages([...localStages, newStage]);
+      setStages([...stages, newStage]);
+      setNewStageName('');
+      setNewStageColor('#6366f1');
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Aşama eklenemedi');
+    }
+  };
+
+  const deleteStage = async (stageId: string) => {
+    if (stageLeadCounts[stageId] > 0) {
+      setError('Bu aşamada lead bulunuyor. Once leadleri baska aşamaya tasiyiniz.');
+      return;
+    }
+    setError('');
+    try {
+      const { error: deleteErr } = await supabase
+        .from('crm_stages')
+        .delete()
+        .eq('id', stageId);
+
+      if (deleteErr) throw new Error(deleteErr.message);
+      const updated = localStages.filter((s) => s.id !== stageId);
+      updated.forEach((s, i) => (s.position = i));
+      setLocalStages(updated);
+      setStages(updated);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Aşama silinemedi');
+    }
+  };
+
+  const savePipelineOrder = async () => {
+    setPipelineSaving(true);
+    setError('');
+    try {
+      const res = await fetch('/api/stages', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          stages: localStages.map((s, i) => ({ id: s.id, position: i })),
+        }),
+      });
+      if (!res.ok) {
+        const data = await res.json();
+        throw new Error(data.error || 'Siralama kaydedilemedi');
+      }
+      const updatedStages = await res.json();
+      setStages(updatedStages);
+      setPipelineSuccess(true);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Siralama kaydedilemedi');
+    } finally {
+      setPipelineSaving(false);
+    }
+  };
+
+  if (!session) {
+    return (
+      <div className="flex items-center justify-center py-20">
+        <div className="h-8 w-8 animate-spin rounded-full border-2 border-indigo-500 border-t-transparent" />
+      </div>
+    );
+  }
+
+  return (
+    <div className="space-y-6">
+      {/* Page header */}
+      <div>
+        <h1 className="text-2xl font-bold text-foreground">Ayarlar</h1>
+        <p className="mt-1 text-sm text-muted">
+          Organizasyon, uyelik, pipeline ve profil ayarlarinizi yonetin.
+        </p>
+      </div>
+
+      {/* Error toast */}
+      {error && (
+        <div className="flex items-center gap-2 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+          <AlertCircle className="h-4 w-4 shrink-0" />
+          {error}
+        </div>
+      )}
+
+      {/* Tabs */}
+      <Tabs items={TABS} activeKey={activeTab} onChange={(key) => setActiveTab(key as SettingsTab)} />
+
+      {/* Tab content */}
+      <div className="rounded-xl border border-card-border bg-card-bg">
+        {/* ============================== */}
+        {/* ORGANIZASYON */}
+        {/* ============================== */}
+        {activeTab === 'organization' && (
+          <div className="p-6 space-y-6">
+            <div className="flex items-center gap-3 pb-4 border-b border-gray-100">
+              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-indigo-100">
+                <Building2 className="h-5 w-5 text-indigo-600" />
+              </div>
+              <div>
+                <h2 className="text-base font-semibold text-foreground">Organizasyon Bilgileri</h2>
+                <p className="text-sm text-muted">Sirket bilgilerini buradan duzenleyebilirsiniz.</p>
+              </div>
+            </div>
+
+            <div className="grid gap-5 sm:grid-cols-2">
+              <Input
+                label="Organizasyon Adi"
+                value={orgName}
+                onChange={(e) => setOrgName(e.target.value)}
+                placeholder="Sirket adi"
+              />
+              <Input
+                label="Slug"
+                value={org?.slug || ''}
+                disabled
+                className="bg-gray-50"
+              />
+            </div>
+
+            {/* Logo placeholder */}
+            <div>
+              <label className="mb-1.5 block text-sm font-medium text-gray-700">Logo</label>
+              <div className="flex items-center gap-4">
+                <div className="flex h-16 w-16 items-center justify-center rounded-xl border-2 border-dashed border-gray-300 bg-gray-50">
+                  {org?.logo_url ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img src={org.logo_url} alt="Logo" className="h-full w-full rounded-xl object-cover" />
+                  ) : (
+                    <Upload className="h-6 w-6 text-gray-400" />
+                  )}
+                </div>
+                <div>
+                  <Button variant="secondary" size="sm" disabled>
+                    <Upload className="h-3.5 w-3.5" />
+                    Logo Yukle
+                  </Button>
+                  <p className="mt-1 text-xs text-muted">PNG, JPG, SVG. Maks. 1MB. (Yakinda)</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="flex items-center justify-end gap-3 border-t border-gray-100 pt-5">
+              {orgSuccess && (
+                <span className="flex items-center gap-1.5 text-sm font-medium text-green-600">
+                  <Check className="h-4 w-4" />
+                  Kaydedildi
+                </span>
+              )}
+              <Button onClick={saveOrganization} loading={orgSaving} icon={<Save className="h-4 w-4" />}>
+                Kaydet
+              </Button>
+            </div>
+          </div>
+        )}
+
+        {/* ============================== */}
+        {/* UYELER */}
+        {/* ============================== */}
+        {activeTab === 'members' && (
+          <div className="p-6 space-y-6">
+            <div className="flex items-center justify-between pb-4 border-b border-gray-100">
+              <div className="flex items-center gap-3">
+                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-purple-100">
+                  <Users className="h-5 w-5 text-purple-600" />
+                </div>
+                <div>
+                  <h2 className="text-base font-semibold text-foreground">Organizasyon Uyeleri</h2>
+                  <p className="text-sm text-muted">Ekip uyelerini yonetin ve davet edin.</p>
+                </div>
+              </div>
+              <Button
+                variant="secondary"
+                size="sm"
+                icon={<UserPlus className="h-4 w-4" />}
+                onClick={async () => {
+                  try {
+                    const res = await fetch('/api/members', {
+                      method: 'POST',
+                      headers: { 'Content-Type': 'application/json' },
+                      body: JSON.stringify({ email: '' }),
+                    });
+                    const data = await res.json();
+                    if (data.message) {
+                      setError(data.message);
+                    }
+                  } catch {
+                    setError('Davet ozelligi yakinda aktif olacak.');
+                  }
+                }}
+              >
+                Uye Davet Et
+              </Button>
+            </div>
+
+            {membersLoading ? (
+              <div className="space-y-3">
+                {[1, 2, 3].map((i) => (
+                  <div key={i} className="skeleton h-16 rounded-lg" />
+                ))}
+              </div>
+            ) : members.length === 0 ? (
+              <div className="flex flex-col items-center justify-center py-12 text-center">
+                <Users className="h-10 w-10 text-gray-300 mb-3" />
+                <p className="text-sm text-muted">Henuz uye bulunmuyor.</p>
+              </div>
+            ) : (
+              <div className="divide-y divide-gray-100 rounded-lg border border-gray-200">
+                {members.map((member) => (
+                  <div
+                    key={member.id}
+                    className="flex items-center justify-between px-4 py-3.5 transition-colors hover:bg-gray-50"
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className="flex h-10 w-10 items-center justify-center rounded-full bg-indigo-100 text-indigo-700 text-sm font-bold">
+                        {member.profile?.full_name
+                          ? member.profile.full_name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2)
+                          : 'U'}
+                      </div>
+                      <div>
+                        <p className="text-sm font-medium text-foreground">
+                          {member.profile?.full_name || 'Bilinmeyen Kullanıcı'}
+                        </p>
+                        <p className="text-xs text-muted">{member.profile?.email || '-'}</p>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <Badge color={ROLE_COLORS[member.role as UserRole] || 'gray'} size="sm">
+                        {ROLE_LABELS[member.role as UserRole] || member.role}
+                      </Badge>
+                      {!member.is_active && (
+                        <Badge color="red" size="sm">Pasif</Badge>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* ============================== */}
+        {/* PIPELINE ASAMALARI */}
+        {/* ============================== */}
+        {activeTab === 'pipeline' && (
+          <div className="p-6 space-y-6">
+            <div className="flex items-center gap-3 pb-4 border-b border-gray-100">
+              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-amber-100">
+                <GitBranch className="h-5 w-5 text-amber-600" />
+              </div>
+              <div>
+                <h2 className="text-base font-semibold text-foreground">Pipeline Aşamaları</h2>
+                <p className="text-sm text-muted">CRM pipeline aşamalarınızı duzenleyin, siralayin veya yenilerini ekleyin.</p>
+              </div>
+            </div>
+
+            {/* Stage list */}
+            <div className="space-y-2">
+              {localStages.map((stage, index) => (
+                <div
+                  key={stage.id}
+                  className="flex items-center gap-3 rounded-lg border border-gray-200 bg-white px-4 py-3 transition-shadow hover:shadow-sm"
+                >
+                  {/* Color dot */}
+                  <div
+                    className="h-4 w-4 shrink-0 rounded-full border border-gray-200"
+                    style={{ backgroundColor: stage.color }}
+                  />
+
+                  {/* Name */}
+                  <span className="flex-1 text-sm font-medium text-foreground">{stage.name}</span>
+
+                  {/* Badges */}
+                  {stage.is_won && <Badge color="green" size="sm">Kazanıldı</Badge>}
+                  {stage.is_lost && <Badge color="red" size="sm">Kaybedildi</Badge>}
+
+                  {/* Lead count */}
+                  <span className="text-xs text-muted">
+                    {stageLeadCounts[stage.id] || 0} lead
+                  </span>
+
+                  {/* Reorder buttons */}
+                  <div className="flex items-center gap-0.5">
+                    <button
+                      onClick={() => moveStage(index, 'up')}
+                      disabled={index === 0}
+                      className="rounded p-1 text-gray-400 hover:bg-gray-100 hover:text-gray-600 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                      title="Yukari Tasi"
+                    >
+                      <ChevronUp className="h-4 w-4" />
+                    </button>
+                    <button
+                      onClick={() => moveStage(index, 'down')}
+                      disabled={index === localStages.length - 1}
+                      className="rounded p-1 text-gray-400 hover:bg-gray-100 hover:text-gray-600 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                      title="Asagi Tasi"
+                    >
+                      <ChevronDown className="h-4 w-4" />
+                    </button>
+                  </div>
+
+                  {/* Delete button */}
+                  <button
+                    onClick={() => deleteStage(stage.id)}
+                    disabled={(stageLeadCounts[stage.id] || 0) > 0}
+                    className="rounded p-1 text-gray-400 hover:bg-red-50 hover:text-red-500 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                    title={
+                      (stageLeadCounts[stage.id] || 0) > 0
+                        ? 'Bu aşamada lead var, silinemez'
+                        : 'Aşamayı Sil'
+                    }
+                  >
+                    <Trash2 className="h-4 w-4" />
+                  </button>
+                </div>
+              ))}
+            </div>
+
+            {/* Add new stage */}
+            <div className="rounded-lg border border-dashed border-gray-300 bg-gray-50 p-4">
+              <p className="mb-3 text-sm font-medium text-gray-700">Yeni Aşama Ekle</p>
+              <div className="flex flex-wrap items-end gap-3">
+                <div className="flex-1 min-w-[200px]">
+                  <Input
+                    label="Aşama Adı"
+                    value={newStageName}
+                    onChange={(e) => setNewStageName(e.target.value)}
+                    placeholder="Orn: Demo Yapildi"
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') addStage();
+                    }}
+                  />
+                </div>
+                <div>
+                  <label className="mb-1.5 block text-sm font-medium text-gray-700">Renk</label>
+                  <div className="flex items-center gap-1.5">
+                    {STAGE_COLOR_OPTIONS.map((c) => (
+                      <button
+                        key={c}
+                        type="button"
+                        onClick={() => setNewStageColor(c)}
+                        className={`h-7 w-7 rounded-full border-2 transition-transform hover:scale-110 ${
+                          newStageColor === c ? 'border-gray-800 scale-110' : 'border-transparent'
+                        }`}
+                        style={{ backgroundColor: c }}
+                      />
+                    ))}
+                  </div>
+                </div>
+                <Button onClick={addStage} size="md" icon={<Plus className="h-4 w-4" />}>
+                  Ekle
+                </Button>
+              </div>
+            </div>
+
+            {/* Save order */}
+            <div className="flex items-center justify-end gap-3 border-t border-gray-100 pt-5">
+              {pipelineSuccess && (
+                <span className="flex items-center gap-1.5 text-sm font-medium text-green-600">
+                  <Check className="h-4 w-4" />
+                  Siralama Kaydedildi
+                </span>
+              )}
+              <Button
+                onClick={savePipelineOrder}
+                loading={pipelineSaving}
+                icon={<Save className="h-4 w-4" />}
+              >
+                Siralamayı Kaydet
+              </Button>
+            </div>
+          </div>
+        )}
+
+        {/* ============================== */}
+        {/* PROFIL */}
+        {/* ============================== */}
+        {activeTab === 'profile' && (
+          <div className="p-6 space-y-6">
+            <div className="flex items-center gap-3 pb-4 border-b border-gray-100">
+              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-emerald-100">
+                <User className="h-5 w-5 text-emerald-600" />
+              </div>
+              <div>
+                <h2 className="text-base font-semibold text-foreground">Profil Bilgileri</h2>
+                <p className="text-sm text-muted">Kisisel bilgilerinizi guncelleyin.</p>
+              </div>
+            </div>
+
+            {/* Avatar placeholder */}
+            <div className="flex items-center gap-4">
+              <div className="flex h-16 w-16 items-center justify-center rounded-full bg-indigo-100 text-indigo-700 text-xl font-bold">
+                {profile?.full_name
+                  ? profile.full_name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2)
+                  : 'U'}
+              </div>
+              <div>
+                <p className="text-sm font-medium text-foreground">{profile?.full_name}</p>
+                <p className="text-xs text-muted">{profile?.email}</p>
+              </div>
+            </div>
+
+            <div className="grid gap-5 sm:grid-cols-2">
+              <Input
+                label="Ad Soyad"
+                value={profileName}
+                onChange={(e) => setProfileName(e.target.value)}
+                placeholder="Adiniz ve soyadiniz"
+              />
+              <Input
+                label="E-posta"
+                value={profile?.email || ''}
+                disabled
+                className="bg-gray-50"
+              />
+              <Input
+                label="Telefon"
+                value={profilePhone}
+                onChange={(e) => setProfilePhone(e.target.value)}
+                placeholder="+90 5XX XXX XXXX"
+              />
+              <div>
+                <label className="mb-1.5 block text-sm font-medium text-gray-700">Rol</label>
+                <div className="flex h-[38px] items-center">
+                  <Badge
+                    color={ROLE_COLORS[session?.membership?.role as UserRole] || 'gray'}
+                    size="md"
+                  >
+                    {ROLE_LABELS[session?.membership?.role as UserRole] || '-'}
+                  </Badge>
+                </div>
+              </div>
+            </div>
+
+            <div className="flex items-center justify-end gap-3 border-t border-gray-100 pt-5">
+              {profileSuccess && (
+                <span className="flex items-center gap-1.5 text-sm font-medium text-green-600">
+                  <Check className="h-4 w-4" />
+                  Profil Guncellendi
+                </span>
+              )}
+              <Button onClick={saveProfile} loading={profileSaving} icon={<Save className="h-4 w-4" />}>
+                Kaydet
+              </Button>
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}

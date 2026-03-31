@@ -1,0 +1,178 @@
+"use client";
+
+import { useEffect, useState } from "react";
+
+const stats = [
+  { label: "Toplam Çağrı", value: "1,248", change: "+18%", icon: "M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z", color: "indigo" },
+  { label: "Aktif Agent", value: "8", change: "+2", icon: "M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09z", color: "violet" },
+  { label: "CRM Kaydı", value: "3,842", change: "+24%", icon: "M18 18.72a9.094 9.094 0 003.741-.479 3 3 0 00-4.682-2.72m.94 3.198l.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0112 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 016 18.719m12 0a5.971 5.971 0 00-.941-3.197m0 0A5.995 5.995 0 0012 12.75a5.995 5.995 0 00-5.058 2.772m0 0a3 3 0 00-4.681 2.72 8.986 8.986 0 003.74.477m.94-3.197a5.971 5.971 0 00-.94 3.197M15 6.75a3 3 0 11-6 0 3 3 0 016 0zm6 3a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0zm-13.5 0a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z", color: "cyan" },
+  { label: "Dönüşüm Oranı", value: "%34.2", change: "+5.1%", icon: "M2.25 18L9 11.25l4.306 4.307a11.95 11.95 0 015.814-5.519l2.74-1.22m0 0l-5.94-2.28m5.94 2.28l-2.28 5.941", color: "emerald" },
+];
+
+const recentCalls = [
+  { id: 1, contact: "Ahmet Yılmaz", phone: "+90 532 *** 12 34", agent: "Satış AI", duration: "3:24", status: "completed", result: "İlgili" },
+  { id: 2, contact: "Elif Kaya", phone: "+90 541 *** 56 78", agent: "Destek AI", duration: "1:48", status: "completed", result: "Çözüldü" },
+  { id: 3, contact: "Mehmet Demir", phone: "+90 555 *** 90 12", agent: "Satış AI", duration: "—", status: "active", result: "Devam ediyor" },
+  { id: 4, contact: "Zeynep Arslan", phone: "+90 507 *** 34 56", agent: "Randevu AI", duration: "2:12", status: "completed", result: "Randevu alındı" },
+  { id: 5, contact: "Can Doğan", phone: "+90 538 *** 78 90", agent: "Destek AI", duration: "0:45", status: "missed", result: "Cevapsız" },
+];
+
+const colorMap: Record<string, { bg: string; text: string; ring: string }> = {
+  indigo: { bg: "bg-indigo-500/10", text: "text-indigo-400", ring: "ring-indigo-500/20" },
+  violet: { bg: "bg-violet-500/10", text: "text-violet-400", ring: "ring-violet-500/20" },
+  cyan: { bg: "bg-cyan-500/10", text: "text-cyan-400", ring: "ring-cyan-500/20" },
+  emerald: { bg: "bg-emerald-500/10", text: "text-emerald-400", ring: "ring-emerald-500/20" },
+};
+
+export default function DashboardPage() {
+  const [userName, setUserName] = useState("");
+
+  useEffect(() => {
+    const stored = localStorage.getItem("user");
+    if (stored) {
+      const user = JSON.parse(stored);
+      setUserName(user.name);
+    }
+  }, []);
+
+  return (
+    <div className="space-y-6">
+      {/* Greeting */}
+      <div>
+        <h1 className="text-2xl font-bold text-white">
+          Hoş geldin{userName ? `, ${userName}` : ""} 👋
+        </h1>
+        <p className="text-gray-400 text-sm mt-1">AI çağrı sisteminizin genel görünümü</p>
+      </div>
+
+      {/* Stats */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        {stats.map((stat) => {
+          const c = colorMap[stat.color];
+          return (
+            <div key={stat.label} className="bg-white/[0.03] border border-white/[0.07] rounded-2xl p-5 hover:border-indigo-500/15 transition-all duration-300">
+              <div className="flex items-center justify-between mb-3">
+                <span className="text-gray-400 text-sm">{stat.label}</span>
+                <div className={`w-10 h-10 rounded-xl ${c.bg} flex items-center justify-center ${c.text}`}>
+                  <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d={stat.icon} />
+                  </svg>
+                </div>
+              </div>
+              <div className="flex items-end gap-2">
+                <span className="text-3xl font-bold text-white">{stat.value}</span>
+                <span className="text-emerald-400 text-sm font-medium mb-1">{stat.change}</span>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      {/* Main grid */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* Recent Calls */}
+        <div className="lg:col-span-2 bg-white/[0.03] border border-white/[0.07] rounded-2xl">
+          <div className="flex items-center justify-between p-5 border-b border-white/[0.06]">
+            <h2 className="text-lg font-semibold text-white">Son Çağrılar</h2>
+            <button className="text-indigo-400 text-sm hover:text-indigo-300 transition-colors">Tümünü Gör</button>
+          </div>
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="text-gray-500 text-xs uppercase border-b border-white/[0.04]">
+                  <th className="text-left px-5 py-3 font-medium">Kişi</th>
+                  <th className="text-left px-5 py-3 font-medium">Agent</th>
+                  <th className="text-left px-5 py-3 font-medium">Süre</th>
+                  <th className="text-left px-5 py-3 font-medium">Durum</th>
+                  <th className="text-left px-5 py-3 font-medium">Sonuç</th>
+                </tr>
+              </thead>
+              <tbody>
+                {recentCalls.map((call) => (
+                  <tr key={call.id} className="border-b border-white/[0.03] hover:bg-white/[0.02] transition-colors">
+                    <td className="px-5 py-3.5">
+                      <div>
+                        <p className="text-white font-medium">{call.contact}</p>
+                        <p className="text-gray-500 text-xs">{call.phone}</p>
+                      </div>
+                    </td>
+                    <td className="px-5 py-3.5 text-gray-300">{call.agent}</td>
+                    <td className="px-5 py-3.5 text-gray-300 font-mono">{call.duration}</td>
+                    <td className="px-5 py-3.5">
+                      <span className={`text-xs px-2.5 py-1 rounded-full ${
+                        call.status === "active"
+                          ? "bg-green-500/10 text-green-400"
+                          : call.status === "completed"
+                          ? "bg-indigo-500/10 text-indigo-400"
+                          : "bg-red-500/10 text-red-400"
+                      }`}>
+                        {call.status === "active" ? "Aktif" : call.status === "completed" ? "Tamamlandı" : "Cevapsız"}
+                      </span>
+                    </td>
+                    <td className="px-5 py-3.5 text-gray-300">{call.result}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        {/* Active Agents */}
+        <div className="bg-white/[0.03] border border-white/[0.07] rounded-2xl">
+          <div className="flex items-center justify-between p-5 border-b border-white/[0.06]">
+            <h2 className="text-lg font-semibold text-white">Aktif Agentlar</h2>
+          </div>
+          <div className="divide-y divide-white/[0.04]">
+            {[
+              { name: "Satış AI", status: "online", calls: 45, rate: 96 },
+              { name: "Destek AI", status: "online", calls: 128, rate: 92 },
+              { name: "Randevu AI", status: "online", calls: 32, rate: 98 },
+              { name: "Anket AI", status: "offline", calls: 0, rate: 89 },
+            ].map((agent) => (
+              <div key={agent.name} className="p-4 hover:bg-white/[0.02] transition-colors cursor-pointer">
+                <div className="flex items-center justify-between mb-2">
+                  <div className="flex items-center gap-2">
+                    <span className={`w-2 h-2 rounded-full ${agent.status === "online" ? "bg-green-400" : "bg-gray-500"}`} />
+                    <span className="text-sm font-medium text-white">{agent.name}</span>
+                  </div>
+                  <span className="text-xs text-gray-500">
+                    {agent.status === "online" ? "Çevrimiçi" : "Çevrimdışı"}
+                  </span>
+                </div>
+                <div className="flex items-center justify-between text-xs text-gray-400">
+                  <span>{agent.calls} çağrı</span>
+                  <span className="text-indigo-400">%{agent.rate} başarı</span>
+                </div>
+                <div className="mt-2 w-full h-1.5 bg-white/[0.05] rounded-full overflow-hidden">
+                  <div
+                    className="h-full bg-gradient-to-r from-indigo-500 to-violet-500 rounded-full"
+                    style={{ width: `${agent.rate}%` }}
+                  />
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Quick Actions */}
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        {[
+          { title: "Yeni Çağrı Başlat", desc: "AI agentınızla hemen bir arama başlatın", icon: "M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z", gradient: "from-indigo-500 to-violet-500" },
+          { title: "Agent Oluştur", desc: "Yeni bir AI çağrı agentı yapılandırın", icon: "M12 4.5v15m7.5-7.5h-15", gradient: "from-violet-500 to-fuchsia-500" },
+          { title: "CRM Senkronize Et", desc: "Müşteri verilerinizi güncelleyin", icon: "M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99", gradient: "from-cyan-500 to-blue-500" },
+        ].map((action) => (
+          <button key={action.title} className="bg-white/[0.03] border border-white/[0.07] rounded-2xl p-5 hover:border-indigo-500/20 transition-all duration-300 text-left group">
+            <div className={`w-10 h-10 rounded-xl bg-gradient-to-br ${action.gradient} flex items-center justify-center text-white mb-3 group-hover:scale-110 transition-transform shadow-lg`}>
+              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                <path strokeLinecap="round" strokeLinejoin="round" d={action.icon} />
+              </svg>
+            </div>
+            <h3 className="text-sm font-semibold text-white">{action.title}</h3>
+            <p className="text-xs text-gray-500 mt-1">{action.desc}</p>
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+}
