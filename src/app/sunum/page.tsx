@@ -104,49 +104,115 @@ export default function SunumPage() {
         <section>
           <h2 className="text-base font-bold text-black mb-3">3) Maliyet ve Kazan{"\u00e7"}</h2>
 
-          <p className="text-sm font-semibold text-black mb-2">Ayl{"\u0131"}k Altyap{"\u0131"} Maliyeti</p>
-          <table className="w-full text-xs mb-5">
-            <thead>
-              <tr className="border-b border-gray-300">
-                <th className="text-left py-1.5 font-semibold text-black">Servis</th>
-                <th className="text-left py-1.5 font-semibold text-black">Kullan{"\u0131"}m</th>
-                <th className="text-right py-1.5 font-semibold text-black">Maliyet</th>
-              </tr>
-            </thead>
-            <tbody>
-              {[
-                ["Supabase", "500MB DB, 50K user", "$0"],
-                ["Vercel", "Hosting", "$0"],
-                ["Resend", "3.000 mail/ay", "$0"],
-                ["ElevenLabs", "10K karakter/ay", "$0"],
-                ["OpenAI", "GPT-4o-mini", "$5\u201320/ay"],
-                ["Netgsm", "Telefon", "200\u2013500 \u20ba/ay"],
-              ].map(([s, k, m]) => (
-                <tr key={s} className="border-b border-gray-100">
-                  <td className="py-1.5 font-medium text-black">{s}</td>
-                  <td className="py-1.5 text-black">{k}</td>
-                  <td className="py-1.5 text-right font-semibold text-black">{m}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-
-          {/* Maliyet Bar Grafigi */}
-          <div className="grid grid-cols-3 gap-3 mb-6">
-            {[
-              { label: "Ba\u015flang\u0131\u00e7", value: "\u20ba0", sub: "Free tier", color: "#22c55e", h: 20 },
-              { label: "Orta \u00d6l\u00e7ek", value: "~$80", sub: "/ay", color: "#3b82f6", h: 55 },
-              { label: "Tam Kapasite", value: "~$90", sub: "/ay + telefon", color: "#8b5cf6", h: 65 },
-            ].map((b) => (
-              <div key={b.label} className="text-center">
-                <div className="h-24 flex items-end justify-center mb-2">
-                  <div className="w-12 rounded-t" style={{ height: `${b.h}%`, backgroundColor: b.color }} />
-                </div>
-                <p className="text-lg font-bold text-black">{b.value}</p>
-                <p className="text-[10px] text-black">{b.label}</p>
-                <p className="text-[10px] text-gray-500">{b.sub}</p>
+          <p className="text-sm font-semibold text-black mb-2">Ayl{"\u0131"}k Sabit Altyap{"\u0131"} Maliyeti (Detay)</p>
+          <div className="space-y-3 mb-5">
+            {/* Supabase */}
+            <div className="rounded-lg border border-gray-200 bg-gray-50 p-3">
+              <div className="flex items-center justify-between mb-1.5">
+                <span className="text-sm font-bold text-black">Supabase Pro</span>
+                <span className="text-sm font-bold text-black">$25/ay</span>
               </div>
-            ))}
+              <div className="grid grid-cols-2 gap-x-4 gap-y-0.5 text-[11px] text-black">
+                <p>{"\u2022"} 8GB veritaban{"\u0131"} diski (otomatik geni{"\u015f"}leme)</p>
+                <p>{"\u2022"} 250GB egress (bandwidth)</p>
+                <p>{"\u2022"} 100GB storage</p>
+                <p>{"\u2022"} 100K auth kullan{"\u0131"}c{"\u0131"}</p>
+                <p>{"\u2022"} $10 compute kredisi dahil</p>
+                <p>{"\u2022"} G{"\u00fc"}nl{"\u00fc"}k otomatik backup</p>
+                <p>{"\u2022"} Proje duraklat{"\u0131"}lmaz (always on)</p>
+                <p>{"\u2022"} 2M Edge Function {"\u00e7"}a{"\u011f"}r{"\u0131"}/ay</p>
+              </div>
+              <p className="text-[10px] text-gray-500 mt-1">A{"\u015f"}{"\u0131"}m: $0.09/GB egress, $2/1M edge fn</p>
+            </div>
+
+            {/* Vercel */}
+            <div className="rounded-lg border border-gray-200 bg-gray-50 p-3">
+              <div className="flex items-center justify-between mb-1.5">
+                <span className="text-sm font-bold text-black">Vercel Pro</span>
+                <span className="text-sm font-bold text-black">$20/ay</span>
+              </div>
+              <div className="grid grid-cols-2 gap-x-4 gap-y-0.5 text-[11px] text-black">
+                <p>{"\u2022"} $20 kredi dahil (t{"\u00fc"}m kaynaklara)</p>
+                <p>{"\u2022"} 1TB Fast Data Transfer</p>
+                <p>{"\u2022"} 10M Edge Request</p>
+                <p>{"\u2022"} 200 saat build s{"\u00fc"}resi</p>
+                <p>{"\u2022"} Custom domain</p>
+                <p>{"\u2022"} Analytics</p>
+              </div>
+              <p className="text-[10px] text-gray-500 mt-1">Trafi{"\u011f"}e g{"\u00f6"}re de{"\u011f"}i{"\u015f"}ir. Maks $200 varsay{"\u0131"}lan b{"\u00fc"}t{"\u00e7"}e limiti</p>
+            </div>
+
+            {/* ElevenLabs */}
+            <div className="rounded-lg border border-gray-200 bg-gray-50 p-3">
+              <div className="flex items-center justify-between mb-1.5">
+                <span className="text-sm font-bold text-black">ElevenLabs Creator</span>
+                <span className="text-sm font-bold text-black">$22/ay</span>
+              </div>
+              <div className="grid grid-cols-2 gap-x-4 gap-y-0.5 text-[11px] text-black">
+                <p>{"\u2022"} 100.000 karakter/ay TTS</p>
+                <p>{"\u2022"} 30 {"\u00f6"}zel ses klonu</p>
+                <p>{"\u2022"} Conversational AI: $0.10/dk</p>
+                <p>{"\u2022"} Geli{"\u015f"}mi{"\u015f"} ses kalitesi</p>
+                <p>{"\u2022"} Kullan{"\u0131"}lmayan kredi 2 ay devir</p>
+                <p>{"\u2022"} T{"\u00fc"}rk{"\u00e7"}e dahil 32 dil</p>
+              </div>
+              <p className="text-[10px] text-gray-500 mt-1">Business: $330/ay (2M karakter, $0.08/dk arama)</p>
+            </div>
+
+            {/* Diger */}
+            <div className="grid grid-cols-3 gap-3">
+              <div className="rounded-lg border border-gray-200 bg-gray-50 p-3">
+                <div className="flex items-center justify-between mb-1">
+                  <span className="text-xs font-bold text-black">Resend</span>
+                  <span className="text-xs font-bold text-black">$20/ay</span>
+                </div>
+                <p className="text-[11px] text-black">50.000 mail/ay</p>
+                <p className="text-[10px] text-gray-500">Free: 3.000 mail/ay</p>
+              </div>
+              <div className="rounded-lg border border-gray-200 bg-gray-50 p-3">
+                <div className="flex items-center justify-between mb-1">
+                  <span className="text-xs font-bold text-black">OpenAI</span>
+                  <span className="text-xs font-bold text-black">$5{"\u2013"}20/ay</span>
+                </div>
+                <p className="text-[11px] text-black">GPT-4o-mini</p>
+                <p className="text-[10px] text-gray-500">Kullan{"\u0131"}ma g{"\u00f6"}re de{"\u011f"}i{"\u015f"}ir</p>
+              </div>
+              <div className="rounded-lg border border-gray-200 bg-gray-50 p-3">
+                <div className="flex items-center justify-between mb-1">
+                  <span className="text-xs font-bold text-black">Netgsm</span>
+                  <span className="text-xs font-bold text-black">~{"\u20ba"}300/ay</span>
+                </div>
+                <p className="text-[11px] text-black">Arama/dk bazl{"\u0131"}</p>
+                <p className="text-[10px] text-gray-500">~0.05{"\u2013"}0.10 {"\u20ba"}/dk</p>
+              </div>
+            </div>
+          </div>
+
+          {/* Toplam Maliyet Grafigi */}
+          <p className="text-sm font-semibold text-black mb-2">Toplam Ayl{"\u0131"}k Maliyet</p>
+          <div className="rounded-lg bg-gray-50 border border-gray-200 p-4 mb-6">
+            <div className="space-y-2">
+              {[
+                { label: "Supabase Pro", val: 25, color: "#22c55e" },
+                { label: "Vercel Pro", val: 20, color: "#3b82f6" },
+                { label: "ElevenLabs Creator", val: 22, color: "#8b5cf6" },
+                { label: "Resend Pro", val: 20, color: "#ec4899" },
+                { label: "OpenAI", val: 12, color: "#f59e0b" },
+                { label: "Netgsm (~{"\u20ba"}300)", val: 8, color: "#6b7280" },
+              ].map((bar) => (
+                <div key={bar.label} className="flex items-center gap-2">
+                  <span className="text-[11px] text-black w-32 shrink-0">{bar.label}</span>
+                  <div className="flex-1 h-4 bg-gray-200 rounded-full overflow-hidden">
+                    <div className="h-full rounded-full" style={{ width: `${(bar.val / 25) * 100}%`, backgroundColor: bar.color }} />
+                  </div>
+                  <span className="text-[11px] font-bold text-black w-12 text-right">${bar.val}</span>
+                </div>
+              ))}
+            </div>
+            <div className="mt-3 pt-2 border-t border-gray-300 flex items-center justify-between">
+              <span className="text-sm font-bold text-black">TOPLAM</span>
+              <span className="text-lg font-bold text-black">~$107/ay <span className="text-[11px] font-normal">(~{"\u20ba"}3.750)</span></span>
+            </div>
           </div>
 
           <p className="text-sm font-semibold text-black mb-2">SaaS Abonelik Fiyatland{"\u0131"}rmas{"\u0131"}</p>
