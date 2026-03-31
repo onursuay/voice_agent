@@ -327,24 +327,26 @@ export default function SunumPage() {
             ))}
           </div>
 
-          {/* Gelir Projeksiyonu Grafik */}
-          <p className="text-sm font-semibold text-black mb-2">Gelir Projeksiyonu</p>
+          {/* Gelir - Gider Projeksiyonu */}
+          <p className="text-sm font-semibold text-black mb-1">Gelir-Gider Projeksiyonu</p>
+          <p className="text-[10px] text-gray-500 mb-3">Sabit altyap{"\u0131"}: {"\u20ba"}5.635/ay. M{"\u00fc"}{"\u015f"}teri ba{"\u015f"}{"\u0131"} ElevenLabs AI arama: 10 arama/g{"\u00fc"}n {"\u00d7"} 1dk {"\u00d7"} 30g{"\u00fc"}n = 300dk = $30/ay ({"\u20ba"}1.050) ek maliyet.</p>
+
           <div className="rounded-lg bg-gray-50 border border-gray-200 p-4 mb-4">
             <div className="flex items-end gap-4 h-40">
               {[
-                { label: "10 m\u00fc\u015fteri\n(Starter)", gelir: 9990, net: 7490, maxH: 100 },
-                { label: "10 m\u00fc\u015fteri\n(Growth)", gelir: 19990, net: 15990, maxH: 100 },
-                { label: "50 m\u00fc\u015fteri\n(mix)", gelir: 79965, net: 67965, maxH: 100 },
-                { label: "100 m\u00fc\u015fteri\n(mix)", gelir: 179900, net: 154900, maxH: 100 },
+                { label: "10 m\u00fc\u015fteri\n(Starter)", gelir: 9990, maliyet: 16185, net: 0 },
+                { label: "10 m\u00fc\u015fteri\n(Growth)", gelir: 19990, maliyet: 16185, net: 3805 },
+                { label: "50 m\u00fc\u015fteri\n(mix)", gelir: 79965, maliyet: 58135, net: 21830 },
+                { label: "100 m\u00fc\u015fteri\n(mix)", gelir: 179900, maliyet: 110635, net: 69265 },
               ].map((d) => {
                 const maxVal = 179900;
                 const gelirH = (d.gelir / maxVal) * 100;
-                const netH = (d.net / maxVal) * 100;
+                const netH = Math.max((d.net / maxVal) * 100, 0);
                 return (
                   <div key={d.label} className="flex-1 flex flex-col items-center gap-1">
                     <div className="w-full flex items-end justify-center gap-1 h-32">
-                      <div className="w-5 bg-indigo-300 rounded-t" style={{ height: `${gelirH}%` }} title={`Gelir: \u20ba${d.gelir.toLocaleString('tr-TR')}`} />
-                      <div className="w-5 bg-green-500 rounded-t" style={{ height: `${netH}%` }} title={`Net: \u20ba${d.net.toLocaleString('tr-TR')}`} />
+                      <div className="w-5 bg-indigo-300 rounded-t" style={{ height: `${gelirH}%` }} />
+                      <div className="w-5 bg-green-500 rounded-t" style={{ height: `${netH}%` }} />
                     </div>
                     <p className="text-[10px] text-black text-center font-medium leading-tight whitespace-pre-line">{d.label}</p>
                   </div>
@@ -362,31 +364,37 @@ export default function SunumPage() {
               <tr className="border-b border-gray-300">
                 <th className="text-left py-1.5 font-semibold text-black">Senaryo</th>
                 <th className="text-right py-1.5 font-semibold text-black">Gelir</th>
-                <th className="text-right py-1.5 font-semibold text-black">Maliyet</th>
+                <th className="text-right py-1.5 font-semibold text-black">Sabit</th>
+                <th className="text-right py-1.5 font-semibold text-black">AI Arama</th>
+                <th className="text-right py-1.5 font-semibold text-black">Top. Maliyet</th>
                 <th className="text-right py-1.5 font-semibold text-green-700">Net</th>
               </tr>
             </thead>
             <tbody>
               {[
-                ["10 m\u00fc\u015fteri (Starter)", "\u20ba9.990", "\u20ba2.500", "\u20ba7.490"],
-                ["10 m\u00fc\u015fteri (Growth)", "\u20ba19.990", "\u20ba4.000", "\u20ba15.990"],
-                ["50 m\u00fc\u015fteri (mix)", "\u20ba79.965", "\u20ba12.000", "\u20ba67.965"],
-                ["100 m\u00fc\u015fteri (mix)", "\u20ba179.900", "\u20ba25.000", "\u20ba154.900"],
-              ].map(([s, g, m, n]) => (
+                ["10 m\u00fc\u015fteri (Starter)", "\u20ba9.990", "\u20ba5.635", "\u20ba10.550", "\u20ba16.185", "-\u20ba6.195"],
+                ["10 m\u00fc\u015fteri (Growth)", "\u20ba19.990", "\u20ba5.635", "\u20ba10.550", "\u20ba16.185", "+\u20ba3.805"],
+                ["50 m\u00fc\u015fteri (mix)", "\u20ba79.965", "\u20ba5.635", "\u20ba52.500", "\u20ba58.135", "+\u20ba21.830"],
+                ["100 m\u00fc\u015fteri (mix)", "\u20ba179.900", "\u20ba5.635", "\u20ba105.000", "\u20ba110.635", "+\u20ba69.265"],
+              ].map(([s, g, sabit, ai, m, n]) => (
                 <tr key={s} className="border-b border-gray-100">
                   <td className="py-1.5 text-black">{s}</td>
                   <td className="py-1.5 text-right text-black">{g}</td>
-                  <td className="py-1.5 text-right text-black">{m}</td>
-                  <td className="py-1.5 text-right font-bold text-green-700">{n}</td>
+                  <td className="py-1.5 text-right text-black">{sabit}</td>
+                  <td className="py-1.5 text-right text-black">{ai}</td>
+                  <td className="py-1.5 text-right font-medium text-black">{m}</td>
+                  <td className={`py-1.5 text-right font-bold ${n.startsWith('-') ? 'text-red-600' : 'text-green-700'}`}>{n}</td>
                 </tr>
               ))}
             </tbody>
           </table>
+          <p className="text-[10px] text-gray-500 mb-4">AI Arama: m{"\u00fc"}{"\u015f"}teri ba{"\u015f"}{"\u0131"} 10 arama/g{"\u00fc"}n {"\u00d7"} 1dk {"\u00d7"} $0.10 {"\u00d7"} 30g{"\u00fc"}n = $30/ay ({"\u20ba"}1.050). GSM operat{"\u00f6"}r {"\u00fc"}creti hari{"\u00e7"}. AI arama kullanmayan m{"\u00fc"}{"\u015f"}terilerde bu maliyet s{"\u0131"}f{"\u0131"}rd{"\u0131"}r.</p>
 
           <div className="rounded bg-gray-100 px-4 py-2.5 text-center">
             <span className="text-xs text-black">Break-even: </span>
-            <span className="text-sm font-bold text-black">3 m{"\u00fc"}{"\u015f"}teri</span>
-            <span className="text-xs text-black"> {"\u2014"} Starter plan bile altyap{"\u0131"} maliyetini kar{"\u015f"}{"\u0131"}lar</span>
+            <span className="text-sm font-bold text-black">~15 m{"\u00fc"}{"\u015f"}teri (Starter)</span>
+            <span className="text-xs text-black"> veya </span>
+            <span className="text-sm font-bold text-black">~8 m{"\u00fc"}{"\u015f"}teri (Growth)</span>
           </div>
         </section>
 
