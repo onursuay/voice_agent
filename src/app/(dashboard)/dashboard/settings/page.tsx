@@ -472,11 +472,11 @@ export default function SettingsPage() {
                       setError(data.message);
                     }
                   } catch {
-                    setError('Davet ozelligi yakinda aktif olacak.');
+                    setError(t('members.invite'));
                   }
                 }}
               >
-                Üye Davet Et
+                {t('members.invite')}
               </Button>
             </div>
 
