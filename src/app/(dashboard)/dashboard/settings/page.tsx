@@ -563,7 +563,7 @@ export default function SettingsPage() {
 
                   {/* Lead count */}
                   <span className="text-xs text-muted">
-                    {stageLeadCounts[stage.id] || 0} lead
+                    {stageLeadCounts[stage.id] || 0} {t('pipeline.leadsUnit')}
                   </span>
 
                   {/* Reorder buttons */}
