@@ -9,6 +9,7 @@ import { useTranslations } from 'next-intl'
 
 export default function LoginPage() {
   const router = useRouter()
+  const t = useTranslations('auth.login')
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
