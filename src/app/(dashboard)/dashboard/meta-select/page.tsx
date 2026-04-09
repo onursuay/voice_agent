@@ -38,7 +38,8 @@ export default function MetaSelectPage() {
           setOrgId(data.orgId);
           if (data.pages.length > 0) setSelected(data.pages[0].id);
         } else {
-          setError('Oturum süresi dolmuş. Lütfen tekrar bağlanın.');
+          const reason = data.reason === 'no_cookie' ? 'Cookie bulunamadı.' : 'İmza doğrulaması başarısız veya süre doldu.';
+          setError(`Oturum süresi dolmuş (${reason}) Lütfen tekrar bağlanın.`);
         }
       })
       .catch(() => setError('Bir hata oluştu.'));
@@ -55,10 +56,15 @@ export default function MetaSelectPage() {
   if (error) {
     return (
       <div className="flex min-h-[60vh] flex-col items-center justify-center gap-4">
-        <p className="text-sm text-red-500">{error}</p>
-        <Button variant="secondary" onClick={() => router.push('/dashboard/settings?tab=integrations')}>
-          Geri Dön
-        </Button>
+        <p className="text-sm text-red-500 text-center max-w-sm">{error}</p>
+        <div className="flex gap-3">
+          <Button onClick={() => { window.location.href = '/api/integrations/meta/connect'; }}>
+            Tekrar Bağlan
+          </Button>
+          <Button variant="secondary" onClick={() => router.push('/dashboard/settings?tab=integrations')}>
+            Geri Dön
+          </Button>
+        </div>
       </div>
     );
   }

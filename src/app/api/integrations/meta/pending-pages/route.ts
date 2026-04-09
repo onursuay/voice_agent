@@ -32,12 +32,12 @@ function readPendingCookie(cookieValue: string): PendingSession | null {
 export async function GET(request: NextRequest) {
   const cookieValue = request.cookies.get('meta_pending')?.value;
   if (!cookieValue) {
-    return NextResponse.json({ error: 'session_expired' }, { status: 401 });
+    return NextResponse.json({ error: 'session_expired', reason: 'no_cookie' }, { status: 401 });
   }
 
   const session = readPendingCookie(cookieValue);
   if (!session) {
-    return NextResponse.json({ error: 'session_expired' }, { status: 401 });
+    return NextResponse.json({ error: 'session_expired', reason: 'invalid_or_expired' }, { status: 401 });
   }
 
   // Return only id + name, never expose tokens to frontend
