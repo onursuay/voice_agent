@@ -69,6 +69,13 @@ export const useAppStore = create<AppStore>((set, get) => ({
     leads: get().leads.filter(l => l.id !== id),
     selectedLeadIds: (() => { const s = new Set(get().selectedLeadIds); s.delete(id); return s; })(),
   }),
+  deleteLeads: (ids) => {
+    const idSet = new Set(ids);
+    set({
+      leads: get().leads.filter(l => !idSet.has(l.id)),
+      selectedLeadIds: new Set(),
+    });
+  },
   selectedLeadIds: new Set(),
   setSelectedLeadIds: (ids) => set({ selectedLeadIds: ids }),
   toggleLeadSelection: (id) => {
