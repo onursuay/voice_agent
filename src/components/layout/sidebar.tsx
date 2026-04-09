@@ -178,7 +178,7 @@ export function Sidebar() {
             <button
               onClick={toggleCollapse}
               className={`absolute inset-0 flex items-center justify-center transition-opacity duration-300 group-hover:opacity-100 rounded-lg ${showHintButton ? 'opacity-100' : 'opacity-0'}`}
-              aria-label="Genişlet"
+              aria-label={tSidebar('expand')}
             >
               <PanelLeftOpen className="w-6 h-6 text-indigo-500" />
             </button>
