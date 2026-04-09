@@ -9,15 +9,18 @@ import { useState, useRef, useEffect } from 'react';
 import { createClient } from '@/lib/supabase/client';
 import { useRouter } from 'next/navigation';
 
-const pageTitles: Record<string, string> = {
-  '/dashboard': 'Dashboard',
-  '/dashboard/leads': "Lead'ler",
-  '/dashboard/pipeline': 'Pipeline',
-  '/dashboard/import': 'İçe Aktar',
-  '/dashboard/settings': 'Ayarlar',
-  '/dashboard/hesabim': 'Hesabım',
-  '/dashboard/faturalarim': 'Faturalarım',
-  '/dashboard/abonelik': 'Abonelik',
+const PAGE_TITLE_KEYS: Record<string, string> = {
+  '/dashboard': 'dashboard',
+  '/dashboard/leads': 'leads',
+  '/dashboard/pipeline': 'pipeline',
+  '/dashboard/import': 'import',
+  '/dashboard/settings': 'settings',
+  '/dashboard/hesabim': 'hesabim',
+  '/dashboard/faturalarim': 'faturalarim',
+  '/dashboard/abonelik': 'abonelik',
+  '/dashboard/email': 'email',
+  '/dashboard/automations': 'automations',
+  '/dashboard/calls': 'calls',
 };
 
 function getPageTitle(pathname: string): string {
