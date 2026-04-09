@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { Eye, EyeOff, Copy, Check, Users, BadgePercent } from 'lucide-react'
+import { useTranslations } from 'next-intl'
 import { getStoredProfile, setStoredProfile } from '@/lib/subscription/storage'
 import { useAppStore } from '@/lib/store'
 import { createClient } from '@/lib/supabase/client'
