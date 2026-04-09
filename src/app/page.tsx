@@ -9,7 +9,7 @@ export default function RootPage() {
   /* ────────────────────── Content ────────────────────── */
 
   const c = {
-    badge: 'AI Destekli Hepsi Bir Arada Lead Yönetimi',
+    badge: 'VoiceAgent — AI Destekli Hepsi Bir Arada Lead Yönetimi',
     heroLine1: 'Lead\'lerinizi Toplayın,',
     heroLine2: 'Satışa Dönüştürün',
     heroSub: 'Yo Dijital, Meta reklamlarından gelen tüm lead\'lerinizi tek merkezden toplamanızı, CRM pipeline ile yönetmenizi ve yapay zeka destekli aramalarla satışa dönüştürmenizi sağlar. Satış ekipleri ve ajanslar için geliştirilen bu yapı sayesinde operasyonel yükünüz azalır, dönüşüm oranınız artar.',
