@@ -155,7 +155,7 @@ export default function FaturalarimPage() {
             {info.type === 'corporate' && (
               <>
                 <div>
-                  <label className="block text-sm font-medium text-gray-600 mb-1.5">Şirket Adı</label>
+                  <label className="block text-sm font-medium text-gray-600 mb-1.5">{t('companyName')}</label>
                   <input
                     type="text"
                     value={info.companyName || ''}
