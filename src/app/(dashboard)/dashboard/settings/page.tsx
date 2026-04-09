@@ -669,8 +669,8 @@ export default function SettingsPage() {
                 <Plug className="h-5 w-5 text-blue-600" />
               </div>
               <div>
-                <h2 className="text-base font-semibold text-foreground">Entegrasyonlar</h2>
-                <p className="text-sm text-muted">Dış platformlardan lead toplamak için bağlantıları yönetin.</p>
+                <h2 className="text-base font-semibold text-foreground">{t('integrations.title')}</h2>
+                <p className="text-sm text-muted">{t('integrations.desc')}</p>
               </div>
             </div>
 
