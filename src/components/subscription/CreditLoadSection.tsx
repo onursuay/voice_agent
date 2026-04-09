@@ -102,8 +102,8 @@ export default function CreditLoadSection() {
 
       {/* Info */}
       <div className="space-y-1.5 text-sm text-gray-500 mt-4">
-        <p>Her içerik üretimi için 20 kredi harcanır.</p>
-        <p className="text-indigo-600 font-medium">Üye olanlara 100 ücretsiz kredi verilir.</p>
+        <p>{t('credits.perGeneration')}</p>
+        <p className="text-indigo-600 font-medium">{t('credits.freeCredits')}</p>
       </div>
     </div>
   )
