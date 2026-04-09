@@ -203,7 +203,7 @@ export default function RegisterPage() {
         </div>
 
         <div className="mt-5 text-center">
-          <Link href="/" className="text-sm text-gray-500 hover:text-emerald-400 transition">← Ana sayfaya dön</Link>
+          <Link href="/" className="text-sm text-gray-500 hover:text-emerald-400 transition">{t('backHome')}</Link>
         </div>
 
         <div className="mt-4 mb-2 flex flex-wrap justify-center gap-4">
