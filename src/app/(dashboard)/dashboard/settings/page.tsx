@@ -435,7 +435,7 @@ export default function SettingsPage() {
                 </span>
               )}
               <Button onClick={saveOrganization} loading={orgSaving} icon={<Save className="h-4 w-4" />}>
-                {t('common.save')}
+                {tCommon('save')}
               </Button>
             </div>
           </div>
