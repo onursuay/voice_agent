@@ -56,7 +56,7 @@ export default function HesabimPage() {
   const handleSavePassword = async () => {
     setPwError('')
     if (!newPassword || newPassword !== confirmPassword) {
-      setPwError('Şifreler eşleşmiyor.')
+      setPwError(t('passwordMismatch'))
       return
     }
     const supabase = createClient()
