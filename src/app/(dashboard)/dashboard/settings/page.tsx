@@ -812,25 +812,25 @@ export default function SettingsPage() {
 
             <div className="grid gap-5 sm:grid-cols-2">
               <Input
-                label="Ad Soyad"
+                label={t('profile.fullNameLabel')}
                 value={profileName}
                 onChange={(e) => setProfileName(e.target.value)}
-                placeholder="Adiniz ve soyadiniz"
+                placeholder={t('profile.fullNamePlaceholder')}
               />
               <Input
-                label="E-posta"
+                label={t('profile.emailLabel')}
                 value={profile?.email || ''}
                 disabled
                 className="bg-gray-50"
               />
               <Input
-                label="Telefon"
+                label={t('profile.phoneLabel')}
                 value={profilePhone}
                 onChange={(e) => setProfilePhone(e.target.value)}
-                placeholder="+90 5XX XXX XXXX"
+                placeholder={t('profile.phonePlaceholder')}
               />
               <div>
-                <label className="mb-1.5 block text-sm font-medium text-gray-700">Rol</label>
+                <label className="mb-1.5 block text-sm font-medium text-gray-700">{t('profile.roleLabel')}</label>
                 <div className="flex h-[38px] items-center">
                   <Badge
                     color={ROLE_COLORS[session?.membership?.role as UserRole] || 'gray'}
