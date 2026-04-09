@@ -110,7 +110,7 @@ export default function HesabimPage() {
           {/* Name fields */}
           <div className="grid grid-cols-2 gap-4 mb-4">
             <div>
-              <label className="block text-sm font-medium text-gray-600 mb-1.5">Ad</label>
+              <label className="block text-sm font-medium text-gray-600 mb-1.5">{t('firstName')}</label>
               <input
                 type="text"
                 value={profile.firstName}
