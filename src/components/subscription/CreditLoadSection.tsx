@@ -26,13 +26,13 @@ export default function CreditLoadSection() {
 
   return (
     <div id="krediler" className="bg-white rounded-2xl border border-gray-200 p-6">
-      <h3 className="text-base font-bold text-gray-900 mb-4">Kredi Yükle</h3>
+      <h3 className="text-base font-bold text-gray-900 mb-4">{t('credits.title')}</h3>
 
       {/* Current balance */}
       <div className="flex items-center gap-3 mb-6 p-4 bg-amber-50 border border-amber-200 rounded-xl">
         <Coins className="w-6 h-6 text-amber-500" />
         <div>
-          <p className="text-sm text-amber-600">Mevcut Krediniz</p>
+          <p className="text-sm text-amber-600">{t('credits.balance')}</p>
           <p className="text-2xl font-bold text-amber-700">{credits}</p>
         </div>
       </div>
