@@ -60,6 +60,8 @@ export function Sidebar() {
   const [animate, setAnimate] = useState(false);
   const [showHintButton, setShowHintButton] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [langOpen, setLangOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
   // Read saved state, mark ready, then enable transitions
   useEffect(() => {
