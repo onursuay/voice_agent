@@ -452,8 +452,8 @@ export default function SettingsPage() {
                   <Users className="h-5 w-5 text-purple-600" />
                 </div>
                 <div>
-                  <h2 className="text-base font-semibold text-foreground">Organizasyon Üyeleri</h2>
-                  <p className="text-sm text-muted">Ekip üyelerini yönetin ve davet edin.</p>
+                  <h2 className="text-base font-semibold text-foreground">{t('members.title')}</h2>
+                  <p className="text-sm text-muted">{t('members.desc')}</p>
                 </div>
               </div>
               <Button
