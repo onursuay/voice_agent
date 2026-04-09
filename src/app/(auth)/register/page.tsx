@@ -9,6 +9,7 @@ import { useTranslations } from 'next-intl'
 
 export default function RegisterPage() {
   const router = useRouter()
+  const t = useTranslations('auth.register')
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
