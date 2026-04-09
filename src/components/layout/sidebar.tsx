@@ -120,9 +120,13 @@ export function Sidebar() {
     router.push('/login');
   };
 
-  const roleLabel = session?.membership?.role
-    ? ROLE_LABELS[session.membership.role as UserRole]
-    : '';
+  const { subscription, isTrialActive: trial, trialDaysRemaining } = useSubscription();
+
+  const statusLabel = trial
+    ? `Deneme Sürümü (${trialDaysRemaining} gün)`
+    : subscription.status === 'active'
+    ? subscription.planId.charAt(0).toUpperCase() + subscription.planId.slice(1)
+    : 'Free';
 
   // SSR placeholder
   if (!ready) {
