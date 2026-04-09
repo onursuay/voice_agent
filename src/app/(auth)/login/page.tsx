@@ -153,10 +153,10 @@ export default function LoginPage() {
 
       {/* Footer legal links */}
       <div className="absolute bottom-4 left-0 right-0 flex flex-wrap justify-center gap-4 px-4">
-        <a href="/privacy-policy" className="text-xs text-gray-600 hover:text-gray-400 transition">Gizlilik Politikası</a>
-        <a href="/cookie-policy" className="text-xs text-gray-600 hover:text-gray-400 transition">Çerez Politikası</a>
-        <a href="/terms-of-service" className="text-xs text-gray-600 hover:text-gray-400 transition">Kullanım Koşulları</a>
-        <a href="/data-deletion" className="text-xs text-gray-600 hover:text-gray-400 transition">Veri Silme</a>
+        <a href="/privacy-policy" className="text-xs text-gray-600 hover:text-gray-400 transition">{t('privacyPolicy')}</a>
+        <a href="/cookie-policy" className="text-xs text-gray-600 hover:text-gray-400 transition">{t('cookiePolicy')}</a>
+        <a href="/terms-of-service" className="text-xs text-gray-600 hover:text-gray-400 transition">{t('terms')}</a>
+        <a href="/data-deletion" className="text-xs text-gray-600 hover:text-gray-400 transition">{t('dataDeletion')}</a>
       </div>
     </div>
   )
