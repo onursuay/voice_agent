@@ -147,7 +147,7 @@ export default function LoginPage() {
         </div>
 
         <div className="mt-6 text-center">
-          <Link href="/" className="text-sm text-gray-500 hover:text-emerald-400 transition">← Ana sayfaya dön</Link>
+          <Link href="/" className="text-sm text-gray-500 hover:text-emerald-400 transition">{t('backHome')}</Link>
         </div>
       </div>
 
