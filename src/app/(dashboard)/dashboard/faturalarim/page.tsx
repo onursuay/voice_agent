@@ -190,7 +190,7 @@ export default function FaturalarimPage() {
               onClick={handleSave}
               className="w-full py-2.5 bg-indigo-600 text-white font-medium rounded-lg hover:bg-indigo-700 transition-colors text-sm"
             >
-              {saved ? 'Kaydedildi ✓' : 'Kaydet'}
+              {saved ? t('saved') : t('save')}
             </button>
           </div>
         </div>
