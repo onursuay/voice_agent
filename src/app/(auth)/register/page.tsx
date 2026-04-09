@@ -167,8 +167,8 @@ export default function RegisterPage() {
                 autoComplete="new-password" />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-1.5">Şifre Tekrar <span className="text-emerald-400">*</span></label>
-              <input type="password" value={passwordConfirm} onChange={e => setPasswordConfirm(e.target.value)} placeholder="Şifrenizi tekrar girin"
+              <label className="block text-sm font-medium text-gray-300 mb-1.5">{t('confirmPasswordLabel')} <span className="text-emerald-400">*</span></label>
+              <input type="password" value={passwordConfirm} onChange={e => setPasswordConfirm(e.target.value)} placeholder={t('confirmPasswordPlaceholder')}
                 className="w-full rounded-lg border border-white/10 bg-white/[0.04] px-3 py-2 text-sm text-white placeholder-gray-500 outline-none transition focus:border-emerald-500/50 focus:ring-1 focus:ring-emerald-500/30"
                 autoComplete="new-password" />
             </div>
