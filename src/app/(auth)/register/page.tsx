@@ -1,111 +1,112 @@
-'use client';
+'use client'
 
-import { useState, useEffect, useRef } from 'react';
-import Image from 'next/image';
-import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { createClient } from '@/lib/supabase/client';
+import { useState, useEffect, useRef } from 'react'
+import Image from 'next/image'
+import Link from 'next/link'
+import { useRouter } from 'next/navigation'
+import { createClient } from '@/lib/supabase/client'
 
 export default function RegisterPage() {
-  const router = useRouter();
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [fullName, setFullName] = useState('');
-  const [orgName, setOrgName] = useState('');
-  const [phone, setPhone] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [passwordConfirm, setPasswordConfirm] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
-  const [acceptedTerms, setAcceptedTerms] = useState(false);
+  const router = useRouter()
+  const canvasRef = useRef<HTMLCanvasElement>(null)
+  const [name, setName] = useState('')
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [passwordConfirm, setPasswordConfirm] = useState('')
+  const [company, setCompany] = useState('')
+  const [phone, setPhone] = useState('')
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
+  const [acceptedTerms, setAcceptedTerms] = useState(false)
 
   useEffect(() => {
-    const c = canvasRef.current;
-    if (!c) return;
-    const ctx = c.getContext('2d');
-    if (!ctx) return;
+    const c = canvasRef.current
+    if (!c) return
+    const ctx = c.getContext('2d')
+    if (!ctx) return
 
-    let animId: number;
-    let w = 0, h = 0;
-    const nodes: { x: number; y: number; vx: number; vy: number; r: number }[] = [];
-    const pulses: { from: number; to: number; t: number; speed: number }[] = [];
-    const NODE_COUNT = 40;
-    const CONNECT_DIST = 180;
-    const PULSE_CHANCE = 0.008;
+    let animId: number
+    let w = 0, h = 0
+    const nodes: { x: number; y: number; vx: number; vy: number; r: number }[] = []
+    const pulses: { from: number; to: number; t: number; speed: number }[] = []
+    const NODE_COUNT = 40
+    const CONNECT_DIST = 180
+    const PULSE_CHANCE = 0.008
 
     function resize() {
-      w = c!.width = c!.offsetWidth;
-      h = c!.height = c!.offsetHeight;
+      w = c!.width = c!.offsetWidth
+      h = c!.height = c!.offsetHeight
     }
-    resize();
-    window.addEventListener('resize', resize);
+    resize()
+    window.addEventListener('resize', resize)
 
     for (let i = 0; i < NODE_COUNT; i++) {
-      nodes.push({ x: Math.random() * w, y: Math.random() * h, vx: (Math.random() - 0.5) * 0.3, vy: (Math.random() - 0.5) * 0.3, r: Math.random() * 2 + 1.5 });
+      nodes.push({ x: Math.random() * w, y: Math.random() * h, vx: (Math.random() - 0.5) * 0.3, vy: (Math.random() - 0.5) * 0.3, r: Math.random() * 2 + 1.5 })
     }
 
     function draw() {
-      ctx!.clearRect(0, 0, w, h);
+      ctx!.clearRect(0, 0, w, h)
       for (let i = 0; i < nodes.length; i++) {
-        const n = nodes[i];
-        n.x += n.vx; n.y += n.vy;
-        if (n.x < 0 || n.x > w) n.vx *= -1;
-        if (n.y < 0 || n.y > h) n.vy *= -1;
-        n.x = Math.max(0, Math.min(w, n.x));
-        n.y = Math.max(0, Math.min(h, n.y));
+        const n = nodes[i]
+        n.x += n.vx; n.y += n.vy
+        if (n.x < 0 || n.x > w) n.vx *= -1
+        if (n.y < 0 || n.y > h) n.vy *= -1
+        n.x = Math.max(0, Math.min(w, n.x))
+        n.y = Math.max(0, Math.min(h, n.y))
       }
       for (let i = 0; i < nodes.length; i++) {
         for (let j = i + 1; j < nodes.length; j++) {
-          const dx = nodes[i].x - nodes[j].x, dy = nodes[i].y - nodes[j].y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
+          const dx = nodes[i].x - nodes[j].x, dy = nodes[i].y - nodes[j].y
+          const dist = Math.sqrt(dx * dx + dy * dy)
           if (dist < CONNECT_DIST) {
-            const alpha = (1 - dist / CONNECT_DIST) * 0.35;
-            ctx!.beginPath(); ctx!.moveTo(nodes[i].x, nodes[i].y); ctx!.lineTo(nodes[j].x, nodes[j].y);
-            ctx!.strokeStyle = 'rgba(255,255,255,' + alpha + ')'; ctx!.lineWidth = 0.8; ctx!.stroke();
+            const alpha = (1 - dist / CONNECT_DIST) * 0.35
+            ctx!.beginPath(); ctx!.moveTo(nodes[i].x, nodes[i].y); ctx!.lineTo(nodes[j].x, nodes[j].y)
+            ctx!.strokeStyle = 'rgba(255,255,255,' + alpha + ')'; ctx!.lineWidth = 0.8; ctx!.stroke()
             if (Math.random() < PULSE_CHANCE && pulses.length < 15) {
-              pulses.push({ from: i, to: j, t: 0, speed: 0.008 + Math.random() * 0.008 });
+              pulses.push({ from: i, to: j, t: 0, speed: 0.008 + Math.random() * 0.008 })
             }
           }
         }
       }
       for (let p = pulses.length - 1; p >= 0; p--) {
-        const pulse = pulses[p]; pulse.t += pulse.speed;
-        if (pulse.t > 1) { pulses.splice(p, 1); continue; }
-        const from = nodes[pulse.from], to = nodes[pulse.to];
-        const px = from.x + (to.x - from.x) * pulse.t, py = from.y + (to.y - from.y) * pulse.t;
-        const glow = Math.sin(pulse.t * Math.PI);
-        ctx!.beginPath(); ctx!.arc(px, py, 2, 0, Math.PI * 2); ctx!.fillStyle = 'rgba(16,185,129,' + (glow * 0.8) + ')'; ctx!.fill();
-        ctx!.beginPath(); ctx!.arc(px, py, 5, 0, Math.PI * 2); ctx!.fillStyle = 'rgba(16,185,129,' + (glow * 0.2) + ')'; ctx!.fill();
+        const pulse = pulses[p]; pulse.t += pulse.speed
+        if (pulse.t > 1) { pulses.splice(p, 1); continue }
+        const from = nodes[pulse.from], to = nodes[pulse.to]
+        const px = from.x + (to.x - from.x) * pulse.t, py = from.y + (to.y - from.y) * pulse.t
+        const glow = Math.sin(pulse.t * Math.PI)
+        ctx!.beginPath(); ctx!.arc(px, py, 2, 0, Math.PI * 2); ctx!.fillStyle = 'rgba(16,185,129,' + (glow * 0.8) + ')'; ctx!.fill()
+        ctx!.beginPath(); ctx!.arc(px, py, 5, 0, Math.PI * 2); ctx!.fillStyle = 'rgba(16,185,129,' + (glow * 0.2) + ')'; ctx!.fill()
       }
       for (let i = 0; i < nodes.length; i++) {
-        const n = nodes[i];
-        ctx!.beginPath(); ctx!.arc(n.x, n.y, n.r, 0, Math.PI * 2); ctx!.fillStyle = 'rgba(255,255,255,0.25)'; ctx!.fill();
-        ctx!.beginPath(); ctx!.arc(n.x, n.y, n.r + 3, 0, Math.PI * 2); ctx!.fillStyle = 'rgba(255,255,255,0.03)'; ctx!.fill();
+        const n = nodes[i]
+        ctx!.beginPath(); ctx!.arc(n.x, n.y, n.r, 0, Math.PI * 2); ctx!.fillStyle = 'rgba(255,255,255,0.25)'; ctx!.fill()
+        ctx!.beginPath(); ctx!.arc(n.x, n.y, n.r + 3, 0, Math.PI * 2); ctx!.fillStyle = 'rgba(255,255,255,0.03)'; ctx!.fill()
       }
-      animId = requestAnimationFrame(draw);
+      animId = requestAnimationFrame(draw)
     }
-    draw();
+    draw()
 
-    return () => { cancelAnimationFrame(animId); window.removeEventListener('resize', resize); };
-  }, []);
+    return () => { cancelAnimationFrame(animId); window.removeEventListener('resize', resize) }
+  }, [])
 
   async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    setError('');
+    e.preventDefault()
+    setError('')
 
-    if (!fullName.trim()) { setError('Ad soyad alanı zorunludur.'); return; }
-    if (!email.trim() || !/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email.trim())) { setError('Geçerli bir e-posta adresi girin.'); return; }
-    if (!password || password.length < 8) { setError('Şifre en az 8 karakter olmalıdır.'); return; }
-    if (password !== passwordConfirm) { setError('Şifreler eşleşmiyor.'); return; }
-    if (!acceptedTerms) { setError('Devam etmek için politikaları kabul etmelisiniz.'); return; }
+    if (!name.trim()) { setError('Ad soyad alanı zorunludur.'); return }
+    if (!email.trim() || !/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email.trim())) { setError('Geçerli bir e-posta adresi girin.'); return }
+    if (!password || password.length < 8) { setError('Şifre en az 8 karakter olmalıdır.'); return }
+    if (password !== passwordConfirm) { setError('Şifreler eşleşmiyor.'); return }
+    if (phone.trim() && !/^[+]?[0-9\s()-]{7,20}$/.test(phone.trim())) { setError('Geçerli bir telefon numarası girin.'); return }
+    if (!acceptedTerms) { setError('Devam etmek için politikaları kabul etmelisiniz.'); return }
 
-    setLoading(true);
+    setLoading(true)
 
     try {
-      const supabase = createClient();
-      const { data, error: authError } = await supabase.auth.signUp({ email, password });
-      if (authError) throw new Error(authError.message);
-      if (!data.user) throw new Error('Kullanıcı oluşturulamadı');
+      const supabase = createClient()
+      const { data, error: authError } = await supabase.auth.signUp({ email, password })
+      if (authError) throw new Error(authError.message)
+      if (!data.user) throw new Error('Kullanıcı oluşturulamadı')
 
       const res = await fetch('/api/auth/setup', {
         method: 'POST',
@@ -113,39 +114,39 @@ export default function RegisterPage() {
         body: JSON.stringify({
           user_id: data.user.id,
           email,
-          full_name: fullName,
-          organization_name: orgName.trim() || `${fullName} Organizasyonu`,
+          full_name: name.trim(),
+          organization_name: company.trim() || `${name.trim()} Organizasyonu`,
         }),
-      });
+      })
 
       if (!res.ok) {
-        const errData = await res.json();
-        throw new Error(errData.error || 'Hesap oluşturulamadı');
+        const errData = await res.json()
+        throw new Error(errData.error || 'Hesap oluşturulamadı')
       }
 
-      router.push('/dashboard');
+      router.push('/dashboard')
     } catch (err: unknown) {
-      setError(err instanceof Error ? err.message : 'Kayıt yapılamadı');
-      setLoading(false);
+      setError(err instanceof Error ? err.message : 'Kayıt yapılamadı')
+      setLoading(false)
     }
   }
 
   return (
-    <div className="flex-1 flex items-center justify-center px-4 py-12 relative overflow-hidden" style={{ fontSize: '16px' }}>
+    <div className="min-h-screen bg-[#060609] flex items-center justify-center px-4 py-6 relative overflow-hidden" style={{ fontSize: '16px' }}>
       <canvas ref={canvasRef} className="absolute inset-0 w-full h-full pointer-events-none" aria-hidden="true" />
 
       <div className="w-full max-w-md relative z-10">
-        {/* Logo */}
+        {/* Logo — birebir YoAi */}
         <div className="flex justify-center mb-5">
           <Link href="/">
-            <Image src="/logo.png" alt="Yo Dijital" width={80} height={28} className="brightness-0 invert" priority />
+            <Image src="/logos/yoai-logo.png" alt="Yo Dijital" width={80} height={28} className="brightness-0 invert" priority />
           </Link>
         </div>
 
-        {/* Card */}
+        {/* Card — birebir YoAi */}
         <div className="bg-white/[0.04] border border-white/10 rounded-2xl p-8 backdrop-blur-sm">
-          <h1 className="text-2xl font-bold text-white text-center mb-2">Ücretsiz Hesap Oluştur</h1>
-          <p className="text-base text-gray-400 text-center mb-8">14 gün ücretsiz deneyin, kredi kartı gerekmez.</p>
+          <h1 className="text-2xl font-bold text-white text-center mb-2">Ücretsiz Denemenizi Başlatın</h1>
+          <p className="text-base text-gray-400 text-center mb-8">Yo Dijital ile lead yönetiminizi yapay zekâ ile güçlendirin.</p>
 
           {error && (
             <div className="mb-6 rounded-lg bg-red-500/10 border border-red-500/20 px-4 py-3">
@@ -158,8 +159,8 @@ export default function RegisterPage() {
               <label className="block text-sm font-medium text-gray-300 mb-1.5">Ad Soyad <span className="text-emerald-400">*</span></label>
               <input
                 type="text"
-                value={fullName}
-                onChange={e => setFullName(e.target.value)}
+                value={name}
+                onChange={e => setName(e.target.value)}
                 placeholder="Adınızı ve soyadınızı girin"
                 className="w-full rounded-lg border border-white/10 bg-white/[0.04] px-4 py-3 text-base text-white placeholder-gray-500 outline-none transition focus:border-emerald-500/50 focus:ring-1 focus:ring-emerald-500/30"
                 autoComplete="name"
@@ -167,11 +168,23 @@ export default function RegisterPage() {
             </div>
 
             <div>
+              <label className="block text-sm font-medium text-gray-300 mb-1.5">E-posta Adresi <span className="text-emerald-400">*</span></label>
+              <input
+                type="email"
+                value={email}
+                onChange={e => setEmail(e.target.value)}
+                placeholder="ornek@sirket.com"
+                className="w-full rounded-lg border border-white/10 bg-white/[0.04] px-4 py-3 text-base text-white placeholder-gray-500 outline-none transition focus:border-emerald-500/50 focus:ring-1 focus:ring-emerald-500/30"
+                autoComplete="email"
+              />
+            </div>
+
+            <div>
               <label className="block text-sm font-medium text-gray-300 mb-1.5">Şirket Adı (İsteğe bağlı)</label>
               <input
                 type="text"
-                value={orgName}
-                onChange={e => setOrgName(e.target.value)}
+                value={company}
+                onChange={e => setCompany(e.target.value)}
                 placeholder="Şirketinizin adı"
                 className="w-full rounded-lg border border-white/10 bg-white/[0.04] px-4 py-3 text-base text-white placeholder-gray-500 outline-none transition focus:border-emerald-500/50 focus:ring-1 focus:ring-emerald-500/30"
                 autoComplete="organization"
@@ -187,18 +200,6 @@ export default function RegisterPage() {
                 placeholder="+90 5XX XXX XX XX"
                 className="w-full rounded-lg border border-white/10 bg-white/[0.04] px-4 py-3 text-base text-white placeholder-gray-500 outline-none transition focus:border-emerald-500/50 focus:ring-1 focus:ring-emerald-500/30"
                 autoComplete="tel"
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-300 mb-1.5">E-posta Adresi <span className="text-emerald-400">*</span></label>
-              <input
-                type="email"
-                value={email}
-                onChange={e => setEmail(e.target.value)}
-                placeholder="ornek@sirket.com"
-                className="w-full rounded-lg border border-white/10 bg-white/[0.04] px-4 py-3 text-base text-white placeholder-gray-500 outline-none transition focus:border-emerald-500/50 focus:ring-1 focus:ring-emerald-500/30"
-                autoComplete="email"
               />
             </div>
 
@@ -226,7 +227,7 @@ export default function RegisterPage() {
               />
             </div>
 
-            {/* Terms Checkbox */}
+            {/* Terms Checkbox — birebir YoAi */}
             <label className="flex items-start gap-3 cursor-pointer">
               <input
                 type="checkbox"
@@ -236,11 +237,11 @@ export default function RegisterPage() {
               />
               <span className="text-sm text-gray-400 leading-relaxed">
                 Kayıt olarak,{' '}
-                <Link href="https://voiceagant.yodijital.com/en/privacy-policy" target="_blank" className="text-emerald-400 hover:text-emerald-300 underline">Gizlilik Politikası</Link>
+                <Link href="/privacy-policy" target="_blank" className="text-emerald-400 hover:text-emerald-300 underline">Gizlilik Politikası</Link>
                 {', '}
-                <Link href="https://voiceagant.yodijital.com/en/terms-of-service" target="_blank" className="text-emerald-400 hover:text-emerald-300 underline">Kullanım Koşulları</Link>
+                <Link href="/terms-of-service" target="_blank" className="text-emerald-400 hover:text-emerald-300 underline">Kullanım Koşulları</Link>
                 {' '}ve{' '}
-                <Link href="https://voiceagant.yodijital.com/en/cookie-policy" target="_blank" className="text-emerald-400 hover:text-emerald-300 underline">Çerez Politikası</Link>
+                <Link href="/cookie-policy" target="_blank" className="text-emerald-400 hover:text-emerald-300 underline">Çerez Politikası</Link>
                 &apos;nı kabul etmiş olursunuz.
               </span>
             </label>
@@ -250,7 +251,7 @@ export default function RegisterPage() {
               disabled={loading}
               className="w-full rounded-lg bg-gradient-to-r from-emerald-500 to-teal-500 px-6 py-3.5 text-base font-semibold text-white shadow-lg shadow-emerald-500/20 transition hover:from-emerald-600 hover:to-teal-600 disabled:opacity-60 disabled:cursor-not-allowed"
             >
-              {loading ? 'Hesabınız oluşturuluyor...' : 'Ücretsiz Hesap Oluştur'}
+              {loading ? 'Hesabınız oluşturuluyor...' : '14 Gün Ücretsiz Denemeyi Başlat'}
             </button>
           </form>
 
@@ -269,5 +270,5 @@ export default function RegisterPage() {
         </div>
       </div>
     </div>
-  );
+  )
 }
