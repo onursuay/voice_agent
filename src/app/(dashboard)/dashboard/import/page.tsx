@@ -100,54 +100,108 @@ function StepIndicator({ current }: { current: number }) {
 // ============================================
 
 const AUTO_MAP: Record<string, string> = {
+  // email
   email: 'email',
   'e-posta': 'email',
+  'e posta': 'email',
   eposta: 'email',
   mail: 'email',
+  'mail adresi': 'email',
+  'e-posta adresi': 'email',
+  'eposta adresi': 'email',
+  'email adresi': 'email',
+  'e-mail': 'email',
+  // phone
   telefon: 'phone',
   phone: 'phone',
   tel: 'phone',
   cep: 'phone',
   gsm: 'phone',
+  'telefon numarasi': 'phone',
+  'telefon no': 'phone',
+  'cep telefonu': 'phone',
+  'cep no': 'phone',
+  'gsm no': 'phone',
+  'phone number': 'phone',
+  'mobile': 'phone',
+  'mobile number': 'phone',
+  // first name
   ad: 'first_name',
+  adi: 'first_name',
+  'adı': 'first_name',
   first_name: 'first_name',
   firstname: 'first_name',
+  'first name': 'first_name',
   isim: 'first_name',
+  // last name
   soyad: 'last_name',
+  soyadi: 'last_name',
+  'soyadı': 'last_name',
   last_name: 'last_name',
   lastname: 'last_name',
+  'last name': 'last_name',
+  surname: 'last_name',
+  // full name
   'ad soyad': 'full_name',
   'adsoyad': 'full_name',
+  'adı soyadı': 'full_name',
+  'adi soyadi': 'full_name',
   full_name: 'full_name',
   fullname: 'full_name',
+  'full name': 'full_name',
   name: 'full_name',
+  'musteri adi': 'full_name',
+  'müşteri adı': 'full_name',
+  'isim soyisim': 'full_name',
+  'isim soyad': 'full_name',
+  // company
   sirket: 'company',
   'şirket': 'company',
+  'sirket adi': 'company',
+  'şirket adı': 'company',
   company: 'company',
   firma: 'company',
+  'firma adi': 'company',
+  'firma adı': 'company',
+  // job title
   unvan: 'job_title',
   'ünvan': 'job_title',
+  'gorev': 'job_title',
+  'görев': 'job_title',
   title: 'job_title',
   job_title: 'job_title',
+  'job title': 'job_title',
+  pozisyon: 'job_title',
+  // city
   sehir: 'city',
   'şehir': 'city',
   city: 'city',
   il: 'city',
+  'il ilce': 'city',
+  // country
   ulke: 'country',
   'ülke': 'country',
   country: 'country',
+  // campaign
   kampanya: 'campaign_name',
   campaign: 'campaign_name',
   campaign_name: 'campaign_name',
+  'kampanya adi': 'campaign_name',
+  'kampanya adı': 'campaign_name',
+  // source
   kaynak: 'source_platform',
   source: 'source_platform',
   source_platform: 'source_platform',
+  // tags
   etiket: 'tags',
   tags: 'tags',
   tag: 'tags',
+  etiketler: 'tags',
+  // score
   skor: 'score',
   score: 'score',
   puan: 'score',
+  // utm
   utm_source: 'utm_source',
   utm_medium: 'utm_medium',
   utm_campaign: 'utm_campaign',
@@ -155,15 +209,31 @@ const AUTO_MAP: Record<string, string> = {
   utm_term: 'utm_term',
 };
 
+function normalizeTr(s: string): string {
+  return s
+    .toLowerCase()
+    .replace(/ğ/g, 'g').replace(/ü/g, 'u').replace(/ş/g, 's')
+    .replace(/ı/g, 'i').replace(/ö/g, 'o').replace(/ç/g, 'c')
+    .replace(/[_\-]+/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
 function autoMapHeader(header: string): string {
-  const normalized = header.trim().toLowerCase().replace(/[_\- ]+/g, ' ').trim();
-  // Direct match
+  // Try original lowercase first
+  const raw = header.trim().toLowerCase().replace(/[_\-]+/g, ' ').replace(/\s+/g, ' ').trim();
+  if (AUTO_MAP[raw]) return AUTO_MAP[raw];
+
+  // Try with Türkçe char normalization
+  const normalized = normalizeTr(header);
   if (AUTO_MAP[normalized]) return AUTO_MAP[normalized];
-  // Underscore/collapsed
+
+  // Collapsed variants
   const collapsed = normalized.replace(/\s+/g, '_');
   if (AUTO_MAP[collapsed]) return AUTO_MAP[collapsed];
   const noSpace = normalized.replace(/\s+/g, '');
   if (AUTO_MAP[noSpace]) return AUTO_MAP[noSpace];
+
   return '_skip';
 }
 
