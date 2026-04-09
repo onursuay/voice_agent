@@ -10,6 +10,7 @@ import type { UserProfile } from '@/lib/subscription/types'
 
 export default function HesabimPage() {
   const { session } = useAppStore()
+  const t = useTranslations('hesabim')
 
   const [profile, setProfile] = useState<UserProfile | null>(null)
   const [profileSaved, setProfileSaved] = useState(false)
