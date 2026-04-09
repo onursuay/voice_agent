@@ -18,10 +18,15 @@ import {
   LogOut,
   PanelLeftClose,
   PanelLeftOpen,
-  ChevronDown,
   User,
+  FileText,
+  CreditCard,
+  HelpCircle,
+  Globe,
+  ChevronRight,
+  Check,
 } from 'lucide-react';
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import type { UserRole } from '@/lib/types';
 import { ROLE_LABELS } from '@/lib/types';
 
