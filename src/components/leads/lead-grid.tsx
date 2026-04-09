@@ -973,6 +973,7 @@ export function LeadGrid() {
                         type="checkbox"
                         checked={selectedLeadIds.has(lead.id)}
                         onChange={(e) => { e.stopPropagation(); toggleLeadSelection(lead.id); }}
+                        onClick={(e) => e.stopPropagation()}
                         className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
                       />
                     ) : isRowNum ? (
