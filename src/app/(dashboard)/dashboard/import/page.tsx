@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useCallback, useRef, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import * as Papa from 'papaparse';
 import * as XLSX from 'xlsx';
 import {
@@ -17,6 +17,10 @@ import {
   Clock,
   FileUp,
   ExternalLink,
+  Table2,
+  ChevronDown,
+  Search,
+  Link2,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Select } from '@/components/ui/select';
@@ -199,13 +203,20 @@ const SOURCE_OPTIONS = Object.entries(SOURCE_PLATFORM_LABELS).map(([value, label
 // Main Page Component
 // ============================================
 
+type SheetFile = { id: string; name: string; modifiedTime: string };
+type SheetTab = { id: number; title: string; index: number };
+
 export default function ImportPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const stages = useAppStore((s) => s.stages);
   const setStages = useAppStore((s) => s.setStages);
 
   // Wizard state
   const [step, setStep] = useState(1);
+
+  // Step 1 - source tab
+  const [sourceTab, setSourceTab] = useState<'file' | 'sheets'>('file');
 
   // Step 1 - File upload
   const [file, setFile] = useState<File | null>(null);
@@ -214,6 +225,19 @@ export default function ImportPage() {
   const [parseError, setParseError] = useState('');
   const [dragging, setDragging] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // Step 1 - Google Sheets
+  const [googleConnected, setGoogleConnected] = useState(false);
+  const [sheetsFiles, setSheetsFiles] = useState<SheetFile[]>([]);
+  const [sheetsSearch, setSheetsSearch] = useState('');
+  const [loadingSheets, setLoadingSheets] = useState(false);
+  const [sheetsError, setSheetsError] = useState('');
+  const [selectedSpreadsheet, setSelectedSpreadsheet] = useState<SheetFile | null>(null);
+  const [spreadsheetTabs, setSpreadsheetTabs] = useState<SheetTab[]>([]);
+  const [selectedTab, setSelectedTab] = useState<string>('');
+  const [loadingSheetData, setLoadingSheetData] = useState(false);
+  const [sheetDataError, setSheetDataError] = useState('');
+  const [sourceFileName, setSourceFileName] = useState('');
 
   // Recent imports
   const [recentImports, setRecentImports] = useState<ImportJob[]>([]);
@@ -236,6 +260,105 @@ export default function ImportPage() {
     errors: Array<{ row: number; message: string }>;
   } | null>(null);
   const [importError, setImportError] = useState('');
+
+  // ---- Check Google connection on mount (and after redirect) ----
+  useEffect(() => {
+    const googleParam = searchParams.get('google');
+    const googleError = searchParams.get('google_error');
+
+    if (googleError) {
+      setSheetsError(`Google bağlantısı başarısız: ${googleError}`);
+      setSourceTab('sheets');
+    }
+
+    // Check if token cookie exists by probing the API
+    fetch('/api/integrations/google/sheets')
+      .then((r) => {
+        if (r.ok) {
+          setGoogleConnected(true);
+          return r.json();
+        }
+        return null;
+      })
+      .then((data) => {
+        if (data?.files) setSheetsFiles(data.files);
+      })
+      .catch(() => {});
+
+    if (googleParam === 'connected') {
+      setGoogleConnected(true);
+      setSourceTab('sheets');
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // ---- Search Google Sheets files ----
+  useEffect(() => {
+    if (!googleConnected) return;
+    setLoadingSheets(true);
+    setSheetsError('');
+    const url = sheetsSearch
+      ? `/api/integrations/google/sheets?q=${encodeURIComponent(sheetsSearch)}`
+      : '/api/integrations/google/sheets';
+    fetch(url)
+      .then((r) => r.json())
+      .then((data) => {
+        if (data.error === 'google_not_connected' || data.error === 'google_token_expired') {
+          setGoogleConnected(false);
+          setSheetsFiles([]);
+        } else {
+          setSheetsFiles(data.files || []);
+        }
+      })
+      .catch(() => setSheetsError('Tablolar yüklenemedi.'))
+      .finally(() => setLoadingSheets(false));
+  }, [googleConnected, sheetsSearch]);
+
+  // ---- Fetch sheet tabs when spreadsheet selected ----
+  useEffect(() => {
+    if (!selectedSpreadsheet) return;
+    setSpreadsheetTabs([]);
+    setSelectedTab('');
+    fetch(`/api/integrations/google/sheets/${selectedSpreadsheet.id}`)
+      .then((r) => r.json())
+      .then((data) => {
+        if (data.tabs) {
+          setSpreadsheetTabs(data.tabs);
+          if (data.tabs.length === 1) setSelectedTab(data.tabs[0].title);
+        }
+      })
+      .catch(() => {});
+  }, [selectedSpreadsheet]);
+
+  // ---- Load sheet data when tab selected ----
+  const loadSheetData = useCallback(async () => {
+    if (!selectedSpreadsheet || !selectedTab) return;
+    setLoadingSheetData(true);
+    setSheetDataError('');
+    try {
+      const res = await fetch(
+        `/api/integrations/google/sheets/${selectedSpreadsheet.id}?sheet=${encodeURIComponent(selectedTab)}`
+      );
+      const data = await res.json();
+      if (!res.ok || data.error) {
+        setSheetDataError(data.error || 'Veri yüklenemedi.');
+        return;
+      }
+      setHeaders(data.headers || []);
+      setRows(data.rows || []);
+      setSourceFileName(`${selectedSpreadsheet.name} / ${selectedTab}`);
+      // Auto-map columns
+      const autoMap: Record<string, string> = {};
+      (data.headers || []).forEach((col: string) => {
+        autoMap[col] = autoMapHeader(col);
+      });
+      setMapping(autoMap);
+    } catch {
+      setSheetDataError('Veri yüklenemedi.');
+    } finally {
+      setLoadingSheetData(false);
+    }
+  }, [selectedSpreadsheet, selectedTab]);
 
   // ---- Fetch stages if needed ----
   useEffect(() => {
@@ -428,7 +551,7 @@ export default function ImportPage() {
       });
 
       const payload = {
-        file_name: file?.name || 'import.csv',
+        file_name: sourceTab === 'sheets' ? sourceFileName : (file?.name || 'import.csv'),
         column_mapping: mapping,
         rows: mappedRows,
         options: {
@@ -475,18 +598,212 @@ export default function ImportPage() {
   // Render helpers
   // ============================================
 
-  const canProceedStep1 = file && headers.length > 0 && rows.length > 0 && !parseError;
+  const canProceedStep1 =
+    (sourceTab === 'file' && file && headers.length > 0 && rows.length > 0 && !parseError) ||
+    (sourceTab === 'sheets' && headers.length > 0 && rows.length > 0 && !loadingSheetData);
   const canProceedStep2 = uniqueMappedFields.length > 0;
 
   // ============================================
   // STEP 1: File Upload
   // ============================================
 
+  // ============================================
+  // Google Sheets panel (inside Step 1)
+  // ============================================
+
+  function renderGoogleSheetsPanel() {
+    if (!googleConnected) {
+      return (
+        <div className="flex flex-col items-center justify-center rounded-xl border-2 border-dashed border-gray-300 bg-gray-50 p-12 text-center">
+          <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-green-100">
+            <Table2 className="h-6 w-6 text-green-600" />
+          </div>
+          <p className="mb-1 text-base font-semibold text-gray-700">Google Sheets Bağlantısı</p>
+          <p className="mb-6 text-sm text-gray-500">
+            Google hesabınızı bağlayarak tablolarınızı doğrudan içe aktarın.
+          </p>
+          {sheetsError && (
+            <div className="mb-4 flex items-start gap-2 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+              <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0" />
+              {sheetsError}
+            </div>
+          )}
+          <a
+            href="/api/integrations/google/connect"
+            className="inline-flex items-center gap-2 rounded-lg bg-white border border-gray-300 px-5 py-2.5 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 transition-colors"
+          >
+            <Link2 className="h-4 w-4 text-green-600" />
+            Google ile Bağlan
+          </a>
+        </div>
+      );
+    }
+
+    return (
+      <div className="space-y-4">
+        {/* Search */}
+        <div className="relative">
+          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+          <input
+            type="text"
+            placeholder="Tablo adında ara..."
+            value={sheetsSearch}
+            onChange={(e) => setSheetsSearch(e.target.value)}
+            className="w-full rounded-lg border border-gray-300 py-2.5 pl-10 pr-4 text-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+          />
+        </div>
+
+        {sheetsError && (
+          <div className="flex items-start gap-2 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+            <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0" />
+            {sheetsError}
+          </div>
+        )}
+
+        {/* File list */}
+        {loadingSheets ? (
+          <div className="flex items-center justify-center py-8">
+            <Loader2 className="h-5 w-5 animate-spin text-gray-400" />
+            <span className="ml-2 text-sm text-gray-500">Tablolar yükleniyor...</span>
+          </div>
+        ) : sheetsFiles.length === 0 ? (
+          <div className="rounded-lg border border-gray-200 bg-white p-6 text-center">
+            <p className="text-sm text-gray-500">Tablo bulunamadı.</p>
+          </div>
+        ) : (
+          <div className="max-h-60 overflow-y-auto rounded-lg border border-gray-200 bg-white divide-y divide-gray-100">
+            {sheetsFiles.map((sf) => (
+              <button
+                key={sf.id}
+                onClick={() => {
+                  setSelectedSpreadsheet(sf);
+                  setHeaders([]);
+                  setRows([]);
+                  setSelectedTab('');
+                }}
+                className={cn(
+                  'flex w-full items-center gap-3 px-4 py-3 text-left text-sm transition-colors hover:bg-gray-50',
+                  selectedSpreadsheet?.id === sf.id && 'bg-indigo-50 hover:bg-indigo-50'
+                )}
+              >
+                <FileSpreadsheet className={cn('h-4 w-4 shrink-0', selectedSpreadsheet?.id === sf.id ? 'text-indigo-500' : 'text-green-500')} />
+                <div className="min-w-0 flex-1">
+                  <p className={cn('font-medium truncate', selectedSpreadsheet?.id === sf.id ? 'text-indigo-700' : 'text-gray-800')}>
+                    {sf.name}
+                  </p>
+                  <p className="text-xs text-gray-400">
+                    {new Date(sf.modifiedTime).toLocaleDateString('tr-TR')}
+                  </p>
+                </div>
+                {selectedSpreadsheet?.id === sf.id && (
+                  <CheckCircle2 className="h-4 w-4 shrink-0 text-indigo-500" />
+                )}
+              </button>
+            ))}
+          </div>
+        )}
+
+        {/* Sheet tab selector */}
+        {selectedSpreadsheet && spreadsheetTabs.length > 0 && (
+          <div className="rounded-lg border border-gray-200 bg-white p-4">
+            <p className="mb-2 text-sm font-medium text-gray-700">
+              <span className="text-indigo-600">{selectedSpreadsheet.name}</span> — Sayfa Seçin
+            </p>
+            <div className="flex flex-wrap gap-2 mb-4">
+              {spreadsheetTabs.map((tab) => (
+                <button
+                  key={tab.id}
+                  onClick={() => setSelectedTab(tab.title)}
+                  className={cn(
+                    'rounded-lg border px-3 py-1.5 text-sm font-medium transition-colors',
+                    selectedTab === tab.title
+                      ? 'border-indigo-400 bg-indigo-50 text-indigo-700'
+                      : 'border-gray-300 bg-white text-gray-600 hover:border-gray-400 hover:bg-gray-50'
+                  )}
+                >
+                  {tab.title}
+                </button>
+              ))}
+            </div>
+
+            {selectedTab && (
+              <>
+                {sheetDataError && (
+                  <div className="mb-3 flex items-start gap-2 rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">
+                    <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0" />
+                    {sheetDataError}
+                  </div>
+                )}
+                {rows.length > 0 && !loadingSheetData ? (
+                  <div className="flex items-center gap-2 rounded-lg bg-green-50 border border-green-200 px-3 py-2 text-sm">
+                    <CheckCircle2 className="h-4 w-4 text-green-500" />
+                    <span className="text-green-700 font-medium">
+                      {rows.length} satır, {headers.length} sütun yüklendi
+                    </span>
+                  </div>
+                ) : (
+                  <button
+                    onClick={loadSheetData}
+                    disabled={loadingSheetData}
+                    className="inline-flex items-center gap-2 rounded-lg bg-indigo-500 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-600 disabled:opacity-50 transition-colors"
+                  >
+                    {loadingSheetData ? (
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                    ) : (
+                      <ChevronDown className="h-4 w-4" />
+                    )}
+                    Veriyi Yükle
+                  </button>
+                )}
+              </>
+            )}
+          </div>
+        )}
+
+        <div className="flex items-center gap-2 text-xs text-gray-400">
+          <Link2 className="h-3.5 w-3.5" />
+          <span>Bağlantı kesilmek için sayfayı yenileyin ve farklı bir Google hesabıyla bağlanın.</span>
+        </div>
+      </div>
+    );
+  }
+
   function renderStep1() {
     return (
       <div className="space-y-8">
-        {/* Drop zone */}
-        <div
+        {/* Source tab switcher */}
+        <div className="flex rounded-xl border border-gray-200 bg-gray-100 p-1 gap-1">
+          <button
+            onClick={() => setSourceTab('file')}
+            className={cn(
+              'flex flex-1 items-center justify-center gap-2 rounded-lg py-2.5 text-sm font-medium transition-colors',
+              sourceTab === 'file'
+                ? 'bg-white text-indigo-700 shadow-sm'
+                : 'text-gray-500 hover:text-gray-700'
+            )}
+          >
+            <FileUp className="h-4 w-4" />
+            Dosya Yükle
+          </button>
+          <button
+            onClick={() => setSourceTab('sheets')}
+            className={cn(
+              'flex flex-1 items-center justify-center gap-2 rounded-lg py-2.5 text-sm font-medium transition-colors',
+              sourceTab === 'sheets'
+                ? 'bg-white text-indigo-700 shadow-sm'
+                : 'text-gray-500 hover:text-gray-700'
+            )}
+          >
+            <Table2 className="h-4 w-4" />
+            Google Sheets
+          </button>
+        </div>
+
+        {/* Google Sheets panel */}
+        {sourceTab === 'sheets' && renderGoogleSheetsPanel()}
+
+        {/* Drop zone (only for file tab) */}
+        {sourceTab === 'file' && <div
           onDragOver={handleDragOver}
           onDragLeave={handleDragLeave}
           onDrop={handleDrop}
@@ -555,9 +872,9 @@ export default function ImportPage() {
               </button>
             </div>
           )}
-        </div>
+        </div>}
 
-        {parseError && (
+        {sourceTab === 'file' && parseError && (
           <div className="flex items-start gap-3 rounded-lg border border-red-200 bg-red-50 p-4">
             <AlertTriangle className="mt-0.5 h-5 w-5 shrink-0 text-red-500" />
             <p className="text-sm text-red-700">{parseError}</p>
