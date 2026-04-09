@@ -134,9 +134,9 @@ export default function SunumPage() {
           <div className="bg-white rounded-2xl border border-gray-100 p-5 shadow-sm mb-6">
             <div className="space-y-3">
               {[
-                { label: "Meta Lead Form", pct: 40, color: "#3b82f6" },
+                { label: "Lead", pct: 40, color: "#3b82f6" },
                 { label: "WhatsApp", pct: 25, color: "#22c55e" },
-                { label: "Instagram DM", pct: 18, color: "#ec4899" },
+                { label: "Instagram", pct: 18, color: "#ec4899" },
                 { label: "Messenger", pct: 10, color: "#6366f1" },
                 { label: "Website / Di\u011fer", pct: 7, color: "#9ca3af" },
               ].map((bar) => (

@@ -240,10 +240,10 @@ export const LEAD_FIELD_OPTIONS: { value: string; label: string }[] = [
 ];
 
 export const SOURCE_PLATFORM_LABELS: Record<LeadSourcePlatform, string> = {
-  meta_lead_form: 'Meta Lead Form',
+  meta_lead_form: 'Lead',
   zapier: 'Zapier',
   whatsapp: 'WhatsApp',
-  instagram_dm: 'Instagram DM',
+  instagram_dm: 'Instagram',
   messenger: 'Messenger',
   website: 'Website',
   manual: 'Manuel',

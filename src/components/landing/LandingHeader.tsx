@@ -12,7 +12,7 @@ interface Props {
 }
 
 const productItems = [
-  { icon: 'zap', label: 'Çok Kanallı Lead Toplama', desc: 'Meta, WhatsApp, Instagram DM ve Messenger\'dan gelen leadleri otomatik toplayın.', href: '/#ozellikler' },
+  { icon: 'zap', label: 'Çok Kanallı Lead Toplama', desc: 'Meta, WhatsApp, Instagram ve Messenger\'dan gelen leadleri otomatik toplayın.', href: '/#ozellikler' },
   { icon: 'layers', label: 'CRM Pipeline', desc: 'Aşama bazlı satış takibi ile hangi lead\'in nerede olduğunu anlık görün.', href: '/#ozellikler' },
   { icon: 'phone', label: 'AI Destekli Arama', desc: 'Yapay zeka ile lead\'lerinizi otomatik arayın ve takip edin.', href: '/#ozellikler' },
   { icon: 'mail', label: 'Toplu E-posta', desc: 'Segmentlere göre kişiselleştirilmiş e-posta kampanyaları gönderin.', href: '/#ozellikler' },
@@ -23,7 +23,7 @@ const productItems = [
 const integrationItems = [
   { icon: 'meta', label: 'Meta Ads', desc: 'Facebook ve Instagram reklam leadlerini otomatik çekin.', href: '/#entegrasyonlar' },
   { icon: 'whatsapp', label: 'WhatsApp', desc: 'WhatsApp mesajlarından gelen leadleri yakalayın.', href: '/#entegrasyonlar' },
-  { icon: 'instagram', label: 'Instagram DM', desc: 'Instagram DM\'den gelen leadleri otomatik kaydedin.', href: '/#entegrasyonlar' },
+  { icon: 'instagram', label: 'Instagram', desc: 'Instagram\'dan gelen leadleri otomatik kaydedin.', href: '/#entegrasyonlar' },
   { icon: 'webhook', label: 'Webhook / Zapier', desc: 'Mevcut araçlarınızla webhook ile kolayca entegre olun.', href: '/#entegrasyonlar' },
 ]
 

@@ -20,7 +20,7 @@ export default function RootPage() {
     capTitle: 'Modern Satış Ekipleri İçin Tasarlandı',
     capSub: 'Tüm lead operasyonlarınızın yerini alan altı temel modül.',
     caps: [
-      { title: 'Çok Kanallı Lead Toplama', desc: 'Meta, WhatsApp, Instagram DM ve Messenger\'dan gelen leadleri otomatik toplayın ve tek havuzda birleştirin.', svg: 'zap' },
+      { title: 'Çok Kanallı Lead Toplama', desc: 'Meta, WhatsApp, Instagram ve Messenger\'dan gelen leadleri otomatik toplayın ve tek havuzda birleştirin.', svg: 'zap' },
       { title: 'CRM Pipeline', desc: 'Aşama bazlı satış takibi ile hangi lead\'in nerede olduğunu anlık görün, tıklayarak ilerletin.', svg: 'layers' },
       { title: 'AI Destekli Arama', desc: 'Yapay zeka ile lead\'lerinizi otomatik arayın, görüşme notları alın ve akıllı takip yapın.', svg: 'phone' },
       { title: 'Toplu E-posta', desc: 'Segmentlere göre kişiselleştirilmiş e-posta kampanyaları gönderin, açılma oranlarını takip edin.', svg: 'mail' },
@@ -219,7 +219,7 @@ export default function RootPage() {
                 <span className="font-medium">{p.label}</span>
               </div>
             ))}
-            {['WhatsApp', 'Instagram DM', 'Messenger', 'Zapier', 'Webhook'].map((label, i) => (
+            {['WhatsApp', 'Instagram', 'Messenger', 'Zapier', 'Webhook'].map((label, i) => (
               <span key={i} className="text-sm font-medium text-gray-500 bg-white/[0.03] border border-white/[0.06] px-4 py-1.5 rounded-full">
                 {label}
               </span>
