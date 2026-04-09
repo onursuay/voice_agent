@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { Coins, Sparkles, Check } from 'lucide-react'
+import { useTranslations } from 'next-intl'
 import { useCredits } from '@/components/providers/CreditProvider'
 import { CREDIT_PACKAGES } from '@/lib/subscription/plans'
 
