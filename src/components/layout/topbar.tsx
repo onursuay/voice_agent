@@ -37,8 +37,11 @@ export function Topbar() {
   const { session, sidebarOpen, setSidebarOpen, searchQuery, setSearchQuery } = useAppStore();
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const tTopbar = useTranslations('topbar');
+  const tNav = useTranslations('nav');
 
-  const pageTitle = getPageTitle(pathname);
+  const titleKey = getPageTitleKey(pathname);
+  const pageTitle = tNav(titleKey as Parameters<typeof tNav>[0]);
 
   // Close dropdown on outside click
   useEffect(() => {
