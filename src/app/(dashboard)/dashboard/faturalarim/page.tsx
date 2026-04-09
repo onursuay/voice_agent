@@ -17,6 +17,7 @@ const DEFAULT_INVOICE_INFO: InvoiceInfo = {
 }
 
 export default function FaturalarimPage() {
+  const t = useTranslations('faturalarim')
   const [info, setInfo] = useState<InvoiceInfo>(DEFAULT_INVOICE_INFO)
   const [history, setHistory] = useState<InvoiceRecord[]>([])
   const [saved, setSaved] = useState(false)
