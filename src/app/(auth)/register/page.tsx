@@ -11,6 +11,7 @@ export default function RegisterPage() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [fullName, setFullName] = useState('');
   const [orgName, setOrgName] = useState('');
+  const [phone, setPhone] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [passwordConfirm, setPasswordConfirm] = useState('');
@@ -137,7 +138,7 @@ export default function RegisterPage() {
         {/* Logo */}
         <div className="flex justify-center mb-5">
           <Link href="/">
-            <Image src="/logo.png" alt="Yo Dijital" width={120} height={40} className="brightness-0 invert" priority />
+            <Image src="/logo.png" alt="Yo Dijital" width={80} height={28} className="brightness-0 invert" priority />
           </Link>
         </div>
 
@@ -174,6 +175,18 @@ export default function RegisterPage() {
                 placeholder="Şirketinizin adı"
                 className="w-full rounded-lg border border-white/10 bg-white/[0.04] px-4 py-3 text-base text-white placeholder-gray-500 outline-none transition focus:border-emerald-500/50 focus:ring-1 focus:ring-emerald-500/30"
                 autoComplete="organization"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-300 mb-1.5">Telefon (İsteğe bağlı)</label>
+              <input
+                type="tel"
+                value={phone}
+                onChange={e => setPhone(e.target.value.replace(/[^0-9+\s()-]/g, ''))}
+                placeholder="+90 5XX XXX XX XX"
+                className="w-full rounded-lg border border-white/10 bg-white/[0.04] px-4 py-3 text-base text-white placeholder-gray-500 outline-none transition focus:border-emerald-500/50 focus:ring-1 focus:ring-emerald-500/30"
+                autoComplete="tel"
               />
             </div>
 

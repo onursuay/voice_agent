@@ -88,6 +88,37 @@ export function Topbar() {
           <Bell className="h-5 w-5" />
           <span className="absolute right-1.5 top-1.5 h-2 w-2 rounded-full bg-red-500" />
         </button>
+
+        {/* Avatar dropdown */}
+        <div className="relative" ref={dropdownRef}>
+          <button
+            onClick={() => setDropdownOpen(!dropdownOpen)}
+            className="flex items-center gap-2 rounded-lg px-2 py-1.5 hover:bg-gray-100 transition-colors"
+          >
+            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-indigo-600 text-xs font-semibold text-white">
+              {session ? getInitials(session.user.full_name || session.user.email) : 'U'}
+            </div>
+            <ChevronDown className="h-4 w-4 text-gray-400" />
+          </button>
+
+          {dropdownOpen && (
+            <div className="absolute right-0 top-full mt-1 w-48 rounded-xl border border-gray-200 bg-white py-1 shadow-lg z-50">
+              <div className="border-b border-gray-100 px-4 py-2">
+                <p className="text-xs font-semibold text-gray-900 truncate">{session?.user.full_name}</p>
+                <p className="text-xs text-gray-500 truncate">{session?.user.email}</p>
+              </div>
+              <button
+                onClick={handleLogout}
+                className="flex w-full items-center gap-2 px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors"
+              >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16,17 21,12 16,7"/><line x1="21" y1="12" x2="9" y2="12"/>
+                </svg>
+                Çıkış Yap
+              </button>
+            </div>
+          )}
+        </div>
       </div>
     </header>
   );

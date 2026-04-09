@@ -96,7 +96,7 @@ export default function LoginPage() {
         {/* Logo */}
         <div className="flex justify-center mb-5">
           <Link href="/">
-            <Image src="/logo.png" alt="Yo Dijital" width={120} height={40} className="brightness-0 invert" priority />
+            <Image src="/logo.png" alt="Yo Dijital" width={80} height={28} className="brightness-0 invert" priority />
           </Link>
         </div>
 
