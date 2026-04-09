@@ -48,7 +48,7 @@ const pillBase = 'btn-shimmer text-[14px] font-medium border border-emerald-400/
 
 export default function LandingHeader({ ctaSchedule, ctaTrial }: Props) {
   const [openMenu, setOpenMenu] = useState<string | null>(null)
-  const timeoutRef = useRef<ReturnType<typeof setTimeout>>()
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined)
   const headerRef = useRef<HTMLDivElement>(null)
 
   const handleEnter = (menu: string) => { if (timeoutRef.current) clearTimeout(timeoutRef.current); setOpenMenu(menu) }
