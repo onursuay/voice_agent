@@ -326,11 +326,16 @@ export default function RootPage() {
             <Image src="/logo.png" alt="Yo Dijital" width={50} height={18} className="object-contain brightness-0 invert opacity-40" />
             <span>{c.footer}</span>
           </div>
-          <nav className="flex gap-5 text-gray-500">
+          <nav className="flex flex-wrap gap-5 text-gray-500">
             <a href={legal.privacy.href} className="hover:text-gray-300 transition-colors">{legal.privacy.label}</a>
             <a href={legal.cookie.href} className="hover:text-gray-300 transition-colors">{legal.cookie.label}</a>
             <a href={legal.terms.href} className="hover:text-gray-300 transition-colors">{legal.terms.label}</a>
             <a href={legal.dataDeletion.href} className="hover:text-gray-300 transition-colors">{legal.dataDeletion.label}</a>
+            <span className="text-gray-700">|</span>
+            <a href="/en/privacy-policy" className="hover:text-gray-300 transition-colors">Privacy Policy</a>
+            <a href="/en/cookie-policy" className="hover:text-gray-300 transition-colors">Cookie Policy</a>
+            <a href="/en/terms-of-service" className="hover:text-gray-300 transition-colors">Terms of Service</a>
+            <a href="/en/data-deletion" className="hover:text-gray-300 transition-colors">Data Deletion</a>
           </nav>
         </div>
       </footer>
