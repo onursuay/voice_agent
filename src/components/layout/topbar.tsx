@@ -23,14 +23,12 @@ const PAGE_TITLE_KEYS: Record<string, string> = {
   '/dashboard/calls': 'calls',
 };
 
-function getPageTitle(pathname: string): string {
-  // Exact match first
-  if (pageTitles[pathname]) return pageTitles[pathname];
-  // Prefix match
-  for (const [path, title] of Object.entries(pageTitles)) {
-    if (pathname.startsWith(path) && path !== '/dashboard') return title;
+function getPageTitleKey(pathname: string): string {
+  if (PAGE_TITLE_KEYS[pathname]) return PAGE_TITLE_KEYS[pathname];
+  for (const [path, key] of Object.entries(PAGE_TITLE_KEYS)) {
+    if (pathname.startsWith(path) && path !== '/dashboard') return key;
   }
-  return 'Dashboard';
+  return 'dashboard';
 }
 
 export function Topbar() {
