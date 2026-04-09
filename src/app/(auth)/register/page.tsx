@@ -89,27 +89,27 @@ export default function RegisterPage() {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     setError('')
-    if (!name.trim()) { setError('Ad soyad alanı zorunludur.'); return }
-    if (!email.trim() || !/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email.trim())) { setError('Geçerli bir e-posta adresi girin.'); return }
-    if (!password || password.length < 8) { setError('Şifre en az 8 karakter olmalıdır.'); return }
-    if (password !== passwordConfirm) { setError('Şifreler eşleşmiyor.'); return }
-    if (phone.trim() && !/^[+]?[0-9\s()-]{7,20}$/.test(phone.trim())) { setError('Geçerli bir telefon numarası girin.'); return }
-    if (!acceptedTerms) { setError('Devam etmek için politikaları kabul etmelisiniz.'); return }
+    if (!name.trim()) { setError(t('errorFullName')); return }
+    if (!email.trim() || !/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email.trim())) { setError(t('errorEmail')); return }
+    if (!password || password.length < 8) { setError(t('errorPassword')); return }
+    if (password !== passwordConfirm) { setError(t('errorPasswordMatch')); return }
+    if (phone.trim() && !/^[+]?[0-9\s()-]{7,20}$/.test(phone.trim())) { setError(t('errorPhone')); return }
+    if (!acceptedTerms) { setError(t('errorTerms')); return }
     setLoading(true)
     try {
       const supabase = createClient()
       const { data, error: authError } = await supabase.auth.signUp({ email, password })
       if (authError) throw new Error(authError.message)
-      if (!data.user) throw new Error('Kullanıcı oluşturulamadı')
+      if (!data.user) throw new Error(t('errorCreate'))
       const res = await fetch('/api/auth/setup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ user_id: data.user.id, email, full_name: name.trim(), organization_name: company.trim() || `${name.trim()} Organizasyonu` }),
+        body: JSON.stringify({ user_id: data.user.id, email, full_name: name.trim(), organization_name: company.trim() || `${name.trim()} Organization` }),
       })
-      if (!res.ok) { const d = await res.json(); throw new Error(d.error || 'Hesap oluşturulamadı') }
+      if (!res.ok) { const d = await res.json(); throw new Error(d.error || t('errorCreate')) }
       router.push('/dashboard')
     } catch (err: unknown) {
-      setError(err instanceof Error ? err.message : 'Kayıt yapılamadı')
+      setError(err instanceof Error ? err.message : t('errorGeneral'))
       setLoading(false)
     }
   }
