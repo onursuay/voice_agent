@@ -211,13 +211,13 @@ export default function HesabimPage() {
 
             {/* Confirm password */}
             <div>
-              <label className="block text-sm font-medium text-gray-600 mb-1.5">Şifreyi Onayla</label>
+              <label className="block text-sm font-medium text-gray-600 mb-1.5">{t('confirmPasswordLabel')}</label>
               <div className="relative">
                 <input
                   type={showConfirmPw ? 'text' : 'password'}
                   value={confirmPassword}
                   onChange={e => setConfirmPassword(e.target.value)}
-                  placeholder="Şifreyi tekrar girin"
+                  placeholder={t('confirmPassword')}
                   className="w-full px-3 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500 pr-10"
                 />
                 <button
