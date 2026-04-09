@@ -173,8 +173,23 @@ function ColumnVisibilityDropdown() {
 function BulkActionBar() {
   const selectedLeadIds = useAppStore((s) => s.selectedLeadIds);
   const clearSelection = useAppStore((s) => s.clearSelection);
+  const deleteLeads = useAppStore((s) => s.deleteLeads);
 
   if (selectedLeadIds.size === 0) return null;
+
+  const handleBulkDelete = async () => {
+    const ids = Array.from(selectedLeadIds);
+    deleteLeads(ids);
+    try {
+      await fetch('/api/leads/bulk', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'delete', lead_ids: ids }),
+      });
+    } catch (err) {
+      console.error('Bulk delete error:', err);
+    }
+  };
 
   return (
     <div className="fixed bottom-0 left-0 right-0 z-40 border-t border-gray-200 bg-white px-6 py-3 shadow-lg">
@@ -192,7 +207,7 @@ function BulkActionBar() {
           <Button variant="secondary" size="sm" icon={<Tag className="h-4 w-4" />}>
             Etiket Ekle
           </Button>
-          <Button variant="danger" size="sm" icon={<Trash2 className="h-4 w-4" />}>
+          <Button variant="danger" size="sm" icon={<Trash2 className="h-4 w-4" />} onClick={handleBulkDelete}>
             Sil
           </Button>
         </div>
