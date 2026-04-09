@@ -43,7 +43,7 @@ export default function FaturalarimPage() {
         {/* Left: Invoice Info */}
         <div className="bg-white rounded-2xl border border-gray-200 p-6">
           <h3 className="text-base font-bold text-gray-900 mb-1">Fatura Bilgileri</h3>
-          <p className className="text-sm text-gray-500 mb-5">Faturalarınız için gerekli bilgileri girin.</p>
+          <p className="text-sm text-gray-500 mb-5">Faturalarınız için gerekli bilgileri girin.</p>
 
           {/* Type toggle */}
           <div className="flex gap-1 bg-gray-100 rounded-lg p-1 mb-5">
