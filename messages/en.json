@@ -34,7 +34,10 @@
     "email": "Email",
     "automations": "Automations",
     "calls": "AI Calls",
-    "settings": "Settings"
+    "settings": "Settings",
+    "hesabim": "My Account",
+    "faturalarim": "Invoices",
+    "abonelik": "Subscription"
   },
   "sidebar": {
     "expand": "Expand",
