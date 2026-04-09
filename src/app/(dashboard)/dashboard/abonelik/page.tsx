@@ -59,7 +59,7 @@ export default function AbonelikPage() {
         <div className="mx-auto" style={{ maxWidth: '1400px' }}>
           {/* Header with toggle */}
           <div className="flex items-center justify-between mb-8">
-            <h3 className="text-lg font-bold text-white">Planlar</h3>
+            <h3 className="text-lg font-bold text-white">{t('plans')}</h3>
             <div className="flex items-center gap-1 bg-gray-800 rounded-lg p-1">
               <button
                 onClick={() => setBillingCycle('monthly')}
@@ -69,7 +69,7 @@ export default function AbonelikPage() {
                     : 'text-gray-400 hover:text-white'
                 }`}
               >
-                Aylık
+                {t('monthly')}
               </button>
               <button
                 onClick={() => setBillingCycle('yearly')}
@@ -79,7 +79,7 @@ export default function AbonelikPage() {
                     : 'text-gray-400 hover:text-white'
                 }`}
               >
-                Yıllık
+                {t('yearly')}
                 <span className="ml-1.5 text-xs text-indigo-400 font-bold">-30%</span>
               </button>
             </div>
