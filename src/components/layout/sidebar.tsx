@@ -129,10 +129,19 @@ export function Sidebar() {
   const { subscription, isTrialActive: trial, trialDaysRemaining } = useSubscription();
 
   const statusLabel = trial
-    ? `Deneme Sürümü (${trialDaysRemaining} gün)`
+    ? tSidebar('trialLabel', { days: trialDaysRemaining })
     : subscription.status === 'active'
     ? subscription.planId.charAt(0).toUpperCase() + subscription.planId.slice(1)
-    : 'Free';
+    : tSidebar('free');
+
+  const handleLanguageChange = (locale: string) => {
+    document.cookie = `NEXT_LOCALE=${locale};path=/;max-age=${365 * 24 * 60 * 60}`;
+    window.location.reload();
+  };
+
+  const currentLocale = typeof document !== 'undefined'
+    ? (document.cookie.match(/NEXT_LOCALE=([^;]+)/)?.[1] || 'tr')
+    : 'tr';
 
   // SSR placeholder
   if (!ready) {
