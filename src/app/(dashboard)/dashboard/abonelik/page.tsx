@@ -7,6 +7,7 @@ import { useSubscription } from '@/components/providers/SubscriptionProvider'
 import { SUBSCRIPTION_PLANS } from '@/lib/subscription/plans'
 import type { BillingCycle, PlanId } from '@/lib/subscription/types'
 import { Calendar, CreditCard, Shield } from 'lucide-react'
+import { useTranslations } from 'next-intl'
 
 export default function AbonelikPage() {
   const {
