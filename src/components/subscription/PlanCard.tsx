@@ -110,7 +110,7 @@ export default function PlanCard({
             <button disabled className="p-1 rounded border border-gray-600 text-gray-500 cursor-not-allowed">
               <Minus className="w-3 h-3" />
             </button>
-            <span className="text-sm text-gray-300">{plan.adAccountLimit} Reklam Hesabı</span>
+            <span className="text-sm text-gray-300">{plan.adAccountLimit} {t('adAccounts')}</span>
             <button disabled className="p-1 rounded border border-gray-600 text-gray-500 cursor-not-allowed">
               <Plus className="w-3 h-3" />
             </button>
