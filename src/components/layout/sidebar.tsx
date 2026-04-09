@@ -205,80 +205,115 @@ export function Sidebar() {
       </nav>
 
       {/* User section */}
-      <div className="p-4 border-t border-gray-200 relative">
+      <div ref={dropdownRef} className="p-3 border-t border-gray-200 relative">
+        {/* Trigger */}
         <button
-          onClick={() => setDropdownOpen(!dropdownOpen)}
-          className={`w-full flex items-center gap-3 rounded-lg p-2 hover:bg-gray-50 transition-colors ${collapsed ? 'justify-center' : ''}`}
+          onClick={() => { setDropdownOpen(!dropdownOpen); setLangOpen(false); }}
+          className={`w-full flex items-center ${collapsed ? 'justify-center' : 'justify-between'} p-2 rounded-lg hover:bg-gray-100 transition-colors`}
         >
-          <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-indigo-600 text-white text-xs font-bold">
-            {session?.user?.full_name ? getInitials(session.user.full_name) : 'U'}
-          </div>
-          {!collapsed && (
-            <div className="flex-1 min-w-0 text-left">
-              <p className="truncate text-sm font-medium text-gray-900" style={{ maxWidth: '140px' }}>
-                {session?.user?.full_name || 'Kullanıcı'}
-              </p>
-              <p className="text-xs text-indigo-600">
-                {session?.membership?.role ? ROLE_LABELS[session.membership.role as UserRole] : ''}
-              </p>
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 bg-indigo-600 rounded-full flex items-center justify-center text-white font-semibold text-sm shrink-0">
+              {session?.user?.full_name ? getInitials(session.user.full_name) : 'U'}
             </div>
-          )}
+            {!collapsed && (
+              <div className="text-left">
+                <div className="text-sm font-medium text-gray-900 truncate max-w-[140px]">
+                  {session?.user?.full_name || 'Kullanıcı'}
+                </div>
+                <div className="text-xs text-indigo-600 font-medium">{roleLabel}</div>
+              </div>
+            )}
+          </div>
         </button>
 
-        {/* Dropdown */}
+        {/* Dropdown — birebir YoAi yapısı */}
         {dropdownOpen && (
-          <>
-            <div className="fixed inset-0 z-40" onClick={() => setDropdownOpen(false)} />
-            <div
-              className={`absolute z-50 bg-white border border-gray-200 rounded-xl shadow-lg w-60 overflow-hidden ${
-                collapsed ? 'left-full ml-2 bottom-0' : 'bottom-full mb-2 left-4'
-              }`}
-            >
-              {/* Header */}
-              <div className="px-4 py-3.5 border-b border-gray-100">
-                <div className="flex items-center gap-3">
-                  <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-indigo-600 text-white text-xs font-bold">
-                    {session?.user?.full_name ? getInitials(session.user.full_name) : 'U'}
-                  </div>
-                  <div className="min-w-0">
-                    <p className="text-sm font-semibold text-gray-900 truncate">{session?.user?.full_name || 'Kullanıcı'}</p>
-                    <p className="text-xs text-gray-500 truncate">{session?.user?.email || ''}</p>
-                  </div>
-                </div>
-              </div>
-
-              {/* Menu items */}
-              <div className="py-1">
-                <Link
-                  href="/dashboard/settings?tab=profile"
-                  onClick={() => setDropdownOpen(false)}
-                  className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
-                >
-                  <User className="h-4 w-4 text-gray-400" />
-                  Hesabım
-                </Link>
-                <Link
-                  href="/dashboard/settings"
-                  onClick={() => setDropdownOpen(false)}
-                  className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
-                >
-                  <Settings className="h-4 w-4 text-gray-400" />
-                  Ayarlar
-                </Link>
-              </div>
-
-              {/* Logout */}
-              <div className="border-t border-gray-100 py-1">
-                <button
-                  onClick={handleLogout}
-                  className="flex w-full items-center gap-3 px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 transition-colors"
-                >
-                  <LogOut className="h-4 w-4" />
-                  Çıkış Yap
-                </button>
-              </div>
+          <div
+            className={`absolute z-50 bg-white border border-gray-200 rounded-xl shadow-lg py-1 w-56 ${
+              collapsed ? 'left-full ml-2 bottom-0' : 'bottom-full mb-2 left-0'
+            }`}
+          >
+            {/* User header */}
+            <div className="px-4 py-3 border-b border-gray-100">
+              <p className="text-sm font-medium text-gray-900">
+                {session?.user?.full_name || 'Kullanıcı'}
+              </p>
+              <p className="text-xs text-indigo-600 font-medium">{roleLabel}</p>
             </div>
-          </>
+
+            {/* Menu items */}
+            <div className="py-1">
+              <Link
+                href="/dashboard/settings?tab=profile"
+                onClick={() => setDropdownOpen(false)}
+                className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+              >
+                <User className="w-4 h-4 text-gray-500" />
+                <span>Hesabım</span>
+              </Link>
+              <Link
+                href="/dashboard/settings?tab=members"
+                onClick={() => setDropdownOpen(false)}
+                className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+              >
+                <FileText className="w-4 h-4 text-gray-500" />
+                <span>Üyeler</span>
+              </Link>
+              <Link
+                href="/dashboard/settings?tab=integrations"
+                onClick={() => setDropdownOpen(false)}
+                className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+              >
+                <CreditCard className="w-4 h-4 text-gray-500" />
+                <span>Entegrasyonlar</span>
+              </Link>
+              <Link
+                href="/dashboard/settings"
+                onClick={() => setDropdownOpen(false)}
+                className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+              >
+                <HelpCircle className="w-4 h-4 text-gray-500" />
+                <span>Yardım Merkezi</span>
+              </Link>
+            </div>
+
+            {/* Language */}
+            <div className="border-t border-gray-100 py-1">
+              <button
+                onClick={() => setLangOpen(!langOpen)}
+                className="w-full flex items-center justify-between px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+              >
+                <div className="flex items-center gap-3">
+                  <Globe className="w-4 h-4 text-gray-500" />
+                  <span>Dil</span>
+                </div>
+                <ChevronRight className={`w-4 h-4 text-gray-400 transition-transform ${langOpen ? 'rotate-90' : ''}`} />
+              </button>
+              {langOpen && (
+                <div className="ml-7 py-1">
+                  <button className="w-full flex items-center gap-2 px-4 py-2 text-sm text-gray-600 hover:bg-gray-50">
+                    <Check className="w-3 h-3 text-indigo-600" />
+                    <span className="text-indigo-600 font-medium">Türkçe</span>
+                  </button>
+                  <button className="w-full flex items-center gap-2 px-4 py-2 text-sm text-gray-600 hover:bg-gray-50">
+                    <span className="w-3" />
+                    <span>English</span>
+                  </button>
+                </div>
+              )}
+            </div>
+
+            {/* Logout */}
+            <div className="border-t border-gray-100 py-1">
+              <button
+                onClick={handleLogout}
+                className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 transition-colors"
+              >
+                <LogOut className="w-4 h-4" />
+                <span>Çıkış Yap</span>
+              </button>
+            </div>
+          </div>
         )}
       </div>
     </div>
