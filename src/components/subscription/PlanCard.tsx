@@ -76,7 +76,7 @@ export default function PlanCard({
           <h3 className="text-lg font-bold text-white">{plan.name}</h3>
           {plan.trialDays > 0 && !highlighted && !isEnterprise && (
             <span className="px-2 py-0.5 text-[10px] font-semibold bg-indigo-500/20 text-indigo-400 rounded-full">
-              {plan.trialDays} Gün Ücretsiz
+              {t('trialDays', { days: plan.trialDays })}
             </span>
           )}
         </div>
