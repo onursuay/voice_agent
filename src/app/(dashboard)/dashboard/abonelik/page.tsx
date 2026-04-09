@@ -115,19 +115,19 @@ export default function AbonelikPage() {
 
           {/* Current Plan Card */}
           <div className="bg-white rounded-2xl border border-gray-200 p-7">
-            <h3 className="text-base font-bold text-gray-900 mb-6">Mevcut Planınız</h3>
+            <h3 className="text-base font-bold text-gray-900 mb-6">{t('currentPlanTitle')}</h3>
 
             <div className="space-y-0 mb-6">
               <div className="flex items-center justify-between py-4 border-b border-gray-100">
                 <div className="flex items-center gap-2.5 text-sm text-gray-500">
                   <Shield className="w-4 h-4" />
-                  <span>Plan</span>
+                  <span>{t('planLabel')}</span>
                 </div>
                 <span className="text-sm font-semibold text-gray-900">
-                  {currentPlan?.name || 'Free'}
+                  {currentPlan?.name || t('free')}
                   {trial && (
                     <span className="ml-2 px-2 py-0.5 text-[10px] font-bold bg-amber-100 text-amber-700 rounded">
-                      Deneme
+                      {t('trialBadge')}
                     </span>
                   )}
                 </span>
@@ -136,7 +136,7 @@ export default function AbonelikPage() {
               <div className="flex items-center justify-between py-4 border-b border-gray-100">
                 <div className="flex items-center gap-2.5 text-sm text-gray-500">
                   <Calendar className="w-4 h-4" />
-                  <span>Durum</span>
+                  <span>{t('statusLabel')}</span>
                 </div>
                 <span className={`text-sm font-medium ${trial ? 'text-amber-600' : isPaid ? 'text-indigo-600' : 'text-gray-600'}`}>
                   {statusLabel}
