@@ -161,14 +161,14 @@ export default function PlanCard({
       <div className="mt-6">
         {isCurrentPlan ? (
           <div className="w-full py-2.5 text-center text-sm font-medium text-indigo-400 bg-indigo-500/10 rounded-lg">
-            Mevcut Plan
+            {t('currentPlanBadge')}
           </div>
         ) : isEnterprise ? (
           <button
             onClick={() => onSelect(plan.id)}
             className="w-full py-2.5 text-sm font-medium text-gray-300 bg-gray-700 rounded-lg hover:bg-gray-600 transition-colors"
           >
-            Bize Ulaşın
+            {t('contactUs')}
           </button>
         ) : (
           <button
@@ -179,7 +179,7 @@ export default function PlanCard({
                 : 'bg-white text-gray-900 hover:bg-gray-100'
             }`}
           >
-            Planı Seç
+            {t('selectPlan')}
           </button>
         )}
       </div>
