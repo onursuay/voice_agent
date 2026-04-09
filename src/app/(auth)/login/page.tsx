@@ -14,7 +14,6 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
 
-  // Neural network animation — birebir YoAi
   useEffect(() => {
     const c = canvasRef.current
     if (!c) return
@@ -87,14 +86,12 @@ export default function LoginPage() {
       <canvas ref={canvasRef} className="absolute inset-0 w-full h-full pointer-events-none" aria-hidden="true" />
 
       <div className="w-full max-w-md relative z-10">
-        {/* Logo — birebir YoAi */}
         <div className="flex justify-center mb-5">
           <Link href="/">
             <Image src="/logos/yoai-logo.png" alt="Yo Dijital" width={80} height={28} className="brightness-0 invert" priority />
           </Link>
         </div>
 
-        {/* Card — birebir YoAi */}
         <div className="bg-white/[0.04] border border-white/10 rounded-2xl p-8 backdrop-blur-sm">
           <h1 className="text-2xl font-bold text-white text-center mb-2">Giriş Yap</h1>
           <p className="text-base text-gray-400 text-center mb-8">Hesabınıza giriş yapın.</p>
@@ -150,6 +147,14 @@ export default function LoginPage() {
         <div className="mt-6 text-center">
           <Link href="/" className="text-sm text-gray-500 hover:text-emerald-400 transition">← Ana sayfaya dön</Link>
         </div>
+      </div>
+
+      {/* Footer legal links */}
+      <div className="absolute bottom-4 left-0 right-0 flex flex-wrap justify-center gap-4 px-4">
+        <a href="/privacy-policy" className="text-xs text-gray-600 hover:text-gray-400 transition">Gizlilik Politikası</a>
+        <a href="/cookie-policy" className="text-xs text-gray-600 hover:text-gray-400 transition">Çerez Politikası</a>
+        <a href="/terms-of-service" className="text-xs text-gray-600 hover:text-gray-400 transition">Kullanım Koşulları</a>
+        <a href="/data-deletion" className="text-xs text-gray-600 hover:text-gray-400 transition">Veri Silme</a>
       </div>
     </div>
   )
