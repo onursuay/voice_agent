@@ -114,7 +114,7 @@ export default function FaturalarimPage() {
 
             {/* Address fields */}
             <div>
-              <label className="block text-sm font-medium text-gray-600 mb-1.5">Adres</label>
+              <label className="block text-sm font-medium text-gray-600 mb-1.5">{t('address')}</label>
               <div className="grid grid-cols-4 gap-2 mb-2">
                 <div className="flex items-center gap-1.5 px-3 py-2.5 border border-gray-300 rounded-lg text-sm bg-gray-50">
                   <span>🇹🇷</span>
