@@ -72,6 +72,7 @@ export function hasPermission(userPermissions: string[], requiredPermission: str
 export function getSourceColor(platform: string): string {
   const colors: Record<string, string> = {
     meta_lead_form: '#1877F2',
+    zapier: '#ff4f00',
     whatsapp: '#25D366',
     instagram_dm: '#E4405F',
     messenger: '#0084FF',

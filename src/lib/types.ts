@@ -5,7 +5,7 @@
 
 export type UserRole = 'owner' | 'admin' | 'sales_manager' | 'sales_rep' | 'analyst' | 'readonly';
 export type LeadStage = 'new' | 'contacted' | 'qualified' | 'meeting' | 'offer' | 'won' | 'lost';
-export type LeadSourcePlatform = 'meta_lead_form' | 'whatsapp' | 'instagram_dm' | 'messenger' | 'website' | 'manual' | 'import' | 'other';
+export type LeadSourcePlatform = 'meta_lead_form' | 'zapier' | 'whatsapp' | 'instagram_dm' | 'messenger' | 'website' | 'manual' | 'import' | 'other';
 export type ActivityType = 'created' | 'stage_change' | 'note_added' | 'email_sent' | 'call_made' | 'assigned' | 'tag_added' | 'tag_removed' | 'merged' | 'imported' | 'edited' | 'score_changed';
 export type ImportStatus = 'pending' | 'processing' | 'completed' | 'failed';
 
@@ -241,6 +241,7 @@ export const LEAD_FIELD_OPTIONS: { value: string; label: string }[] = [
 
 export const SOURCE_PLATFORM_LABELS: Record<LeadSourcePlatform, string> = {
   meta_lead_form: 'Meta Lead Form',
+  zapier: 'Zapier',
   whatsapp: 'WhatsApp',
   instagram_dm: 'Instagram DM',
   messenger: 'Messenger',
