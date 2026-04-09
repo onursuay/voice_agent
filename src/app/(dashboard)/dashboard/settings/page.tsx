@@ -50,6 +50,7 @@ export default function SettingsPage() {
   const { session, stages, setStages } = useAppStore();
   const searchParams = useSearchParams();
   const t = useTranslations('settings');
+  const tCommon = useTranslations('common');
   const initialTab = (searchParams.get('tab') as SettingsTab) || 'organization';
   const [activeTab, setActiveTab] = useState<SettingsTab>(initialTab);
 
