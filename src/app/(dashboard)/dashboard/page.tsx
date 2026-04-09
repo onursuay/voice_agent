@@ -10,6 +10,7 @@ import {
 } from 'lucide-react';
 import Link from 'next/link';
 import type { Lead } from '@/lib/types';
+import { useTranslations } from 'next-intl';
 
 const GRADIENTS = [
   'linear-gradient(135deg, #047857 0%, #10b981 50%, #047857 100%)',
@@ -21,6 +22,7 @@ const GRADIENTS = [
 export default function DashboardPage() {
   const { session, stages, leads, setLeads } = useAppStore();
   const [loading, setLoading] = useState(true);
+  const t = useTranslations('dashboard');
 
   useEffect(() => {
     if (!session) return;
@@ -66,22 +68,22 @@ export default function DashboardPage() {
   const totalStageLeads = stageCounts.reduce((sum, s) => sum + s.count, 0);
 
   const statCards = [
-    { label: 'Toplam Lead', value: stats.totalLeads, icon: Users, gradient: GRADIENTS[0], subtitle: `${stages.length} aşamada` },
-    { label: 'Bu Hafta Yeni', value: stats.weeklyNewLeads, icon: UserPlus, gradient: GRADIENTS[1], trend: stats.weeklyTrend, subtitle: 'son 7 gün' },
-    { label: 'Dönüşüm Oranı', value: `%${stats.conversionRate}`, icon: TrendingUp, gradient: GRADIENTS[2], subtitle: 'kapatılan leadler' },
-    { label: 'Aktif Pipeline', value: stats.activePipeline, icon: GitBranch, gradient: GRADIENTS[3], subtitle: 'devam eden' },
+    { label: t('totalLeads'), value: stats.totalLeads, icon: Users, gradient: GRADIENTS[0], subtitle: t('stagesUnit', { count: stages.length }) },
+    { label: t('weeklyNew'), value: stats.weeklyNewLeads, icon: UserPlus, gradient: GRADIENTS[1], trend: stats.weeklyTrend, subtitle: t('last7Days') },
+    { label: t('conversionRate'), value: `%${stats.conversionRate}`, icon: TrendingUp, gradient: GRADIENTS[2], subtitle: t('closedLeads') },
+    { label: t('activePipeline'), value: stats.activePipeline, icon: GitBranch, gradient: GRADIENTS[3], subtitle: t('ongoing') },
   ];
 
   const quickActions = [
-    { label: 'Lead İçe Aktar', icon: Upload, href: '/dashboard/import', color: '#6366f1', bg: '#eef2ff' },
-    { label: 'AI Arama', icon: Phone, href: '/dashboard/calls', color: '#059669', bg: '#ecfdf5' },
-    { label: 'E-posta Gönder', icon: Mail, href: '/dashboard/email', color: '#d97706', bg: '#fffbeb' },
-    { label: 'Otomasyon Kur', icon: Zap, href: '/dashboard/automations', color: '#7c3aed', bg: '#f5f3ff' },
+    { label: t('importLeads'), icon: Upload, href: '/dashboard/import', color: '#6366f1', bg: '#eef2ff' },
+    { label: t('aiCall'), icon: Phone, href: '/dashboard/calls', color: '#059669', bg: '#ecfdf5' },
+    { label: t('sendEmail'), icon: Mail, href: '/dashboard/email', color: '#d97706', bg: '#fffbeb' },
+    { label: t('setupAutomation'), icon: Zap, href: '/dashboard/automations', color: '#7c3aed', bg: '#f5f3ff' },
   ];
 
   const firstName = session?.user?.full_name?.split(' ')[0] || '';
   const hour = new Date().getHours();
-  const greeting = hour < 12 ? 'Günaydın' : hour < 18 ? 'İyi günler' : 'İyi akşamlar';
+  const greeting = hour < 12 ? t('greetingMorning') : hour < 18 ? t('greetingDay') : t('greetingEvening');
 
   if (loading) {
     return (
@@ -106,19 +108,17 @@ export default function DashboardPage() {
           <h1 className="text-2xl font-bold text-gray-900">
             {greeting}{firstName ? `, ${firstName}` : ''} <span className="inline-block animate-[count-pulse_2s_ease-in-out_infinite]">👋</span>
           </h1>
-          <p className="mt-1 text-sm text-gray-500">
-            İşte bugünkü CRM özetin.
-          </p>
+          <p className="mt-1 text-sm text-gray-500">{t('subtitle')}</p>
         </div>
         <div className="hidden sm:flex items-center gap-2 text-xs text-gray-400">
           <Sparkles className="h-3.5 w-3.5" />
-          <span>Son güncelleme: şimdi</span>
+          <span>{t('lastUpdated')}</span>
         </div>
       </div>
 
       {/* Stat Cards */}
       <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
-        {statCards.map((card, i) => {
+        {statCards.map((card) => {
           const Icon = card.icon;
           return (
             <div key={card.label} className="stat-card" style={{ background: card.gradient }}>
@@ -169,10 +169,10 @@ export default function DashboardPage() {
               <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-indigo-50">
                 <Users className="h-4 w-4 text-indigo-600" />
               </div>
-              <h2 className="text-sm font-semibold text-gray-900">Son Lead&apos;ler</h2>
+              <h2 className="text-sm font-semibold text-gray-900">{t('recentLeads')}</h2>
             </div>
             <Link href="/dashboard/leads" className="flex items-center gap-1 text-xs font-medium text-indigo-600 hover:text-indigo-700 transition-colors">
-              Tümünü Gör <ChevronRight className="h-3.5 w-3.5" />
+              {t('viewAll')} <ChevronRight className="h-3.5 w-3.5" />
             </Link>
           </div>
           <div className="overflow-x-auto">
@@ -181,19 +181,19 @@ export default function DashboardPage() {
                 <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gray-50 mb-4">
                   <Users className="h-7 w-7 text-gray-300" />
                 </div>
-                <p className="text-sm font-medium text-gray-400">Henüz lead bulunmuyor</p>
+                <p className="text-sm font-medium text-gray-400">{t('noLeadsYet')}</p>
                 <Link href="/dashboard/import" className="mt-3 inline-flex items-center gap-1 text-sm font-medium text-indigo-600 hover:underline">
-                  <Upload className="h-3.5 w-3.5" /> Lead içe aktar
+                  <Upload className="h-3.5 w-3.5" /> {t('importLeadsAction')}
                 </Link>
               </div>
             ) : (
               <table className="premium-table w-full text-sm">
                 <thead>
                   <tr className="border-b border-gray-100">
-                    <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-400">Ad Soyad</th>
-                    <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-400">E-posta</th>
-                    <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-400">Aşama</th>
-                    <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-400">Tarih</th>
+                    <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-400">{t('colName')}</th>
+                    <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-400">{t('colEmail')}</th>
+                    <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-400">{t('colStage')}</th>
+                    <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-400">{t('colDate')}</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -235,10 +235,10 @@ export default function DashboardPage() {
               <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-violet-50">
                 <BarChart3 className="h-4 w-4 text-violet-600" />
               </div>
-              <h2 className="text-sm font-semibold text-gray-900">Pipeline Özeti</h2>
+              <h2 className="text-sm font-semibold text-gray-900">{t('pipelineSummary')}</h2>
             </div>
             {totalStageLeads > 0 && (
-              <span className="text-xs font-medium text-gray-400">{totalStageLeads} lead</span>
+              <span className="text-xs font-medium text-gray-400">{totalStageLeads} {t('leadsUnit')}</span>
             )}
           </div>
           <div className="p-5 space-y-5">
@@ -247,7 +247,7 @@ export default function DashboardPage() {
                 <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gray-50 mb-4">
                   <GitBranch className="h-7 w-7 text-gray-300" />
                 </div>
-                <p className="text-sm font-medium text-gray-400">Pipeline aşaması bulunamadı</p>
+                <p className="text-sm font-medium text-gray-400">{t('noPipelineStages')}</p>
               </div>
             ) : (
               stageCounts.map(({ stage, count }) => {
@@ -282,7 +282,7 @@ export default function DashboardPage() {
           {stageCounts.length > 0 && (
             <div className="border-t border-gray-100 px-5 py-3">
               <Link href="/dashboard/pipeline" className="flex items-center justify-center gap-1 text-xs font-medium text-violet-600 hover:text-violet-700 transition-colors">
-                Pipeline&apos;ı Görüntüle <ChevronRight className="h-3.5 w-3.5" />
+                {t('viewPipeline')} <ChevronRight className="h-3.5 w-3.5" />
               </Link>
             </div>
           )}
