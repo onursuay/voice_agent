@@ -165,7 +165,7 @@ export default function FaturalarimPage() {
                 </div>
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-600 mb-1.5">Vergi Dairesi</label>
+                    <label className="block text-sm font-medium text-gray-600 mb-1.5">{t('taxOffice')}</label>
                     <input
                       type="text"
                       value={info.taxOffice || ''}
