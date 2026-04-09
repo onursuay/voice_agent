@@ -43,11 +43,12 @@ export default function AbonelikPage() {
     })
   }
 
+  const t = useTranslations('abonelik')
   const currentPlan = SUBSCRIPTION_PLANS.find(p => p.id === subscription.planId)
   const statusLabel = trial
-    ? `Deneme Sürümü (${trialDaysRemaining} gün kaldı)`
+    ? t('trialStatus', { days: trialDaysRemaining })
     : isPaid
-    ? 'Aktif'
+    ? t('activeStatus')
     : subscription.status
 
   return (
