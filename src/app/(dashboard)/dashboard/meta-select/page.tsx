@@ -19,6 +19,16 @@ export default function MetaSelectPage() {
   const [error, setError] = useState('');
 
   useEffect(() => {
+    // If Facebook redirected here directly with code+state (misconfigured redirect URI),
+    // forward to the proper callback route so it can exchange the code and set the cookie.
+    const params = new URLSearchParams(window.location.search);
+    const code = params.get('code');
+    const state = params.get('state');
+    if (code && state) {
+      window.location.href = `/api/integrations/meta/callback?code=${encodeURIComponent(code)}&state=${encodeURIComponent(state)}`;
+      return;
+    }
+
     // Fetch pending session pages from API
     fetch('/api/integrations/meta/pending-pages')
       .then((r) => r.json())
