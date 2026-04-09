@@ -678,16 +678,16 @@ export default function SettingsPage() {
             {metaConnected && (
               <div className="flex items-center gap-2 rounded-lg border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-700">
                 <Check className="h-4 w-4 shrink-0" />
-                Meta sayfanız başarıyla bağlandı! Artık reklam formlarından gelen lead&apos;ler otomatik olarak buraya düşecek.
+                {t('integrations.metaSuccess')}
               </div>
             )}
             {metaError && (
               <div className="flex items-center gap-2 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
                 <AlertCircle className="h-4 w-4 shrink-0" />
-                {metaError === 'no_pages' && 'Meta hesabınızda yönetici olduğunuz bir sayfa bulunamadı.'}
-                {metaError === 'cancelled' && 'Bağlantı işlemi iptal edildi.'}
-                {metaError === 'token_exchange_failed' && 'Meta token alınamadı. Lütfen tekrar deneyin.'}
-                {!['no_pages', 'cancelled', 'token_exchange_failed'].includes(metaError) && `Bağlantı hatası: ${metaError}`}
+                {metaError === 'no_pages' && t('integrations.metaNoPage')}
+                {metaError === 'cancelled' && t('integrations.metaCancelled')}
+                {metaError === 'token_exchange_failed' && t('integrations.metaTokenError')}
+                {!['no_pages', 'cancelled', 'token_exchange_failed'].includes(metaError) && `${t('integrations.metaConnectError')}${metaError}`}
               </div>
             )}
 
