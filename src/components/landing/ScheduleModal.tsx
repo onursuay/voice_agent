@@ -1,0 +1,308 @@
+'use client'
+
+import { useState, useMemo, useCallback, useEffect } from 'react'
+import { createPortal } from 'react-dom'
+
+const CONTACT_EMAIL = 'info@yodijital.com'
+
+interface Props {
+  label: string
+  variant?: 'nav' | 'hero' | 'bottom'
+}
+
+export default function ScheduleModal({ label, variant = 'nav' }: Props) {
+  const [open, setOpen] = useState(false)
+  const [mounted, setMounted] = useState(false)
+  const [step, setStep] = useState<'calendar' | 'form'>('calendar')
+  const [viewDate, setViewDate] = useState(() => new Date())
+  const [selectedDate, setSelectedDate] = useState<string | null>(null)
+  const [selectedTime, setSelectedTime] = useState<string | null>(null)
+  const [name, setName] = useState('')
+  const [email, setEmail] = useState('')
+  const [note, setNote] = useState('')
+  const [submitted, setSubmitted] = useState(false)
+  const [use24h, setUse24h] = useState(true)
+
+  useEffect(() => { setMounted(true) }, [])
+
+  const t = {
+    brand: 'Yo Dijital',
+    meetingTitle: 'Strateji Görüşmesi',
+    meetingSub: '30 dakikalık birebir ürün tanıtımı',
+    duration: '30 dakika',
+    orgDefault: 'Online görüşme',
+    timezone: 'İstanbul (GMT+3)',
+    monthNames: ['Ocak','Şubat','Mart','Nisan','Mayıs','Haziran','Temmuz','Ağustos','Eylül','Ekim','Kasım','Aralık'],
+    dayHeaders: ['PZT','SAL','ÇAR','PER','CUM','CMT','PAZ'],
+    dayShort: ['Paz','Pzt','Sal','Çar','Per','Cum','Cmt'],
+    confirmBtn: 'Onayla',
+    nameLabel: 'Ad Soyad',
+    namePlaceholder: 'Adınız',
+    emailLabel: 'E-posta',
+    emailPlaceholder: 'siz@sirket.com',
+    noteLabel: 'Not (isteğe bağlı)',
+    notePlaceholder: 'Görüşmede öncelikli konunuz...',
+    submitBtn: 'Görüşmeyi Planla',
+    back: 'Geri',
+    successTitle: 'Görüşmeniz Onaylandı',
+    successMsg: 'Takvim davetiyenizi hemen e-postanıza gönderiyoruz.',
+    close: 'Kapat',
+    selectDateFirst: 'Önce bir tarih seçin',
+    h12: '12 sa',
+    h24: '24 sa',
+  }
+
+  const today = useMemo(() => { const d = new Date(); d.setHours(0, 0, 0, 0); return d }, [])
+
+  function toIso(d: Date) {
+    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
+  }
+
+  const calendarDays = useMemo(() => {
+    const year = viewDate.getFullYear()
+    const month = viewDate.getMonth()
+    const firstDay = new Date(year, month, 1)
+    let startDow = firstDay.getDay() - 1
+    if (startDow < 0) startDow = 6
+    const daysInMonth = new Date(year, month + 1, 0).getDate()
+    const cells: { day: number; month: number; year: number; iso: string; isCurrentMonth: boolean; isWeekend: boolean; isPast: boolean; monthLabel?: string }[] = []
+
+    const prevMonthDays = new Date(year, month, 0).getDate()
+    for (let i = startDow - 1; i >= 0; i--) {
+      const d = prevMonthDays - i
+      const m = month - 1 < 0 ? 11 : month - 1
+      const y = month - 1 < 0 ? year - 1 : year
+      const date = new Date(y, m, d)
+      const dow = date.getDay()
+      cells.push({ day: d, month: m, year: y, iso: toIso(date), isCurrentMonth: false, isWeekend: dow === 0 || dow === 6, isPast: date < today })
+    }
+
+    for (let d = 1; d <= daysInMonth; d++) {
+      const date = new Date(year, month, d)
+      const dow = date.getDay()
+      cells.push({ day: d, month, year, iso: toIso(date), isCurrentMonth: true, isWeekend: dow === 0 || dow === 6, isPast: date < today })
+    }
+
+    const remaining = 7 - (cells.length % 7)
+    if (remaining < 7) {
+      const nextMonth = month + 1 > 11 ? 0 : month + 1
+      const nextMonthNames = ['OCA','ŞUB','MAR','NİS','MAY','HAZ','TEM','AĞU','EYL','EKİ','KAS','ARA']
+      for (let d = 1; d <= remaining; d++) {
+        const m = nextMonth
+        const y = month + 1 > 11 ? year + 1 : year
+        const date = new Date(y, m, d)
+        const dow = date.getDay()
+        cells.push({ day: d, month: m, year: y, iso: toIso(date), isCurrentMonth: false, isWeekend: dow === 0 || dow === 6, isPast: date < today, monthLabel: d === 1 ? nextMonthNames[m] : undefined })
+      }
+    }
+    return cells
+  }, [viewDate, today])
+
+  const timeSlots = useMemo(() => {
+    const slots: { value: string; label12: string; label24: string }[] = []
+    for (let h = 9; h <= 17; h++) {
+      for (const m of [0, 30]) {
+        if (h === 17 && m === 30) break
+        const v = `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`
+        const h12 = h > 12 ? h - 12 : h === 0 ? 12 : h
+        const ampm = h >= 12 ? 'PM' : 'AM'
+        slots.push({ value: v, label12: `${h12}:${String(m).padStart(2, '0')} ${ampm}`, label24: v })
+      }
+    }
+    return slots
+  }, [])
+
+  const selectedDateHeader = useMemo(() => {
+    if (!selectedDate) return ''
+    const [y, m, d] = selectedDate.split('-').map(Number)
+    const date = new Date(y, m - 1, d)
+    const dow = t.dayShort[date.getDay()]
+    return `${dow} ${d}`
+  }, [selectedDate])
+
+  const selectedDateFormatted = useMemo(() => {
+    if (!selectedDate) return ''
+    const [y, m, d] = selectedDate.split('-').map(Number)
+    const date = new Date(y, m - 1, d)
+    const dow = t.dayShort[date.getDay()]
+    const monthName = t.monthNames[m - 1]
+    return `${d} ${monthName} ${y}, ${dow}`
+  }, [selectedDate])
+
+  const isDayAvailable = useCallback((_iso: string, isWeekend: boolean, isPast: boolean) => !isWeekend && !isPast, [])
+
+  const prevMonth = () => setViewDate(new Date(viewDate.getFullYear(), viewDate.getMonth() - 1, 1))
+  const nextMonth = () => setViewDate(new Date(viewDate.getFullYear(), viewDate.getMonth() + 1, 1))
+  const canPrev = viewDate.getFullYear() > today.getFullYear() || viewDate.getMonth() > today.getMonth()
+
+  function handleConfirmTime() { if (selectedDate && selectedTime) setStep('form') }
+
+  async function handleSubmit() {
+    if (!selectedDate || !selectedTime || !name.trim() || !email.trim()) return
+    try {
+      const subject = encodeURIComponent(`Yo Dijital Görüşme Talebi — ${name}`)
+      const body = encodeURIComponent(`Ad Soyad: ${name}\nE-posta: ${email}\nTarih: ${selectedDate}\nSaat: ${selectedTime}\n` + (note ? `Not: ${note}\n` : ''))
+      window.open(`mailto:${CONTACT_EMAIL}?subject=${subject}&body=${body}`, '_self')
+    } catch { /* noop */ }
+    setSubmitted(true)
+  }
+
+  function handleOpen() {
+    setOpen(true); setStep('calendar'); setSelectedDate(null); setSelectedTime(null)
+    setName(''); setEmail(''); setNote(''); setSubmitted(false)
+  }
+
+  const btnClass = variant === 'hero'
+    ? 'btn-shimmer inline-flex items-center justify-center font-semibold text-base px-10 py-4 rounded-full transition-all cursor-pointer min-w-[220px] bg-[#1e1e2a] border border-white/[0.08] text-gray-200 hover:bg-[#262635] hover:border-white/15'
+    : variant === 'bottom'
+    ? 'btn-shimmer inline-flex items-center justify-center text-[14px] font-medium border border-emerald-400/30 text-emerald-400 hover:bg-emerald-400/10 px-6 py-2.5 rounded-full transition-colors cursor-pointer'
+    : 'btn-shimmer hidden sm:inline-flex items-center justify-center font-semibold border border-emerald-400/40 text-emerald-400 hover:bg-emerald-400/10 px-6 py-2.5 rounded-full transition-colors cursor-pointer text-[13px]'
+
+  const monthLabel = `${t.monthNames[viewDate.getMonth()]} ${viewDate.getFullYear()}`
+
+  const modalContent = open ? (
+    <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4" style={{ fontSize: '16px' }} onClick={() => setOpen(false)}>
+      <div className="absolute inset-0 bg-black/80 backdrop-blur-md" />
+      <div className="relative bg-[#111116] border border-white/[0.08] rounded-2xl w-full max-w-[900px] max-h-[90vh] overflow-hidden shadow-2xl shadow-black/60" onClick={e => e.stopPropagation()}>
+
+        <button onClick={() => setOpen(false)} className="absolute top-3 right-3 z-10 w-8 h-8 flex items-center justify-center rounded-full bg-white/[0.06] hover:bg-white/[0.12] text-gray-400 hover:text-white transition-colors">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+        </button>
+
+        {submitted ? (
+          <div className="text-center py-16 px-8">
+            <div className="w-14 h-14 rounded-full bg-emerald-400/10 border border-emerald-400/20 flex items-center justify-center mx-auto mb-5">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="rgb(52,211,153)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+            </div>
+            <h3 className="text-xl font-bold text-white mb-2">{t.successTitle}</h3>
+            <p className="text-base text-gray-400 mb-8">{t.successMsg}</p>
+            <button onClick={() => setOpen(false)} className="text-base font-semibold text-emerald-400 hover:text-emerald-300 transition-colors">{t.close}</button>
+          </div>
+        ) : step === 'form' ? (
+          <div className="p-6">
+            <button onClick={() => setStep('calendar')} className="inline-flex items-center gap-1.5 text-sm font-medium text-gray-400 hover:text-white mb-4 transition-colors">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+              {t.back}
+            </button>
+            <h3 className="text-xl font-bold text-white mb-1">{t.meetingTitle}</h3>
+            <p className="text-base text-gray-500 mb-6">{selectedDateFormatted} &middot; {selectedTime} &middot; {t.duration}</p>
+            <div className="grid grid-cols-2 gap-4 mb-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-400 mb-2">{t.nameLabel}</label>
+                <input type="text" value={name} onChange={e => setName(e.target.value)} placeholder={t.namePlaceholder} className="w-full bg-white/[0.04] border border-white/[0.08] rounded-lg px-4 py-3 text-base text-white placeholder-gray-500 focus:border-emerald-400/30 outline-none transition-colors" />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-400 mb-2">{t.emailLabel}</label>
+                <input type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder={t.emailPlaceholder} className="w-full bg-white/[0.04] border border-white/[0.08] rounded-lg px-4 py-3 text-base text-white placeholder-gray-500 focus:border-emerald-400/30 outline-none transition-colors" />
+              </div>
+            </div>
+            <label className="block text-sm font-medium text-gray-400 mb-2">{t.noteLabel}</label>
+            <textarea value={note} onChange={e => setNote(e.target.value)} placeholder={t.notePlaceholder} rows={3} className="w-full bg-white/[0.04] border border-white/[0.08] rounded-lg px-4 py-3 text-base text-white placeholder-gray-500 focus:border-emerald-400/30 outline-none transition-colors resize-none mb-6" />
+            <button onClick={handleSubmit} disabled={!name.trim() || !email.trim()} className="w-full bg-emerald-500 hover:bg-emerald-400 disabled:bg-gray-700 disabled:text-gray-500 text-black font-semibold py-3.5 rounded-xl transition-colors text-base">{t.submitBtn}</button>
+          </div>
+        ) : (
+          <div className="flex flex-col md:flex-row">
+            <div className="md:w-[220px] shrink-0 border-b md:border-b-0 md:border-r border-white/[0.06] p-5 flex flex-col">
+              <div className="w-9 h-9 rounded-lg bg-emerald-400/10 border border-emerald-400/20 flex items-center justify-center mb-3">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="rgb(52,211,153)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2L9 12l-7 0 5.5 4.5L5 22l7-5 7 5-2.5-5.5L22 12h-7z"/></svg>
+              </div>
+              <p className="text-sm text-gray-400 mb-0.5">{t.brand}</p>
+              <h3 className="text-base font-semibold text-white mb-0.5">{t.meetingTitle}</h3>
+              <p className="text-sm text-gray-400 mb-5">{t.meetingSub}</p>
+              <div className="space-y-2.5">
+                <div className="flex items-center gap-2.5 text-sm text-gray-400">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                  {t.duration}
+                </div>
+                <div className="flex items-center gap-2.5 text-sm text-gray-400">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M15.05 5A5 5 0 0119 8.95M15.05 1A9 9 0 0123 8.94M22 16.92v3a2 2 0 01-2.18 2A19.86 19.86 0 013.09 5.18 2 2 0 015.11 3h3a2 2 0 012 1.72c.127.96.362 1.903.7 2.81a2 2 0 01-.45 2.11L8.91 11.09a16 16 0 006 6l1.45-1.45a2 2 0 012.11-.45c.907.338 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+                  {t.orgDefault}
+                </div>
+                <div className="flex items-center gap-2.5 text-sm text-gray-400">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10A15.3 15.3 0 0112 2z"/></svg>
+                  {t.timezone}
+                </div>
+              </div>
+            </div>
+
+            <div className="flex-1 p-5">
+              <div className="flex items-center justify-between mb-5">
+                <h4 className="text-[16px] font-semibold text-white tracking-tight">{monthLabel}</h4>
+                <div className="flex items-center gap-1">
+                  <button onClick={prevMonth} disabled={!canPrev} className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-white/[0.06] text-gray-400 disabled:text-gray-700 transition-colors">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M15 18l-6-6 6-6"/></svg>
+                  </button>
+                  <button onClick={nextMonth} className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-white/[0.06] text-gray-400 transition-colors">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 18l6-6-6-6"/></svg>
+                  </button>
+                </div>
+              </div>
+              <div className="grid grid-cols-7 mb-2">
+                {t.dayHeaders.map(d => (
+                  <div key={d} className="text-center text-[13px] font-semibold text-gray-400 py-2 tracking-wide">{d}</div>
+                ))}
+              </div>
+              <div className="grid grid-cols-7 gap-y-1">
+                {calendarDays.map((cell, i) => {
+                  const available = isDayAvailable(cell.iso, cell.isWeekend, cell.isPast)
+                  const isSelected = selectedDate === cell.iso
+                  const isToday = cell.iso === toIso(today)
+                  return (
+                    <div key={i} className="flex items-center justify-center">
+                      <button
+                        disabled={!available}
+                        onClick={() => { setSelectedDate(cell.iso); setSelectedTime(null) }}
+                        className={`relative w-[44px] h-[44px] flex flex-col items-center justify-center rounded-lg transition-all ${
+                          isSelected ? 'bg-emerald-500 text-black font-bold shadow-lg shadow-emerald-500/25'
+                          : available && cell.isCurrentMonth ? 'bg-[#2a2a3a] text-white hover:bg-[#343448] font-medium'
+                          : available && !cell.isCurrentMonth ? 'bg-[#222232] text-gray-400 hover:bg-[#2a2a3a] font-medium'
+                          : 'text-gray-700/25 cursor-default'
+                        }`}
+                      >
+                        {cell.monthLabel && <span className="text-[10px] font-bold leading-none tracking-wider" style={{ color: isSelected ? 'black' : '#6b7280' }}>{cell.monthLabel}</span>}
+                        <span className="text-[15px] leading-none">{cell.day}</span>
+                        {isToday && !isSelected && <span className="absolute bottom-[4px] left-1/2 -translate-x-1/2 w-[5px] h-[5px] rounded-full bg-emerald-400" />}
+                      </button>
+                    </div>
+                  )
+                })}
+              </div>
+            </div>
+
+            <div className="md:w-[200px] shrink-0 border-t md:border-t-0 md:border-l border-white/[0.06] p-5 flex flex-col">
+              <div className="flex items-center justify-between mb-5">
+                <p className="text-[15px] font-semibold text-white">{selectedDateHeader || 'Tarih seçin'}</p>
+                <div className="flex bg-[#1a1a22] rounded-md text-xs border border-white/[0.06] overflow-hidden">
+                  <button onClick={() => setUse24h(false)} className={`px-2.5 py-1 font-medium transition-colors ${!use24h ? 'bg-white/[0.12] text-white' : 'text-gray-500'}`}>{t.h12}</button>
+                  <button onClick={() => setUse24h(true)} className={`px-2.5 py-1 font-medium transition-colors ${use24h ? 'bg-white/[0.12] text-white' : 'text-gray-500'}`}>{t.h24}</button>
+                </div>
+              </div>
+              <div className="flex-1 overflow-y-auto space-y-2 max-h-[380px] pr-1">
+                {!selectedDate ? (
+                  <div className="flex flex-col items-center justify-center py-10 text-center">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="text-gray-600 mb-2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+                    <p className="text-sm text-gray-500">{t.selectDateFirst}</p>
+                  </div>
+                ) : timeSlots.map(s => (
+                  <button key={s.value} onClick={() => setSelectedTime(s.value)} className={`w-full text-[14px] font-medium py-3 rounded-lg border text-center transition-all ${selectedTime === s.value ? 'bg-emerald-500/15 border-emerald-400/30 text-emerald-300 font-semibold' : 'bg-[#1a1a22] border-[#2a2a35] text-white hover:border-[#3a3a48] hover:bg-[#222230]'}`}>
+                    {use24h ? s.label24 : s.label12}
+                  </button>
+                ))}
+              </div>
+              <button onClick={handleConfirmTime} disabled={!selectedDate || !selectedTime} className="mt-4 w-full bg-emerald-500 hover:bg-emerald-400 disabled:bg-gray-700 disabled:text-gray-500 text-black font-semibold py-3 rounded-xl transition-colors text-base">
+                {t.confirmBtn}
+              </button>
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  ) : null
+
+  return (
+    <>
+      <button onClick={handleOpen} className={btnClass}>{label}</button>
+      {mounted && modalContent && createPortal(modalContent, document.body)}
+    </>
+  )
+}

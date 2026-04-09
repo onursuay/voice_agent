@@ -28,25 +28,42 @@ function getMetaAccessToken(config: Record<string, unknown> | null): string | nu
   );
 }
 
-export async function fetchMetaLeadDetails(leadgenId: string) {
-  const config = await getIntegrationConfig('meta_leads');
+export async function fetchMetaLeadDetails(leadgenId: string, organizationId: string) {
+  const config = await getIntegrationConfig('meta_leads', organizationId);
   const accessToken = getMetaAccessToken(config);
 
   if (!accessToken) {
-    throw new Error('Missing Meta access token');
+    throw new Error(
+      'Missing Meta access token. Set META_APP_ACCESS_TOKEN or META_PAGE_ACCESS_TOKEN env variable, or configure it in integration_settings.'
+    );
   }
 
   const url = new URL(`https://graph.facebook.com/v19.0/${encodeURIComponent(leadgenId)}`);
   url.searchParams.set('fields', 'id,created_time,field_data,ad_id,form_id');
 
-  const response = await fetch(url, {
-    method: 'GET',
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-      'Content-Type': 'application/json',
-    },
-    cache: 'no-store',
-  });
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 8000);
+
+  let response: Response;
+  try {
+    response = await fetch(url, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      },
+      cache: 'no-store',
+      signal: controller.signal,
+    });
+  } catch (error) {
+    clearTimeout(timeoutId);
+    if (error instanceof Error && error.name === 'AbortError') {
+      throw new Error('Meta Graph lead fetch timed out after 8 seconds');
+    }
+    throw error;
+  } finally {
+    clearTimeout(timeoutId);
+  }
 
   if (!response.ok) {
     const body = await response.text();

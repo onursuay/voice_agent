@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState, useCallback } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { createClient } from '@/lib/supabase/client';
 import { useAppStore } from '@/lib/store';
 import { Tabs } from '@/components/ui/tabs';
@@ -23,15 +24,19 @@ import {
   UserPlus,
   AlertCircle,
   Check,
+  Plug,
+  ExternalLink,
+  RefreshCw,
 } from 'lucide-react';
 
-type SettingsTab = 'organization' | 'members' | 'pipeline' | 'profile';
+type SettingsTab = 'organization' | 'members' | 'pipeline' | 'profile' | 'integrations';
 
 const TABS = [
   { key: 'organization', label: 'Organizasyon', icon: <Building2 className="h-4 w-4" /> },
   { key: 'members', label: 'Uyeler', icon: <Users className="h-4 w-4" /> },
   { key: 'pipeline', label: 'Pipeline Aşamaları', icon: <GitBranch className="h-4 w-4" /> },
   { key: 'profile', label: 'Profil', icon: <User className="h-4 w-4" /> },
+  { key: 'integrations', label: 'Entegrasyonlar', icon: <Plug className="h-4 w-4" /> },
 ];
 
 const ROLE_COLORS: Record<UserRole, 'indigo' | 'purple' | 'blue' | 'green' | 'yellow' | 'gray'> = {
@@ -50,7 +55,13 @@ const STAGE_COLOR_OPTIONS = [
 
 export default function SettingsPage() {
   const { session, stages, setStages } = useAppStore();
-  const [activeTab, setActiveTab] = useState<SettingsTab>('organization');
+  const searchParams = useSearchParams();
+  const initialTab = (searchParams.get('tab') as SettingsTab) || 'organization';
+  const [activeTab, setActiveTab] = useState<SettingsTab>(initialTab);
+
+  // Show success/error messages from OAuth callback redirects
+  const metaConnected = searchParams.get('meta_connected');
+  const metaError = searchParams.get('meta_error');
 
   // Org state
   const [org, setOrg] = useState<Organization | null>(null);
@@ -76,6 +87,19 @@ export default function SettingsPage() {
   const [profilePhone, setProfilePhone] = useState('');
   const [profileSaving, setProfileSaving] = useState(false);
   const [profileSuccess, setProfileSuccess] = useState(false);
+
+  // Integrations state
+  type MetaStatus = {
+    connected: boolean;
+    page_id?: string;
+    page_name?: string;
+    connected_at?: string;
+    expires_at?: string;
+    is_expired?: boolean;
+  };
+  const [metaStatus, setMetaStatus] = useState<MetaStatus | null>(null);
+  const [metaLoading, setMetaLoading] = useState(false);
+  const [metaDisconnecting, setMetaDisconnecting] = useState(false);
 
   // Feedback messages
   const [error, setError] = useState('');
@@ -143,10 +167,31 @@ export default function SettingsPage() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [session]);
 
+  const loadMetaStatus = useCallback(async () => {
+    setMetaLoading(true);
+    try {
+      const res = await fetch('/api/integrations/meta/status');
+      if (res.ok) setMetaStatus(await res.json());
+    } catch { /* ignore */ } finally {
+      setMetaLoading(false);
+    }
+  }, []);
+
+  const disconnectMeta = async () => {
+    setMetaDisconnecting(true);
+    try {
+      await fetch('/api/integrations/meta/disconnect', { method: 'DELETE' });
+      setMetaStatus({ connected: false });
+    } catch { /* ignore */ } finally {
+      setMetaDisconnecting(false);
+    }
+  };
+
   useEffect(() => {
     if (activeTab === 'members') loadMembers();
     if (activeTab === 'pipeline') loadStageLeadCounts();
-  }, [activeTab, loadMembers, loadStageLeadCounts]);
+    if (activeTab === 'integrations') loadMetaStatus();
+  }, [activeTab, loadMembers, loadStageLeadCounts, loadMetaStatus]);
 
   // Clear feedback messages after delay
   useEffect(() => {
@@ -607,6 +652,138 @@ export default function SettingsPage() {
               >
                 Siralamayı Kaydet
               </Button>
+            </div>
+          </div>
+        )}
+
+        {/* ============================== */}
+        {/* ENTEGRASYONLAR */}
+        {/* ============================== */}
+        {activeTab === 'integrations' && (
+          <div className="p-6 space-y-6">
+            <div className="flex items-center gap-3 pb-4 border-b border-gray-100">
+              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-blue-100">
+                <Plug className="h-5 w-5 text-blue-600" />
+              </div>
+              <div>
+                <h2 className="text-base font-semibold text-foreground">Entegrasyonlar</h2>
+                <p className="text-sm text-muted">Dış platformlardan lead toplamak için bağlantıları yönetin.</p>
+              </div>
+            </div>
+
+            {/* OAuth redirect feedback */}
+            {metaConnected && (
+              <div className="flex items-center gap-2 rounded-lg border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-700">
+                <Check className="h-4 w-4 shrink-0" />
+                Meta sayfanız başarıyla bağlandı! Artık reklam formlarından gelen lead&apos;ler otomatik olarak buraya düşecek.
+              </div>
+            )}
+            {metaError && (
+              <div className="flex items-center gap-2 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+                <AlertCircle className="h-4 w-4 shrink-0" />
+                {metaError === 'no_pages' && 'Meta hesabınızda yönetici olduğunuz bir sayfa bulunamadı.'}
+                {metaError === 'cancelled' && 'Bağlantı işlemi iptal edildi.'}
+                {metaError === 'token_exchange_failed' && 'Meta token alınamadı. Lütfen tekrar deneyin.'}
+                {!['no_pages', 'cancelled', 'token_exchange_failed'].includes(metaError) && `Bağlantı hatası: ${metaError}`}
+              </div>
+            )}
+
+            {/* Meta Lead Ads Card */}
+            <div className="rounded-xl border border-gray-200 bg-white overflow-hidden">
+              <div className="flex items-start justify-between p-5">
+                <div className="flex items-start gap-4">
+                  {/* Meta logo placeholder */}
+                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-blue-600 to-indigo-600 text-white font-bold text-lg">
+                    M
+                  </div>
+                  <div>
+                    <h3 className="text-sm font-semibold text-foreground">Meta Lead Ads</h3>
+                    <p className="mt-0.5 text-xs text-muted">
+                      Facebook ve Instagram reklam formlarından gelen lead&apos;leri otomatik olarak sisteme aktar.
+                    </p>
+
+                    {metaLoading ? (
+                      <div className="mt-2 flex items-center gap-1.5 text-xs text-muted">
+                        <RefreshCw className="h-3 w-3 animate-spin" />
+                        Kontrol ediliyor...
+                      </div>
+                    ) : metaStatus?.connected ? (
+                      <div className="mt-2 space-y-1">
+                        <div className="flex items-center gap-1.5">
+                          <span className="inline-block h-2 w-2 rounded-full bg-green-500" />
+                          <span className="text-xs font-medium text-green-700">Bağlı</span>
+                          {metaStatus.is_expired && (
+                            <Badge color="red" size="sm">Token süresi dolmuş</Badge>
+                          )}
+                        </div>
+                        {metaStatus.page_name && (
+                          <p className="text-xs text-muted">
+                            Sayfa: <span className="font-medium text-foreground">{metaStatus.page_name}</span>
+                          </p>
+                        )}
+                        {metaStatus.connected_at && (
+                          <p className="text-xs text-muted">
+                            Bağlandı: {new Date(metaStatus.connected_at).toLocaleDateString('tr-TR')}
+                          </p>
+                        )}
+                        {metaStatus.expires_at && (
+                          <p className="text-xs text-muted">
+                            Token bitiş: {new Date(metaStatus.expires_at).toLocaleDateString('tr-TR')}
+                          </p>
+                        )}
+                      </div>
+                    ) : (
+                      <div className="mt-2 flex items-center gap-1.5">
+                        <span className="inline-block h-2 w-2 rounded-full bg-gray-300" />
+                        <span className="text-xs text-muted">Bağlı değil</span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                <div className="flex flex-col items-end gap-2">
+                  {metaStatus?.connected ? (
+                    <>
+                      <Button
+                        variant="primary"
+                        size="sm"
+                        icon={<ExternalLink className="h-3.5 w-3.5" />}
+                        onClick={() => window.location.href = '/api/integrations/meta/connect'}
+                      >
+                        Yeniden Bağla
+                      </Button>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={disconnectMeta}
+                        loading={metaDisconnecting}
+                        className="text-red-500 hover:text-red-600 hover:bg-red-50"
+                      >
+                        Bağlantıyı Kes
+                      </Button>
+                    </>
+                  ) : (
+                    <Button
+                      variant="primary"
+                      size="sm"
+                      icon={<ExternalLink className="h-3.5 w-3.5" />}
+                      onClick={() => window.location.href = '/api/integrations/meta/connect'}
+                    >
+                      Meta&apos;ya Bağlan
+                    </Button>
+                  )}
+                </div>
+              </div>
+
+              {/* Info footer */}
+              <div className="border-t border-gray-100 bg-gray-50 px-5 py-3">
+                <p className="text-xs text-muted">
+                  Bağlandıktan sonra Meta Developer Portal&apos;da webhook aboneliğini aktif etmen gerekiyor.
+                  Callback URL: <code className="rounded bg-gray-200 px-1 py-0.5 text-xs font-mono">
+                    {typeof window !== 'undefined' ? window.location.origin : ''}/api/webhooks/meta-leads
+                  </code>
+                </p>
+              </div>
             </div>
           </div>
         )}

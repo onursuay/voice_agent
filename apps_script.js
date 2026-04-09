@@ -177,17 +177,19 @@ function makeCall(sheet, rowIndex, fullName, phone, projectName) {
     const response = UrlFetchApp.fetch(
       'https://api.elevenlabs.io/v1/convai/sip-trunk/outbound-call', options
     );
+    const responseCode = response.getResponseCode();
     const result = JSON.parse(response.getContentText());
+    Logger.log('ElevenLabs response [' + responseCode + ']: ' + JSON.stringify(result));
 
-    if (result.success) {
+    if (responseCode === 200 && result.conversation_id) {
       const callCount = (sheet.getRange(rowIndex, CONFIG.COL_CALL_COUNT).getValue() || 0) + 1;
       sheet.getRange(rowIndex, CONFIG.COL_BOT_STATUS).setValue('araniyor');
       sheet.getRange(rowIndex, CONFIG.COL_CALL_COUNT).setValue(callCount);
       sheet.getRange(rowIndex, CONFIG.COL_CONVERSATION_ID).setValue(result.conversation_id);
-      Logger.log('✓ Arama başlatıldı: ' + phone + ' | ' + projectName);
+      Logger.log('✓ Arama başlatıldı: ' + phone + ' | Conv: ' + result.conversation_id + ' | ' + projectName);
     } else {
       sheet.getRange(rowIndex, CONFIG.COL_BOT_STATUS).setValue('arama_hatasi');
-      sheet.getRange(rowIndex, CONFIG.COL_BOT_NOTLAR).setValue(result.message || 'Hata');
+      sheet.getRange(rowIndex, CONFIG.COL_BOT_NOTLAR).setValue(result.detail || result.message || JSON.stringify(result));
       Logger.log('✗ Arama hatası: ' + phone + ' | ' + JSON.stringify(result));
     }
   } catch (error) {

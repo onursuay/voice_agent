@@ -34,7 +34,9 @@ type LeadRow = {
   stage_id: string | null;
   assigned_to?: string | null;
   score: number | null;
+  source_platform?: string | null;
   custom_fields: Record<string, unknown> | null;
+  raw_payload?: unknown;
   meta_lead_id?: string | null;
   meta_page_id?: string | null;
   meta_form_id?: string | null;
@@ -84,6 +86,21 @@ function mergeNonEmpty<T>(incoming: T | null | undefined, current: T | null | un
   return incoming ?? current;
 }
 
+// Source priority: meta_lead_form > zapier > manual
+// Prevents downgrading a high-quality source with a lower-priority one
+const SOURCE_PRIORITY: Record<IngestionLeadSource, number> = {
+  meta_lead_form: 3,
+  zapier: 2,
+  manual: 1,
+};
+
+function mergeSource(incoming: IngestionLeadSource, current: string | null | undefined): IngestionLeadSource {
+  if (!current) return incoming;
+  const currentPriority = SOURCE_PRIORITY[current as IngestionLeadSource] ?? 0;
+  const incomingPriority = SOURCE_PRIORITY[incoming] ?? 0;
+  return incomingPriority > currentPriority ? incoming : (current as IngestionLeadSource);
+}
+
 async function getFirstStageId(organizationId: string): Promise<string | null> {
   const supabase = createAdminSupabaseClient();
   const { data } = await supabase
@@ -109,7 +126,7 @@ async function findDuplicateLead(
   if (metaLeadId) {
     const { data } = await supabase
       .from('leads')
-      .select('id, full_name, email, phone, stage_id, assigned_to, score, custom_fields, meta_lead_id, meta_page_id, meta_form_id, meta_ad_id')
+      .select('id, full_name, email, phone, stage_id, assigned_to, score, source_platform, custom_fields, raw_payload, meta_lead_id, meta_page_id, meta_form_id, meta_ad_id')
       .eq('organization_id', organizationId)
       .eq('meta_lead_id', metaLeadId)
       .maybeSingle();
@@ -122,7 +139,7 @@ async function findDuplicateLead(
   const recentThreshold = new Date(Date.now() - 90 * 24 * 60 * 60 * 1000).toISOString();
   let query = supabase
     .from('leads')
-    .select('id, full_name, email, phone, stage_id, assigned_to, score, custom_fields, meta_lead_id, meta_page_id, meta_form_id, meta_ad_id')
+    .select('id, full_name, email, phone, stage_id, assigned_to, score, source_platform, custom_fields, raw_payload, meta_lead_id, meta_page_id, meta_form_id, meta_ad_id')
     .eq('organization_id', organizationId)
     .gte('created_at', recentThreshold)
     .order('created_at', { ascending: false })
@@ -157,20 +174,36 @@ async function findDuplicateLead(
   );
 }
 
-export async function resolveLeadIngestionOrganization(provider: string): Promise<string | null> {
+/**
+ * Multi-tenant org resolution:
+ * - For meta_leads: routes by page_id stored in integration_settings config
+ * - Falls back to DEFAULT_ORG_ID env (single-tenant / dev use)
+ */
+export async function resolveLeadIngestionOrganization(
+  provider: string,
+  pageId?: string | null
+): Promise<string | null> {
   const supabase = createAdminSupabaseClient();
-  const { data: integration } = await supabase
-    .from('integration_settings')
-    .select('config, is_active')
-    .eq('provider', provider)
-    .maybeSingle();
 
-  const configOrgId = sanitizeText((integration?.config as Record<string, unknown> | null)?.organization_id);
-  if (integration?.is_active && configOrgId) return configOrgId;
+  // Multi-tenant: look up which org owns this page_id
+  if (pageId) {
+    const { data: integration } = await supabase
+      .from('integration_settings')
+      .select('config, is_active')
+      .eq('provider', provider)
+      .eq('is_active', true)
+      .filter('config->>page_id', 'eq', pageId)
+      .maybeSingle();
 
+    const configOrgId = sanitizeText((integration?.config as Record<string, unknown> | null)?.organization_id);
+    if (configOrgId) return configOrgId;
+  }
+
+  // Single-tenant fallback: DEFAULT_ORG_ID env
   const envOrgId = sanitizeText(process.env.DEFAULT_ORG_ID);
   if (envOrgId) return envOrgId;
 
+  // Last resort: first active org (single-tenant dev)
   const { data: membership } = await supabase
     .from('organization_members')
     .select('organization_id')
@@ -182,12 +215,17 @@ export async function resolveLeadIngestionOrganization(provider: string): Promis
   return membership?.organization_id || null;
 }
 
-export async function getIntegrationConfig(provider: string): Promise<Record<string, unknown> | null> {
+export async function getIntegrationConfig(
+  provider: string,
+  organizationId: string
+): Promise<Record<string, unknown> | null> {
   const supabase = createAdminSupabaseClient();
   const { data } = await supabase
     .from('integration_settings')
     .select('config, is_active')
     .eq('provider', provider)
+    .eq('is_active', true)
+    .filter('config->>organization_id', 'eq', organizationId)
     .maybeSingle();
 
   if (!data?.is_active) return null;
@@ -256,14 +294,16 @@ export async function ingestLead(input: NormalizedLeadInput) {
         meta_ad_id: mergeNonEmpty(metaAdId, duplicateLead.meta_ad_id),
         stage_id: duplicateLead.stage_id || defaultStageId,
         score: duplicateLead.score ?? input.score ?? 0,
-        source_platform: input.source,
+        // Preserve higher-priority source: meta_lead_form > zapier > manual
+        source_platform: mergeSource(input.source, duplicateLead.source_platform),
         external_platform_id: metaLeadId || input.eventExternalId || duplicateLead.meta_lead_id || null,
         campaign_name: sanitizeText(input.campaignName),
         ad_name: sanitizeText(input.adName),
         form_name: sanitizeText(input.formName),
         assigned_to: input.assignedTo ?? duplicateLead.assigned_to ?? null,
         custom_fields: mergedCustomFields,
-        raw_payload: rawPayload,
+        // Only overwrite raw_payload if incoming has a value; don't erase existing data with null
+        ...(rawPayload != null ? { raw_payload: rawPayload } : {}),
         updated_at: new Date().toISOString(),
       };
 

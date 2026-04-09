@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { ingestLead, resolveLeadIngestionOrganization, type IngestionLeadSource } from '@/lib/leads/ingest';
+import { ingestLead, resolveLeadIngestionOrganization } from '@/lib/leads/ingest';
 
 type ZapierLeadPayload = {
   full_name?: string;
@@ -14,14 +14,17 @@ type ZapierLeadPayload = {
   raw_payload?: unknown;
 };
 
-function mapZapierSource(source: string | undefined): IngestionLeadSource {
-  if (source === 'meta_lead_form' || source === 'manual') return source;
-  return 'zapier';
-}
-
 export async function POST(request: NextRequest) {
   const secret = request.headers.get('x-zapier-secret');
-  if (!process.env.ZAPIER_INGEST_SECRET || secret !== process.env.ZAPIER_INGEST_SECRET) {
+  const configuredSecret = process.env.ZAPIER_INGEST_SECRET;
+
+  if (!configuredSecret) {
+    console.error('[zapier_leads] ZAPIER_INGEST_SECRET env is not set');
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+
+  if (secret !== configuredSecret) {
+    console.warn('[zapier_leads] Invalid secret in x-zapier-secret header');
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
@@ -44,7 +47,8 @@ export async function POST(request: NextRequest) {
       eventType: 'lead_forwarded',
       eventExternalId: body.meta_lead_id || body.email || body.phone || null,
       payload: body,
-      source: mapZapierSource(body.source),
+      // Always force source=zapier — never trust client-supplied source value
+      source: 'zapier',
       metaLeadId: body.meta_lead_id || null,
       metaFormId: body.meta_form_id || null,
       metaPageId: body.meta_page_id || null,
