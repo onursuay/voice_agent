@@ -95,8 +95,8 @@ export default function LoginPage() {
         </div>
 
         <div className="bg-white/[0.04] border border-white/10 rounded-2xl p-8 backdrop-blur-sm">
-          <h1 className="text-2xl font-bold text-white text-center mb-2">Giriş Yap</h1>
-          <p className="text-sm text-gray-400 text-center mb-6">Hesabınıza giriş yapın.</p>
+          <h1 className="text-2xl font-bold text-white text-center mb-2">{t('title')}</h1>
+          <p className="text-sm text-gray-400 text-center mb-6">{t('subtitle')}</p>
 
           {error && (
             <div className="mb-6 rounded-lg bg-red-500/10 border border-red-500/20 px-4 py-3">
