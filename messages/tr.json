@@ -34,7 +34,10 @@
     "email": "E-posta",
     "automations": "Otomasyonlar",
     "calls": "AI Aramalar",
-    "settings": "Ayarlar"
+    "settings": "Ayarlar",
+    "hesabim": "Hesabım",
+    "faturalarim": "Faturalarım",
+    "abonelik": "Abonelik"
   },
   "sidebar": {
     "expand": "Genişlet",
