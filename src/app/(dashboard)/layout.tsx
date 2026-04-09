@@ -8,6 +8,8 @@ import { Sidebar } from '@/components/layout/sidebar';
 import { Topbar } from '@/components/layout/topbar';
 import { Loader2 } from 'lucide-react';
 import type { Profile, Organization, OrganizationMember, CrmStage } from '@/lib/types';
+import { SubscriptionProvider } from '@/components/providers/SubscriptionProvider';
+import { CreditProvider } from '@/components/providers/CreditProvider';
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   const router = useRouter();
