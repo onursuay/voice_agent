@@ -45,7 +45,7 @@ export function LeadCreateModal({ open, onClose }: LeadCreateModalProps) {
     setError('');
 
     if (!form.first_name.trim() && !form.phone.trim()) {
-      setError('Ad veya telefon alani zorunludur.');
+      setError('Ad veya telefon alanı zorunludur.');
       return;
     }
 
@@ -63,7 +63,7 @@ export function LeadCreateModal({ open, onClose }: LeadCreateModalProps) {
 
       if (!res.ok) {
         const data = await res.json().catch(() => ({}));
-        throw new Error(data.error || 'Lead olusturulamadi.');
+        throw new Error(data.error || 'Lead oluşturulamadı.');
       }
 
       const newLead: Lead = await res.json();
@@ -95,16 +95,16 @@ export function LeadCreateModal({ open, onClose }: LeadCreateModalProps) {
     <Modal
       open={open}
       onClose={onClose}
-      title="Yeni Lead Olustur"
+      title="Yeni Lead Oluştur"
       description="Yeni bir lead kaydı ekleyin."
       size="lg"
       footer={
         <>
           <Button variant="secondary" onClick={onClose} disabled={loading}>
-            Iptal
+            İptal
           </Button>
           <Button variant="primary" loading={loading} onClick={handleSubmit}>
-            Olustur
+            Oluştur
           </Button>
         </>
       }
@@ -122,14 +122,14 @@ export function LeadCreateModal({ open, onClose }: LeadCreateModalProps) {
             name="first_name"
             value={form.first_name}
             onChange={(e) => handleChange('first_name', e.target.value)}
-            placeholder="Ornek: Ahmet"
+            placeholder="Örnek: Ahmet"
           />
           <Input
             label="Soyad"
             name="last_name"
             value={form.last_name}
             onChange={(e) => handleChange('last_name', e.target.value)}
-            placeholder="Ornek: Yilmaz"
+            placeholder="Örnek: Yılmaz"
           />
         </div>
 
@@ -154,14 +154,14 @@ export function LeadCreateModal({ open, onClose }: LeadCreateModalProps) {
 
         <div className="grid grid-cols-2 gap-4">
           <Input
-            label="Sirket"
+            label="Şirket"
             name="company"
             value={form.company}
             onChange={(e) => handleChange('company', e.target.value)}
-            placeholder="Sirket adi"
+            placeholder="Şirket adı"
           />
           <Input
-            label="Sehir"
+            label="Şehir"
             name="city"
             value={form.city}
             onChange={(e) => handleChange('city', e.target.value)}
@@ -186,12 +186,12 @@ export function LeadCreateModal({ open, onClose }: LeadCreateModalProps) {
             placeholder="Aşama seçin"
           />
           <Select
-            label="Atanan Kisi"
+            label="Atanan Kişi"
             name="assigned_to"
             value={form.assigned_to}
             onChange={(e) => handleChange('assigned_to', e.target.value)}
             options={memberOptions}
-            placeholder="Kisi secin"
+            placeholder="Kişi seçin"
           />
         </div>
       </form>

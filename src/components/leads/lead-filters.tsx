@@ -12,17 +12,17 @@ import type { FilterConfig } from '@/lib/types';
 // ── Operator labels ─────────────────────────────────────
 
 const OPERATOR_LABELS: Record<string, string> = {
-  eq: 'esittir',
-  neq: 'esit degildir',
-  contains: 'icerir',
-  not_contains: 'icermez',
-  gt: 'buyuktur',
-  lt: 'kucuktur',
-  gte: 'buyuk esittir',
-  lte: 'kucuk esittir',
-  in: 'icerir (coklu)',
-  is_empty: 'bos',
-  is_not_empty: 'bos degil',
+  eq: 'eşittir',
+  neq: 'eşit değildir',
+  contains: 'içerir',
+  not_contains: 'içermez',
+  gt: 'büyüktür',
+  lt: 'küçüktür',
+  gte: 'büyük eşittir',
+  lte: 'küçük eşittir',
+  in: 'içerir (çoklu)',
+  is_empty: 'boş',
+  is_not_empty: 'boş değil',
 };
 
 const TEXT_OPERATORS = ['contains', 'eq', 'not_contains', 'is_empty', 'is_not_empty'] as const;
@@ -97,7 +97,7 @@ function FilterRow({ onAdd, onCancel }: FilterRowProps) {
           type={selectedCol?.type === 'number' ? 'number' : 'text'}
           value={value}
           onChange={(e) => setValue(e.target.value)}
-          placeholder="Deger..."
+          placeholder="Değer..."
           className="w-40 rounded-md border border-gray-300 bg-white px-2 py-1.5 text-sm text-gray-700 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
         />
       )}
@@ -218,7 +218,7 @@ export function LeadFilters() {
           )}
 
           {filters.length === 0 && !adding && (
-            <p className="mt-2 text-xs text-gray-400">Henuz filtre eklenmedi.</p>
+            <p className="mt-2 text-xs text-gray-400">Henüz filtre eklenmedi.</p>
           )}
         </div>
       )}

@@ -33,7 +33,7 @@ type SettingsTab = 'organization' | 'members' | 'pipeline' | 'profile' | 'integr
 
 const TABS = [
   { key: 'organization', label: 'Organizasyon', icon: <Building2 className="h-4 w-4" /> },
-  { key: 'members', label: 'Uyeler', icon: <Users className="h-4 w-4" /> },
+  { key: 'members', label: 'Üyeler', icon: <Users className="h-4 w-4" /> },
   { key: 'pipeline', label: 'Pipeline Aşamaları', icon: <GitBranch className="h-4 w-4" /> },
   { key: 'profile', label: 'Profil', icon: <User className="h-4 w-4" /> },
   { key: 'integrations', label: 'Entegrasyonlar', icon: <Plug className="h-4 w-4" /> },
@@ -329,13 +329,13 @@ export default function SettingsPage() {
       });
       if (!res.ok) {
         const data = await res.json();
-        throw new Error(data.error || 'Siralama kaydedilemedi');
+        throw new Error(data.error || 'Sıralama kaydedilemedi');
       }
       const updatedStages = await res.json();
       setStages(updatedStages);
       setPipelineSuccess(true);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Siralama kaydedilemedi');
+      setError(err instanceof Error ? err.message : 'Sıralama kaydedilemedi');
     } finally {
       setPipelineSaving(false);
     }
@@ -449,8 +449,8 @@ export default function SettingsPage() {
                   <Users className="h-5 w-5 text-purple-600" />
                 </div>
                 <div>
-                  <h2 className="text-base font-semibold text-foreground">Organizasyon Uyeleri</h2>
-                  <p className="text-sm text-muted">Ekip uyelerini yonetin ve davet edin.</p>
+                  <h2 className="text-base font-semibold text-foreground">Organizasyon Üyeleri</h2>
+                  <p className="text-sm text-muted">Ekip üyelerini yönetin ve davet edin.</p>
                 </div>
               </div>
               <Button
@@ -473,7 +473,7 @@ export default function SettingsPage() {
                   }
                 }}
               >
-                Uye Davet Et
+                Üye Davet Et
               </Button>
             </div>
 
@@ -486,7 +486,7 @@ export default function SettingsPage() {
             ) : members.length === 0 ? (
               <div className="flex flex-col items-center justify-center py-12 text-center">
                 <Users className="h-10 w-10 text-gray-300 mb-3" />
-                <p className="text-sm text-muted">Henuz uye bulunmuyor.</p>
+                <p className="text-sm text-muted">Henüz üye bulunmuyor.</p>
               </div>
             ) : (
               <div className="divide-y divide-gray-100 rounded-lg border border-gray-200">
@@ -642,7 +642,7 @@ export default function SettingsPage() {
               {pipelineSuccess && (
                 <span className="flex items-center gap-1.5 text-sm font-medium text-green-600">
                   <Check className="h-4 w-4" />
-                  Siralama Kaydedildi
+                  Sıralama Kaydedildi
                 </span>
               )}
               <Button
@@ -650,7 +650,7 @@ export default function SettingsPage() {
                 loading={pipelineSaving}
                 icon={<Save className="h-4 w-4" />}
               >
-                Siralamayı Kaydet
+                Sıralamayı Kaydet
               </Button>
             </div>
           </div>

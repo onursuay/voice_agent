@@ -43,7 +43,7 @@ function SortDropdown() {
   const sortableColumns = LEAD_COLUMNS.filter((c) => c.sortable);
   const currentLabel = sort
     ? `${sortableColumns.find((c) => c.key === sort.column)?.label || sort.column} ${sort.direction === 'asc' ? '(A-Z)' : '(Z-A)'}`
-    : 'Siralama';
+    : 'Sıralama';
 
   return (
     <div ref={ref} className="relative">
@@ -68,7 +68,7 @@ function SortDropdown() {
               className="flex w-full items-center gap-2 px-3 py-2 text-sm text-red-500 hover:bg-red-50"
             >
               <X className="h-3.5 w-3.5" />
-              Siralamayi Kaldir
+              Sıralamayı Kaldır
             </button>
           )}
           <div className="border-b border-gray-100 my-1" />
@@ -146,7 +146,7 @@ function ColumnVisibilityDropdown() {
       {open && (
         <div className="absolute right-0 top-full z-50 mt-1.5 w-52 rounded-lg border border-gray-200 bg-white py-2 shadow-xl">
           <p className="mb-2 px-3 text-xs font-semibold uppercase tracking-wider text-gray-400">
-            Gorunur Kolonlar
+            Görünür Kolonlar
           </p>
           {toggleableColumns.map((col) => (
             <label
@@ -180,7 +180,7 @@ function BulkActionBar() {
     <div className="fixed bottom-0 left-0 right-0 z-40 border-t border-gray-200 bg-white px-6 py-3 shadow-lg">
       <div className="mx-auto flex max-w-7xl items-center gap-4">
         <span className="text-sm font-medium text-gray-700">
-          {selectedLeadIds.size} secili
+          {selectedLeadIds.size} seçili
         </span>
         <div className="flex items-center gap-2">
           <Button variant="secondary" size="sm" icon={<GitBranch className="h-4 w-4" />}>
@@ -198,7 +198,7 @@ function BulkActionBar() {
         </div>
         <div className="ml-auto">
           <Button variant="ghost" size="sm" onClick={clearSelection}>
-            Secimi Kaldir
+            Seçimi Kaldır
           </Button>
         </div>
       </div>

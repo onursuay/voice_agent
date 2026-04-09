@@ -242,13 +242,13 @@ function DetailTab({ lead }: { lead: Lead }) {
   return (
     <div className="p-4 space-y-0 overflow-y-auto">
       {/* Contact Info */}
-      <Section title="Iletisim Bilgileri">
+      <Section title="İletişim Bilgileri">
         <InfoRow icon={<Phone className="h-4 w-4" />} label="Telefon" value={lead.phone} copyable />
         <InfoRow icon={<Mail className="h-4 w-4" />} label="E-posta" value={lead.email} copyable />
-        <InfoRow icon={<Building2 className="h-4 w-4" />} label="Sirket" value={lead.company} />
-        <InfoRow icon={<Briefcase className="h-4 w-4" />} label="Unvan" value={lead.job_title} />
-        <InfoRow icon={<MapPin className="h-4 w-4" />} label="Sehir" value={lead.city} />
-        <InfoRow icon={<Globe className="h-4 w-4" />} label="Ulke" value={lead.country} />
+        <InfoRow icon={<Building2 className="h-4 w-4" />} label="Şirket" value={lead.company} />
+        <InfoRow icon={<Briefcase className="h-4 w-4" />} label="Ünvan" value={lead.job_title} />
+        <InfoRow icon={<MapPin className="h-4 w-4" />} label="Şehir" value={lead.city} />
+        <InfoRow icon={<Globe className="h-4 w-4" />} label="Ülke" value={lead.country} />
       </Section>
 
       {/* CRM Section */}
@@ -288,13 +288,13 @@ function DetailTab({ lead }: { lead: Lead }) {
 
           {/* Assigned */}
           <div>
-            <p className="text-xs text-gray-500 mb-1">Atanan Kisi</p>
+            <p className="text-xs text-gray-500 mb-1">Atanan Kişi</p>
             <select
               value={lead.assigned_to || ''}
               onChange={(e) => handleAssignChange(e.target.value)}
               className="block w-full appearance-none rounded-lg border border-gray-300 bg-white px-3 py-1.5 text-sm text-gray-900 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
             >
-              <option value="">Atanmamis</option>
+              <option value="">Atanmamış</option>
               {members.map((m) => (
                 <option key={m.user_id} value={m.user_id}>
                   {m.profile?.full_name || m.user_id}
@@ -435,7 +435,7 @@ function DetailTab({ lead }: { lead: Lead }) {
 
       {/* Custom Fields */}
       {lead.custom_fields && Object.keys(lead.custom_fields).length > 0 && (
-        <Section title="Ozel Alanlar">
+        <Section title="Özel Alanlar">
           <div className="space-y-2">
             {Object.entries(lead.custom_fields).map(([key, value]) => (
               <div key={key} className="flex items-start gap-2">
@@ -489,8 +489,8 @@ function ActivitiesTab({ leadId }: { leadId: string }) {
     return (
       <div className="flex flex-col items-center justify-center py-16 text-center">
         <Clock className="h-10 w-10 text-gray-300 mb-3" />
-        <p className="text-sm font-medium text-gray-500">Henuz aktivite yok</p>
-        <p className="text-xs text-gray-400 mt-1">Bu lead icin henuz bir aktivite kaydedilmedi.</p>
+        <p className="text-sm font-medium text-gray-500">Henüz aktivite yok</p>
+        <p className="text-xs text-gray-400 mt-1">Bu lead için henüz bir aktivite kaydedilmedi.</p>
       </div>
     );
   }
@@ -611,8 +611,8 @@ function NotesTab({ leadId }: { leadId: string }) {
         {notes.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-12 text-center">
             <MessageSquare className="h-10 w-10 text-gray-300 mb-3" />
-            <p className="text-sm font-medium text-gray-500">Henuz not yok</p>
-            <p className="text-xs text-gray-400 mt-1">Bu lead icin ilk notu siz ekleyin.</p>
+            <p className="text-sm font-medium text-gray-500">Henüz not yok</p>
+            <p className="text-xs text-gray-400 mt-1">Bu lead için ilk notu siz ekleyin.</p>
           </div>
         ) : (
           notes.map((note) => (
@@ -738,7 +738,7 @@ export function LeadDetailDrawer({ onDelete, onEdit }: LeadDetailDrawerProps) {
             />
             <div className="min-w-0">
               <h2 className="text-base font-semibold text-gray-900 truncate">
-                {lead.full_name || 'Isimsiz Lead'}
+                {lead.full_name || 'İsimsiz Lead'}
               </h2>
               {lead.company && (
                 <p className="text-xs text-gray-500 truncate">{lead.company}</p>
@@ -759,7 +759,7 @@ export function LeadDetailDrawer({ onDelete, onEdit }: LeadDetailDrawerProps) {
               items={[
                 {
                   key: 'edit',
-                  label: 'Duzenle',
+                  label: 'Düzenle',
                   icon: <Edit3 className="h-4 w-4" />,
                   onClick: () => onEdit?.(lead.id),
                 },
