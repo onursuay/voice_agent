@@ -229,7 +229,7 @@ export default function FaturalarimPage() {
                             ? 'bg-green-100 text-green-700'
                             : 'bg-amber-100 text-amber-700'
                         }`}>
-                          {inv.status === 'paid' ? 'Ödendi' : 'Beklemede'}
+                          {inv.status === 'paid' ? t('paid') : t('pending')}
                         </span>
                       </td>
                     </tr>
