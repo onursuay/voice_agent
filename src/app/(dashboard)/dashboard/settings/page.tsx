@@ -489,7 +489,7 @@ export default function SettingsPage() {
             ) : members.length === 0 ? (
               <div className="flex flex-col items-center justify-center py-12 text-center">
                 <Users className="h-10 w-10 text-gray-300 mb-3" />
-                <p className="text-sm text-muted">Henüz üye bulunmuyor.</p>
+                <p className="text-sm text-muted">{t('members.noMembers')}</p>
               </div>
             ) : (
               <div className="divide-y divide-gray-100 rounded-lg border border-gray-200">
