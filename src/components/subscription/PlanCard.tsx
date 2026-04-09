@@ -62,11 +62,11 @@ export default function PlanCard({
       {/* Badge */}
       {highlighted && plan.trialDays > 0 ? (
         <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 bg-indigo-600 text-white text-[10px] font-bold rounded-full uppercase tracking-wide">
-          {plan.trialDays} Gün Ücretsiz
+          {t('trialDays', { days: plan.trialDays })}
         </div>
       ) : highlighted ? (
         <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 bg-indigo-600 text-white text-[10px] font-bold rounded-full uppercase tracking-wide">
-          En Popüler
+          {t('popular')}
         </div>
       ) : null}
 
