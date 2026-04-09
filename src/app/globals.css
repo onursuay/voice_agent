@@ -53,8 +53,8 @@ body {
 ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
 ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
 
-/* Focus rings */
-input:focus, select:focus, textarea:focus {
+/* Focus rings - scoped to dashboard only */
+.dashboard-focus input:focus, .dashboard-focus select:focus, .dashboard-focus textarea:focus {
   outline: none;
   border-color: var(--accent) !important;
   box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);

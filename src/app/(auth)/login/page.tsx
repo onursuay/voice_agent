@@ -82,10 +82,10 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#060609] flex items-center justify-center px-4 py-6 relative overflow-hidden" style={{ fontSize: '16px' }}>
+    <div className="min-h-screen bg-[#060609] flex items-center justify-center px-4 py-6 relative overflow-hidden">
       <canvas ref={canvasRef} className="absolute inset-0 w-full h-full pointer-events-none" aria-hidden="true" />
 
-      <div className="w-full max-w-md relative z-10">
+      <div className="w-full max-w-[380px] relative z-10">
         <div className="flex justify-center mb-5">
           <Link href="/">
             <Image src="/logos/yoai-logo.png" alt="Yo Dijital" width={80} height={28} className="brightness-0 invert" priority />
