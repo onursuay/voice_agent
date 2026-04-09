@@ -142,7 +142,7 @@ export default function HesabimPage() {
 
           {/* Help access toggle */}
           <div className="flex items-center justify-between mb-6">
-            <label className="text-sm text-gray-700">Yardım erişimine izin ver</label>
+            <label className="text-sm text-gray-700">{t('helpAccess')}</label>
             <button
               onClick={() => setProfile({ ...profile, helpAccessEnabled: !profile.helpAccessEnabled })}
               className={`relative w-10 h-5 rounded-full transition-colors ${
