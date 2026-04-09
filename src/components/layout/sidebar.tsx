@@ -249,7 +249,7 @@ export function Sidebar() {
             {/* Menu items */}
             <div className="py-1">
               <Link
-                href="/dashboard/settings?tab=profile"
+                href="/dashboard/hesabim"
                 onClick={() => setDropdownOpen(false)}
                 className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
               >
@@ -257,23 +257,23 @@ export function Sidebar() {
                 <span>Hesabım</span>
               </Link>
               <Link
-                href="/dashboard/settings?tab=members"
+                href="/dashboard/faturalarim"
                 onClick={() => setDropdownOpen(false)}
                 className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
               >
                 <FileText className="w-4 h-4 text-gray-500" />
-                <span>Üyeler</span>
+                <span>Faturalarım</span>
               </Link>
               <Link
-                href="/dashboard/settings?tab=integrations"
+                href="/dashboard/abonelik"
                 onClick={() => setDropdownOpen(false)}
                 className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
               >
                 <CreditCard className="w-4 h-4 text-gray-500" />
-                <span>Entegrasyonlar</span>
+                <span>Abonelik</span>
               </Link>
               <Link
-                href="/dashboard/settings"
+                href="#"
                 onClick={() => setDropdownOpen(false)}
                 className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
               >
