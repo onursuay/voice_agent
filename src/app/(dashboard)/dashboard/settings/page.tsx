@@ -645,7 +645,7 @@ export default function SettingsPage() {
               {pipelineSuccess && (
                 <span className="flex items-center gap-1.5 text-sm font-medium text-green-600">
                   <Check className="h-4 w-4" />
-                  Sıralama Kaydedildi
+                  {t('pipeline.sortingSaved')}
                 </span>
               )}
               <Button
@@ -653,7 +653,7 @@ export default function SettingsPage() {
                 loading={pipelineSaving}
                 icon={<Save className="h-4 w-4" />}
               >
-                Sıralamayı Kaydet
+                {t('pipeline.saveSorting')}
               </Button>
             </div>
           </div>
