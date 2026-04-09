@@ -10,6 +10,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { ROLE_LABELS } from '@/lib/types';
 import type { Organization, Profile, OrganizationMember, CrmStage, UserRole } from '@/lib/types';
+import { useTranslations } from 'next-intl';
 import {
   Building2,
   Users,
