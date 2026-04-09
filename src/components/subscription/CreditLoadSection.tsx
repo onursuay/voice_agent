@@ -94,10 +94,10 @@ export default function CreditLoadSection() {
         }`}
       >
         {purchased
-          ? 'Kredi Yüklendi!'
+          ? t('credits.purchased')
           : selectedPkg
-            ? `₺${selectedPkg.price} — Satın Al`
-            : 'Paket Seçin'}
+            ? `₺${selectedPkg.price} — ${t('credits.buy')}`
+            : t('credits.selectPackage')}
       </button>
 
       {/* Info */}
