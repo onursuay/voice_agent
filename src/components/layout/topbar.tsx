@@ -71,7 +71,7 @@ export function Topbar() {
           <Menu className="h-5 w-5" />
         </button>
         <p className="text-sm font-medium bg-gradient-to-r from-indigo-600 via-purple-500 to-indigo-600 bg-[length:200%_auto] animate-[gradient-shift_3s_ease_infinite] bg-clip-text text-transparent">
-          Sat{"\u0131"}{"\u015f"} ekibinizin yapay zeka g{"\u00fc"}c{"\u00fc"}.
+          {tTopbar('tagline')}
         </p>
       </div>
 
