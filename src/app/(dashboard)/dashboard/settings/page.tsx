@@ -753,7 +753,7 @@ export default function SettingsPage() {
                         icon={<ExternalLink className="h-3.5 w-3.5" />}
                         onClick={() => window.location.href = '/api/integrations/meta/connect'}
                       >
-                        Yeniden Bağla
+                        {t('integrations.reconnect')}
                       </Button>
                       <Button
                         variant="ghost"
@@ -762,7 +762,7 @@ export default function SettingsPage() {
                         loading={metaDisconnecting}
                         className="text-red-500 hover:text-red-600 hover:bg-red-50"
                       >
-                        Bağlantıyı Kes
+                        {tCommon('disconnect')}
                       </Button>
                     </>
                   ) : (
@@ -772,7 +772,7 @@ export default function SettingsPage() {
                       icon={<ExternalLink className="h-3.5 w-3.5" />}
                       onClick={() => window.location.href = '/api/integrations/meta/connect'}
                     >
-                      Meta&apos;ya Bağlan
+                      {t('integrations.connectMeta')}
                     </Button>
                   )}
                 </div>
