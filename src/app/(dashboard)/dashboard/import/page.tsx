@@ -40,10 +40,10 @@ import { useAppStore } from '@/lib/store';
 // ============================================
 
 const STEPS = [
-  { num: 1, label: 'Dosya Yukle' },
-  { num: 2, label: 'Sutun Eslestirme' },
-  { num: 3, label: 'Onizleme' },
-  { num: 4, label: 'Sonuc' },
+  { num: 1, label: 'Dosya Yükle' },
+  { num: 2, label: 'Sütun Eşleştirme' },
+  { num: 3, label: 'Önizleme' },
+  { num: 4, label: 'Sonuç' },
 ];
 
 function StepIndicator({ current }: { current: number }) {
@@ -233,6 +233,13 @@ function autoMapHeader(header: string): string {
   if (AUTO_MAP[collapsed]) return AUTO_MAP[collapsed];
   const noSpace = normalized.replace(/\s+/g, '');
   if (AUTO_MAP[noSpace]) return AUTO_MAP[noSpace];
+
+  // Contains-based fallback for critical fields
+  if (normalized.includes('email') || normalized.includes('e posta') || normalized.includes('eposta') || normalized === 'mail') return 'email';
+  if (normalized.includes('telefon') || normalized.includes('phone') || normalized.includes('gsm') || normalized.includes('cep no') || normalized.includes('mobile')) return 'phone';
+  if ((normalized.includes('soyad') || normalized === 'surname' || normalized === 'lastname')) return 'last_name';
+  if ((normalized === 'ad' || normalized === 'adi' || normalized === 'isim') && !normalized.includes('soyad')) return 'first_name';
+  if (normalized.includes('ulke') || normalized === 'country') return 'country';
 
   return '_skip';
 }
@@ -828,9 +835,27 @@ export default function ImportPage() {
           </div>
         )}
 
-        <div className="flex items-center gap-2 text-xs text-gray-400">
-          <Link2 className="h-3.5 w-3.5" />
-          <span>Bağlantı kesilmek için sayfayı yenileyin ve farklı bir Google hesabıyla bağlanın.</span>
+        {/* Disconnect toggle */}
+        <div className="flex items-center justify-between rounded-lg border border-gray-200 bg-gray-50 px-4 py-3">
+          <div className="flex items-center gap-2 text-sm text-gray-600">
+            <Link2 className="h-4 w-4 text-green-500" />
+            <span>Google hesabı bağlı</span>
+          </div>
+          <button
+            onClick={async () => {
+              await fetch('/api/integrations/google/disconnect', { method: 'DELETE' });
+              setGoogleConnected(false);
+              setSheetsFiles([]);
+              setSelectedSpreadsheet(null);
+              setSpreadsheetTabs([]);
+              setSelectedTab('');
+              setHeaders([]);
+              setRows([]);
+            }}
+            className="rounded-lg border border-red-200 bg-white px-3 py-1.5 text-xs font-medium text-red-600 hover:bg-red-50 transition-colors"
+          >
+            Bağlantıyı Kes
+          </button>
         </div>
       </div>
     );
