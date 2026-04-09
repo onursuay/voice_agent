@@ -28,6 +28,7 @@ import {
 } from 'lucide-react';
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { useSubscription } from '@/components/providers/SubscriptionProvider';
+import { useTranslations } from 'next-intl';
 
 interface NavItem {
   id: string;
