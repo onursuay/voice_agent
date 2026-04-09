@@ -66,7 +66,7 @@ export default function CreditLoadSection() {
                 </div>
                 <div>
                   <p className="text-sm font-semibold text-gray-900">{pkg.label}</p>
-                  <p className="text-sm text-gray-500">{pkg.credits} kredi</p>
+                  <p className="text-sm text-gray-500">{pkg.credits}</p>
                 </div>
                 {pkg.popular && (
                   <span className="px-2 py-0.5 text-[10px] font-bold bg-indigo-600 text-white rounded-full">
