@@ -18,7 +18,7 @@ Meta reklamlarından (Facebook, Instagram, WhatsApp, Messenger) gelen tüm lead'
 ### Avantajlar
 | Avantaj | Detay |
 |---------|-------|
-| Çok kanallı toplama | Meta Lead Form, WhatsApp, Instagram DM, Messenger, Website, Manuel |
+| Çok kanallı toplama | Lead, WhatsApp, Instagram, Messenger, Website, Manuel |
 | Otomatik dedupe | Aynı kişi farklı kanallardan gelirse tek lead altında birleşir |
 | Airtable benzeri grid | Inline edit, filtre, sıralama, bulk action, keyboard navigation |
 | CRM Pipeline | Drag-drop Kanban, aşama takibi, stage history |
@@ -42,7 +42,7 @@ Meta reklamlarından (Facebook, Instagram, WhatsApp, Messenger) gelen tüm lead'
 | **E-posta** | E-posta gönderim merkezi. Tek/toplu gönderim, şablon oluşturma, gönderim geçmişi. Resend API ile info@yodijital.com'dan gönderim |
 | **Otomasyonlar** | Kural motoru. "Lead oluşturulduğunda → satış ekibine ata", "3 gün hareketsiz → hatırlatıcı gönder", "Skor 80 üstü → VIP etiketi ekle" gibi tetikleyici-aksiyon kuralları |
 | **AI Aramalar** | Yapay zeka ile otomatik telefon araması. Lead seç → senaryo yaz → ses profili seç → kuyruğa ekle. Arama sonrası transkript, AI özet, sonuç sınıflandırma (ilgili/ilgisiz/geri aranacak) |
-| **Ayarlar** | Organizasyon bilgileri, üye yönetimi, pipeline aşamalarını özelleştirme (renk, sıra, ekleme/silme), profil düzenleme |
+| **Ayarlar** | Organizasyon bilgileri, üye yönetimi, pipeline aşamalarını özelleştirme (renk, sıra, ekleme/silme), profil düzenleme, entegrasyon yönetimi (Meta bağlantısı) |
 
 ---
 
