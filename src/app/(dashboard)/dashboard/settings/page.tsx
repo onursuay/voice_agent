@@ -32,14 +32,6 @@ import {
 
 type SettingsTab = 'organization' | 'members' | 'pipeline' | 'profile' | 'integrations';
 
-const TABS = [
-  { key: 'organization', label: 'Organizasyon', icon: <Building2 className="h-4 w-4" /> },
-  { key: 'members', label: 'Üyeler', icon: <Users className="h-4 w-4" /> },
-  { key: 'pipeline', label: 'Pipeline Aşamaları', icon: <GitBranch className="h-4 w-4" /> },
-  { key: 'profile', label: 'Profil', icon: <User className="h-4 w-4" /> },
-  { key: 'integrations', label: 'Entegrasyonlar', icon: <Plug className="h-4 w-4" /> },
-];
-
 const ROLE_COLORS: Record<UserRole, 'indigo' | 'purple' | 'blue' | 'green' | 'yellow' | 'gray'> = {
   owner: 'indigo',
   admin: 'purple',
