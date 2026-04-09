@@ -71,7 +71,7 @@ export default function CreditLoadSection() {
                 {pkg.popular && (
                   <span className="px-2 py-0.5 text-[10px] font-bold bg-indigo-600 text-white rounded-full">
                     <Sparkles className="w-3 h-3 inline mr-0.5" />
-                    Popüler
+                    {t('credits.popular')}
                   </span>
                 )}
               </div>
