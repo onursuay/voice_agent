@@ -797,7 +797,7 @@ export function LeadGrid() {
   }
 
   return (
-    <div ref={gridRef} className="relative flex-1 overflow-auto rounded-lg border border-gray-200 bg-white">
+    <div ref={gridRef} className="absolute inset-0 overflow-auto rounded-lg border border-gray-200 bg-white">
       <SavedToast show={showSaved} />
 
       {contextMenu && (() => {
