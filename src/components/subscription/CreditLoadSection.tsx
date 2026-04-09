@@ -7,6 +7,7 @@ import { useCredits } from '@/components/providers/CreditProvider'
 import { CREDIT_PACKAGES } from '@/lib/subscription/plans'
 
 export default function CreditLoadSection() {
+  const t = useTranslations('abonelik')
   const { credits, addCredits } = useCredits()
   const [selectedId, setSelectedId] = useState<string | null>(null)
   const [purchased, setPurchased] = useState(false)
