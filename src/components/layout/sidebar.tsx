@@ -238,7 +238,7 @@ export function Sidebar() {
             {!collapsed && (
               <div className="text-left">
                 <div className="text-sm font-medium text-gray-900 truncate max-w-[140px]">
-                  {session?.user?.full_name || 'Kullanıcı'}
+                  {session?.user?.full_name || tSidebar('user')}
                 </div>
                 <div className="text-xs text-indigo-600 font-medium">{statusLabel}</div>
               </div>
@@ -246,7 +246,7 @@ export function Sidebar() {
           </div>
         </button>
 
-        {/* Dropdown — birebir YoAi yapısı */}
+        {/* Dropdown */}
         {dropdownOpen && (
           <div
             className={`absolute z-50 bg-white border border-gray-200 rounded-xl shadow-lg py-1 w-56 ${
@@ -256,44 +256,32 @@ export function Sidebar() {
             {/* User header */}
             <div className="px-4 py-3 border-b border-gray-100">
               <p className="text-sm font-medium text-gray-900">
-                {session?.user?.full_name || 'Kullanıcı'}
+                {session?.user?.full_name || tSidebar('user')}
               </p>
               <p className="text-xs text-indigo-600 font-medium">{statusLabel}</p>
             </div>
 
             {/* Menu items */}
             <div className="py-1">
-              <Link
-                href="/dashboard/hesabim"
-                onClick={() => setDropdownOpen(false)}
-                className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
-              >
+              <Link href="/dashboard/hesabim" onClick={() => setDropdownOpen(false)}
+                className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
                 <User className="w-4 h-4 text-gray-500" />
-                <span>Hesabım</span>
+                <span>{tSidebar('hesabim')}</span>
               </Link>
-              <Link
-                href="/dashboard/faturalarim"
-                onClick={() => setDropdownOpen(false)}
-                className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
-              >
+              <Link href="/dashboard/faturalarim" onClick={() => setDropdownOpen(false)}
+                className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
                 <FileText className="w-4 h-4 text-gray-500" />
-                <span>Faturalarım</span>
+                <span>{tSidebar('faturalarim')}</span>
               </Link>
-              <Link
-                href="/dashboard/abonelik"
-                onClick={() => setDropdownOpen(false)}
-                className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
-              >
+              <Link href="/dashboard/abonelik" onClick={() => setDropdownOpen(false)}
+                className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
                 <CreditCard className="w-4 h-4 text-gray-500" />
-                <span>Abonelik</span>
+                <span>{tSidebar('abonelik')}</span>
               </Link>
-              <Link
-                href="#"
-                onClick={() => setDropdownOpen(false)}
-                className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
-              >
+              <Link href="#" onClick={() => setDropdownOpen(false)}
+                className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
                 <HelpCircle className="w-4 h-4 text-gray-500" />
-                <span>Yardım Merkezi</span>
+                <span>{tSidebar('yardimMerkezi')}</span>
               </Link>
             </div>
 
@@ -305,19 +293,27 @@ export function Sidebar() {
               >
                 <div className="flex items-center gap-3">
                   <Globe className="w-4 h-4 text-gray-500" />
-                  <span>Dil</span>
+                  <span>{tSidebar('dil')}</span>
                 </div>
                 <ChevronRight className={`w-4 h-4 text-gray-400 transition-transform ${langOpen ? 'rotate-90' : ''}`} />
               </button>
               {langOpen && (
                 <div className="ml-7 py-1">
-                  <button className="w-full flex items-center gap-2 px-4 py-2 text-sm text-gray-600 hover:bg-gray-50">
-                    <Check className="w-3 h-3 text-indigo-600" />
-                    <span className="text-indigo-600 font-medium">Türkçe</span>
+                  <button
+                    onClick={() => handleLanguageChange('tr')}
+                    className="w-full flex items-center gap-2 px-4 py-2 text-sm text-gray-600 hover:bg-gray-50"
+                  >
+                    {currentLocale === 'tr' && <Check className="w-3 h-3 text-indigo-600" />}
+                    {currentLocale !== 'tr' && <span className="w-3" />}
+                    <span className={currentLocale === 'tr' ? 'text-indigo-600 font-medium' : ''}>Türkçe</span>
                   </button>
-                  <button className="w-full flex items-center gap-2 px-4 py-2 text-sm text-gray-600 hover:bg-gray-50">
-                    <span className="w-3" />
-                    <span>English</span>
+                  <button
+                    onClick={() => handleLanguageChange('en')}
+                    className="w-full flex items-center gap-2 px-4 py-2 text-sm text-gray-600 hover:bg-gray-50"
+                  >
+                    {currentLocale === 'en' && <Check className="w-3 h-3 text-indigo-600" />}
+                    {currentLocale !== 'en' && <span className="w-3" />}
+                    <span className={currentLocale === 'en' ? 'text-indigo-600 font-medium' : ''}>English</span>
                   </button>
                 </div>
               )}
@@ -330,7 +326,7 @@ export function Sidebar() {
                 className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 transition-colors"
               >
                 <LogOut className="w-4 h-4" />
-                <span>Çıkış Yap</span>
+                <span>{tSidebar('cikisYap')}</span>
               </button>
             </div>
           </div>
