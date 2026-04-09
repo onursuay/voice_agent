@@ -280,9 +280,6 @@ export default function ImportPage() {
         }
         return null;
       })
-      .then((data) => {
-        if (data?.files) setSheetsFiles(data.files);
-      })
       .catch(() => {});
 
     if (googleParam === 'connected') {
@@ -291,6 +288,7 @@ export default function ImportPage() {
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
 
   // ---- Search Google Sheets files ----
   useEffect(() => {
