@@ -235,7 +235,7 @@ export default function HesabimPage() {
               onClick={handleSavePassword}
               className="w-full py-2.5 bg-indigo-600 text-white font-medium rounded-lg hover:bg-indigo-700 transition-colors text-sm"
             >
-              {pwSaved ? 'Şifre Güncellendi ✓' : 'Şifreyi Güncelle'}
+              {pwSaved ? t('passwordSaved') : t('savePassword')}
             </button>
           </div>
         </div>
