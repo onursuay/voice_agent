@@ -209,10 +209,10 @@ export default function FaturalarimPage() {
               <table className="w-full text-sm">
                 <thead>
                   <tr className="border-b border-gray-100">
-                    <th className="text-left py-2 px-2 text-xs font-medium text-gray-500">Tarih</th>
-                    <th className="text-left py-2 px-2 text-xs font-medium text-gray-500">Açıklama</th>
-                    <th className="text-right py-2 px-2 text-xs font-medium text-gray-500">Tutar</th>
-                    <th className="text-right py-2 px-2 text-xs font-medium text-gray-500">Durum</th>
+                    <th className="text-left py-2 px-2 text-xs font-medium text-gray-500">{t('date')}</th>
+                    <th className="text-left py-2 px-2 text-xs font-medium text-gray-500">{t('description')}</th>
+                    <th className="text-right py-2 px-2 text-xs font-medium text-gray-500">{t('amount')}</th>
+                    <th className="text-right py-2 px-2 text-xs font-medium text-gray-500">{t('status')}</th>
                   </tr>
                 </thead>
                 <tbody>
