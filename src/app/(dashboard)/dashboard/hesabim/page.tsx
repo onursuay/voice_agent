@@ -191,13 +191,13 @@ export default function HesabimPage() {
 
             {/* New password */}
             <div>
-              <label className="block text-sm font-medium text-gray-600 mb-1.5">Yeni Şifre</label>
+              <label className="block text-sm font-medium text-gray-600 mb-1.5">{t('newPasswordLabel')}</label>
               <div className="relative">
                 <input
                   type={showNewPw ? 'text' : 'password'}
                   value={newPassword}
                   onChange={e => setNewPassword(e.target.value)}
-                  placeholder="Yeni şifre"
+                  placeholder={t('newPassword')}
                   className="w-full px-3 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500 pr-10"
                 />
                 <button
