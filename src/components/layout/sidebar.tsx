@@ -101,11 +101,27 @@ export function Sidebar() {
     return pathname.startsWith(href);
   };
 
+  // Close dropdown on outside click
+  useEffect(() => {
+    function handleClick(e: MouseEvent) {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+        setDropdownOpen(false);
+        setLangOpen(false);
+      }
+    }
+    if (dropdownOpen) document.addEventListener('mousedown', handleClick);
+    return () => document.removeEventListener('mousedown', handleClick);
+  }, [dropdownOpen]);
+
   const handleLogout = async () => {
     const supabase = createClient();
     await supabase.auth.signOut();
     router.push('/login');
   };
+
+  const roleLabel = session?.membership?.role
+    ? ROLE_LABELS[session.membership.role as UserRole]
+    : '';
 
   // SSR placeholder
   if (!ready) {
