@@ -4,6 +4,7 @@ import { usePathname } from 'next/navigation';
 import { useAppStore } from '@/lib/store';
 import { getInitials } from '@/lib/utils';
 import { Menu, Search, Bell, ChevronDown } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import { useState, useRef, useEffect } from 'react';
 import { createClient } from '@/lib/supabase/client';
 import { useRouter } from 'next/navigation';
