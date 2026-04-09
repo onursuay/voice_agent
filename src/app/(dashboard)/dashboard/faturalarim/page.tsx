@@ -106,7 +106,7 @@ export default function FaturalarimPage() {
                   type="tel"
                   value={info.phone}
                   onChange={e => setInfo({ ...info, phone: e.target.value })}
-                  placeholder="531 232 34 56"
+                  placeholder={t('phonePlaceholder')}
                   className="flex-1 px-3 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500"
                 />
               </div>
