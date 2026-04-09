@@ -197,12 +197,12 @@ export default function FaturalarimPage() {
 
         {/* Right: Invoice History */}
         <div className="bg-white rounded-2xl border border-gray-200 p-6">
-          <h3 className="text-base font-bold text-gray-900 mb-1">Fatura Geçmişi</h3>
-          <p className="text-sm text-gray-500 mb-5">Geçmiş faturalarınızı buradan görüntüleyebilirsiniz.</p>
+          <h3 className="text-base font-bold text-gray-900 mb-1">{t('historyTitle')}</h3>
+          <p className="text-sm text-gray-500 mb-5">{t('historyDesc')}</p>
 
           {history.length === 0 ? (
             <div className="text-center py-12">
-              <p className="text-sm text-gray-400">Henüz fatura bulunmuyor.</p>
+              <p className="text-sm text-gray-400">{t('noInvoices')}</p>
             </div>
           ) : (
             <div className="overflow-x-auto">
