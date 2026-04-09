@@ -146,10 +146,10 @@ export default function AbonelikPage() {
               <div className="flex items-center justify-between py-4">
                 <div className="flex items-center gap-2.5 text-sm text-gray-500">
                   <CreditCard className="w-4 h-4" />
-                  <span>Faturalama</span>
+                  <span>{t('billingLabel')}</span>
                 </div>
                 <span className="text-sm text-gray-700">
-                  {subscription.billingCycle === 'monthly' ? 'Aylık' : 'Yıllık'}
+                  {subscription.billingCycle === 'monthly' ? t('monthly') : t('yearly')}
                 </span>
               </div>
             </div>
