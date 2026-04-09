@@ -406,7 +406,7 @@ export default function SettingsPage() {
 
             {/* Logo placeholder */}
             <div>
-              <label className="mb-1.5 block text-sm font-medium text-gray-700">Logo</label>
+              <label className="mb-1.5 block text-sm font-medium text-gray-700">{t('org.logoLabel')}</label>
               <div className="flex items-center gap-4">
                 <div className="flex h-16 w-16 items-center justify-center rounded-xl border-2 border-dashed border-gray-300 bg-gray-50">
                   {org?.logo_url ? (
@@ -419,9 +419,9 @@ export default function SettingsPage() {
                 <div>
                   <Button variant="secondary" size="sm" disabled>
                     <Upload className="h-3.5 w-3.5" />
-                    Logo Yukle
+                    {t('org.uploadLogo')}
                   </Button>
-                  <p className="mt-1 text-xs text-muted">PNG, JPG, SVG. Maks. 1MB. (Yakinda)</p>
+                  <p className="mt-1 text-xs text-muted">{t('org.logoHelp')}</p>
                 </div>
               </div>
             </div>
