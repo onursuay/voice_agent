@@ -54,6 +54,13 @@ export function Sidebar() {
   const pathname = usePathname();
   const router = useRouter();
   const { session, setSidebarOpen } = useAppStore();
+  const tNav = useTranslations('nav');
+  const tSidebar = useTranslations('sidebar');
+
+  const navItems = NAV_ITEMS_BASE.map(item => ({
+    ...item,
+    label: tNav(item.labelKey),
+  }));
 
   const [collapsed, setCollapsed] = useState(true);
   const [ready, setReady] = useState(false);
