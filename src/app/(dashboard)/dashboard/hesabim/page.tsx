@@ -244,18 +244,18 @@ export default function HesabimPage() {
       {/* Referral Section */}
       <div className="bg-gradient-to-r from-indigo-50 to-indigo-100 rounded-2xl border border-indigo-200 p-6">
         <h3 className="text-center text-lg font-bold text-gray-900 mb-6">
-          Arkadaşlarını Davet Et, Birlikte Kazan
+          {t('referralTitle')}
         </h3>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* Referral Info */}
           <div>
-            <h4 className="text-sm font-bold text-gray-900 mb-1">Referans Bilgileri</h4>
-            <p className="text-sm text-gray-500 mb-4">Arkadaşlarını davet et, her kayıt için indirim kazan.</p>
+            <h4 className="text-sm font-bold text-gray-900 mb-1">{t('referralInfo')}</h4>
+            <p className="text-sm text-gray-500 mb-4">{t('referralInfoDesc')}</p>
 
             {/* Referral code */}
             <div className="mb-3">
-              <label className="block text-sm font-medium text-gray-600 mb-1.5">Referans Kodun</label>
+              <label className="block text-sm font-medium text-gray-600 mb-1.5">{t('referralCode')}</label>
               <div className="flex gap-2">
                 <input
                   type="text"
@@ -268,14 +268,14 @@ export default function HesabimPage() {
                   className="px-4 py-2.5 text-sm font-medium text-gray-600 border border-gray-300 rounded-lg hover:bg-gray-50 flex items-center gap-1.5 bg-white"
                 >
                   {codeCopied ? <Check className="w-4 h-4 text-indigo-600" /> : <Copy className="w-4 h-4" />}
-                  {codeCopied ? 'Kopyalandı' : 'Kodu Kopyala'}
+                  {codeCopied ? t('copied') : t('copyCode')}
                 </button>
               </div>
             </div>
 
             {/* Referral link */}
             <div>
-              <label className="block text-sm font-medium text-gray-600 mb-1.5">Referans Linkin</label>
+              <label className="block text-sm font-medium text-gray-600 mb-1.5">{t('referralLink')}</label>
               <div className="flex gap-2">
                 <input
                   type="text"
@@ -288,7 +288,7 @@ export default function HesabimPage() {
                   className="px-4 py-2.5 text-sm font-medium text-gray-600 border border-gray-300 rounded-lg hover:bg-gray-50 flex items-center gap-1.5 bg-white"
                 >
                   {linkCopied ? <Check className="w-4 h-4 text-indigo-600" /> : <Copy className="w-4 h-4" />}
-                  {linkCopied ? 'Kopyalandı' : 'Kopyala'}
+                  {linkCopied ? t('copied') : t('copy')}
                 </button>
               </div>
             </div>
@@ -296,17 +296,17 @@ export default function HesabimPage() {
 
           {/* Earnings */}
           <div>
-            <h4 className="text-sm font-bold text-gray-900 mb-1">Kazançların</h4>
-            <p className="text-sm text-gray-500 mb-4">Referanslarınla elde ettiğin indirimler burada gösterilir.</p>
+            <h4 className="text-sm font-bold text-gray-900 mb-1">{t('earnings')}</h4>
+            <p className="text-sm text-gray-500 mb-4">{t('earningsDesc')}</p>
             <div className="grid grid-cols-2 gap-4">
               <div className="bg-white rounded-xl p-4 text-center border border-gray-100">
                 <Users className="w-6 h-6 text-gray-400 mx-auto mb-2" />
-                <p className="text-sm text-gray-500 mb-1">Referanslar</p>
+                <p className="text-sm text-gray-500 mb-1">{t('referrals')}</p>
                 <p className="text-2xl font-bold text-gray-900">0</p>
               </div>
               <div className="bg-white rounded-xl p-4 text-center border border-gray-100">
                 <BadgePercent className="w-6 h-6 text-gray-400 mx-auto mb-2" />
-                <p className="text-sm text-gray-500 mb-1">Toplam İndirim</p>
+                <p className="text-sm text-gray-500 mb-1">{t('totalDiscount')}</p>
                 <p className="text-2xl font-bold text-gray-900">₺0</p>
               </div>
             </div>
