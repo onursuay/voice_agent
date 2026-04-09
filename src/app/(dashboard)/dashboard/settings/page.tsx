@@ -775,15 +775,6 @@ export default function SettingsPage() {
                 </div>
               </div>
 
-              {/* Info footer */}
-              <div className="border-t border-gray-100 bg-gray-50 px-5 py-3">
-                <p className="text-xs text-muted">
-                  Bağlandıktan sonra Meta Developer Portal&apos;da webhook aboneliğini aktif etmen gerekiyor.
-                  Callback URL: <code className="rounded bg-gray-200 px-1 py-0.5 text-xs font-mono">
-                    {typeof window !== 'undefined' ? window.location.origin : ''}/api/webhooks/meta-leads
-                  </code>
-                </p>
-              </div>
             </div>
           </div>
         )}
