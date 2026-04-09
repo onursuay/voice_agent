@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { getStoredInvoiceInfo, setStoredInvoiceInfo, getStoredInvoiceHistory } from '@/lib/subscription/storage'
 import type { InvoiceInfo, InvoiceType, InvoiceRecord } from '@/lib/subscription/types'
+import { useTranslations } from 'next-intl'
 
 const DEFAULT_INVOICE_INFO: InvoiceInfo = {
   type: 'individual',
