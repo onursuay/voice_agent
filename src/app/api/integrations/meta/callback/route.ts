@@ -75,7 +75,7 @@ function buildPendingCookie(orgId: string, userToken: string, pages: FacebookPag
     .update(payload)
     .digest('hex')
     .slice(0, 24);
-  return Buffer.from(JSON.stringify({ payload, sig })).toString('base64');
+  return Buffer.from(JSON.stringify({ payload, sig })).toString('base64url');
 }
 
 /**

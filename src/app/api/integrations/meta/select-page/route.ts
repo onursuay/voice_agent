@@ -12,7 +12,7 @@ interface PendingSession {
 
 function readPendingCookie(cookieValue: string): PendingSession | null {
   try {
-    const { payload, sig } = JSON.parse(Buffer.from(cookieValue, 'base64').toString('utf-8'));
+    const { payload, sig } = JSON.parse(Buffer.from(cookieValue, 'base64url').toString('utf-8'));
     const expectedSig = createHmac('sha256', process.env.META_APP_SECRET || '')
       .update(payload)
       .digest('hex')

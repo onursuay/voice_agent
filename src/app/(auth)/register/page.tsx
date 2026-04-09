@@ -125,7 +125,7 @@ export default function RegisterPage() {
 
         <div className="bg-white/[0.04] border border-white/10 rounded-2xl p-8 backdrop-blur-sm">
           <h1 className="text-2xl font-bold text-white text-center mb-2">Ücretsiz Denemenizi Başlatın</h1>
-          <p className="text-base text-gray-400 text-center mb-8">Yo Dijital ile lead yönetiminizi yapay zekâ ile güçlendirin.</p>
+          <p className="text-sm text-gray-400 text-center mb-6">Yo Dijital ile lead yönetiminizi yapay zekâ ile güçlendirin.</p>
 
           {error && (
             <div className="mb-6 rounded-lg bg-red-500/10 border border-red-500/20 px-4 py-3">
@@ -137,37 +137,37 @@ export default function RegisterPage() {
             <div>
               <label className="block text-sm font-medium text-gray-300 mb-1.5">Ad Soyad <span className="text-emerald-400">*</span></label>
               <input type="text" value={name} onChange={e => setName(e.target.value)} placeholder="Adınızı ve soyadınızı girin"
-                className="w-full rounded-lg border border-white/10 bg-white/[0.04] px-4 py-3 text-base text-white placeholder-gray-500 outline-none transition focus:border-emerald-500/50 focus:ring-1 focus:ring-emerald-500/30"
+                className="w-full rounded-lg border border-white/10 bg-white/[0.04] px-3 py-2 text-sm text-white placeholder-gray-500 outline-none transition focus:border-emerald-500/50 focus:ring-1 focus:ring-emerald-500/30"
                 autoComplete="name" />
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-300 mb-1.5">E-posta Adresi <span className="text-emerald-400">*</span></label>
               <input type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="ornek@sirket.com"
-                className="w-full rounded-lg border border-white/10 bg-white/[0.04] px-4 py-3 text-base text-white placeholder-gray-500 outline-none transition focus:border-emerald-500/50 focus:ring-1 focus:ring-emerald-500/30"
+                className="w-full rounded-lg border border-white/10 bg-white/[0.04] px-3 py-2 text-sm text-white placeholder-gray-500 outline-none transition focus:border-emerald-500/50 focus:ring-1 focus:ring-emerald-500/30"
                 autoComplete="email" />
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-300 mb-1.5">Şirket Adı (İsteğe bağlı)</label>
               <input type="text" value={company} onChange={e => setCompany(e.target.value)} placeholder="Şirketinizin adı"
-                className="w-full rounded-lg border border-white/10 bg-white/[0.04] px-4 py-3 text-base text-white placeholder-gray-500 outline-none transition focus:border-emerald-500/50 focus:ring-1 focus:ring-emerald-500/30"
+                className="w-full rounded-lg border border-white/10 bg-white/[0.04] px-3 py-2 text-sm text-white placeholder-gray-500 outline-none transition focus:border-emerald-500/50 focus:ring-1 focus:ring-emerald-500/30"
                 autoComplete="organization" />
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-300 mb-1.5">Telefon (İsteğe bağlı)</label>
               <input type="tel" value={phone} onChange={e => setPhone(e.target.value.replace(/[^0-9+\s()-]/g, ''))} placeholder="+90 5XX XXX XX XX"
-                className="w-full rounded-lg border border-white/10 bg-white/[0.04] px-4 py-3 text-base text-white placeholder-gray-500 outline-none transition focus:border-emerald-500/50 focus:ring-1 focus:ring-emerald-500/30"
+                className="w-full rounded-lg border border-white/10 bg-white/[0.04] px-3 py-2 text-sm text-white placeholder-gray-500 outline-none transition focus:border-emerald-500/50 focus:ring-1 focus:ring-emerald-500/30"
                 autoComplete="tel" />
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-300 mb-1.5">Şifre <span className="text-emerald-400">*</span></label>
               <input type="password" value={password} onChange={e => setPassword(e.target.value)} placeholder="En az 8 karakter"
-                className="w-full rounded-lg border border-white/10 bg-white/[0.04] px-4 py-3 text-base text-white placeholder-gray-500 outline-none transition focus:border-emerald-500/50 focus:ring-1 focus:ring-emerald-500/30"
+                className="w-full rounded-lg border border-white/10 bg-white/[0.04] px-3 py-2 text-sm text-white placeholder-gray-500 outline-none transition focus:border-emerald-500/50 focus:ring-1 focus:ring-emerald-500/30"
                 autoComplete="new-password" />
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-300 mb-1.5">Şifre Tekrar <span className="text-emerald-400">*</span></label>
               <input type="password" value={passwordConfirm} onChange={e => setPasswordConfirm(e.target.value)} placeholder="Şifrenizi tekrar girin"
-                className="w-full rounded-lg border border-white/10 bg-white/[0.04] px-4 py-3 text-base text-white placeholder-gray-500 outline-none transition focus:border-emerald-500/50 focus:ring-1 focus:ring-emerald-500/30"
+                className="w-full rounded-lg border border-white/10 bg-white/[0.04] px-3 py-2 text-sm text-white placeholder-gray-500 outline-none transition focus:border-emerald-500/50 focus:ring-1 focus:ring-emerald-500/30"
                 autoComplete="new-password" />
             </div>
 
@@ -186,12 +186,12 @@ export default function RegisterPage() {
             </label>
 
             <button type="submit" disabled={loading}
-              className="w-full rounded-lg bg-gradient-to-r from-emerald-500 to-teal-500 px-6 py-3.5 text-base font-semibold text-white shadow-lg shadow-emerald-500/20 transition hover:from-emerald-600 hover:to-teal-600 disabled:opacity-60 disabled:cursor-not-allowed">
+              className="w-full rounded-lg bg-gradient-to-r from-emerald-500 to-teal-500 px-4 py-2.5 text-sm font-semibold text-white shadow-lg shadow-emerald-500/20 transition hover:from-emerald-600 hover:to-teal-600 disabled:opacity-60 disabled:cursor-not-allowed">
               {loading ? 'Hesabınız oluşturuluyor...' : '14 Gün Ücretsiz Denemeyi Başlat'}
             </button>
           </form>
 
-          <p className="text-base text-gray-500 text-center mt-5">Kredi kartı gerekmez. İstediğiniz zaman iptal edin.</p>
+          <p className="text-xs text-gray-500 text-center mt-4">Kredi kartı gerekmez. İstediğiniz zaman iptal edin.</p>
 
           <div className="mt-4 text-center">
             <p className="text-sm text-gray-500">
