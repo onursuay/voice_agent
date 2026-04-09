@@ -207,10 +207,10 @@ export default function RegisterPage() {
         </div>
 
         <div className="mt-4 mb-2 flex flex-wrap justify-center gap-4">
-          <a href="/privacy-policy" className="text-xs text-gray-600 hover:text-gray-400 transition">Gizlilik Politikası</a>
-          <a href="/cookie-policy" className="text-xs text-gray-600 hover:text-gray-400 transition">Çerez Politikası</a>
-          <a href="/terms-of-service" className="text-xs text-gray-600 hover:text-gray-400 transition">Kullanım Koşulları</a>
-          <a href="/data-deletion" className="text-xs text-gray-600 hover:text-gray-400 transition">Veri Silme</a>
+          <a href="/privacy-policy" className="text-xs text-gray-600 hover:text-gray-400 transition">{t('privacyPolicy')}</a>
+          <a href="/cookie-policy" className="text-xs text-gray-600 hover:text-gray-400 transition">{t('cookiePolicy')}</a>
+          <a href="/terms-of-service" className="text-xs text-gray-600 hover:text-gray-400 transition">{t('terms')}</a>
+          <a href="/data-deletion" className="text-xs text-gray-600 hover:text-gray-400 transition">{t('dataDeletion')}</a>
         </div>
       </div>
     </div>
