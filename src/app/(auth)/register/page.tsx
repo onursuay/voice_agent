@@ -192,12 +192,12 @@ export default function RegisterPage() {
             </button>
           </form>
 
-          <p className="text-xs text-gray-500 text-center mt-4">Kredi kartı gerekmez. İstediğiniz zaman iptal edin.</p>
+          <p className="text-xs text-gray-500 text-center mt-4">{t('noCard')}</p>
 
           <div className="mt-4 text-center">
             <p className="text-sm text-gray-500">
-              Zaten hesabınız var mı?{' '}
-              <Link href="/login" className="text-emerald-400 hover:text-emerald-300 font-medium transition">Giriş Yap</Link>
+              {t('haveAccount')}{' '}
+              <Link href="/login" className="text-emerald-400 hover:text-emerald-300 font-medium transition">{t('loginLink')}</Link>
             </p>
           </div>
         </div>
