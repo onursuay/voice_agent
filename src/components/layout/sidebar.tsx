@@ -39,16 +39,16 @@ interface NavItem {
   disabled?: boolean;
 }
 
-const navItems: NavItem[] = [
-  { id: 'dashboard', label: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
-  { id: 'leads', label: "Lead'ler", href: '/dashboard/leads', icon: Users },
-  { id: 'pipeline', label: 'Pipeline', href: '/dashboard/pipeline', icon: GitBranch },
-  { id: 'import', label: 'İçe Aktar', href: '/dashboard/import', icon: Upload },
-  { id: 'email', label: 'E-posta', href: '/dashboard/email', icon: Mail },
-  { id: 'automations', label: 'Otomasyonlar', href: '/dashboard/automations', icon: Zap },
-  { id: 'calls', label: 'AI Aramalar', href: '/dashboard/calls', icon: Phone },
-  { id: 'settings', label: 'Ayarlar', href: '/dashboard/settings', icon: Settings },
-];
+const NAV_ITEMS_BASE = [
+  { id: 'dashboard', labelKey: 'dashboard', href: '/dashboard', icon: LayoutDashboard },
+  { id: 'leads', labelKey: 'leads', href: '/dashboard/leads', icon: Users },
+  { id: 'pipeline', labelKey: 'pipeline', href: '/dashboard/pipeline', icon: GitBranch },
+  { id: 'import', labelKey: 'import', href: '/dashboard/import', icon: Upload },
+  { id: 'email', labelKey: 'email', href: '/dashboard/email', icon: Mail },
+  { id: 'automations', labelKey: 'automations', href: '/dashboard/automations', icon: Zap },
+  { id: 'calls', labelKey: 'calls', href: '/dashboard/calls', icon: Phone },
+  { id: 'settings', labelKey: 'settings', href: '/dashboard/settings', icon: Settings },
+] as const;
 
 export function Sidebar() {
   const pathname = usePathname();
