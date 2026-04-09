@@ -39,7 +39,8 @@ export default function PlanCard({
   const displayPrice = billingCycle === 'monthly' ? monthlyPrice : yearlyMonthly
   const originalMonthlyTotal = monthlyPrice * 12
 
-  const sectionTitle = PLAN_SECTION_TITLES[plan.id] || 'Özellikler'
+  const t = useTranslations('abonelik')
+  const sectionTitle = PLAN_SECTION_TITLES[plan.id] || 'Features'
   const planDesc = PLAN_DESCRIPTIONS[plan.id] || ''
 
   const handleDecrease = () => {
