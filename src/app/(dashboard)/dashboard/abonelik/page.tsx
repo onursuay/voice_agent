@@ -159,11 +159,11 @@ export default function AbonelikPage() {
                 onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
                 className="flex-1 py-3 bg-indigo-600 text-white font-medium rounded-xl hover:bg-indigo-700 transition-colors text-sm"
               >
-                Planı Yükselt
+                {t('upgrade')}
               </button>
               {isPaid && (
                 <button className="px-5 py-3 text-sm font-medium text-gray-500 border border-gray-200 rounded-xl hover:bg-gray-50">
-                  Planı İptal Et
+                  {t('cancelPlan')}
                 </button>
               )}
             </div>
