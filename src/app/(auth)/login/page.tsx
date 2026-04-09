@@ -106,12 +106,12 @@ export default function LoginPage() {
 
           <form onSubmit={handleSubmit} className="space-y-5">
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-1.5">E-posta Adresi</label>
+              <label className="block text-sm font-medium text-gray-300 mb-1.5">{t('emailLabel')}</label>
               <input
                 type="email"
                 value={email}
                 onChange={e => setEmail(e.target.value)}
-                placeholder="ornek@sirket.com"
+                placeholder={t('emailPlaceholder')}
                 className="w-full rounded-lg border border-white/10 bg-white/[0.04] px-3 py-2 text-sm text-white placeholder-gray-500 outline-none transition focus:border-emerald-500/50 focus:ring-1 focus:ring-emerald-500/30"
                 autoComplete="email"
               />
