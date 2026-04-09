@@ -86,7 +86,7 @@ export default function PlanCard({
       {/* Price */}
       <div className="mb-5">
         {isEnterprise ? (
-          <div className="text-lg font-bold text-white">Bize Ulaşın</div>
+          <div className="text-lg font-bold text-white">{t('contactUs')}</div>
         ) : (
           <>
             <div className="flex items-baseline gap-1">
