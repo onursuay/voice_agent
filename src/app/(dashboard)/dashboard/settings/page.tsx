@@ -700,45 +700,45 @@ export default function SettingsPage() {
                     M
                   </div>
                   <div>
-                    <h3 className="text-sm font-semibold text-foreground">Meta Lead Ads</h3>
+                    <h3 className="text-sm font-semibold text-foreground">{t('integrations.metaTitle')}</h3>
                     <p className="mt-0.5 text-xs text-muted">
-                      Facebook ve Instagram reklam formlarından gelen lead&apos;leri otomatik olarak sisteme aktar.
+                      {t('integrations.metaDesc')}
                     </p>
 
                     {metaLoading ? (
                       <div className="mt-2 flex items-center gap-1.5 text-xs text-muted">
                         <RefreshCw className="h-3 w-3 animate-spin" />
-                        Kontrol ediliyor...
+                        {tCommon('checking')}
                       </div>
                     ) : metaStatus?.connected ? (
                       <div className="mt-2 space-y-1">
                         <div className="flex items-center gap-1.5">
                           <span className="inline-block h-2 w-2 rounded-full bg-green-500" />
-                          <span className="text-xs font-medium text-green-700">Bağlı</span>
+                          <span className="text-xs font-medium text-green-700">{tCommon('connected')}</span>
                           {metaStatus.is_expired && (
-                            <Badge color="red" size="sm">Token süresi dolmuş</Badge>
+                            <Badge color="red" size="sm">{t('integrations.tokenExpired')}</Badge>
                           )}
                         </div>
                         {metaStatus.page_name && (
                           <p className="text-xs text-muted">
-                            Sayfa: <span className="font-medium text-foreground">{metaStatus.page_name}</span>
+                            {t('integrations.pageLabel')}<span className="font-medium text-foreground">{metaStatus.page_name}</span>
                           </p>
                         )}
                         {metaStatus.connected_at && (
                           <p className="text-xs text-muted">
-                            Bağlandı: {new Date(metaStatus.connected_at).toLocaleDateString('tr-TR')}
+                            {t('integrations.connectedAt')}{new Date(metaStatus.connected_at).toLocaleDateString()}
                           </p>
                         )}
                         {metaStatus.expires_at && (
                           <p className="text-xs text-muted">
-                            Token bitiş: {new Date(metaStatus.expires_at).toLocaleDateString('tr-TR')}
+                            {t('integrations.tokenExpiry')}{new Date(metaStatus.expires_at).toLocaleDateString()}
                           </p>
                         )}
                       </div>
                     ) : (
                       <div className="mt-2 flex items-center gap-1.5">
                         <span className="inline-block h-2 w-2 rounded-full bg-gray-300" />
-                        <span className="text-xs text-muted">Bağlı değil</span>
+                        <span className="text-xs text-muted">{tCommon('notConnected')}</span>
                       </div>
                     )}
                   </div>
