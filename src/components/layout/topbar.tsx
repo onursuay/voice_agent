@@ -81,7 +81,7 @@ export function Topbar() {
           <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
           <input
             type="text"
-            placeholder="Lead, telefon veya e-posta ara..."
+            placeholder={tTopbar('searchPlaceholder')}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="w-full rounded-lg border border-gray-200 bg-gray-50 py-2 pl-10 pr-4 text-sm text-foreground placeholder:text-gray-400 transition-colors focus:bg-white focus:border-indigo-300"
