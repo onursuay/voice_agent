@@ -177,13 +177,12 @@ export default function RegisterPage() {
               <input type="checkbox" checked={acceptedTerms} onChange={e => setAcceptedTerms(e.target.checked)}
                 className="mt-0.5 w-4 h-4 rounded border-white/20 bg-white/[0.04] text-emerald-500 focus:ring-emerald-500/30 accent-emerald-500" />
               <span className="text-sm text-gray-400 leading-relaxed">
-                Kayıt olarak,{' '}
-                <Link href="/privacy-policy" target="_blank" className="text-emerald-400 hover:text-emerald-300 underline">Gizlilik Politikası</Link>
+                {t('agreeText')}{' '}
+                <Link href="/privacy-policy" target="_blank" className="text-emerald-400 hover:text-emerald-300 underline">{t('privacyPolicy')}</Link>
                 {', '}
-                <Link href="/terms-of-service" target="_blank" className="text-emerald-400 hover:text-emerald-300 underline">Kullanım Koşulları</Link>
-                {' '}ve{' '}
-                <Link href="/cookie-policy" target="_blank" className="text-emerald-400 hover:text-emerald-300 underline">Çerez Politikası</Link>
-                &apos;nı kabul etmiş olursunuz.
+                <Link href="/terms-of-service" target="_blank" className="text-emerald-400 hover:text-emerald-300 underline">{t('terms')}</Link>
+                {' '}{t('cookiePolicy') && 've'}{' '}
+                <Link href="/cookie-policy" target="_blank" className="text-emerald-400 hover:text-emerald-300 underline">{t('cookiePolicy')}</Link>
               </span>
             </label>
 
