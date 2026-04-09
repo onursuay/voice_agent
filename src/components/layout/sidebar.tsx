@@ -191,7 +191,7 @@ export function Sidebar() {
             <button
               onClick={toggleCollapse}
               className="p-2 hover:bg-gray-100 rounded-lg transition-colors ml-auto"
-              aria-label="Daralt"
+              aria-label={tSidebar('collapse')}
             >
               <PanelLeftClose className="w-5 h-5 text-gray-600" />
             </button>
