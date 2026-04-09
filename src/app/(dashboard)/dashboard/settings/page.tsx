@@ -846,11 +846,11 @@ export default function SettingsPage() {
               {profileSuccess && (
                 <span className="flex items-center gap-1.5 text-sm font-medium text-green-600">
                   <Check className="h-4 w-4" />
-                  Profil Guncellendi
+                  {t('profile.saved')}
                 </span>
               )}
               <Button onClick={saveProfile} loading={profileSaving} icon={<Save className="h-4 w-4" />}>
-                Kaydet
+                {tCommon('save')}
               </Button>
             </div>
           </div>
