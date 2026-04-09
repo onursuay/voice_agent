@@ -391,13 +391,13 @@ export default function SettingsPage() {
 
             <div className="grid gap-5 sm:grid-cols-2">
               <Input
-                label="Organizasyon Adi"
+                label={t('org.nameLabel')}
                 value={orgName}
                 onChange={(e) => setOrgName(e.target.value)}
-                placeholder="Sirket adi"
+                placeholder={t('org.namePlaceholder')}
               />
               <Input
-                label="Slug"
+                label={t('org.slugLabel')}
                 value={org?.slug || ''}
                 disabled
                 className="bg-gray-50"
