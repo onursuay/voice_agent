@@ -14,6 +14,9 @@ const pageTitles: Record<string, string> = {
   '/dashboard/pipeline': 'Pipeline',
   '/dashboard/import': 'İçe Aktar',
   '/dashboard/settings': 'Ayarlar',
+  '/dashboard/hesabim': 'Hesabım',
+  '/dashboard/faturalarim': 'Faturalarım',
+  '/dashboard/abonelik': 'Abonelik',
 };
 
 function getPageTitle(pathname: string): string {
