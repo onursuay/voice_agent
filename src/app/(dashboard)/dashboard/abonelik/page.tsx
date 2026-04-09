@@ -103,8 +103,8 @@ export default function AbonelikPage() {
 
           {/* Notes */}
           <div className="mt-5 space-y-1">
-            <p className="text-sm text-gray-500">* Ücretsiz deneme — Premium plan için geçerlidir.</p>
-            <p className="text-sm text-amber-400 font-medium">* Optimizasyon özelliği yalnızca Starter ve üzeri planlarda kullanılabilir.</p>
+            <p className="text-sm text-gray-500">* {t('trialNote')}</p>
+            <p className="text-sm text-amber-400 font-medium">* {t('optimizationNote')}</p>
           </div>
         </div>
       </div>
