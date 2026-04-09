@@ -113,10 +113,10 @@ export default function RegisterPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#060609] flex items-center justify-center px-4 py-6 relative overflow-hidden">
+    <div className="min-h-screen bg-[#060609] flex flex-col items-center justify-start px-4 py-10 relative overflow-hidden">
       <canvas ref={canvasRef} className="absolute inset-0 w-full h-full pointer-events-none" aria-hidden="true" />
 
-      <div className="w-full max-w-[380px] relative z-10">
+      <div className="w-full max-w-[460px] relative z-10">
         <div className="flex justify-center mb-5">
           <Link href="/">
             <Image src="/logos/yoai-logo.png" alt="Yo Dijital" width={80} height={28} className="brightness-0 invert" priority />
@@ -201,17 +201,16 @@ export default function RegisterPage() {
           </div>
         </div>
 
-        <div className="mt-6 text-center">
+        <div className="mt-5 text-center">
           <Link href="/" className="text-sm text-gray-500 hover:text-emerald-400 transition">← Ana sayfaya dön</Link>
         </div>
-      </div>
 
-      {/* Footer legal links */}
-      <div className="absolute bottom-4 left-0 right-0 flex flex-wrap justify-center gap-4 px-4">
-        <a href="/privacy-policy" className="text-xs text-gray-600 hover:text-gray-400 transition">Gizlilik Politikası</a>
-        <a href="/cookie-policy" className="text-xs text-gray-600 hover:text-gray-400 transition">Çerez Politikası</a>
-        <a href="/terms-of-service" className="text-xs text-gray-600 hover:text-gray-400 transition">Kullanım Koşulları</a>
-        <a href="/data-deletion" className="text-xs text-gray-600 hover:text-gray-400 transition">Veri Silme</a>
+        <div className="mt-4 mb-2 flex flex-wrap justify-center gap-4">
+          <a href="/privacy-policy" className="text-xs text-gray-600 hover:text-gray-400 transition">Gizlilik Politikası</a>
+          <a href="/cookie-policy" className="text-xs text-gray-600 hover:text-gray-400 transition">Çerez Politikası</a>
+          <a href="/terms-of-service" className="text-xs text-gray-600 hover:text-gray-400 transition">Kullanım Koşulları</a>
+          <a href="/data-deletion" className="text-xs text-gray-600 hover:text-gray-400 transition">Veri Silme</a>
+        </div>
       </div>
     </div>
   )
