@@ -128,7 +128,7 @@ export default function PlanCard({
             >
               <Minus className="w-3 h-3" />
             </button>
-            <span className="text-sm text-gray-300">{adAccountCount} Reklam Hesabı</span>
+            <span className="text-sm text-gray-300">{adAccountCount} {t('adAccounts')}</span>
             <button
               onClick={handleIncrease}
               disabled={adAccountCount >= 10}
