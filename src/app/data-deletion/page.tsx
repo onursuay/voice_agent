@@ -28,8 +28,8 @@ export default function DataDeletionPage() {
             <div className="bg-emerald-400/[0.06] border border-emerald-400/20 rounded-2xl p-6 mb-6">
               <h3 className="text-base font-semibold text-emerald-400 mb-3">Veri Silme Talebi Gönderin</h3>
               <p className="mb-4">Aşağıdaki e-posta adresine &quot;Veri Silme Talebi&quot; konusuyla yazın:</p>
-              <a href="mailto:info@yodijital.com?subject=Veri Silme Talebi" className="inline-flex items-center gap-2 bg-emerald-500 hover:bg-emerald-400 text-black font-semibold px-6 py-3 rounded-xl transition-colors text-sm">
-                info@yodijital.com&apos;a Talep Gönder
+              <a href="mailto:info@yodijital.com?subject=Veri%20Silme%20Talebi" className="inline-flex items-center gap-2 bg-emerald-500 hover:bg-emerald-400 text-black font-semibold px-6 py-3 rounded-xl transition-colors text-sm">
+                info@yodijital.com — Talep Gönder
               </a>
             </div>
             <p>E-postanızda aşağıdaki bilgileri belirtin:</p>
