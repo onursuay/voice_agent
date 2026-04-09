@@ -140,8 +140,8 @@ export default function LoginPage() {
 
           <div className="mt-6 text-center">
             <p className="text-sm text-gray-500">
-              Hesabınız yok mu?{' '}
-              <Link href="/register" className="text-emerald-400 hover:text-emerald-300 font-medium transition">Ücretsiz Kayıt Ol</Link>
+              {t('noAccount')}{' '}
+              <Link href="/register" className="text-emerald-400 hover:text-emerald-300 font-medium transition">{t('register')}</Link>
             </p>
           </div>
         </div>
