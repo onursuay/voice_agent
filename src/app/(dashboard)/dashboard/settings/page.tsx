@@ -572,7 +572,7 @@ export default function SettingsPage() {
                       onClick={() => moveStage(index, 'up')}
                       disabled={index === 0}
                       className="rounded p-1 text-gray-400 hover:bg-gray-100 hover:text-gray-600 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
-                      title="Yukari Tasi"
+                      title={t('pipeline.moveUp')}
                     >
                       <ChevronUp className="h-4 w-4" />
                     </button>
