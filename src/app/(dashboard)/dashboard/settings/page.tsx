@@ -355,9 +355,9 @@ export default function SettingsPage() {
     <div className="space-y-6">
       {/* Page header */}
       <div>
-        <h1 className="text-2xl font-bold text-foreground">Ayarlar</h1>
+        <h1 className="text-2xl font-bold text-foreground">{t('title')}</h1>
         <p className="mt-1 text-sm text-muted">
-          Organizasyon, uyelik, pipeline ve profil ayarlarinizi yonetin.
+          {t('subtitle')}
         </p>
       </div>
 
