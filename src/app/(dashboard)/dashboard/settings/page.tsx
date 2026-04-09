@@ -580,7 +580,7 @@ export default function SettingsPage() {
                       onClick={() => moveStage(index, 'down')}
                       disabled={index === localStages.length - 1}
                       className="rounded p-1 text-gray-400 hover:bg-gray-100 hover:text-gray-600 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
-                      title="Asagi Tasi"
+                      title={t('pipeline.moveDown')}
                     >
                       <ChevronDown className="h-4 w-4" />
                     </button>
