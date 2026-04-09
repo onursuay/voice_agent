@@ -558,8 +558,8 @@ export default function SettingsPage() {
                   <span className="flex-1 text-sm font-medium text-foreground">{stage.name}</span>
 
                   {/* Badges */}
-                  {stage.is_won && <Badge color="green" size="sm">Kazanıldı</Badge>}
-                  {stage.is_lost && <Badge color="red" size="sm">Kaybedildi</Badge>}
+                  {stage.is_won && <Badge color="green" size="sm">{t('pipeline.won')}</Badge>}
+                  {stage.is_lost && <Badge color="red" size="sm">{t('pipeline.lost')}</Badge>}
 
                   {/* Lead count */}
                   <span className="text-xs text-muted">
