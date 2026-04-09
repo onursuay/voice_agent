@@ -75,7 +75,7 @@ export default function FaturalarimPage() {
             {/* Name fields */}
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-600 mb-1.5">Ad Soyad</label>
+                <label className="block text-sm font-medium text-gray-600 mb-1.5">{t('fullName')}</label>
                 <input
                   type="text"
                   value={info.fullName}
