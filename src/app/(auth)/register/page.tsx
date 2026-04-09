@@ -188,7 +188,7 @@ export default function RegisterPage() {
 
             <button type="submit" disabled={loading}
               className="w-full rounded-lg bg-gradient-to-r from-emerald-500 to-teal-500 px-4 py-2.5 text-sm font-semibold text-white shadow-lg shadow-emerald-500/20 transition hover:from-emerald-600 hover:to-teal-600 disabled:opacity-60 disabled:cursor-not-allowed">
-              {loading ? 'Hesabınız oluşturuluyor...' : '14 Gün Ücretsiz Denemeyi Başlat'}
+              {loading ? t('submitLoading') : t('submit')}
             </button>
           </form>
 
