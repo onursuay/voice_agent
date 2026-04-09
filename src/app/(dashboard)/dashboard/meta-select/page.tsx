@@ -19,17 +19,6 @@ export default function MetaSelectPage() {
   const [error, setError] = useState('');
 
   useEffect(() => {
-    // If Facebook redirected here directly with code+state (misconfigured redirect URI),
-    // forward to the proper callback route so it can exchange the code and set the cookie.
-    const params = new URLSearchParams(window.location.search);
-    const code = params.get('code');
-    const state = params.get('state');
-    if (code && state) {
-      window.location.href = `/api/integrations/meta/callback?code=${encodeURIComponent(code)}&state=${encodeURIComponent(state)}`;
-      return;
-    }
-
-    // Fetch pending session pages from API
     fetch('/api/integrations/meta/pending-pages')
       .then((r) => r.json())
       .then((data) => {
@@ -38,8 +27,7 @@ export default function MetaSelectPage() {
           setOrgId(data.orgId);
           if (data.pages.length > 0) setSelected(data.pages[0].id);
         } else {
-          const reason = data.reason === 'no_cookie' ? 'Cookie bulunamadı.' : 'İmza doğrulaması başarısız veya süre doldu.';
-          setError(`Oturum süresi dolmuş (${reason}) Lütfen tekrar bağlanın.`);
+          setError('Oturum süresi dolmuş. Lütfen tekrar bağlanın.');
         }
       })
       .catch(() => setError('Bir hata oluştu.'));

@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createHmac } from 'crypto';
+import { createAdminSupabaseClient } from '@/lib/supabase/admin';
 
 const META_GRAPH_BASE = 'https://graph.facebook.com/v19.0';
 
@@ -68,19 +69,10 @@ async function getPages(userToken: string): Promise<FacebookPage[]> {
   return data.data || [];
 }
 
-// Sign pending session data and store in cookie
-function buildPendingCookie(orgId: string, userToken: string, pages: FacebookPage[]): string {
-  const payload = JSON.stringify({ orgId, userToken, pages, ts: Date.now() });
-  const sig = createHmac('sha256', process.env.META_APP_SECRET || '')
-    .update(payload)
-    .digest('hex')
-    .slice(0, 24);
-  return Buffer.from(JSON.stringify({ payload, sig })).toString('base64url');
-}
-
 /**
  * GET /api/integrations/meta/callback
- * Exchanges code for token, fetches pages, redirects to page selection UI.
+ * Exchanges code for token, fetches pages, stores pending session in DB,
+ * then redirects to page selection UI.
  */
 export async function GET(request: NextRequest) {
   const params = request.nextUrl.searchParams;
@@ -114,36 +106,34 @@ export async function GET(request: NextRequest) {
     return NextResponse.redirect(`${dashboardUrl}&meta_error=no_pages`);
   }
 
-  // If only 1 page, skip selection and go straight to save
+  // Store pending OAuth session in DB (keyed by org_id) instead of a cookie
+  const supabase = createAdminSupabaseClient();
+  const pendingConfig = {
+    organization_id: orgId,
+    userToken,
+    pages,
+    ts: Date.now(),
+  };
+
+  // Upsert: delete existing pending record for this org, then insert fresh one
+  await supabase
+    .from('integration_settings')
+    .delete()
+    .eq('provider', 'meta_oauth_pending')
+    .filter('config->>organization_id', 'eq', orgId);
+
+  await supabase
+    .from('integration_settings')
+    .insert({ provider: 'meta_oauth_pending', config: pendingConfig, is_active: false });
+
+  // If only 1 page, skip selection and save directly
   if (pages.length === 1) {
     const selectUrl = new URL(`${request.nextUrl.origin}/api/integrations/meta/select-page`);
     selectUrl.searchParams.set('org_id', orgId);
     selectUrl.searchParams.set('page_id', pages[0].id);
-
-    // Store pending data in cookie for select-page to read
-    const cookie = buildPendingCookie(orgId, userToken, pages);
-    const response = NextResponse.redirect(selectUrl.toString());
-    response.cookies.set('meta_pending', cookie, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax',
-      maxAge: 60 * 10, // 10 minutes
-      path: '/',
-    });
-    return response;
+    return NextResponse.redirect(selectUrl.toString());
   }
 
   // Multiple pages → redirect to selection UI
-  const cookie = buildPendingCookie(orgId, userToken, pages);
-  const selectUrl = `${request.nextUrl.origin}/dashboard/meta-select`;
-
-  const response = NextResponse.redirect(selectUrl);
-  response.cookies.set('meta_pending', cookie, {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
-    sameSite: 'lax',
-    maxAge: 60 * 10,
-    path: '/',
-  });
-  return response;
+  return NextResponse.redirect(`${request.nextUrl.origin}/dashboard/meta-select`);
 }
