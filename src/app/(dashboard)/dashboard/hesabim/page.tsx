@@ -131,7 +131,7 @@ export default function HesabimPage() {
 
           {/* Email */}
           <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-600 mb-1.5">E-posta</label>
+            <label className="block text-sm font-medium text-gray-600 mb-1.5">{t('email')}</label>
             <input
               type="email"
               value={profile.email}
