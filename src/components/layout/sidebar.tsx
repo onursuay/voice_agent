@@ -29,6 +29,7 @@ import {
 import { useState, useEffect, useCallback, useRef } from 'react';
 import type { UserRole } from '@/lib/types';
 import { ROLE_LABELS } from '@/lib/types';
+import { useSubscription } from '@/components/providers/SubscriptionProvider';
 
 interface NavItem {
   id: string;
