@@ -605,21 +605,21 @@ export default function SettingsPage() {
 
             {/* Add new stage */}
             <div className="rounded-lg border border-dashed border-gray-300 bg-gray-50 p-4">
-              <p className="mb-3 text-sm font-medium text-gray-700">Yeni Aşama Ekle</p>
+              <p className="mb-3 text-sm font-medium text-gray-700">{t('pipeline.addTitle')}</p>
               <div className="flex flex-wrap items-end gap-3">
                 <div className="flex-1 min-w-[200px]">
                   <Input
-                    label="Aşama Adı"
+                    label={t('pipeline.stageNameLabel')}
                     value={newStageName}
                     onChange={(e) => setNewStageName(e.target.value)}
-                    placeholder="Orn: Demo Yapildi"
+                    placeholder={t('pipeline.stageNamePlaceholder')}
                     onKeyDown={(e) => {
                       if (e.key === 'Enter') addStage();
                     }}
                   />
                 </div>
                 <div>
-                  <label className="mb-1.5 block text-sm font-medium text-gray-700">Renk</label>
+                  <label className="mb-1.5 block text-sm font-medium text-gray-700">{t('pipeline.colorLabel')}</label>
                   <div className="flex items-center gap-1.5">
                     {STAGE_COLOR_OPTIONS.map((c) => (
                       <button
