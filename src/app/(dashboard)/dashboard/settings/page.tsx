@@ -593,8 +593,8 @@ export default function SettingsPage() {
                     className="rounded p-1 text-gray-400 hover:bg-red-50 hover:text-red-500 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
                     title={
                       (stageLeadCounts[stage.id] || 0) > 0
-                        ? 'Bu aşamada lead var, silinemez'
-                        : 'Aşamayı Sil'
+                        ? t('pipeline.cannotDelete')
+                        : t('pipeline.deleteStage')
                     }
                   >
                     <Trash2 className="h-4 w-4" />
