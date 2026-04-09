@@ -430,11 +430,11 @@ export default function SettingsPage() {
               {orgSuccess && (
                 <span className="flex items-center gap-1.5 text-sm font-medium text-green-600">
                   <Check className="h-4 w-4" />
-                  Kaydedildi
+                  {t('org.saved')}
                 </span>
               )}
               <Button onClick={saveOrganization} loading={orgSaving} icon={<Save className="h-4 w-4" />}>
-                Kaydet
+                {t('common.save')}
               </Button>
             </div>
           </div>
