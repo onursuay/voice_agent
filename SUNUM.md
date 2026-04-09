@@ -131,3 +131,52 @@ Meta reklamlarından (Facebook, Instagram, WhatsApp, Messenger) gelen tüm lead'
 | Monthly net at 100 customers | ~₺155.000 |
 | Annual subscription benefit | 20% discount for customer, guaranteed revenue for you |
 | Break-even | First 3 customers (even Starter plan covers infra cost) |
+
+---
+
+## 4) TEKNİK DEĞİŞİKLİKLER — Son Güncelleme (Nisan 2026)
+
+### Meta Lead Ads Entegrasyonu (Multi-Tenant OAuth)
+
+Her müşteri kendi Facebook sayfasını OAuth ile bağlar. Lead'ler otomatik olarak o müşterinin organizasyonuna düşer.
+
+**Akış:**
+1. Ayarlar → Entegrasyonlar → "Meta'ya Bağlan"
+2. Facebook OAuth ekranı açılır, kullanıcı yönettiği sayfaları görür ve seçer
+3. Seçilen sayfa token'ı `integration_settings` tablosuna org bazlı kaydedilir
+4. Meta'da `leadgen` webhook eventi geldiğinde `page_id` üzerinden doğru org bulunur
+5. Lead `leads` tablosuna yazılır, dashboard'da görünür
+
+**Yeni dosyalar:**
+
+| Dosya | Görev |
+|---|---|
+| `api/integrations/meta/connect` | OAuth başlatır, CSRF state imzalar |
+| `api/integrations/meta/callback` | Token alır, sayfaları çeker, cookie'e kaydeder |
+| `api/integrations/meta/select-page` | Seçilen sayfayı DB'ye kaydeder, webhook subscribe eder |
+| `api/integrations/meta/pending-pages` | Cookie'den sayfa listesini döner (token expose etmez) |
+| `api/integrations/meta/status` | Org'un bağlantı durumunu döner |
+| `api/integrations/meta/disconnect` | Bağlantıyı keser |
+| `dashboard/meta-select/page.tsx` | Sayfa seçim UI (60 sayfa olsa bile listeler) |
+
+**Güvenlik iyileştirmeleri:**
+
+| Alan | Değişiklik |
+|---|---|
+| Meta webhook POST | HMAC SHA-256 imza doğrulaması (`x-hub-signature-256`) |
+| Meta webhook GET | `META_WEBHOOK_VERIFY_TOKEN` boşsa bypass engellendi |
+| Zapier source spoofing | Her zaman `source=zapier` yazılır, client değeri ignore edilir |
+| Source priority | Duplicate güncellemede `meta_lead_form > zapier > manual` |
+| Meta Graph timeout | 8 saniyelik AbortController timeout eklendi |
+| raw_payload | Null gelirse mevcut veri korunur, üzerine yazılmaz |
+
+**Gerekli env var'lar:**
+
+| Değişken | Açıklama |
+|---|---|
+| `META_APP_ID` | Meta Developer Portal → App settings → Basic → App ID |
+| `META_APP_SECRET` | Meta Developer Portal → App settings → Basic → App Secret |
+| `META_WEBHOOK_VERIFY_TOKEN` | Webhook doğrulama şifresi (kendin belirle) |
+| `ZAPIER_INGEST_SECRET` | Zapier webhook şifresi (kendin belirle) |
+| `SUPABASE_SERVICE_ROLE_KEY` | Supabase → Project Settings → API |
+| `NEXT_PUBLIC_SUPABASE_URL` | Supabase → Project Settings → API |
