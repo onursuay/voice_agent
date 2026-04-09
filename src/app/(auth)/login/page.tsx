@@ -70,15 +70,15 @@ export default function LoginPage() {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     setError('')
-    if (!email.trim() || !password) { setError('E-posta ve şifre gereklidir.'); return }
+    if (!email.trim() || !password) { setError(t('errorRequired')); return }
     setLoading(true)
     try {
       const supabase = createClient()
       const { error: authError } = await supabase.auth.signInWithPassword({ email, password })
-      if (authError) throw new Error(authError.message === 'Invalid login credentials' ? 'Geçersiz e-posta veya şifre.' : authError.message)
+      if (authError) throw new Error(authError.message === 'Invalid login credentials' ? t('errorInvalid') : authError.message)
       router.push('/dashboard')
     } catch (err: unknown) {
-      setError(err instanceof Error ? err.message : 'Giriş yapılamadı.')
+      setError(err instanceof Error ? err.message : t('errorGeneral'))
       setLoading(false)
     }
   }
