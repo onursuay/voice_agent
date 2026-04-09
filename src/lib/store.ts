@@ -12,6 +12,7 @@ interface AppStore {
   addLead: (lead: Lead) => void;
   updateLead: (id: string, data: Partial<Lead>) => void;
   deleteLead: (id: string) => void;
+  deleteLeads: (ids: string[]) => void;
   selectedLeadIds: Set<string>;
   setSelectedLeadIds: (ids: Set<string>) => void;
   toggleLeadSelection: (id: string) => void;
