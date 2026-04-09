@@ -225,7 +225,7 @@ export function Sidebar() {
                 <div className="text-sm font-medium text-gray-900 truncate max-w-[140px]">
                   {session?.user?.full_name || 'Kullanıcı'}
                 </div>
-                <div className="text-xs text-indigo-600 font-medium">{roleLabel}</div>
+                <div className="text-xs text-indigo-600 font-medium">{statusLabel}</div>
               </div>
             )}
           </div>
@@ -243,7 +243,7 @@ export function Sidebar() {
               <p className="text-sm font-medium text-gray-900">
                 {session?.user?.full_name || 'Kullanıcı'}
               </p>
-              <p className="text-xs text-indigo-600 font-medium">{roleLabel}</p>
+              <p className="text-xs text-indigo-600 font-medium">{statusLabel}</p>
             </div>
 
             {/* Menu items */}
