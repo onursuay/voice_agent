@@ -1,27 +1,102 @@
 'use client';
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useState, useEffect, useRef } from 'react';
+import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { createClient } from '@/lib/supabase/client';
 
 export default function RegisterPage() {
   const router = useRouter();
+  const canvasRef = useRef<HTMLCanvasElement>(null);
   const [fullName, setFullName] = useState('');
   const [orgName, setOrgName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+  const [passwordConfirm, setPasswordConfirm] = useState('');
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+  const [acceptedTerms, setAcceptedTerms] = useState(false);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  useEffect(() => {
+    const c = canvasRef.current;
+    if (!c) return;
+    const ctx = c.getContext('2d');
+    if (!ctx) return;
+
+    let animId: number;
+    let w = 0, h = 0;
+    const nodes: { x: number; y: number; vx: number; vy: number; r: number }[] = [];
+    const pulses: { from: number; to: number; t: number; speed: number }[] = [];
+    const NODE_COUNT = 40;
+    const CONNECT_DIST = 180;
+    const PULSE_CHANCE = 0.008;
+
+    function resize() {
+      w = c!.width = c!.offsetWidth;
+      h = c!.height = c!.offsetHeight;
+    }
+    resize();
+    window.addEventListener('resize', resize);
+
+    for (let i = 0; i < NODE_COUNT; i++) {
+      nodes.push({ x: Math.random() * w, y: Math.random() * h, vx: (Math.random() - 0.5) * 0.3, vy: (Math.random() - 0.5) * 0.3, r: Math.random() * 2 + 1.5 });
+    }
+
+    function draw() {
+      ctx!.clearRect(0, 0, w, h);
+      for (let i = 0; i < nodes.length; i++) {
+        const n = nodes[i];
+        n.x += n.vx; n.y += n.vy;
+        if (n.x < 0 || n.x > w) n.vx *= -1;
+        if (n.y < 0 || n.y > h) n.vy *= -1;
+        n.x = Math.max(0, Math.min(w, n.x));
+        n.y = Math.max(0, Math.min(h, n.y));
+      }
+      for (let i = 0; i < nodes.length; i++) {
+        for (let j = i + 1; j < nodes.length; j++) {
+          const dx = nodes[i].x - nodes[j].x, dy = nodes[i].y - nodes[j].y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < CONNECT_DIST) {
+            const alpha = (1 - dist / CONNECT_DIST) * 0.35;
+            ctx!.beginPath(); ctx!.moveTo(nodes[i].x, nodes[i].y); ctx!.lineTo(nodes[j].x, nodes[j].y);
+            ctx!.strokeStyle = 'rgba(255,255,255,' + alpha + ')'; ctx!.lineWidth = 0.8; ctx!.stroke();
+            if (Math.random() < PULSE_CHANCE && pulses.length < 15) {
+              pulses.push({ from: i, to: j, t: 0, speed: 0.008 + Math.random() * 0.008 });
+            }
+          }
+        }
+      }
+      for (let p = pulses.length - 1; p >= 0; p--) {
+        const pulse = pulses[p]; pulse.t += pulse.speed;
+        if (pulse.t > 1) { pulses.splice(p, 1); continue; }
+        const from = nodes[pulse.from], to = nodes[pulse.to];
+        const px = from.x + (to.x - from.x) * pulse.t, py = from.y + (to.y - from.y) * pulse.t;
+        const glow = Math.sin(pulse.t * Math.PI);
+        ctx!.beginPath(); ctx!.arc(px, py, 2, 0, Math.PI * 2); ctx!.fillStyle = 'rgba(16,185,129,' + (glow * 0.8) + ')'; ctx!.fill();
+        ctx!.beginPath(); ctx!.arc(px, py, 5, 0, Math.PI * 2); ctx!.fillStyle = 'rgba(16,185,129,' + (glow * 0.2) + ')'; ctx!.fill();
+      }
+      for (let i = 0; i < nodes.length; i++) {
+        const n = nodes[i];
+        ctx!.beginPath(); ctx!.arc(n.x, n.y, n.r, 0, Math.PI * 2); ctx!.fillStyle = 'rgba(255,255,255,0.25)'; ctx!.fill();
+        ctx!.beginPath(); ctx!.arc(n.x, n.y, n.r + 3, 0, Math.PI * 2); ctx!.fillStyle = 'rgba(255,255,255,0.03)'; ctx!.fill();
+      }
+      animId = requestAnimationFrame(draw);
+    }
+    draw();
+
+    return () => { cancelAnimationFrame(animId); window.removeEventListener('resize', resize); };
+  }, []);
+
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError('');
 
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      setError('Geçerli bir e-posta adresi girin');
-      return;
-    }
+    if (!fullName.trim()) { setError('Ad soyad alanı zorunludur.'); return; }
+    if (!email.trim() || !/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email.trim())) { setError('Geçerli bir e-posta adresi girin.'); return; }
+    if (!password || password.length < 8) { setError('Şifre en az 8 karakter olmalıdır.'); return; }
+    if (password !== passwordConfirm) { setError('Şifreler eşleşmiyor.'); return; }
+    if (!acceptedTerms) { setError('Devam etmek için politikaları kabul etmelisiniz.'); return; }
 
     setLoading(true);
 
@@ -31,7 +106,6 @@ export default function RegisterPage() {
       if (authError) throw new Error(authError.message);
       if (!data.user) throw new Error('Kullanıcı oluşturulamadı');
 
-      // Create profile + org + membership
       const res = await fetch('/api/auth/setup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -39,7 +113,7 @@ export default function RegisterPage() {
           user_id: data.user.id,
           email,
           full_name: fullName,
-          organization_name: orgName || `${fullName} Organizasyonu`,
+          organization_name: orgName.trim() || `${fullName} Organizasyonu`,
         }),
       });
 
@@ -51,118 +125,134 @@ export default function RegisterPage() {
       router.push('/dashboard');
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : 'Kayıt yapılamadı');
-    } finally {
       setLoading(false);
     }
-  };
+  }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-50/50 via-white to-indigo-50/30 p-4">
-      <div className="flex w-full max-w-[960px] overflow-hidden rounded-2xl border border-gray-200/80 bg-white shadow-xl shadow-gray-200/40">
+    <div className="flex-1 flex items-center justify-center px-4 py-12 relative overflow-hidden" style={{ fontSize: '16px' }}>
+      <canvas ref={canvasRef} className="absolute inset-0 w-full h-full pointer-events-none" aria-hidden="true" />
 
-        {/* Left - Brand Card */}
-        <div className="hidden lg:flex lg:w-[420px] shrink-0 flex-col justify-between bg-gradient-to-br from-indigo-600 to-indigo-700 p-10 text-white rounded-l-2xl shadow-2xl shadow-indigo-600/25">
-          <div>
-            <div className="mb-6 inline-flex items-center gap-2 rounded-full bg-white/20 px-3 py-1 text-xs font-semibold">
-              <svg className="h-3.5 w-3.5" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
-              Ücretsiz Deneyin
-            </div>
-            <div className="mb-8">
-              <img src="/logo.png" alt="Yo Dijital" className="h-12 brightness-0 invert" />
-            </div>
-            <h1 className="text-2xl font-bold leading-tight mb-3">
-              Lead operasyonlarınızı<br />dönüştürün
-            </h1>
-            <p className="text-indigo-100 text-sm leading-relaxed">
-              Reklam kaynaklı tüm lead&apos;lerinizi tek havuzda toplayın, CRM pipeline ile yönetin.
-            </p>
-          </div>
-
-          <div className="space-y-3 mt-6">
-            {[
-              'Sınırsız lead toplama ve yönetim',
-              'AI destekli arama ve otomasyon',
-              'CRM pipeline ve aşama takibi',
-              'Toplu e-posta ve bildirim',
-              'Detaylı analitik ve raporlar',
-            ].map((text) => (
-              <div key={text} className="flex items-center gap-2.5">
-                <svg className="h-4 w-4 text-indigo-200 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-                </svg>
-                <span className="text-sm text-indigo-100">{text}</span>
-              </div>
-            ))}
-          </div>
-
-          <div className="mt-8 flex items-center gap-2">
-            {['A', 'M', 'E', 'K'].map((letter, i) => (
-              <div key={letter} className={`flex h-7 w-7 items-center justify-center rounded-full text-xs font-bold text-white ${i === 0 ? 'bg-blue-500' : i === 1 ? 'bg-orange-500' : i === 2 ? 'bg-pink-500' : 'bg-violet-500'} ${i > 0 ? '-ml-1.5' : ''} ring-2 ring-indigo-600`}>
-                {letter}
-              </div>
-            ))}
-            <span className="ml-2 text-xs text-indigo-200">500+ işletme Yo Dijital kullanıyor</span>
-          </div>
+      <div className="w-full max-w-md relative z-10">
+        {/* Logo */}
+        <div className="flex justify-center mb-5">
+          <Link href="/">
+            <Image src="/logo.png" alt="Yo Dijital" width={120} height={40} className="brightness-0 invert" priority />
+          </Link>
         </div>
 
-        {/* Right - Register Form */}
-        <div className="flex-1 flex flex-col justify-center p-8 sm:p-10">
-          <div className="lg:hidden mb-6 flex justify-center">
-            <img src="/logo.png" alt="Yo Dijital" className="h-10" />
-          </div>
-
-          <h2 className="text-xl font-bold text-gray-900 mb-1">Ücretsiz Hesap Oluştur</h2>
-          <p className="text-sm text-gray-500 mb-6">14 gün ücretsiz deneyin, kredi kartı gerekmez</p>
+        {/* Card */}
+        <div className="bg-white/[0.04] border border-white/10 rounded-2xl p-8 backdrop-blur-sm">
+          <h1 className="text-2xl font-bold text-white text-center mb-2">Ücretsiz Hesap Oluştur</h1>
+          <p className="text-base text-gray-400 text-center mb-8">14 gün ücretsiz deneyin, kredi kartı gerekmez.</p>
 
           {error && (
-            <div className="mb-4 rounded-xl bg-red-50 border border-red-200 p-3 text-sm text-red-600">{error}</div>
+            <div className="mb-6 rounded-lg bg-red-500/10 border border-red-500/20 px-4 py-3">
+              <p className="text-sm text-red-400">{error}</p>
+            </div>
           )}
 
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="grid grid-cols-2 gap-3">
-              <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-1.5">Ad Soyad</label>
-                <input type="text" required value={fullName} onChange={e => setFullName(e.target.value)} placeholder="Adınız Soyadınız"
-                  className="w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 text-sm text-gray-900 placeholder:text-gray-400 transition-all duration-200 focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100 focus:bg-white" />
-              </div>
-              <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-1.5">Şirket Adı</label>
-                <input type="text" value={orgName} onChange={e => setOrgName(e.target.value)} placeholder="Şirketiniz"
-                  className="w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 text-sm text-gray-900 placeholder:text-gray-400 transition-all duration-200 focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100 focus:bg-white" />
-              </div>
-            </div>
+          <form onSubmit={handleSubmit} className="space-y-5">
             <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-1.5">E-posta</label>
-              <input type="email" required value={email} onChange={e => setEmail(e.target.value)} placeholder="ornek@sirket.com"
-                className="w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 text-sm text-gray-900 placeholder:text-gray-400 transition-all duration-200 focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100 focus:bg-white" />
+              <label className="block text-sm font-medium text-gray-300 mb-1.5">Ad Soyad <span className="text-emerald-400">*</span></label>
+              <input
+                type="text"
+                value={fullName}
+                onChange={e => setFullName(e.target.value)}
+                placeholder="Adınızı ve soyadınızı girin"
+                className="w-full rounded-lg border border-white/10 bg-white/[0.04] px-4 py-3 text-base text-white placeholder-gray-500 outline-none transition focus:border-emerald-500/50 focus:ring-1 focus:ring-emerald-500/30"
+                autoComplete="name"
+              />
             </div>
+
             <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-1.5">Şifre</label>
-              <input type="password" required minLength={8} value={password} onChange={e => setPassword(e.target.value)} placeholder="Min. 8 karakter"
-                className="w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 text-sm text-gray-900 placeholder:text-gray-400 transition-all duration-200 focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100 focus:bg-white" />
+              <label className="block text-sm font-medium text-gray-300 mb-1.5">Şirket Adı (İsteğe bağlı)</label>
+              <input
+                type="text"
+                value={orgName}
+                onChange={e => setOrgName(e.target.value)}
+                placeholder="Şirketinizin adı"
+                className="w-full rounded-lg border border-white/10 bg-white/[0.04] px-4 py-3 text-base text-white placeholder-gray-500 outline-none transition focus:border-emerald-500/50 focus:ring-1 focus:ring-emerald-500/30"
+                autoComplete="organization"
+              />
             </div>
-            <button type="submit" disabled={loading}
-              className="w-full rounded-xl bg-indigo-600 px-4 py-3 text-sm font-semibold text-white shadow-lg shadow-indigo-600/20 transition-all duration-200 hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed">
-              {loading ? 'Kayıt yapılıyor...' : 'Ücretsiz Hesap Oluştur'}
+
+            <div>
+              <label className="block text-sm font-medium text-gray-300 mb-1.5">E-posta Adresi <span className="text-emerald-400">*</span></label>
+              <input
+                type="email"
+                value={email}
+                onChange={e => setEmail(e.target.value)}
+                placeholder="ornek@sirket.com"
+                className="w-full rounded-lg border border-white/10 bg-white/[0.04] px-4 py-3 text-base text-white placeholder-gray-500 outline-none transition focus:border-emerald-500/50 focus:ring-1 focus:ring-emerald-500/30"
+                autoComplete="email"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-300 mb-1.5">Şifre <span className="text-emerald-400">*</span></label>
+              <input
+                type="password"
+                value={password}
+                onChange={e => setPassword(e.target.value)}
+                placeholder="En az 8 karakter"
+                className="w-full rounded-lg border border-white/10 bg-white/[0.04] px-4 py-3 text-base text-white placeholder-gray-500 outline-none transition focus:border-emerald-500/50 focus:ring-1 focus:ring-emerald-500/30"
+                autoComplete="new-password"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-300 mb-1.5">Şifre Tekrar <span className="text-emerald-400">*</span></label>
+              <input
+                type="password"
+                value={passwordConfirm}
+                onChange={e => setPasswordConfirm(e.target.value)}
+                placeholder="Şifrenizi tekrar girin"
+                className="w-full rounded-lg border border-white/10 bg-white/[0.04] px-4 py-3 text-base text-white placeholder-gray-500 outline-none transition focus:border-emerald-500/50 focus:ring-1 focus:ring-emerald-500/30"
+                autoComplete="new-password"
+              />
+            </div>
+
+            {/* Terms Checkbox */}
+            <label className="flex items-start gap-3 cursor-pointer">
+              <input
+                type="checkbox"
+                checked={acceptedTerms}
+                onChange={e => setAcceptedTerms(e.target.checked)}
+                className="mt-0.5 w-4 h-4 rounded border-white/20 bg-white/[0.04] text-emerald-500 focus:ring-emerald-500/30 accent-emerald-500"
+              />
+              <span className="text-sm text-gray-400 leading-relaxed">
+                Kayıt olarak,{' '}
+                <Link href="https://voiceagant.yodijital.com/en/privacy-policy" target="_blank" className="text-emerald-400 hover:text-emerald-300 underline">Gizlilik Politikası</Link>
+                {', '}
+                <Link href="https://voiceagant.yodijital.com/en/terms-of-service" target="_blank" className="text-emerald-400 hover:text-emerald-300 underline">Kullanım Koşulları</Link>
+                {' '}ve{' '}
+                <Link href="https://voiceagant.yodijital.com/en/cookie-policy" target="_blank" className="text-emerald-400 hover:text-emerald-300 underline">Çerez Politikası</Link>
+                &apos;nı kabul etmiş olursunuz.
+              </span>
+            </label>
+
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full rounded-lg bg-gradient-to-r from-emerald-500 to-teal-500 px-6 py-3.5 text-base font-semibold text-white shadow-lg shadow-emerald-500/20 transition hover:from-emerald-600 hover:to-teal-600 disabled:opacity-60 disabled:cursor-not-allowed"
+            >
+              {loading ? 'Hesabınız oluşturuluyor...' : 'Ücretsiz Hesap Oluştur'}
             </button>
           </form>
 
-          <p className="mt-4 text-center text-xs text-gray-400">
-            Kaydolarak <span className="text-gray-500">Kullanım Koşulları</span> ve <span className="text-gray-500">Gizlilik Politikası</span>&apos;nı kabul etmiş olursunuz.
-          </p>
+          <p className="text-base text-gray-500 text-center mt-5">Kredi kartı gerekmez. İstediğiniz zaman iptal edin.</p>
 
-          <div className="mt-5 flex items-center gap-3">
-            <div className="flex-1 border-t border-gray-200" />
-            <span className="text-xs text-gray-400">veya</span>
-            <div className="flex-1 border-t border-gray-200" />
+          <div className="mt-4 text-center">
+            <p className="text-sm text-gray-500">
+              Zaten hesabınız var mı?{' '}
+              <Link href="/login" className="text-emerald-400 hover:text-emerald-300 font-medium transition">Giriş Yap</Link>
+            </p>
           </div>
+        </div>
 
-          <p className="mt-4 text-center text-sm text-gray-500">
-            Zaten hesabınız var mı?{' '}
-            <Link href="/login" className="font-semibold text-indigo-600 hover:text-indigo-700 transition-colors">Giriş Yap</Link>
-          </p>
-
-          <p className="mt-6 text-center text-xs text-gray-400">© 2024-2026 Yo Dijital. Tüm hakları saklıdır.</p>
+        <div className="mt-6 text-center">
+          <Link href="/" className="text-sm text-gray-500 hover:text-emerald-400 transition">← Ana sayfaya dön</Link>
         </div>
       </div>
     </div>
