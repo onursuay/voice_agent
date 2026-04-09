@@ -84,7 +84,7 @@ export default function FaturalarimPage() {
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-600 mb-1.5">Soyad</label>
+                <label className="block text-sm font-medium text-gray-600 mb-1.5">{t('lastName')}</label>
                 <input
                   type="text"
                   value={info.phone}
