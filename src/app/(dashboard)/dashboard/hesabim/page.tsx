@@ -162,7 +162,7 @@ export default function HesabimPage() {
             onClick={handleSaveProfile}
             className="w-full py-2.5 bg-indigo-600 text-white font-medium rounded-lg hover:bg-indigo-700 transition-colors text-sm"
           >
-            {profileSaved ? 'Kaydedildi ✓' : 'Kaydet'}
+            {profileSaved ? t('saved') : t('save')}
           </button>
         </div>
 
