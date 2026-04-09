@@ -96,7 +96,7 @@ export default function FaturalarimPage() {
 
             {/* Phone */}
             <div>
-              <label className="block text-sm font-medium text-gray-600 mb-1.5">Telefon</label>
+              <label className="block text-sm font-medium text-gray-600 mb-1.5">{t('phone')}</label>
               <div className="flex gap-2">
                 <div className="flex items-center gap-1.5 px-3 py-2.5 border border-gray-300 rounded-lg text-sm bg-gray-50 shrink-0">
                   <span>🇹🇷</span>
