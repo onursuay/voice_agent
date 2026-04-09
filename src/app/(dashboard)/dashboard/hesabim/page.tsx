@@ -91,7 +91,7 @@ export default function HesabimPage() {
 
         {/* Profile Card */}
         <div className="bg-white rounded-2xl border border-gray-200 p-6">
-          <h3 className="text-base font-bold text-gray-900 mb-5">Profil Bilgileri</h3>
+          <h3 className="text-base font-bold text-gray-900 mb-5">{t('profileInfo')}</h3>
 
           {/* Avatar */}
           <div className="flex items-center gap-4 mb-6">
@@ -99,11 +99,11 @@ export default function HesabimPage() {
               {initials}
             </div>
             <div>
-              <p className="text-sm font-medium text-gray-900">Profil Fotoğrafı</p>
-              <p className="text-sm text-gray-400">Maksimum 2MB, JPG veya PNG</p>
+              <p className="text-sm font-medium text-gray-900">{t('profilePhoto')}</p>
+              <p className="text-sm text-gray-400">{t('maxFileSize')}</p>
             </div>
             <button className="ml-auto px-3 py-1.5 text-sm font-medium text-gray-600 border border-gray-200 rounded-lg hover:bg-gray-50">
-              Fotoğraf Yükle
+              {t('uploadPhoto')}
             </button>
           </div>
 
