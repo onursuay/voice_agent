@@ -174,7 +174,7 @@ export default function FaturalarimPage() {
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-600 mb-1.5">Vergi No</label>
+                    <label className="block text-sm font-medium text-gray-600 mb-1.5">{t('taxNumber')}</label>
                     <input
                       type="text"
                       value={info.taxNumber || ''}
