@@ -49,8 +49,17 @@ const STAGE_COLOR_OPTIONS = [
 export default function SettingsPage() {
   const { session, stages, setStages } = useAppStore();
   const searchParams = useSearchParams();
+  const t = useTranslations('settings');
   const initialTab = (searchParams.get('tab') as SettingsTab) || 'organization';
   const [activeTab, setActiveTab] = useState<SettingsTab>(initialTab);
+
+  const TABS = [
+    { key: 'organization', label: t('tabs.organization'), icon: <Building2 className="h-4 w-4" /> },
+    { key: 'members', label: t('tabs.members'), icon: <Users className="h-4 w-4" /> },
+    { key: 'pipeline', label: t('tabs.pipeline'), icon: <GitBranch className="h-4 w-4" /> },
+    { key: 'profile', label: t('tabs.profile'), icon: <User className="h-4 w-4" /> },
+    { key: 'integrations', label: t('tabs.integrations'), icon: <Plug className="h-4 w-4" /> },
+  ];
 
   // Show success/error messages from OAuth callback redirects
   const metaConnected = searchParams.get('meta_connected');
