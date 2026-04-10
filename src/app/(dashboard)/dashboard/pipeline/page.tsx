@@ -413,7 +413,7 @@ export default function PipelinePage() {
               <Target className="h-4.5 w-4.5 text-blue-600" />
             </div>
             <div>
-              <p className="text-xs text-gray-500">Dönüşüm Oranı</p>
+              <p className="text-xs text-gray-500">{t('conversionRate')}</p>
               <p className="text-lg font-bold text-gray-900">%{stats.conversionRate}</p>
             </div>
           </div>
