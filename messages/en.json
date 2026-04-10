@@ -210,7 +210,24 @@
       "sortAsc": "Sort A-Z",
       "sortDesc": "Sort Z-A",
       "hide": "Hide"
-    }
+    },
+    "columns": "Columns",
+    "colLabels": {
+      "full_name": "Full Name",
+      "phone": "Phone",
+      "email": "Email",
+      "source_platform": "Source",
+      "stage": "Stage",
+      "score": "Score",
+      "assigned_to": "Assignee",
+      "campaign_name": "Campaign",
+      "city": "City",
+      "company": "Company",
+      "tags": "Tags",
+      "first_seen_at": "First Seen",
+      "last_activity_at": "Last Activity"
+    },
+    "saved": "Saved"
   },
   "settings": {
     "title": "Settings",
