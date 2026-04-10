@@ -1251,56 +1251,110 @@ export default function ImportPage() {
   // ============================================
 
   function renderStep2() {
+    const hasNoHeaders = looksLikeHeaderless(headers);
+    // File column options for the dropdown: all headers + skip
+    const fileColOptions = [
+      { value: '_skip', label: `— ${t('fieldSkip')} —` },
+      ...headers.map(h => ({ value: h, label: h })),
+    ];
+
+    // Only show CRM fields that have a match OR are essential
+    const essentialFields = new Set(['first_name', 'last_name', 'full_name', 'phone', 'email']);
+
+    // Also show any CRM field that has a match
+    const allVisible = LEAD_FIELD_OPTIONS_I18N.filter(o => {
+      if (o.value === '_skip') return false;
+      const matched = mapping[o.value] && mapping[o.value] !== '_skip';
+      return essentialFields.has(o.value) || matched;
+    });
+
     return (
       <div className="space-y-6">
+        {/* No-headers warning */}
+        {hasNoHeaders && (
+          <div className="flex items-start gap-4 rounded-xl border border-amber-200 bg-amber-50 p-4">
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-amber-100 text-2xl">
+              ⚠️
+            </div>
+            <div>
+              <p className="font-semibold text-amber-800">{t('noHeadersTitle')}</p>
+              <p className="mt-0.5 text-sm text-amber-700">{t('noHeadersDesc')}</p>
+            </div>
+          </div>
+        )}
+
         <div className="rounded-lg border border-gray-200 bg-white">
           <div className="border-b border-gray-100 px-5 py-3">
             <h3 className="text-sm font-semibold text-gray-700">{t('mappingTitle')}</h3>
-            <p className="mt-0.5 text-xs text-gray-500">
-              {t('mappingDesc')}
-            </p>
+            <p className="mt-0.5 text-xs text-gray-500">{t('mappingDesc')}</p>
           </div>
+
+          {/* Column headers row */}
+          <div className="grid grid-cols-2 gap-4 border-b border-gray-100 bg-gray-50 px-5 py-2 text-xs font-semibold uppercase tracking-wider text-gray-400">
+            <span>{t('crmField')}</span>
+            <span>{t('fileColumn')}</span>
+          </div>
+
           <div className="divide-y divide-gray-100">
-            {headers.map((header) => (
-              <div
-                key={header}
-                className="flex flex-col gap-3 px-5 py-4 sm:flex-row sm:items-center sm:gap-6"
-              >
-                {/* Source column */}
-                <div className="flex min-w-0 flex-1 flex-col">
-                  <span className="text-sm font-medium text-gray-800">{header}</span>
-                  {/* Preview first 3 values */}
-                  <div className="mt-1 flex flex-wrap gap-1.5">
-                    {rows.slice(0, 3).map((row, i) => (
-                      <span
-                        key={i}
-                        className="inline-block max-w-[180px] truncate rounded bg-gray-100 px-2 py-0.5 text-xs text-gray-600"
-                      >
-                        {row[header] || <span className="italic text-gray-400">{t('emptyValue')}</span>}
-                      </span>
-                    ))}
-                  </div>
-                </div>
+            {allVisible.map((fieldOpt) => {
+              const selectedCol = mapping[fieldOpt.value] || '_skip';
+              const sampleValues = selectedCol !== '_skip'
+                ? rows.slice(0, 3).map(r => r[selectedCol]).filter(Boolean)
+                : [];
+              const isMatched = selectedCol !== '_skip';
 
-                {/* Arrow */}
-                <ArrowRight className="hidden h-4 w-4 shrink-0 text-gray-400 sm:block" />
-
-                {/* Target field select */}
-                <div className="w-full sm:w-56">
-                  <Select
-                    options={LEAD_FIELD_OPTIONS_I18N}
-                    value={mapping[header] || '_skip'}
-                    onChange={(e) =>
-                      setMapping((prev) => ({
-                        ...prev,
-                        [header]: e.target.value,
-                      }))
+              return (
+                <div
+                  key={fieldOpt.value}
+                  className="grid grid-cols-2 items-center gap-4 px-5 py-3"
+                >
+                  {/* CRM field name */}
+                  <div className="flex items-center gap-2">
+                    {isMatched
+                      ? <CheckCircle2 className="h-4 w-4 shrink-0 text-green-500" />
+                      : <div className="h-4 w-4 shrink-0 rounded-full border-2 border-gray-300" />
                     }
-                    placeholder={t('selectFieldPlaceholder')}
-                  />
+                    <div>
+                      <span className="text-sm font-medium text-gray-800">{fieldOpt.label}</span>
+                      {sampleValues.length > 0 && (
+                        <div className="mt-0.5 flex flex-wrap gap-1">
+                          {sampleValues.map((v, i) => (
+                            <span key={i} className="inline-block max-w-[120px] truncate rounded bg-green-50 px-1.5 py-0.5 text-xs text-green-700">{v}</span>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* File column picker */}
+                  <select
+                    value={selectedCol}
+                    onChange={(e) => setMapping(prev => ({ ...prev, [fieldOpt.value]: e.target.value }))}
+                    className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-700 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
+                  >
+                    {fileColOptions.map(opt => (
+                      <option key={opt.value} value={opt.value}>{opt.label}</option>
+                    ))}
+                  </select>
                 </div>
-              </div>
-            ))}
+              );
+            })}
+          </div>
+
+          {/* Add more fields section */}
+          <div className="border-t border-gray-100 px-5 py-3">
+            <p className="mb-2 text-xs font-medium text-gray-500">{t('addMoreFields')}</p>
+            <div className="flex flex-wrap gap-2">
+              {LEAD_FIELD_OPTIONS_I18N.filter(o => o.value !== '_skip' && !allVisible.find(v => v.value === o.value)).map(o => (
+                <button
+                  key={o.value}
+                  onClick={() => setMapping(prev => ({ ...prev, [o.value]: '_skip' }))}
+                  className="rounded-full border border-dashed border-gray-300 px-3 py-1 text-xs text-gray-500 hover:border-indigo-400 hover:text-indigo-600 transition-colors"
+                >
+                  + {o.label}
+                </button>
+              ))}
+            </div>
           </div>
         </div>
 
@@ -1308,7 +1362,7 @@ export default function ImportPage() {
         <div className="flex items-center gap-2 text-sm text-gray-600">
           <CheckCircle2 className="h-4 w-4 text-indigo-500" />
           <span>
-            {t('fieldsMapped', { mapped: uniqueMappedFields.length, skipped: headers.length - uniqueMappedFields.length })}
+            {t('fieldsMapped', { mapped: uniqueMappedFields.length, skipped: allVisible.length - uniqueMappedFields.length })}
           </span>
         </div>
 
