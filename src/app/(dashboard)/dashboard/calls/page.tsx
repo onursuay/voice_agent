@@ -62,6 +62,7 @@ const MOCK_CALLS: CallLog[] = [
 ];
 
 export default function CallsPage() {
+  const { CALL_TABS } = useCallTranslations();
   const [activeTab, setActiveTab] = useState('queue');
 
   return (
