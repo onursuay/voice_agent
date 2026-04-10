@@ -229,7 +229,7 @@ function HistoryTab() {
   const completedCalls = calls.filter(c => c.status !== 'pending');
 
   if (completedCalls.length === 0) {
-    return <EmptyState icon={<Clock className="h-6 w-6" />} title="Arama geçmişi boş" description="Tamamlanan aramalar burada görünecek." />;
+    return <EmptyState icon={<Clock className="h-6 w-6" />} title={t('noHistory')} description={t('noHistoryDesc')} />;
   }
 
   return (
