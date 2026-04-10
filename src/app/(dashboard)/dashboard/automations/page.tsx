@@ -122,11 +122,11 @@ export default function AutomationsPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Otomasyonlar</h1>
-          <p className="mt-1 text-sm text-gray-500">Lead olaylarına göre otomatik aksiyonlar tanımlayın.</p>
+          <h1 className="text-2xl font-bold text-gray-900">{t('pageTitle')}</h1>
+          <p className="mt-1 text-sm text-gray-500">{t('subtitle')}</p>
         </div>
         <Button icon={<Plus className="h-4 w-4" />} onClick={() => { setEditingId(null); setForm({ name: '', trigger_type: '', trigger_config: {}, action_type: '', action_config: {} }); setModalOpen(true); }}>
-          Yeni Otomasyon
+          {t('newAutomation')}
         </Button>
       </div>
 
