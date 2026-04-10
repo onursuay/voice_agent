@@ -840,7 +840,7 @@ export default function ImportPage() {
         <div className="flex items-center justify-between rounded-lg border border-gray-200 bg-gray-50 px-4 py-3">
           <div className="flex items-center gap-2 text-sm text-gray-600">
             <Link2 className="h-4 w-4 text-green-500" />
-            <span>Google hesabı bağlı</span>
+            <span>{t('sheetsConnected')}</span>
           </div>
           <button
             onClick={async () => {
