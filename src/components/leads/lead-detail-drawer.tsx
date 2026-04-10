@@ -554,6 +554,7 @@ function ActivitiesTab({ leadId }: { leadId: string }) {
 // Notes Tab
 // ============================================
 function NotesTab({ leadId }: { leadId: string }) {
+  const t = useTranslations('leads');
   const [notes, setNotes] = useState<LeadNote[]>([]);
   const [loading, setLoading] = useState(true);
   const [newNote, setNewNote] = useState('');
