@@ -488,7 +488,7 @@ export default function ImportPage() {
         skipEmptyLines: true,
         complete(results) {
           if (results.errors.length > 0 && results.data.length === 0) {
-            setParseError('CSV dosyasi okunurken hata olustu.');
+            setParseError(t('csvError'));
             return;
           }
           const data = results.data as Record<string, string>[];
