@@ -281,18 +281,18 @@ function TemplatesTab() {
       )}
 
       {modalOpen && (
-        <Modal open={modalOpen} title={editingId ? 'Şablonu Düzenle' : 'Yeni Şablon'} onClose={() => setModalOpen(false)} size="lg">
+        <Modal open={modalOpen} title={editingId ? t('editTemplate') : t('newTemplateTitle')} onClose={() => setModalOpen(false)} size="lg">
           <div className="space-y-4">
-            <Input label="Şablon Adı" value={form.name} onChange={e => setForm({ ...form, name: e.target.value })} placeholder="Ör: Karşılama E-postası" />
-            <Input label="Konu" value={form.subject} onChange={e => setForm({ ...form, subject: e.target.value })} placeholder="E-posta konusu..." />
+            <Input label={t('templateName')} value={form.name} onChange={e => setForm({ ...form, name: e.target.value })} placeholder={t('templateNamePlaceholder')} />
+            <Input label={t('templateSubjectLabel')} value={form.subject} onChange={e => setForm({ ...form, subject: e.target.value })} placeholder={t('subjectPlaceholder')} />
             <div>
-              <label className="mb-1.5 block text-sm font-medium text-gray-700">İçerik</label>
-              <textarea value={form.body} onChange={e => setForm({ ...form, body: e.target.value })} rows={8} className="w-full rounded-lg border border-gray-300 px-3 py-2.5 text-sm" placeholder="Merhaba {{full_name}},&#10;&#10;..." />
+              <label className="mb-1.5 block text-sm font-medium text-gray-700">{t('templateBody')}</label>
+              <textarea value={form.body} onChange={e => setForm({ ...form, body: e.target.value })} rows={8} className="w-full rounded-lg border border-gray-300 px-3 py-2.5 text-sm" placeholder={t('templateBodyPlaceholder')} />
             </div>
-            <Input label="Değişkenler (virgülle ayır)" value={form.variables} onChange={e => setForm({ ...form, variables: e.target.value })} placeholder="full_name, company, city" />
+            <Input label={t('templateVariables')} value={form.variables} onChange={e => setForm({ ...form, variables: e.target.value })} placeholder="full_name, company, city" />
             <div className="flex justify-end gap-2">
-              <Button variant="secondary" onClick={() => setModalOpen(false)}>İptal</Button>
-              <Button onClick={handleSave} disabled={!form.name || !form.subject}>Kaydet</Button>
+              <Button variant="secondary" onClick={() => setModalOpen(false)}>{tCommon('cancel')}</Button>
+              <Button onClick={handleSave} disabled={!form.name || !form.subject}>{tCommon('save')}</Button>
             </div>
           </div>
         </Modal>
