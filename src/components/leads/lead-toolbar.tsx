@@ -172,54 +172,155 @@ function ColumnVisibilityDropdown() {
 
 // ── Bulk Action Bar ─────────────────────────────────────
 
+// ── Delete Confirmation Modal ───────────────────────────
+
+function DeleteConfirmModal({
+  count,
+  onConfirm,
+  onCancel,
+  loading,
+  error,
+}: {
+  count: number;
+  onConfirm: () => void;
+  onCancel: () => void;
+  loading: boolean;
+  error: string | null;
+}) {
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center">
+      {/* Overlay */}
+      <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={!loading ? onCancel : undefined} />
+
+      {/* Dialog */}
+      <div className="relative w-full max-w-md rounded-xl border border-gray-200 bg-white p-6 shadow-2xl">
+        <div className="flex items-start gap-4">
+          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-red-100">
+            <AlertTriangle className="h-5 w-5 text-red-600" />
+          </div>
+          <div className="flex-1">
+            <h3 className="text-base font-semibold text-gray-900">Seçili lead&apos;leri sil</h3>
+            <p className="mt-1.5 text-sm text-gray-600">
+              Seçtiğiniz <span className="font-semibold text-gray-900">{count} lead</span> kalıcı
+              olarak silinecek. Bu işlem geri alınamaz.
+            </p>
+            {error && (
+              <p className="mt-2 text-sm font-medium text-red-600">{error}</p>
+            )}
+          </div>
+        </div>
+
+        <div className="mt-6 flex justify-end gap-3">
+          <Button variant="secondary" size="sm" onClick={onCancel} disabled={loading}>
+            Vazgeç
+          </Button>
+          <Button
+            variant="danger"
+            size="sm"
+            icon={loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Trash2 className="h-4 w-4" />}
+            onClick={onConfirm}
+            disabled={loading}
+          >
+            {loading ? 'Siliniyor...' : 'Evet, Sil'}
+          </Button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ── Bulk Action Bar ─────────────────────────────────────
+
 export function BulkActionBar() {
   const selectedLeadIds = useAppStore((s) => s.selectedLeadIds);
   const clearSelection = useAppStore((s) => s.clearSelection);
   const deleteLeads = useAppStore((s) => s.deleteLeads);
 
+  const [confirmOpen, setConfirmOpen] = useState(false);
+  const [deleting, setDeleting] = useState(false);
+  const [deleteError, setDeleteError] = useState<string | null>(null);
+
   if (selectedLeadIds.size === 0) return null;
 
-  const handleBulkDelete = async () => {
+  const handleDeleteClick = () => {
+    setDeleteError(null);
+    setConfirmOpen(true);
+  };
+
+  const handleConfirm = async () => {
+    if (deleting) return;
     const ids = Array.from(selectedLeadIds);
-    deleteLeads(ids);
+    setDeleting(true);
+    setDeleteError(null);
+
     try {
-      await fetch('/api/leads/bulk', {
+      const res = await fetch('/api/leads/bulk', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ action: 'delete', lead_ids: ids }),
       });
+
+      if (!res.ok) {
+        const body = await res.json().catch(() => ({}));
+        throw new Error(body.error || `Silme başarısız (${res.status})`);
+      }
+
+      // API confirmed → now remove from local state
+      deleteLeads(ids);
+      clearSelection();
+      setConfirmOpen(false);
     } catch (err) {
-      console.error('Bulk delete error:', err);
+      setDeleteError(err instanceof Error ? err.message : 'Beklenmedik bir hata oluştu.');
+    } finally {
+      setDeleting(false);
     }
   };
 
+  const handleCancel = () => {
+    if (deleting) return;
+    setConfirmOpen(false);
+    setDeleteError(null);
+  };
+
   return (
-    <div className="absolute bottom-0 left-0 right-0 z-40 border-t border-gray-200 bg-white px-6 py-3 shadow-lg">
-      <div className="mx-auto flex max-w-7xl items-center gap-4">
-        <span className="text-sm font-medium text-gray-700">
-          {selectedLeadIds.size} seçili
-        </span>
-        <div className="flex items-center gap-2">
-          <Button variant="secondary" size="sm" icon={<GitBranch className="h-4 w-4" />}>
-            Aşama Değiştir
-          </Button>
-          <Button variant="secondary" size="sm" icon={<UserPlus className="h-4 w-4" />}>
-            Ata
-          </Button>
-          <Button variant="secondary" size="sm" icon={<Tag className="h-4 w-4" />}>
-            Etiket Ekle
-          </Button>
-          <Button variant="danger" size="sm" icon={<Trash2 className="h-4 w-4" />} onClick={handleBulkDelete}>
-            Sil
-          </Button>
-        </div>
-        <div className="ml-auto">
-          <Button variant="ghost" size="sm" onClick={clearSelection}>
-            Seçimi Kaldır
-          </Button>
+    <>
+      {confirmOpen && (
+        <DeleteConfirmModal
+          count={selectedLeadIds.size}
+          onConfirm={handleConfirm}
+          onCancel={handleCancel}
+          loading={deleting}
+          error={deleteError}
+        />
+      )}
+
+      <div className="absolute bottom-0 left-0 right-0 z-40 border-t border-gray-200 bg-white px-6 py-3 shadow-lg">
+        <div className="mx-auto flex max-w-7xl items-center gap-4">
+          <span className="text-sm font-medium text-gray-700">
+            {selectedLeadIds.size} seçili
+          </span>
+          <div className="flex items-center gap-2">
+            <Button variant="secondary" size="sm" icon={<GitBranch className="h-4 w-4" />}>
+              Aşama Değiştir
+            </Button>
+            <Button variant="secondary" size="sm" icon={<UserPlus className="h-4 w-4" />}>
+              Ata
+            </Button>
+            <Button variant="secondary" size="sm" icon={<Tag className="h-4 w-4" />}>
+              Etiket Ekle
+            </Button>
+            <Button variant="danger" size="sm" icon={<Trash2 className="h-4 w-4" />} onClick={handleDeleteClick}>
+              Sil
+            </Button>
+          </div>
+          <div className="ml-auto">
+            <Button variant="ghost" size="sm" onClick={clearSelection}>
+              Seçimi Kaldır
+            </Button>
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
 
