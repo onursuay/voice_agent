@@ -153,8 +153,8 @@ function ComposeTab() {
       ) : (
         <div className="space-y-3">
           <div className="flex gap-3">
-            <div className="flex-1"><Input placeholder="Lead ara..." value={searchQuery} onChange={e => setSearchQuery(e.target.value)} icon={<Search className="h-4 w-4" />} /></div>
-            <Select value={stageFilter} onChange={e => setStageFilter(e.target.value)} options={[{ value: '', label: 'Tüm aşamalar' }, ...stages.map(s => ({ value: s.id, label: s.name }))]} />
+            <div className="flex-1"><Input placeholder={t('searchLead')} value={searchQuery} onChange={e => setSearchQuery(e.target.value)} icon={<Search className="h-4 w-4" />} /></div>
+            <Select value={stageFilter} onChange={e => setStageFilter(e.target.value)} options={[{ value: '', label: t('allStages') }, ...stages.map(s => ({ value: s.id, label: s.name }))]} />
           </div>
           <div className="max-h-48 overflow-y-auto rounded-lg border border-gray-200 bg-white divide-y divide-gray-100">
             {filteredLeads.filter(l => l.email).map(l => (
