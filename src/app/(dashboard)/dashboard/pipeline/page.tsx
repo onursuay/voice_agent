@@ -455,7 +455,7 @@ export default function PipelinePage() {
                 stage={{
                   id: '__no_stage__',
                   organization_id: '',
-                  name: 'Aşamasız',
+                  name: t('noStage'),
                   slug: 'no-stage',
                   color: '#9ca3af',
                   position: 999,
