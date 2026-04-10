@@ -6,7 +6,7 @@ import Link from 'next/link'
 import ScheduleModal from './ScheduleModal'
 
 interface Props {
-  lang: 'tr' | 'en'
+  lang?: 'tr' | 'en'
   ctaSchedule: string
   ctaTrial: string
   ctaDemo?: string
