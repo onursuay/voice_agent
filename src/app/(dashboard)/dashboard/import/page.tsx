@@ -43,6 +43,13 @@ import { useAppStore } from '@/lib/store';
 // STEPS is now built inside StepIndicator using translations
 
 function StepIndicator({ current }: { current: number }) {
+  const t = useTranslations('import');
+  const STEPS = [
+    { num: 1, label: t('stepUpload') },
+    { num: 2, label: t('stepMapping') },
+    { num: 3, label: t('stepPreview') },
+    { num: 4, label: t('stepResult') },
+  ];
   return (
     <nav className="mb-8">
       <ol className="flex items-center">
