@@ -313,6 +313,8 @@ export default function ImportPage() {
     { value: 'utm_campaign', label: t('fieldUtmCampaign') },
     { value: 'tags', label: t('fieldTags') },
     { value: 'score', label: t('fieldScore') },
+    { value: 'date', label: t('fieldDate') },
+    { value: 'external_id', label: t('fieldExternalId') },
     { value: '_skip', label: t('fieldSkip') },
   ];
   const stages = useAppStore((s) => s.stages);
