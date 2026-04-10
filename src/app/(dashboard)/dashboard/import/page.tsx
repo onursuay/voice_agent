@@ -601,6 +601,53 @@ export default function ImportPage() {
   const stageOptions = stages.map((s) => ({ value: s.id, label: s.name }));
 
   // ============================================
+  // AI column mapping
+  // ============================================
+
+  const callAiMapping = useCallback(async (hdrs: string[], rowData: Record<string, string>[]) => {
+    setAiLoading(true);
+    try {
+      const res = await fetch('/api/leads/import/map-columns', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ headers: hdrs, sampleRows: rowData.slice(0, 5) }),
+      });
+      if (!res.ok) return;
+      const data = await res.json();
+      const mappingResult: Record<string, string> = {};
+      const sourceResult: Record<string, 'auto' | 'learned' | 'ai' | 'skip'> = {};
+      const crmFields = LEAD_FIELD_OPTIONS_I18N.map(o => o.value);
+      const usedCrmFields = new Set<string>();
+      // First pass: ai and learned (highest priority)
+      for (const [fileCol, info] of Object.entries(data.mapping as Record<string, { crmField: string; source: string }>)) {
+        if ((info.source === 'ai' || info.source === 'learned') && info.crmField !== '_skip') {
+          if (!usedCrmFields.has(info.crmField) && crmFields.includes(info.crmField)) {
+            mappingResult[info.crmField] = fileCol;
+            sourceResult[info.crmField] = info.source as 'ai' | 'learned';
+            usedCrmFields.add(info.crmField);
+          }
+        }
+      }
+      // Second pass: auto
+      for (const [fileCol, info] of Object.entries(data.mapping as Record<string, { crmField: string; source: string }>)) {
+        if (info.source === 'auto' && info.crmField !== '_skip') {
+          if (!usedCrmFields.has(info.crmField) && crmFields.includes(info.crmField)) {
+            mappingResult[info.crmField] = fileCol;
+            sourceResult[info.crmField] = 'auto';
+            usedCrmFields.add(info.crmField);
+          }
+        }
+      }
+      setMapping(prev => ({ ...prev, ...mappingResult }));
+      setAiMappingSource(sourceResult);
+    } catch {
+      // silently fail
+    } finally {
+      setAiLoading(false);
+    }
+  }, [LEAD_FIELD_OPTIONS_I18N]);
+
+  // ============================================
   // File parsing
   // ============================================
 
