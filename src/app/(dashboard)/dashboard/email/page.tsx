@@ -324,10 +324,10 @@ function HistoryTab() {
       <table className="w-full text-sm">
         <thead>
           <tr className="border-b border-gray-100 bg-gray-50/50 text-xs font-medium uppercase tracking-wider text-gray-500">
-            <th className="px-4 py-3 text-left">Alıcı</th>
-            <th className="px-4 py-3 text-left">Konu</th>
-            <th className="px-4 py-3 text-left">Durum</th>
-            <th className="px-4 py-3 text-left">Tarih</th>
+            <th className="px-4 py-3 text-left">{t('colRecipient')}</th>
+            <th className="px-4 py-3 text-left">{t('colSubject')}</th>
+            <th className="px-4 py-3 text-left">{t('colStatus')}</th>
+            <th className="px-4 py-3 text-left">{t('colDate')}</th>
           </tr>
         </thead>
         <tbody className="divide-y divide-gray-100">
