@@ -709,7 +709,7 @@ export default function ImportPage() {
             className="inline-flex items-center gap-2 rounded-lg bg-white border border-gray-300 px-5 py-2.5 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 transition-colors"
           >
             <Link2 className="h-4 w-4 text-green-600" />
-            Google ile Bağlan
+            {t('connectGoogle')}
           </a>
         </div>
       );
