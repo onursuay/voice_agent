@@ -30,7 +30,7 @@ import {
   RefreshCw,
 } from 'lucide-react';
 
-type SettingsTab = 'organization' | 'members' | 'pipeline' | 'profile' | 'integrations';
+type SettingsTab = 'organization' | 'members' | 'pipeline' | 'profile';
 
 const ROLE_COLORS: Record<UserRole, 'indigo' | 'purple' | 'blue' | 'green' | 'yellow' | 'gray'> = {
   owner: 'indigo',
