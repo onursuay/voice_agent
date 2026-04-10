@@ -441,7 +441,12 @@ const FIELD_TO_COLUMN: Record<string, string> = {
 };
 
 // Columns that are always visible regardless of import mapping
-const ALWAYS_VISIBLE = new Set(['_select', '_row_num', 'full_name', 'phone', 'email']);
+// Always visible: core identity columns + CRM system columns (stage, score, assigned, tags etc.)
+const ALWAYS_VISIBLE = new Set([
+  '_select', '_row_num',
+  'full_name', 'phone', 'email',
+  'stage', 'score', 'assigned_to', 'tags', 'first_seen_at', 'last_activity_at',
+]);
 
 type ImportJobSummary = {
   id: string;
