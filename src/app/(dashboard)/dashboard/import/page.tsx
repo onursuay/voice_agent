@@ -992,10 +992,10 @@ export default function ImportPage() {
               <table className="w-full text-sm">
                 <thead>
                   <tr className="border-b border-gray-100 bg-gray-50">
-                    <th className="px-4 py-2.5 text-left font-medium text-gray-600">Dosya</th>
-                    <th className="px-4 py-2.5 text-left font-medium text-gray-600">Durum</th>
-                    <th className="px-4 py-2.5 text-right font-medium text-gray-600">Satir</th>
-                    <th className="px-4 py-2.5 text-right font-medium text-gray-600">Tarih</th>
+                    <th className="px-4 py-2.5 text-left font-medium text-gray-600">{t('fileName')}</th>
+                    <th className="px-4 py-2.5 text-left font-medium text-gray-600">{t('statusColHeader')}</th>
+                    <th className="px-4 py-2.5 text-right font-medium text-gray-600">{t('rowCount')}</th>
+                    <th className="px-4 py-2.5 text-right font-medium text-gray-600">{t('importedAt')}</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-100">
