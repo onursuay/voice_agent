@@ -267,6 +267,7 @@ export function BulkActionBar() {
       deleteLeads(ids);
       clearSelection();
       setConfirmOpen(false);
+      triggerLeadsRefresh();
     } catch (err) {
       setDeleteError(err instanceof Error ? err.message : t('deleteError', { status: '?' }));
     } finally {
