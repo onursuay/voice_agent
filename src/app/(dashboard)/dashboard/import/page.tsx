@@ -291,6 +291,41 @@ function autoMapHeader(header: string, sampleValues: string[] = []): string {
   return '_skip';
 }
 
+function looksLikeHeaderless(headers: string[]): boolean {
+  let dataLike = 0;
+  for (const h of headers) {
+    if (/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(h)) dataLike++;
+    else if (/^\+?[\d]{7,}$/.test(h.replace(/[\s\-\(\)]/g, ''))) dataLike++;
+    else if (/^\d{4}[-\/]\d{2}[-\/]\d{2}/.test(h)) dataLike++;
+  }
+  return dataLike >= Math.ceil(headers.length * 0.4);
+}
+
+function buildReverseAutoMap(
+  crmFields: string[],
+  headers: string[],
+  rows: Record<string, string>[]
+): Record<string, string> {
+  const usedCols = new Set<string>();
+  const result: Record<string, string> = {};
+
+  for (const crmField of crmFields) {
+    if (crmField === '_skip') continue;
+    let best = '_skip';
+    for (const header of headers) {
+      if (usedCols.has(header)) continue;
+      const samples = rows.slice(0, 5).map(r => r[header]).filter(Boolean);
+      if (autoMapHeader(header, samples) === crmField) {
+        best = header;
+        break;
+      }
+    }
+    result[crmField] = best;
+    if (best !== '_skip') usedCols.add(best);
+  }
+  return result;
+}
+
 // ============================================
 // Helpers
 // ============================================
