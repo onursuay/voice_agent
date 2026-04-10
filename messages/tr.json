@@ -117,6 +117,8 @@
     "loadError": "Leadler yüklenemedi.",
     "retry": "Tekrar Dene",
     "cancel": "Vazgeç",
+    "source": "Kaynak",
+    "clearFilter": "Filtreyi Temizle",
     "filterTitle": "Filtreler",
     "clearFilters": "Filtreleri Temizle",
     "addFilter": "Filtre Ekle",
