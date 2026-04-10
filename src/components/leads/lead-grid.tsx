@@ -500,6 +500,8 @@ export function LeadGrid() {
       created_at: now,
       updated_at: now,
       stage: stages.find((s) => s.id === (newRowData.stage_id || stages[0]?.id)),
+      meta_lead_id: null,
+      meta_page_id: null,
     };
 
     addLead(newLead);
