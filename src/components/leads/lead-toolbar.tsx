@@ -669,6 +669,7 @@ export function LeadToolbar() {
 
         <LeadFilters />
         <SourceFilterDropdown />
+        <TableFilterDropdown />
         <SortDropdown />
         <ColumnVisibilityDropdown />
         <PerPageDropdown />
