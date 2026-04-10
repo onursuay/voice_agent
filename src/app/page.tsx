@@ -3,6 +3,7 @@ import Image from 'next/image'
 import ScheduleModal from '@/components/landing/ScheduleModal'
 import DemoModal from '@/components/landing/DemoModal'
 import LandingHeader from '@/components/landing/LandingHeader'
+import FooterLangSwitcher from '@/components/landing/FooterLangSwitcher'
 
 export default function RootPage() {
 
