@@ -289,6 +289,7 @@ function HistoryTab() {
 // CONFIG TAB
 // ============================================
 function ConfigTab() {
+  const { t } = useCallTranslations();
   const hasNetgsm = !!process.env.NEXT_PUBLIC_NETGSM_USER;
   const hasElevenLabs = !!process.env.NEXT_PUBLIC_ELEVENLABS_KEY;
   const hasOpenAI = !!process.env.NEXT_PUBLIC_OPENAI_KEY;
@@ -302,16 +303,16 @@ function ConfigTab() {
   });
 
   const services = [
-    { name: 'Netgsm', desc: 'Telefon altyapısı', connected: hasNetgsm, icon: <Phone className="h-5 w-5" /> },
-    { name: 'ElevenLabs', desc: 'Ses sentezi', connected: hasElevenLabs, icon: <Mic className="h-5 w-5" /> },
-    { name: 'OpenAI', desc: 'Yapay zeka konuşma', connected: hasOpenAI, icon: <Brain className="h-5 w-5" /> },
+    { name: 'Netgsm', desc: t('phoneInfra'), connected: hasNetgsm, icon: <Phone className="h-5 w-5" /> },
+    { name: 'ElevenLabs', desc: t('voiceSynth'), connected: hasElevenLabs, icon: <Mic className="h-5 w-5" /> },
+    { name: 'OpenAI', desc: t('aiConversation'), connected: hasOpenAI, icon: <Brain className="h-5 w-5" /> },
   ];
 
   return (
     <div className="max-w-3xl space-y-6">
       {/* Service Status */}
       <div>
-        <h2 className="text-lg font-semibold text-gray-900 mb-3">Servis Durumu</h2>
+        <h2 className="text-lg font-semibold text-gray-900 mb-3">{t('serviceStatus')}</h2>
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
           {services.map(s => (
             <div key={s.name} className="rounded-lg border border-gray-200 bg-white p-4">
@@ -323,39 +324,39 @@ function ConfigTab() {
                 </div>
               </div>
               <div className="flex items-center gap-1.5">
-                {s.connected ? <><Wifi className="h-3.5 w-3.5 text-green-500" /><span className="text-xs text-green-600">Bağlı</span></> : <><WifiOff className="h-3.5 w-3.5 text-gray-400" /><span className="text-xs text-gray-500">Bağlı Değil</span></>}
+                {s.connected ? <><Wifi className="h-3.5 w-3.5 text-green-500" /><span className="text-xs text-green-600">{t('statusCompleted')}</span></> : <><WifiOff className="h-3.5 w-3.5 text-gray-400" /><span className="text-xs text-gray-500">{t('statusFailed')}</span></>}
               </div>
             </div>
           ))}
         </div>
-        <p className="mt-2 text-xs text-gray-400">API key&apos;leri .env.local dosyasında tanımlayın: NETGSM_USER, ELEVENLABS_API_KEY, OPENAI_API_KEY</p>
+        <p className="mt-2 text-xs text-gray-400">{t('envNote')}</p>
       </div>
 
       {/* Call Settings */}
       <div>
-        <h2 className="text-lg font-semibold text-gray-900 mb-3">Arama Ayarları</h2>
+        <h2 className="text-lg font-semibold text-gray-900 mb-3">{t('callSettings')}</h2>
         <div className="rounded-lg border border-gray-200 bg-white p-5 space-y-4">
           <div className="grid grid-cols-2 gap-4">
-            <Input label="Maks. Arama Süresi (sn)" type="number" value={String(config.max_duration)} onChange={e => setConfig({ ...config, max_duration: Number(e.target.value) })} />
-            <Input label="Maks. Tekrar Deneme" type="number" value={String(config.max_retries)} onChange={e => setConfig({ ...config, max_retries: Number(e.target.value) })} />
+            <Input label={t('maxDuration')} type="number" value={String(config.max_duration)} onChange={e => setConfig({ ...config, max_duration: Number(e.target.value) })} />
+            <Input label={t('maxRetries')} type="number" value={String(config.max_retries)} onChange={e => setConfig({ ...config, max_retries: Number(e.target.value) })} />
           </div>
           <div className="grid grid-cols-2 gap-4">
-            <Input label="Çalışma Saati Başlangıç" type="time" value={config.work_hours_start} onChange={e => setConfig({ ...config, work_hours_start: e.target.value })} />
-            <Input label="Çalışma Saati Bitiş" type="time" value={config.work_hours_end} onChange={e => setConfig({ ...config, work_hours_end: e.target.value })} />
+            <Input label={t('workStart')} type="time" value={config.work_hours_start} onChange={e => setConfig({ ...config, work_hours_start: e.target.value })} />
+            <Input label={t('workEnd')} type="time" value={config.work_hours_end} onChange={e => setConfig({ ...config, work_hours_end: e.target.value })} />
           </div>
         </div>
       </div>
 
       {/* AI Prompt */}
       <div>
-        <h2 className="text-lg font-semibold text-gray-900 mb-3">AI Sistem Prompt&apos;u</h2>
+        <h2 className="text-lg font-semibold text-gray-900 mb-3">{t('aiPrompt')}</h2>
         <div className="rounded-lg border border-gray-200 bg-white p-5">
           <textarea value={config.system_prompt} onChange={e => setConfig({ ...config, system_prompt: e.target.value })} rows={5} className="w-full rounded-lg border border-gray-300 px-3 py-2.5 text-sm" />
-          <p className="mt-2 text-xs text-gray-400">Bu prompt, AI araması sırasında konuşma yönlendirmesi için kullanılır.</p>
+          <p className="mt-2 text-xs text-gray-400">{t('aiPromptNote')}</p>
         </div>
       </div>
 
-      <Button>Ayarları Kaydet</Button>
+      <Button>{t('saveSettings')}</Button>
     </div>
   );
 }
