@@ -20,6 +20,16 @@ type MetaStatus = {
   connected_at?: string;
   expires_at?: string;
   is_expired?: boolean;
+  webhook_subscribed?: boolean;
+};
+
+type LeadEvent = {
+  id: string;
+  event_type: string;
+  external_id: string | null;
+  status: string;
+  error_message: string | null;
+  created_at: string;
 };
 
 export default function IntegrationsPage() {
