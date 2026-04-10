@@ -138,7 +138,7 @@ function ComposeTab() {
       {/* Recipient */}
       {mode === 'single' ? (
         <div>
-          <Input label="Alıcı" placeholder="E-posta adresi veya lead adı ara..." value={to} onChange={e => setTo(e.target.value)} icon={<Mail className="h-4 w-4" />} />
+          <Input label={t('recipient')} placeholder={t('recipientPlaceholder')} value={to} onChange={e => setTo(e.target.value)} icon={<Mail className="h-4 w-4" />} />
           {to && !to.includes('@') && (
             <div className="mt-2 max-h-32 overflow-y-auto rounded-lg border border-gray-200 bg-white">
               {leads.filter(l => l.full_name?.toLowerCase().includes(to.toLowerCase()) || l.email?.toLowerCase().includes(to.toLowerCase())).slice(0, 5).map(l => (
