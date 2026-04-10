@@ -36,6 +36,7 @@ import { Badge } from '@/components/ui/badge';
 import { Avatar } from '@/components/ui/avatar';
 import { Spinner } from '@/components/ui/loading';
 import { LeadDetailDrawer } from '@/components/leads/lead-detail-drawer';
+import { useTranslations } from 'next-intl';
 
 // ============================================
 // Lead Card (Sortable)
