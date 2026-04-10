@@ -877,18 +877,23 @@ export default function ImportPage() {
                 onClick={loadSheetData}
                 disabled={loadingSheetData}
                 className={cn(
-                  'group flex w-full items-center justify-center gap-2.5 rounded-xl px-5 py-3 text-sm font-semibold text-white shadow-sm transition-all duration-200',
+                  'relative w-full overflow-hidden rounded-xl px-5 py-3 text-sm font-semibold text-white shadow-sm transition-all duration-200 active:scale-[0.98]',
                   loadingSheetData
                     ? 'bg-green-400 cursor-not-allowed'
-                    : 'bg-green-500 hover:bg-green-600 hover:shadow-md active:scale-[0.98]'
+                    : 'bg-green-500 hover:bg-green-600 hover:shadow-md'
                 )}
               >
-                {loadingSheetData ? (
-                  <Loader2 className="h-4 w-4 animate-spin" />
-                ) : (
-                  <ChevronDown className="h-4 w-4 transition-transform duration-300 group-hover:translate-y-0.5" />
+                {/* Shimmer sweep animation */}
+                {!loadingSheetData && (
+                  <span
+                    className="pointer-events-none absolute inset-0 -translate-x-full animate-[shimmer_2s_infinite] bg-gradient-to-r from-transparent via-white/30 to-transparent"
+                    style={{ animationTimingFunction: 'linear' }}
+                  />
                 )}
-                {t('sheetsLoadData')}
+                <span className="relative flex items-center justify-center gap-2">
+                  {loadingSheetData && <Loader2 className="h-4 w-4 animate-spin" />}
+                  {t('sheetsLoadData')}
+                </span>
               </button>
             )}
           </div>
