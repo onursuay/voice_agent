@@ -885,10 +885,7 @@ export default function ImportPage() {
               >
                 {/* Shimmer sweep animation */}
                 {!loadingSheetData && (
-                  <span
-                    className="pointer-events-none absolute inset-0 -translate-x-full animate-[shimmer_2s_infinite] bg-gradient-to-r from-transparent via-white/30 to-transparent"
-                    style={{ animationTimingFunction: 'linear' }}
-                  />
+                  <span className="pointer-events-none absolute inset-0 -translate-x-full animate-shimmer bg-gradient-to-r from-transparent via-white/30 to-transparent" />
                 )}
                 <span className="relative flex items-center justify-center gap-2">
                   {loadingSheetData && <Loader2 className="h-4 w-4 animate-spin" />}
