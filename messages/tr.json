@@ -652,6 +652,8 @@
     "crmField": "CRM Alanı",
     "fileColumn": "Dosya Sütunu",
     "addMoreFields": "Daha fazla alan ekle",
+    "aiMapping": "AI sütunlarınızı analiz ediyor...",
+    "learned": "Öğrenildi",
     "dedupeUpdateLabel": "Mevcut kayıtlarla eşleşenleri güncelle",
     "dedupeUpdateDesc": "E-posta veya telefon numarası eşleşirse mevcut lead güncellenir.",
     "stagePlaceholder": "Aşama seçin...",
