@@ -13,6 +13,7 @@ import { EmptyState } from '@/components/ui/empty-state';
 import { Spinner } from '@/components/ui/loading';
 import { formatDateTime, formatRelativeTime } from '@/lib/utils';
 import type { Lead } from '@/lib/types';
+import { useTranslations } from 'next-intl';
 
 interface CallLog {
   id: string;
