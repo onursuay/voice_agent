@@ -323,6 +323,54 @@ export function BulkActionBar() {
   );
 }
 
+// ── Per-page Dropdown ────────────────────────────────────
+
+const PER_PAGE_OPTIONS = [25, 50, 100, 150, 200, 250, 300, 350, 400, 450, 500];
+
+function PerPageDropdown() {
+  const perPage = useAppStore((s) => s.perPage);
+  const setPerPage = useAppStore((s) => s.setPerPage);
+  const [open, setOpen] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    function handleClickOutside(e: MouseEvent) {
+      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
+    }
+    if (open) document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [open]);
+
+  return (
+    <div ref={ref} className="relative">
+      <button
+        onClick={() => setOpen(o => !o)}
+        className="flex items-center gap-1.5 rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+      >
+        <span>{perPage}</span>
+        <ChevronDown className={`h-3.5 w-3.5 text-gray-400 transition-transform duration-150 ${open ? 'rotate-180' : ''}`} />
+      </button>
+
+      {open && (
+        <div className="absolute left-0 top-full z-50 mt-1.5 w-24 overflow-hidden rounded-xl border border-gray-200 bg-white shadow-lg">
+          {PER_PAGE_OPTIONS.map(n => (
+            <button
+              key={n}
+              onClick={() => { setPerPage(n); setOpen(false); }}
+              className={`flex w-full items-center justify-between px-4 py-2 text-sm transition-colors ${
+                perPage === n ? 'bg-indigo-50 font-medium text-indigo-700' : 'text-gray-700 hover:bg-gray-50'
+              }`}
+            >
+              {n}
+              {perPage === n && <span className="h-1.5 w-1.5 rounded-full bg-indigo-500" />}
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
 // ── Main Toolbar ────────────────────────────────────────
 
 export function LeadToolbar() {
