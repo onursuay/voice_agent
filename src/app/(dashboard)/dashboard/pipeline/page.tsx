@@ -395,7 +395,7 @@ export default function PipelinePage() {
               <Users className="h-4.5 w-4.5 text-indigo-600" />
             </div>
             <div>
-              <p className="text-xs text-gray-500">Toplam Lead</p>
+              <p className="text-xs text-gray-500">{t('totalLeads')}</p>
               <p className="text-lg font-bold text-gray-900">{stats.total}</p>
             </div>
           </div>
