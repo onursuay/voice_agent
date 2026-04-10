@@ -408,24 +408,41 @@ export default function LandingContent() {
             <div className="relative">
               <button
                 onClick={() => setDropOpen((v) => !v)}
-                className="flex items-center gap-1.5 text-gray-500 hover:text-gray-300 transition-colors border border-white/[0.08] rounded-md px-3 py-1.5 text-sm"
+                className="flex items-center gap-1.5 text-gray-400 hover:text-gray-200 transition-colors border border-white/[0.10] hover:border-white/[0.20] bg-white/[0.03] hover:bg-white/[0.06] rounded-lg px-3 py-1.5 text-sm"
               >
-                <span>{langMeta[lang].flag}</span>
+                {/* Globe icon */}
+                <svg width={14} height={14} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="opacity-70">
+                  <circle cx="12" cy="12" r="10"/>
+                  <path d="M2 12h20"/>
+                  <path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/>
+                </svg>
                 <span>{langMeta[lang].label}</span>
-                <svg width={12} height={12} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={`transition-transform ${dropOpen ? 'rotate-180' : ''}`}>
+                <svg width={12} height={12} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className={`opacity-60 transition-transform duration-200 ${dropOpen ? 'rotate-180' : ''}`}>
                   <polyline points="6 9 12 15 18 9" />
                 </svg>
               </button>
 
               {dropOpen && (
-                <div className="absolute bottom-full mb-1 right-0 bg-[#0e0e12] border border-white/[0.08] rounded-md overflow-hidden shadow-lg z-50 min-w-[130px]">
-                  <button
-                    onClick={() => { setLang(other); setDropOpen(false) }}
-                    className="w-full flex items-center gap-2 px-3 py-2 text-sm text-gray-400 hover:text-gray-200 hover:bg-white/[0.04] transition-colors"
-                  >
-                    <span>{langMeta[other].flag}</span>
-                    <span>{langMeta[other].label}</span>
-                  </button>
+                <div className="absolute bottom-full mb-2 right-0 bg-[#13141a] border border-white/[0.10] rounded-xl overflow-hidden shadow-2xl shadow-black/60 z-50 min-w-[150px] py-1">
+                  {(['tr', 'en'] as Lang[]).map((l) => (
+                    <button
+                      key={l}
+                      onClick={() => { setLang(l); setDropOpen(false) }}
+                      className={`w-full flex items-center gap-2.5 px-4 py-2.5 text-sm transition-colors ${
+                        lang === l
+                          ? 'text-white bg-white/[0.06]'
+                          : 'text-gray-400 hover:text-white hover:bg-white/[0.04]'
+                      }`}
+                    >
+                      <span className="text-base leading-none">{langMeta[l].flag}</span>
+                      <span>{langMeta[l].label}</span>
+                      {lang === l && (
+                        <svg width={12} height={12} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="ml-auto text-emerald-400">
+                          <polyline points="20 6 9 17 4 12"/>
+                        </svg>
+                      )}
+                    </button>
+                  ))}
                 </div>
               )}
             </div>
