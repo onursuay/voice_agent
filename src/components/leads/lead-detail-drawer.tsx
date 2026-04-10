@@ -85,12 +85,13 @@ function CopyButton({ text }: { text: string }) {
     setTimeout(() => setCopied(false), 2000);
   };
 
+  const tD = useTranslations('leads');
   return (
     <button
       type="button"
       onClick={handleCopy}
       className="ml-1.5 inline-flex items-center rounded p-0.5 text-gray-400 hover:bg-gray-100 hover:text-gray-600 transition-colors"
-      title="Kopyala"
+      title={tD('drawer.copy')}
     >
       {copied ? <Check className="h-3.5 w-3.5 text-green-500" /> : <Copy className="h-3.5 w-3.5" />}
     </button>
