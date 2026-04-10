@@ -58,32 +58,72 @@ export interface FacebookPage {
   access_token: string;
 }
 
-async function getPages(userToken: string): Promise<FacebookPage[]> {
-  const allPages: FacebookPage[] = [];
-  let nextUrl: string | null = null;
-
-  const initialUrl = new URL(`${META_GRAPH_BASE}/me/accounts`);
-  initialUrl.searchParams.set('access_token', userToken);
-  initialUrl.searchParams.set('fields', 'id,name,access_token');
-  initialUrl.searchParams.set('limit', '100');
-  nextUrl = initialUrl.toString();
-
-  let pageNum = 0;
+async function fetchPaginatedPages(startUrl: string): Promise<FacebookPage[]> {
+  const results: FacebookPage[] = [];
+  let nextUrl: string | null = startUrl;
   while (nextUrl) {
-    pageNum++;
     const res = await fetch(nextUrl);
     const body = await res.json() as {
       data?: FacebookPage[];
-      paging?: { cursors?: { after?: string }; next?: string };
-      error?: { message: string; code: number };
+      paging?: { next?: string };
+      error?: { message: string };
     };
-    console.log(`[Meta getPages] page=${pageNum} status=${res.status} count=${body.data?.length ?? 0} hasNext=${!!body.paging?.next} error=${body.error?.message ?? 'none'}`);
-    if (!res.ok || body.error) break;
-    if (body.data) allPages.push(...body.data);
+    if (!res.ok || body.error) {
+      console.log(`[Meta] fetchPaginatedPages error: ${body.error?.message ?? res.status}`);
+      break;
+    }
+    if (body.data) results.push(...body.data);
     nextUrl = body.paging?.next ?? null;
   }
+  return results;
+}
 
-  console.log(`[Meta getPages] TOTAL pages fetched: ${allPages.length}`);
+async function getPages(userToken: string): Promise<FacebookPage[]> {
+  const pageMap = new Map<string, FacebookPage>();
+
+  // 1. Direct pages (/me/accounts)
+  const directUrl = new URL(`${META_GRAPH_BASE}/me/accounts`);
+  directUrl.searchParams.set('access_token', userToken);
+  directUrl.searchParams.set('fields', 'id,name,access_token');
+  directUrl.searchParams.set('limit', '100');
+  const directPages = await fetchPaginatedPages(directUrl.toString());
+  for (const p of directPages) pageMap.set(p.id, p);
+  console.log(`[Meta getPages] direct pages: ${directPages.length}`);
+
+  // 2. Business Manager pages
+  const bizUrl = new URL(`${META_GRAPH_BASE}/me/businesses`);
+  bizUrl.searchParams.set('access_token', userToken);
+  bizUrl.searchParams.set('fields', 'id,name');
+  bizUrl.searchParams.set('limit', '100');
+  const bizRes = await fetch(bizUrl.toString());
+  if (bizRes.ok) {
+    const bizData = await bizRes.json() as { data?: { id: string; name: string }[]; error?: { message: string } };
+    const businesses = bizData.data ?? [];
+    console.log(`[Meta getPages] businesses found: ${businesses.length}`);
+
+    for (const biz of businesses) {
+      // owned pages
+      const ownedUrl = new URL(`${META_GRAPH_BASE}/${biz.id}/owned_pages`);
+      ownedUrl.searchParams.set('access_token', userToken);
+      ownedUrl.searchParams.set('fields', 'id,name,access_token');
+      ownedUrl.searchParams.set('limit', '100');
+      const owned = await fetchPaginatedPages(ownedUrl.toString());
+      for (const p of owned) pageMap.set(p.id, p);
+
+      // client pages
+      const clientUrl = new URL(`${META_GRAPH_BASE}/${biz.id}/client_pages`);
+      clientUrl.searchParams.set('access_token', userToken);
+      clientUrl.searchParams.set('fields', 'id,name,access_token');
+      clientUrl.searchParams.set('limit', '100');
+      const clients = await fetchPaginatedPages(clientUrl.toString());
+      for (const p of clients) pageMap.set(p.id, p);
+
+      console.log(`[Meta getPages] biz=${biz.name} owned=${owned.length} clients=${clients.length}`);
+    }
+  }
+
+  const allPages = Array.from(pageMap.values());
+  console.log(`[Meta getPages] TOTAL unique pages: ${allPages.length}`);
   return allPages;
 }
 
