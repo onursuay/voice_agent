@@ -135,13 +135,16 @@ export async function DELETE(request: NextRequest, context: RouteContext) {
     if (!membership) return NextResponse.json({ error: 'No organization' }, { status: 403 });
     const orgId = membership.organization_id;
 
-    const { error } = await supabase
+    const { data: deleted, error } = await supabase
       .from('leads')
       .delete()
       .eq('id', id)
-      .eq('organization_id', orgId);
+      .eq('organization_id', orgId)
+      .select('id')
+      .single();
 
     if (error) return NextResponse.json({ error: error.message }, { status: 500 });
+    if (!deleted) return NextResponse.json({ error: 'Lead bulunamadı veya silinemedi' }, { status: 404 });
 
     return NextResponse.json({ success: true });
   } catch (err) {
