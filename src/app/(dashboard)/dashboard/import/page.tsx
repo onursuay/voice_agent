@@ -29,8 +29,6 @@ import { Badge } from '@/components/ui/badge';
 import { Spinner } from '@/components/ui/loading';
 import { cn, formatRelativeTime } from '@/lib/utils';
 import {
-  SOURCE_PLATFORM_LABELS,
-  STAGE_LABELS,
   type ImportJob,
 } from '@/lib/types';
 import { useAppStore } from '@/lib/store';
