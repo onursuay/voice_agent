@@ -575,6 +575,7 @@
     "statusPending": "Beklemede",
     "recentImports": "Son İçe Aktarmalar",
     "noRecentImports": "Henüz içe aktarma yok.",
+    "deleteSelected": "Seçilenleri sil",
     "fileName": "Dosya Adı",
     "fileSize": "Boyut",
     "rowCount": "Satır",
