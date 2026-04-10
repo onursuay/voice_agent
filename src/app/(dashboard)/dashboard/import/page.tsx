@@ -1317,7 +1317,7 @@ export default function ImportPage() {
             <div className="rounded-lg border border-red-200 bg-red-50">
               <div className="border-b border-red-200 px-4 py-3">
                 <h4 className="text-sm font-semibold text-red-700">
-                  Hatali Satirlar ({totalErrors})
+                  {t('errorRowsTitle', { count: totalErrors })}
                 </h4>
               </div>
               <div className="max-h-60 overflow-y-auto">
