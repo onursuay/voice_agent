@@ -655,6 +655,8 @@
     "crmField": "CRM Field",
     "fileColumn": "Your File Column",
     "addMoreFields": "Add more fields",
+    "aiMapping": "AI is analyzing your columns...",
+    "learned": "Learned",
     "dedupeUpdateLabel": "Update matches with existing records",
     "dedupeUpdateDesc": "If email or phone number matches, the existing lead will be updated.",
     "stagePlaceholder": "Select stage...",
