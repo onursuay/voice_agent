@@ -86,19 +86,6 @@ export default function SettingsPage() {
   const [profileSaving, setProfileSaving] = useState(false);
   const [profileSuccess, setProfileSuccess] = useState(false);
 
-  // Integrations state
-  type MetaStatus = {
-    connected: boolean;
-    page_id?: string;
-    page_name?: string;
-    connected_at?: string;
-    expires_at?: string;
-    is_expired?: boolean;
-  };
-  const [metaStatus, setMetaStatus] = useState<MetaStatus | null>(null);
-  const [metaLoading, setMetaLoading] = useState(false);
-  const [metaDisconnecting, setMetaDisconnecting] = useState(false);
-
   // Feedback messages
   const [error, setError] = useState('');
 
