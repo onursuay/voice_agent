@@ -719,9 +719,6 @@ export default function ImportPage() {
       );
     }
 
-    const [sheetsDropdownOpen, setSheetsDropdownOpen] = useState(false);
-    const [tabDropdownOpen, setTabDropdownOpen] = useState(false);
-
     return (
       <div className="space-y-3">
         {sheetsError && (
