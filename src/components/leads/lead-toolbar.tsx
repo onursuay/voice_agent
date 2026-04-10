@@ -372,6 +372,7 @@ export function LeadToolbar() {
         <LeadFilters />
         <SortDropdown />
         <ColumnVisibilityDropdown />
+        <PerPageDropdown />
 
         <div className="flex-1" />
 
