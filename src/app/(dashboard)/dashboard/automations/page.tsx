@@ -166,62 +166,62 @@ export default function AutomationsPage() {
 
       {/* Create/Edit Modal */}
       {modalOpen && (
-        <Modal open={modalOpen} title={editingId ? 'Otomasyonu Düzenle' : 'Yeni Otomasyon'} onClose={() => setModalOpen(false)} size="lg">
+        <Modal open={modalOpen} title={editingId ? t('editTitle') : t('newTitle')} onClose={() => setModalOpen(false)} size="lg">
           <div className="space-y-5">
-            <Input label="Otomasyon Adı" value={form.name} onChange={e => setForm({ ...form, name: e.target.value })} placeholder="Ör: Yeni lead otomatik atama" />
+            <Input label={t('automationName')} value={form.name} onChange={e => setForm({ ...form, name: e.target.value })} placeholder={t('automationNamePlaceholder')} />
 
             <div className="rounded-lg border border-blue-100 bg-blue-50/50 p-4 space-y-3">
-              <p className="text-sm font-semibold text-blue-800">Tetikleyici (Ne zaman?)</p>
-              <Select label="Olay" value={form.trigger_type} onChange={e => setForm({ ...form, trigger_type: e.target.value })} options={[{ value: '', label: 'Seçin...' }, ...TRIGGER_OPTIONS]} />
+              <p className="text-sm font-semibold text-blue-800">{t('triggerSection')}</p>
+              <Select label={t('triggerEvent')} value={form.trigger_type} onChange={e => setForm({ ...form, trigger_type: e.target.value })} options={[{ value: '', label: t('selectPlaceholder') }, ...TRIGGER_OPTIONS]} />
               {form.trigger_type === 'stage_changed' && (
-                <Select label="Hedef Aşama" value={(form.trigger_config.to_stage as string) || ''} onChange={e => setForm({ ...form, trigger_config: { ...form.trigger_config, to_stage: e.target.value } })} options={[{ value: '', label: 'Seçin...' }, ...stages.map(s => ({ value: s.slug, label: s.name }))]} />
+                <Select label={t('targetStage')} value={(form.trigger_config.to_stage as string) || ''} onChange={e => setForm({ ...form, trigger_config: { ...form.trigger_config, to_stage: e.target.value } })} options={[{ value: '', label: t('selectPlaceholder') }, ...stages.map(s => ({ value: s.slug, label: s.name }))]} />
               )}
               {form.trigger_type === 'inactivity' && (
-                <Input label="Gün sayısı" type="number" value={String(form.trigger_config.days || '')} onChange={e => setForm({ ...form, trigger_config: { ...form.trigger_config, days: Number(e.target.value) } })} placeholder="3" />
+                <Input label={t('daysCount')} type="number" value={String(form.trigger_config.days || '')} onChange={e => setForm({ ...form, trigger_config: { ...form.trigger_config, days: Number(e.target.value) } })} placeholder="3" />
               )}
               {form.trigger_type === 'score_changed' && (
                 <div className="flex gap-3">
-                  <Select label="Koşul" value={(form.trigger_config.condition as string) || ''} onChange={e => setForm({ ...form, trigger_config: { ...form.trigger_config, condition: e.target.value } })} options={[{ value: 'above', label: 'Üstünde' }, { value: 'below', label: 'Altında' }]} />
-                  <Input label="Skor" type="number" value={String(form.trigger_config.threshold || '')} onChange={e => setForm({ ...form, trigger_config: { ...form.trigger_config, threshold: Number(e.target.value) } })} placeholder="70" />
+                  <Select label={t('condition')} value={(form.trigger_config.condition as string) || ''} onChange={e => setForm({ ...form, trigger_config: { ...form.trigger_config, condition: e.target.value } })} options={[{ value: 'above', label: t('conditionAbove') }, { value: 'below', label: t('conditionBelow') }]} />
+                  <Input label={t('score')} type="number" value={String(form.trigger_config.threshold || '')} onChange={e => setForm({ ...form, trigger_config: { ...form.trigger_config, threshold: Number(e.target.value) } })} placeholder="70" />
                 </div>
               )}
               {form.trigger_type === 'tag_added' && (
-                <Input label="Etiket" value={(form.trigger_config.tag as string) || ''} onChange={e => setForm({ ...form, trigger_config: { ...form.trigger_config, tag: e.target.value } })} placeholder="VIP" />
+                <Input label={t('tag')} value={(form.trigger_config.tag as string) || ''} onChange={e => setForm({ ...form, trigger_config: { ...form.trigger_config, tag: e.target.value } })} placeholder="VIP" />
               )}
             </div>
 
             <div className="rounded-lg border border-purple-100 bg-purple-50/50 p-4 space-y-3">
-              <p className="text-sm font-semibold text-purple-800">Aksiyon (Ne yapılsın?)</p>
-              <Select label="Aksiyon" value={form.action_type} onChange={e => setForm({ ...form, action_type: e.target.value })} options={[{ value: '', label: 'Seçin...' }, ...ACTION_OPTIONS]} />
+              <p className="text-sm font-semibold text-purple-800">{t('actionSection')}</p>
+              <Select label={t('actionEvent')} value={form.action_type} onChange={e => setForm({ ...form, action_type: e.target.value })} options={[{ value: '', label: t('selectPlaceholder') }, ...ACTION_OPTIONS]} />
               {form.action_type === 'assign' && (
-                <Select label="Atanacak Kişi" value={(form.action_config.user_id as string) || ''} onChange={e => setForm({ ...form, action_config: { ...form.action_config, user_id: e.target.value } })} options={[{ value: '', label: 'Seçin...' }, ...members.map(m => ({ value: m.user_id, label: m.profile?.full_name || m.user_id }))]} />
+                <Select label={t('assignTo')} value={(form.action_config.user_id as string) || ''} onChange={e => setForm({ ...form, action_config: { ...form.action_config, user_id: e.target.value } })} options={[{ value: '', label: t('selectPlaceholder') }, ...members.map(m => ({ value: m.user_id, label: m.profile?.full_name || m.user_id }))]} />
               )}
               {form.action_type === 'change_stage' && (
-                <Select label="Hedef Aşama" value={(form.action_config.stage_id as string) || ''} onChange={e => setForm({ ...form, action_config: { ...form.action_config, stage_id: e.target.value } })} options={[{ value: '', label: 'Seçin...' }, ...stages.map(s => ({ value: s.id, label: s.name }))]} />
+                <Select label={t('targetStage')} value={(form.action_config.stage_id as string) || ''} onChange={e => setForm({ ...form, action_config: { ...form.action_config, stage_id: e.target.value } })} options={[{ value: '', label: t('selectPlaceholder') }, ...stages.map(s => ({ value: s.id, label: s.name }))]} />
               )}
               {form.action_type === 'add_tag' && (
-                <Input label="Etiket" value={(form.action_config.tag as string) || ''} onChange={e => setForm({ ...form, action_config: { ...form.action_config, tag: e.target.value } })} placeholder="takip-edilecek" />
+                <Input label={t('tag')} value={(form.action_config.tag as string) || ''} onChange={e => setForm({ ...form, action_config: { ...form.action_config, tag: e.target.value } })} placeholder="takip-edilecek" />
               )}
               {form.action_type === 'add_note' && (
-                <Input label="Not İçeriği" value={(form.action_config.content as string) || ''} onChange={e => setForm({ ...form, action_config: { ...form.action_config, content: e.target.value } })} placeholder="Otomatik not..." />
+                <Input label={t('noteContent')} value={(form.action_config.content as string) || ''} onChange={e => setForm({ ...form, action_config: { ...form.action_config, content: e.target.value } })} placeholder={t('noteContentPlaceholder')} />
               )}
               {form.action_type === 'create_reminder' && (
                 <div className="flex gap-3">
-                  <Input label="Gecikme (saat)" type="number" value={String(form.action_config.delay_hours || '')} onChange={e => setForm({ ...form, action_config: { ...form.action_config, delay_hours: Number(e.target.value) } })} placeholder="24" />
-                  <Input label="Mesaj" value={(form.action_config.message as string) || ''} onChange={e => setForm({ ...form, action_config: { ...form.action_config, message: e.target.value } })} placeholder="Hatırlatıcı mesajı" />
+                  <Input label={t('delayHours')} type="number" value={String(form.action_config.delay_hours || '')} onChange={e => setForm({ ...form, action_config: { ...form.action_config, delay_hours: Number(e.target.value) } })} placeholder="24" />
+                  <Input label={t('reminderMsg')} value={(form.action_config.message as string) || ''} onChange={e => setForm({ ...form, action_config: { ...form.action_config, message: e.target.value } })} placeholder={t('reminderMsgPlaceholder')} />
                 </div>
               )}
               {form.action_type === 'change_score' && (
                 <div className="flex gap-3">
-                  <Select label="İşlem" value={(form.action_config.operation as string) || ''} onChange={e => setForm({ ...form, action_config: { ...form.action_config, operation: e.target.value } })} options={[{ value: 'set', label: 'Değer Ata' }, { value: 'increment', label: 'Artır' }, { value: 'decrement', label: 'Azalt' }]} />
-                  <Input label="Değer" type="number" value={String(form.action_config.value || '')} onChange={e => setForm({ ...form, action_config: { ...form.action_config, value: Number(e.target.value) } })} placeholder="10" />
+                  <Select label={t('operation')} value={(form.action_config.operation as string) || ''} onChange={e => setForm({ ...form, action_config: { ...form.action_config, operation: e.target.value } })} options={[{ value: 'set', label: t('operationSet') }, { value: 'increment', label: t('operationIncrement') }, { value: 'decrement', label: t('operationDecrement') }]} />
+                  <Input label={t('value')} type="number" value={String(form.action_config.value || '')} onChange={e => setForm({ ...form, action_config: { ...form.action_config, value: Number(e.target.value) } })} placeholder="10" />
                 </div>
               )}
             </div>
 
             <div className="flex justify-end gap-2 pt-2">
-              <Button variant="secondary" onClick={() => setModalOpen(false)}>İptal</Button>
-              <Button onClick={handleSave} disabled={!form.name || !form.trigger_type || !form.action_type}>Kaydet</Button>
+              <Button variant="secondary" onClick={() => setModalOpen(false)}>{tCommon('cancel')}</Button>
+              <Button onClick={handleSave} disabled={!form.name || !form.trigger_type || !form.action_type}>{tCommon('save')}</Button>
             </div>
           </div>
         </Modal>
