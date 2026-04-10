@@ -309,10 +309,10 @@ function DetailTab({ lead }: { lead: Lead }) {
       </Section>
 
       {/* Source Section */}
-      <Section title="Kaynak">
+      <Section title={t('drawer.source')}>
         <div className="space-y-2">
           <div className="flex items-center gap-2">
-            <span className="text-xs text-gray-500">Platform:</span>
+            <span className="text-xs text-gray-500">{t('drawer.platform')}</span>
             <Badge
               color="blue"
               size="sm"
