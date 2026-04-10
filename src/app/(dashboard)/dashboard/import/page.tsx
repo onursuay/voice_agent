@@ -727,9 +727,9 @@ export default function ImportPage() {
       // Build payload
       const mappedRows = rows.map((row) => {
         const lead: Record<string, string> = {};
-        Object.entries(mapping).forEach(([srcCol, targetField]) => {
-          if (targetField && targetField !== '_skip') {
-            lead[targetField] = row[srcCol] || '';
+        Object.entries(mapping).forEach(([crmField, fileCol]) => {
+          if (fileCol && fileCol !== '_skip') {
+            lead[crmField] = row[fileCol] || '';
           }
         });
         return lead;
