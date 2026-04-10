@@ -316,7 +316,7 @@ function HistoryTab() {
   if (loading) return <div className="flex justify-center py-16"><Spinner size="lg" /></div>;
 
   if (history.length === 0) {
-    return <EmptyState icon={<Clock className="h-6 w-6" />} title="Henüz gönderim yok" description="E-posta gönderdiğinizde burada görünecektir." />;
+    return <EmptyState icon={<Clock className="h-6 w-6" />} title={t('noHistory')} description={t('noHistoryDesc')} />;
   }
 
   return (
