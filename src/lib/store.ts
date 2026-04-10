@@ -110,6 +110,9 @@ export const useAppStore = create<AppStore>((set, get) => ({
   searchQuery: '',
   setSearchQuery: (searchQuery) => set({ searchQuery }),
 
+  leadsNeedRefresh: 0,
+  triggerLeadsRefresh: () => set((s) => ({ leadsNeedRefresh: s.leadsNeedRefresh + 1 })),
+
   hiddenColumns: new Set(),
   toggleColumn: (col) => {
     const current = new Set(get().hiddenColumns);
