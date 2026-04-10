@@ -116,7 +116,7 @@ export async function POST(request: NextRequest) {
   });
 
   // Log first 1000 chars of body so we can see the actual payload structure in Vercel logs
-  console.log(`[meta_leads][${reqId}] RAW BODY (first 1000):`, rawBody.slice(0, 1000));
+  console.log(`[meta_leads][${DEPLOY_MARKER}][${reqId}] RAW BODY (first 1000):`, rawBody.slice(0, 1000));
 
   if (!sigValid) {
     console.warn(`[meta_leads][${reqId}] Signature verification failed — processing anyway for debug`);
