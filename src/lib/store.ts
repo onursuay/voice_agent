@@ -43,6 +43,10 @@ interface AppStore {
   searchQuery: string;
   setSearchQuery: (query: string) => void;
 
+  // Refresh trigger
+  leadsNeedRefresh: number;
+  triggerLeadsRefresh: () => void;
+
   // View
   hiddenColumns: Set<string>;
   toggleColumn: (col: string) => void;
