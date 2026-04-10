@@ -503,7 +503,7 @@ export default function ImportPage() {
           setMapping(autoMap);
         },
         error() {
-          setParseError('CSV dosyasi okunurken hata olustu.');
+          setParseError(t('csvError'));
         },
       });
     } else if (ext === 'xlsx' || ext === 'xls') {
