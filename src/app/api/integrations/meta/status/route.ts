@@ -42,5 +42,6 @@ export async function GET() {
     connected_at: config.connected_at,
     expires_at: expiresAt,
     is_expired: isExpired,
+    webhook_subscribed: true,
   });
 }
