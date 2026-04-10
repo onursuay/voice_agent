@@ -68,7 +68,7 @@ export async function GET(request: NextRequest) {
 
   const configuredToken = process.env.META_WEBHOOK_VERIFY_TOKEN || 'voiceagent_meta_2026';
 
-  console.log('[meta_leads] webhook verify attempt', {
+  console.log(`[meta_leads][${DEPLOY_MARKER}] GET VERIFY`, {
     mode,
     verifyToken,
     challenge,
