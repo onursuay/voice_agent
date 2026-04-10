@@ -22,6 +22,7 @@ export async function GET(request: NextRequest) {
     const sourcePlatform = params.get('source_platform');
     const assignedTo = params.get('assigned_to');
     const tags = params.get('tags'); // comma-separated
+    const importJobId = params.get('import_job_id');
     const sortBy = params.get('sort_by') || 'created_at';
     const sortDir = params.get('sort_dir') === 'asc' ? true : false;
     const page = Math.max(1, parseInt(params.get('page') || '1', 10));
