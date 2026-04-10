@@ -576,6 +576,7 @@
     "statusPending": "Pending",
     "recentImports": "Recent Imports",
     "noRecentImports": "No recent imports.",
+    "deleteSelected": "Delete selected",
     "fileName": "File Name",
     "fileSize": "Size",
     "rowCount": "Rows",
