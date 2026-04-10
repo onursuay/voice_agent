@@ -493,8 +493,8 @@ function ActivitiesTab({ leadId }: { leadId: string }) {
     return (
       <div className="flex flex-col items-center justify-center py-16 text-center">
         <Clock className="h-10 w-10 text-gray-300 mb-3" />
-        <p className="text-sm font-medium text-gray-500">Henüz aktivite yok</p>
-        <p className="text-xs text-gray-400 mt-1">Bu lead için henüz bir aktivite kaydedilmedi.</p>
+        <p className="text-sm font-medium text-gray-500">{t('drawer.noActivities')}</p>
+        <p className="text-xs text-gray-400 mt-1">{t('drawer.noActivitiesDesc')}</p>
       </div>
     );
   }
