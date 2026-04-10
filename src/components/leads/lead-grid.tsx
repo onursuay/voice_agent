@@ -489,9 +489,18 @@ export function LeadGrid() {
   }, [newRowData, stages, addLead, flashSaved]);
 
   // ── Delete lead ───────────────────────────────────────
-  const handleDeleteLead = useCallback((id: string) => {
-    deleteLead(id);
-    fetch(`/api/leads/${id}`, { method: 'DELETE' }).catch(console.error);
+  const handleDeleteLead = useCallback(async (id: string) => {
+    try {
+      const res = await fetch(`/api/leads/${id}`, { method: 'DELETE' });
+      if (!res.ok) {
+        const body = await res.json().catch(() => ({}));
+        console.error('Lead silinemedi:', body.error || res.status);
+        return;
+      }
+      deleteLead(id);
+    } catch (err) {
+      console.error('Lead delete error:', err);
+    }
   }, [deleteLead]);
 
   // ── Copy lead to clipboard ────────────────────────────
