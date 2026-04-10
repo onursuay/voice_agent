@@ -1294,21 +1294,21 @@ export default function ImportPage() {
           <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
             <div className="rounded-lg border border-gray-200 bg-white p-4 text-center">
               <p className="text-2xl font-bold text-green-600">{importResult.created}</p>
-              <p className="mt-1 text-xs font-medium text-gray-500">Olusturulan</p>
+              <p className="mt-1 text-xs font-medium text-gray-500">{t('createdLabel')}</p>
             </div>
             <div className="rounded-lg border border-gray-200 bg-white p-4 text-center">
               <p className="text-2xl font-bold text-blue-600">{importResult.updated}</p>
-              <p className="mt-1 text-xs font-medium text-gray-500">Guncellenen</p>
+              <p className="mt-1 text-xs font-medium text-gray-500">{t('updatedLabel')}</p>
             </div>
             <div className="rounded-lg border border-gray-200 bg-white p-4 text-center">
               <p className="text-2xl font-bold text-gray-600">{importResult.skipped}</p>
-              <p className="mt-1 text-xs font-medium text-gray-500">Atlanan</p>
+              <p className="mt-1 text-xs font-medium text-gray-500">{t('skippedLabel')}</p>
             </div>
             <div className="rounded-lg border border-gray-200 bg-white p-4 text-center">
               <p className={cn('text-2xl font-bold', totalErrors > 0 ? 'text-red-600' : 'text-gray-600')}>
                 {totalErrors}
               </p>
-              <p className="mt-1 text-xs font-medium text-gray-500">Hata</p>
+              <p className="mt-1 text-xs font-medium text-gray-500">{t('errorLabel')}</p>
             </div>
           </div>
 
