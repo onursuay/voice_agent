@@ -40,12 +40,7 @@ import { useAppStore } from '@/lib/store';
 // Step indicator
 // ============================================
 
-const STEPS = [
-  { num: 1, label: 'Dosya Yükle' },
-  { num: 2, label: 'Sütun Eşleştirme' },
-  { num: 3, label: 'Önizleme' },
-  { num: 4, label: 'Sonuç' },
-];
+// STEPS is now built inside StepIndicator using translations
 
 function StepIndicator({ current }: { current: number }) {
   return (
