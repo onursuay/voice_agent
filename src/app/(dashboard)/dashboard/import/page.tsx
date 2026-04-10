@@ -1024,7 +1024,7 @@ export default function ImportPage() {
             onClick={() => setStep(2)}
             icon={<ArrowRight className="h-4 w-4" />}
           >
-            Devam
+            {t('continueBtn')}
           </Button>
         </div>
       </div>
