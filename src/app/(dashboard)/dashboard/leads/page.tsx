@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState, useCallback } from 'react';
 import { Users } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import { useAppStore } from '@/lib/store';
 import { LeadGrid } from '@/components/leads/lead-grid';
 import { LeadToolbar, BulkActionBar } from '@/components/leads/lead-toolbar';
@@ -11,12 +12,14 @@ import { Spinner } from '@/components/ui/loading';
 import { Button } from '@/components/ui/button';
 
 export default function LeadsPage() {
+  const t = useTranslations('leads');
   const leads = useAppStore(s => s.leads);
   const setLeads = useAppStore(s => s.setLeads);
   const searchQuery = useAppStore(s => s.searchQuery);
   const filters = useAppStore(s => s.filters);
   const sort = useAppStore(s => s.sort);
   const activeLeadId = useAppStore(s => s.activeLeadId);
+  const leadsNeedRefresh = useAppStore(s => s.leadsNeedRefresh);
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -35,18 +38,24 @@ export default function LeadsPage() {
       if (filters.length > 0) params.set('filters', JSON.stringify(filters));
 
       const res = await fetch(`/api/leads?${params.toString()}`);
-      if (!res.ok) throw new Error('Lead\'ler yüklenemedi.');
+      if (!res.ok) throw new Error(t('loadError'));
 
       const data = await res.json();
       setLeads(Array.isArray(data) ? data : data.leads || []);
     } catch (err: unknown) {
-      setError(err instanceof Error ? err.message : 'Bir hata oluştu.');
+      setError(err instanceof Error ? err.message : t('loadError'));
     } finally {
       setLoading(false);
     }
-  }, [searchQuery, filters, sort, setLeads]);
+  }, [searchQuery, filters, sort, setLeads, t]);
 
   useEffect(() => { fetchLeads(); }, [fetchLeads]);
+
+  // Re-fetch when a bulk delete (or other external change) triggers a refresh
+  useEffect(() => {
+    if (leadsNeedRefresh > 0) fetchLeads();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [leadsNeedRefresh]);
 
   return (
     <div className="relative flex h-full flex-col">
@@ -60,10 +69,10 @@ export default function LeadsPage() {
         ) : error ? (
           <div className="flex h-64 flex-col items-center justify-center gap-3">
             <p className="text-sm text-red-500">{error}</p>
-            <Button variant="secondary" size="sm" onClick={fetchLeads}>Tekrar Dene</Button>
+            <Button variant="secondary" size="sm" onClick={fetchLeads}>{t('retry')}</Button>
           </div>
         ) : leads.length === 0 ? (
-          <EmptyState icon={<Users className="h-6 w-6" />} title="Henüz lead yok" description="Yeni bir lead ekleyin veya dışarıdan içe aktarın." />
+          <EmptyState icon={<Users className="h-6 w-6" />} title={t('emptyTitle')} description={t('emptyDesc')} />
         ) : (
           <LeadGrid />
         )}
