@@ -170,8 +170,6 @@ function ColumnVisibilityDropdown() {
   );
 }
 
-// ── Bulk Action Bar ─────────────────────────────────────
-
 // ── Delete Confirmation Modal ───────────────────────────
 
 function DeleteConfirmModal({
