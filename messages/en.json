@@ -601,6 +601,8 @@
     "fieldUtmCampaign": "UTM Campaign",
     "fieldTags": "Tags",
     "fieldScore": "Score",
+    "fieldDate": "Date",
+    "fieldExternalId": "ID",
     "fieldSkip": "— Skip —",
     "fileColumn": "File Column",
     "leadField": "Lead Field",
