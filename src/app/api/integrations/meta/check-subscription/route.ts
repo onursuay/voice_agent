@@ -2,9 +2,11 @@ import { NextResponse } from 'next/server';
 import { createServerSupabaseClient } from '@/lib/supabase/server';
 import { createAdminSupabaseClient } from '@/lib/supabase/admin';
 
+const META_GRAPH_VERSION = 'v23.0';
+
 /**
  * GET /api/integrations/meta/check-subscription
- * Checks if the page is subscribed to our app's webhooks.
+ * Checks if the page is subscribed to our app's webhooks (live Meta API call).
  */
 export async function GET() {
   const supabase = await createServerSupabaseClient();
@@ -35,15 +37,25 @@ export async function GET() {
   const pageId = config.page_id as string;
   const pageToken = config.access_token as string;
 
-  // Check current subscriptions
+  // Check current subscriptions via Authorization header (not URL params)
   const subRes = await fetch(
-    `https://graph.facebook.com/v19.0/${pageId}/subscribed_apps?access_token=${encodeURIComponent(pageToken)}`
+    `https://graph.facebook.com/${META_GRAPH_VERSION}/${pageId}/subscribed_apps`,
+    {
+      method: 'GET',
+      headers: { Authorization: `Bearer ${pageToken}` },
+      cache: 'no-store',
+    }
   );
   const subBody = await subRes.json();
 
-  // Also check app info
+  // Also check page info
   const appRes = await fetch(
-    `https://graph.facebook.com/v19.0/me?access_token=${encodeURIComponent(pageToken)}`
+    `https://graph.facebook.com/${META_GRAPH_VERSION}/me`,
+    {
+      method: 'GET',
+      headers: { Authorization: `Bearer ${pageToken}` },
+      cache: 'no-store',
+    }
   );
   const appBody = await appRes.json();
 
