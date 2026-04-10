@@ -192,7 +192,7 @@ export function BulkActionBar() {
   };
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-40 border-t border-gray-200 bg-white px-6 py-3 shadow-lg">
+    <div className="absolute bottom-0 left-0 right-0 z-40 border-t border-gray-200 bg-white px-6 py-3 shadow-lg">
       <div className="mx-auto flex max-w-7xl items-center gap-4">
         <span className="text-sm font-medium text-gray-700">
           {selectedLeadIds.size} seçili
