@@ -234,45 +234,74 @@ function DeleteConfirmModal({
 
 // ── Bulk Action Bar ─────────────────────────────────────
 
+type BulkModal = 'stage' | 'assign' | 'tag' | 'delete' | null;
+
 export function BulkActionBar() {
   const t = useTranslations('leads');
   const selectedLeadIds = useAppStore((s) => s.selectedLeadIds);
   const clearSelection = useAppStore((s) => s.clearSelection);
   const deleteLeads = useAppStore((s) => s.deleteLeads);
   const triggerLeadsRefresh = useAppStore((s) => s.triggerLeadsRefresh);
+  const stages = useAppStore((s) => s.stages);
+  const members = useAppStore((s) => s.members);
 
-  const [confirmOpen, setConfirmOpen] = useState(false);
-  const [deleting, setDeleting] = useState(false);
+  const [modal, setModal] = useState<BulkModal>(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  // Stage modal state
+  const [selectedStageId, setSelectedStageId] = useState('');
+  // Assign modal state
+  const [selectedUserId, setSelectedUserId] = useState('');
+  // Tag modal state
+  const [tagInput, setTagInput] = useState('');
+  // Delete modal state
   const [deleteError, setDeleteError] = useState<string | null>(null);
+  const [deleting, setDeleting] = useState(false);
 
   if (selectedLeadIds.size === 0) return null;
 
-  const handleDeleteClick = () => {
-    setDeleteError(null);
-    setConfirmOpen(true);
+  const ids = Array.from(selectedLeadIds);
+
+  const bulkApi = async (action: string, extra: Record<string, unknown>) => {
+    setLoading(true);
+    setError(null);
+    try {
+      const res = await fetch('/api/leads/bulk', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action, lead_ids: ids, ...extra }),
+      });
+      if (!res.ok) {
+        const body = await res.json().catch(() => ({}));
+        throw new Error(body.error || 'Hata oluştu');
+      }
+      clearSelection();
+      setModal(null);
+      triggerLeadsRefresh();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Hata oluştu');
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const handleConfirm = async () => {
-    if (deleting) return;
-    const ids = Array.from(selectedLeadIds);
+  const handleDelete = async () => {
     setDeleting(true);
     setDeleteError(null);
-
     try {
       const res = await fetch('/api/leads/bulk', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ action: 'delete', lead_ids: ids }),
       });
-
       if (!res.ok) {
         const body = await res.json().catch(() => ({}));
         throw new Error(body.error || t('deleteError', { status: res.status }));
       }
-
       deleteLeads(ids);
       clearSelection();
-      setConfirmOpen(false);
+      setModal(null);
       triggerLeadsRefresh();
     } catch (err) {
       setDeleteError(err instanceof Error ? err.message : t('deleteError', { status: '?' }));
@@ -281,19 +310,109 @@ export function BulkActionBar() {
     }
   };
 
-  const handleCancel = () => {
-    if (deleting) return;
-    setConfirmOpen(false);
+  const openModal = (m: BulkModal) => {
+    setError(null);
     setDeleteError(null);
+    setSelectedStageId('');
+    setSelectedUserId('');
+    setTagInput('');
+    setModal(m);
   };
 
   return (
     <>
-      {confirmOpen && (
+      {/* Stage Modal */}
+      {modal === 'stage' && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center">
+          <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={() => setModal(null)} />
+          <div className="relative w-full max-w-sm rounded-xl border border-gray-200 bg-white p-6 shadow-2xl">
+            <h3 className="mb-4 text-base font-semibold text-gray-900">{t('changeStage')} ({ids.length} lead)</h3>
+            <select
+              value={selectedStageId}
+              onChange={(e) => setSelectedStageId(e.target.value)}
+              className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none"
+            >
+              <option value="">— Aşama seç —</option>
+              {stages.map((s) => <option key={s.id} value={s.id}>{s.name}</option>)}
+            </select>
+            {error && <p className="mt-2 text-sm text-red-600">{error}</p>}
+            <div className="mt-4 flex justify-end gap-2">
+              <Button variant="secondary" size="sm" onClick={() => setModal(null)} disabled={loading}>{t('cancel')}</Button>
+              <Button variant="primary" size="sm" disabled={!selectedStageId || loading}
+                icon={loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <GitBranch className="h-4 w-4" />}
+                onClick={() => bulkApi('stage', { stage_id: selectedStageId })}>
+                {loading ? 'Kaydediliyor...' : t('changeStage')}
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Assign Modal */}
+      {modal === 'assign' && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center">
+          <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={() => setModal(null)} />
+          <div className="relative w-full max-w-sm rounded-xl border border-gray-200 bg-white p-6 shadow-2xl">
+            <h3 className="mb-4 text-base font-semibold text-gray-900">{t('assign')} ({ids.length} lead)</h3>
+            <select
+              value={selectedUserId}
+              onChange={(e) => setSelectedUserId(e.target.value)}
+              className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none"
+            >
+              <option value="">— Kişi seç —</option>
+              {members.map((m) => (
+                <option key={m.user_id} value={m.user_id}>
+                  {m.full_name || m.email || m.user_id}
+                </option>
+              ))}
+            </select>
+            {error && <p className="mt-2 text-sm text-red-600">{error}</p>}
+            <div className="mt-4 flex justify-end gap-2">
+              <Button variant="secondary" size="sm" onClick={() => setModal(null)} disabled={loading}>{t('cancel')}</Button>
+              <Button variant="primary" size="sm" disabled={!selectedUserId || loading}
+                icon={loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <UserPlus className="h-4 w-4" />}
+                onClick={() => bulkApi('assign', { assigned_to: selectedUserId })}>
+                {loading ? 'Kaydediliyor...' : t('assign')}
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Tag Modal */}
+      {modal === 'tag' && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center">
+          <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={() => setModal(null)} />
+          <div className="relative w-full max-w-sm rounded-xl border border-gray-200 bg-white p-6 shadow-2xl">
+            <h3 className="mb-4 text-base font-semibold text-gray-900">{t('addTag')} ({ids.length} lead)</h3>
+            <input
+              type="text"
+              placeholder="Etiket ekle (virgülle ayırın)"
+              value={tagInput}
+              onChange={(e) => setTagInput(e.target.value)}
+              className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none"
+              onKeyDown={(e) => { if (e.key === 'Enter' && tagInput.trim()) bulkApi('tag', { tags: tagInput.split(',').map(t => t.trim()).filter(Boolean) }); }}
+            />
+            <p className="mt-1 text-xs text-gray-400">Birden fazla etiket için virgülle ayırın</p>
+            {error && <p className="mt-2 text-sm text-red-600">{error}</p>}
+            <div className="mt-4 flex justify-end gap-2">
+              <Button variant="secondary" size="sm" onClick={() => setModal(null)} disabled={loading}>{t('cancel')}</Button>
+              <Button variant="primary" size="sm" disabled={!tagInput.trim() || loading}
+                icon={loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Tag className="h-4 w-4" />}
+                onClick={() => bulkApi('tag', { tags: tagInput.split(',').map(tg => tg.trim()).filter(Boolean) })}>
+                {loading ? 'Kaydediliyor...' : t('addTag')}
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Delete Modal */}
+      {modal === 'delete' && (
         <DeleteConfirmModal
           count={selectedLeadIds.size}
-          onConfirm={handleConfirm}
-          onCancel={handleCancel}
+          onConfirm={handleDelete}
+          onCancel={() => setModal(null)}
           loading={deleting}
           error={deleteError}
         />
@@ -305,16 +424,16 @@ export function BulkActionBar() {
             {t('selected', { count: selectedLeadIds.size })}
           </span>
           <div className="flex items-center gap-2">
-            <Button variant="secondary" size="sm" icon={<GitBranch className="h-4 w-4" />}>
+            <Button variant="secondary" size="sm" icon={<GitBranch className="h-4 w-4" />} onClick={() => openModal('stage')}>
               {t('changeStage')}
             </Button>
-            <Button variant="secondary" size="sm" icon={<UserPlus className="h-4 w-4" />}>
+            <Button variant="secondary" size="sm" icon={<UserPlus className="h-4 w-4" />} onClick={() => openModal('assign')}>
               {t('assign')}
             </Button>
-            <Button variant="secondary" size="sm" icon={<Tag className="h-4 w-4" />}>
+            <Button variant="secondary" size="sm" icon={<Tag className="h-4 w-4" />} onClick={() => openModal('tag')}>
               {t('addTag')}
             </Button>
-            <Button variant="danger" size="sm" icon={<Trash2 className="h-4 w-4" />} onClick={handleDeleteClick}>
+            <Button variant="danger" size="sm" icon={<Trash2 className="h-4 w-4" />} onClick={() => openModal('delete')}>
               {t('delete')}
             </Button>
           </div>
