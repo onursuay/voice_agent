@@ -1235,9 +1235,9 @@ export default function ImportPage() {
           <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-indigo-100">
             <Loader2 className="h-8 w-8 animate-spin text-indigo-500" />
           </div>
-          <h3 className="mb-2 text-lg font-semibold text-gray-800">Ice aktariliyor...</h3>
+          <h3 className="mb-2 text-lg font-semibold text-gray-800">{t('importing')}</h3>
           <p className="text-sm text-gray-500">
-            {rows.length} satir isleniyor. Lutfen bekleyin.
+            {t('importingWait', { count: rows.length })}
           </p>
           <div className="mt-6 h-2 w-64 overflow-hidden rounded-full bg-gray-200">
             <div className="h-full animate-pulse rounded-full bg-indigo-500" style={{ width: '60%' }} />
