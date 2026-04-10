@@ -559,6 +559,7 @@ export default function ImportPage() {
       // Auto-map columns
       const crmFields = LEAD_FIELD_OPTIONS_I18N.map(o => o.value);
       setMapping(buildReverseAutoMap(crmFields, data.headers || [], data.rows || []));
+      callAiMapping(data.headers || [], data.rows || []);
     } catch {
       setSheetDataError(t('sheetDataError'));
     } finally {
