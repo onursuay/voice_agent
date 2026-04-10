@@ -61,10 +61,6 @@ export default function SettingsPage() {
     { key: 'profile', label: t('tabs.profile'), icon: <User className="h-4 w-4" /> },
   ];
 
-  // Show success/error messages from OAuth callback redirects
-  const metaConnected = searchParams.get('meta_connected');
-  const metaError = searchParams.get('meta_error');
-
   // Org state
   const [org, setOrg] = useState<Organization | null>(null);
   const [orgName, setOrgName] = useState('');
