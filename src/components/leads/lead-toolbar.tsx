@@ -22,11 +22,12 @@ import { Button } from '@/components/ui/button';
 import { LeadFilters } from './lead-filters';
 import { LeadCreateModal } from './lead-create-modal';
 import { LEAD_COLUMNS } from './lead-grid';
-import type { SortConfig } from '@/lib/types';
+import { useTranslations } from 'next-intl';
 
 // ── Sort Dropdown ───────────────────────────────────────
 
 function SortDropdown() {
+  const t = useTranslations('leads');
   const [open, setOpen] = useState(false);
   const sort = useAppStore((s) => s.sort);
   const setSort = useAppStore((s) => s.setSort);
@@ -45,7 +46,7 @@ function SortDropdown() {
   const sortableColumns = LEAD_COLUMNS.filter((c) => c.sortable);
   const currentLabel = sort
     ? `${sortableColumns.find((c) => c.key === sort.column)?.label || sort.column} ${sort.direction === 'asc' ? '(A-Z)' : '(Z-A)'}`
-    : 'Sıralama';
+    : t('sort');
 
   return (
     <div ref={ref} className="relative">
@@ -70,7 +71,7 @@ function SortDropdown() {
               className="flex w-full items-center gap-2 px-3 py-2 text-sm text-red-500 hover:bg-red-50"
             >
               <X className="h-3.5 w-3.5" />
-              Sıralamayı Kaldır
+              {t('removeSorting')}
             </button>
           )}
           <div className="border-b border-gray-100 my-1" />
@@ -117,6 +118,7 @@ function SortDropdown() {
 // ── Column Visibility ───────────────────────────────────
 
 function ColumnVisibilityDropdown() {
+  const t = useTranslations('leads');
   const [open, setOpen] = useState(false);
   const hiddenColumns = useAppStore((s) => s.hiddenColumns);
   const toggleColumn = useAppStore((s) => s.toggleColumn);
@@ -142,13 +144,13 @@ function ColumnVisibilityDropdown() {
         icon={<Columns3 className="h-4 w-4" />}
         onClick={() => setOpen(!open)}
       >
-        Kolonlar
+        {t('columns')}
       </Button>
 
       {open && (
         <div className="absolute right-0 top-full z-50 mt-1.5 w-52 rounded-lg border border-gray-200 bg-white py-2 shadow-xl">
           <p className="mb-2 px-3 text-xs font-semibold uppercase tracking-wider text-gray-400">
-            Görünür Kolonlar
+            {t('visibleColumns')}
           </p>
           {toggleableColumns.map((col) => (
             <label
@@ -185,32 +187,29 @@ function DeleteConfirmModal({
   loading: boolean;
   error: string | null;
 }) {
+  const t = useTranslations('leads');
+
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
-      {/* Overlay */}
       <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={!loading ? onCancel : undefined} />
-
-      {/* Dialog */}
       <div className="relative w-full max-w-md rounded-xl border border-gray-200 bg-white p-6 shadow-2xl">
         <div className="flex items-start gap-4">
           <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-red-100">
             <AlertTriangle className="h-5 w-5 text-red-600" />
           </div>
           <div className="flex-1">
-            <h3 className="text-base font-semibold text-gray-900">Seçili lead&apos;leri sil</h3>
+            <h3 className="text-base font-semibold text-gray-900">{t('deleteConfirmTitle')}</h3>
             <p className="mt-1.5 text-sm text-gray-600">
-              Seçtiğiniz <span className="font-semibold text-gray-900">{count} lead</span> kalıcı
-              olarak silinecek. Bu işlem geri alınamaz.
+              {t('deleteConfirmDesc', { count })}
             </p>
             {error && (
               <p className="mt-2 text-sm font-medium text-red-600">{error}</p>
             )}
           </div>
         </div>
-
         <div className="mt-6 flex justify-end gap-3">
           <Button variant="secondary" size="sm" onClick={onCancel} disabled={loading}>
-            Vazgeç
+            {t('cancel')}
           </Button>
           <Button
             variant="danger"
@@ -219,7 +218,7 @@ function DeleteConfirmModal({
             onClick={onConfirm}
             disabled={loading}
           >
-            {loading ? 'Siliniyor...' : 'Evet, Sil'}
+            {loading ? t('deleting') : t('deleteConfirmBtn')}
           </Button>
         </div>
       </div>
@@ -230,6 +229,7 @@ function DeleteConfirmModal({
 // ── Bulk Action Bar ─────────────────────────────────────
 
 export function BulkActionBar() {
+  const t = useTranslations('leads');
   const selectedLeadIds = useAppStore((s) => s.selectedLeadIds);
   const clearSelection = useAppStore((s) => s.clearSelection);
   const deleteLeads = useAppStore((s) => s.deleteLeads);
@@ -260,15 +260,14 @@ export function BulkActionBar() {
 
       if (!res.ok) {
         const body = await res.json().catch(() => ({}));
-        throw new Error(body.error || `Silme başarısız (${res.status})`);
+        throw new Error(body.error || t('deleteError', { status: res.status }));
       }
 
-      // API confirmed → now remove from local state
       deleteLeads(ids);
       clearSelection();
       setConfirmOpen(false);
     } catch (err) {
-      setDeleteError(err instanceof Error ? err.message : 'Beklenmedik bir hata oluştu.');
+      setDeleteError(err instanceof Error ? err.message : t('deleteError', { status: '?' }));
     } finally {
       setDeleting(false);
     }
@@ -295,25 +294,25 @@ export function BulkActionBar() {
       <div className="absolute bottom-0 left-0 right-0 z-40 border-t border-gray-200 bg-white px-6 py-3 shadow-lg">
         <div className="mx-auto flex max-w-7xl items-center gap-4">
           <span className="text-sm font-medium text-gray-700">
-            {selectedLeadIds.size} seçili
+            {t('selected', { count: selectedLeadIds.size })}
           </span>
           <div className="flex items-center gap-2">
             <Button variant="secondary" size="sm" icon={<GitBranch className="h-4 w-4" />}>
-              Aşama Değiştir
+              {t('changeStage')}
             </Button>
             <Button variant="secondary" size="sm" icon={<UserPlus className="h-4 w-4" />}>
-              Ata
+              {t('assign')}
             </Button>
             <Button variant="secondary" size="sm" icon={<Tag className="h-4 w-4" />}>
-              Etiket Ekle
+              {t('addTag')}
             </Button>
             <Button variant="danger" size="sm" icon={<Trash2 className="h-4 w-4" />} onClick={handleDeleteClick}>
-              Sil
+              {t('delete')}
             </Button>
           </div>
           <div className="ml-auto">
             <Button variant="ghost" size="sm" onClick={clearSelection}>
-              Seçimi Kaldır
+              {t('clearSelection')}
             </Button>
           </div>
         </div>
@@ -325,6 +324,8 @@ export function BulkActionBar() {
 // ── Main Toolbar ────────────────────────────────────────
 
 export function LeadToolbar() {
+  const t = useTranslations('leads');
+  const tNav = useTranslations('nav');
   const searchQuery = useAppStore((s) => s.searchQuery);
   const setSearchQuery = useAppStore((s) => s.setSearchQuery);
   const [localSearch, setLocalSearch] = useState(searchQuery);
@@ -355,7 +356,7 @@ export function LeadToolbar() {
           <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
           <input
             type="text"
-            placeholder="Lead ara (ad, telefon, e-posta...)"
+            placeholder={t('searchPlaceholder')}
             value={localSearch}
             onChange={handleSearchChange}
             className={cn(
@@ -366,40 +367,31 @@ export function LeadToolbar() {
           />
         </div>
 
-        {/* Filters */}
         <LeadFilters />
-
-        {/* Sort */}
         <SortDropdown />
-
-        {/* Column visibility */}
         <ColumnVisibilityDropdown />
 
-        {/* Spacer */}
         <div className="flex-1" />
 
-        {/* Import */}
         <Button
           variant="secondary"
           size="sm"
           icon={<Upload className="h-4 w-4" />}
           onClick={() => (window.location.href = '/dashboard/import')}
         >
-          İçe Aktar
+          {tNav('import')}
         </Button>
 
-        {/* New Lead */}
         <Button
           variant="primary"
           size="sm"
           icon={<Plus className="h-4 w-4" />}
           onClick={() => setCreateOpen(true)}
         >
-          Yeni Lead
+          {t('newLead')}
         </Button>
       </div>
 
-      {/* Create Modal */}
       <LeadCreateModal open={createOpen} onClose={() => setCreateOpen(false)} />
     </>
   );
