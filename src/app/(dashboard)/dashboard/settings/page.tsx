@@ -59,7 +59,6 @@ export default function SettingsPage() {
     { key: 'members', label: t('tabs.members'), icon: <Users className="h-4 w-4" /> },
     { key: 'pipeline', label: t('tabs.pipeline'), icon: <GitBranch className="h-4 w-4" /> },
     { key: 'profile', label: t('tabs.profile'), icon: <User className="h-4 w-4" /> },
-    { key: 'integrations', label: t('tabs.integrations'), icon: <Plug className="h-4 w-4" /> },
   ];
 
   // Show success/error messages from OAuth callback redirects
