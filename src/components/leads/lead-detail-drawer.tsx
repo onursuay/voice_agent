@@ -658,7 +658,7 @@ function NotesTab({ leadId }: { leadId: string }) {
           }}
         />
         <div className="flex items-center justify-between mt-2">
-          <span className="text-xs text-gray-400">Cmd+Enter ile gonder</span>
+          <span className="text-xs text-gray-400">{t('drawer.noteSendHint')}</span>
           <Button
             size="sm"
             onClick={handleAddNote}
@@ -666,7 +666,7 @@ function NotesTab({ leadId }: { leadId: string }) {
             disabled={!newNote.trim()}
             icon={<Send className="h-3.5 w-3.5" />}
           >
-            Not Ekle
+            {t('drawer.noteAdd')}
           </Button>
         </div>
       </div>
