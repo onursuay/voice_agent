@@ -947,7 +947,7 @@ export default function ImportPage() {
               <div className="text-left">
                 <p className="text-sm font-semibold text-gray-800">{file.name}</p>
                 <p className="text-xs text-gray-500">
-                  {formatFileSize(file.size)} &middot; {rows.length} satir, {headers.length} sutun
+                  {formatFileSize(file.size)} &middot; {t('fileInfo', { rows: rows.length, cols: headers.length })}
                 </p>
               </div>
               <button
