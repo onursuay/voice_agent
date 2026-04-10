@@ -1253,11 +1253,11 @@ export default function ImportPage() {
           <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-red-100">
             <XCircle className="h-8 w-8 text-red-500" />
           </div>
-          <h3 className="mb-2 text-lg font-semibold text-gray-800">Ice aktarma basarisiz</h3>
+          <h3 className="mb-2 text-lg font-semibold text-gray-800">{t('importFailed')}</h3>
           <p className="mb-6 max-w-md text-center text-sm text-gray-500">{importError}</p>
           <div className="flex gap-3">
             <Button variant="secondary" onClick={() => { setImportError(''); setStep(3); }}>
-              Geri Don
+              {t('goBack')}
             </Button>
             <Button
               onClick={() => {
@@ -1265,7 +1265,7 @@ export default function ImportPage() {
                 executeImport();
               }}
             >
-              Tekrar Dene
+              {t('retry')}
             </Button>
           </div>
         </div>
