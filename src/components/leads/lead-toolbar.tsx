@@ -244,8 +244,19 @@ export function BulkActionBar() {
   const triggerLeadsRefresh = useAppStore((s) => s.triggerLeadsRefresh);
   const stages = useAppStore((s) => s.stages);
   const members = useAppStore((s) => s.members);
+  const bulkActionModal = useAppStore((s) => s.bulkActionModal);
+  const setBulkActionModal = useAppStore((s) => s.setBulkActionModal);
 
   const [modal, setModal] = useState<BulkModal>(null);
+
+  // Sync external trigger (e.g. from context menu)
+  useEffect(() => {
+    if (bulkActionModal) {
+      openModal(bulkActionModal);
+      setBulkActionModal(null);
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [bulkActionModal]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
