@@ -8,25 +8,27 @@ import { Badge } from '@/components/ui/badge';
 import { Avatar } from '@/components/ui/avatar';
 import type { Lead, ColumnDef, SortConfig, CrmStage, LeadSourcePlatform } from '@/lib/types';
 import { SOURCE_PLATFORM_LABELS } from '@/lib/types';
+import { useTranslations } from 'next-intl';
 
 // ── Column Definitions ──────────────────────────────────
+// Labels are intentionally hardcoded as column keys; translated dynamically in LeadGrid via useColumnLabels()
 
 export const LEAD_COLUMNS: ColumnDef[] = [
   { key: '_select', label: '', type: 'text', sortable: false, filterable: false, editable: false, width: 40 },
   { key: '_row_num', label: '#', type: 'text', sortable: false, filterable: false, editable: false, width: 40 },
-  { key: 'full_name', label: 'Ad Soyad', type: 'text', sortable: true, filterable: true, editable: true, width: 200 },
-  { key: 'phone', label: 'Telefon', type: 'phone', sortable: true, filterable: true, editable: true, width: 140 },
-  { key: 'email', label: 'E-posta', type: 'email', sortable: true, filterable: true, editable: true, width: 200 },
-  { key: 'source_platform', label: 'Kaynak', type: 'platform', sortable: true, filterable: true, editable: true, width: 130 },
-  { key: 'stage', label: 'Aşama', type: 'stage', sortable: true, filterable: true, editable: true, width: 150 },
-  { key: 'score', label: 'Skor', type: 'number', sortable: true, filterable: true, editable: true, width: 80 },
-  { key: 'assigned_to', label: 'Atanan', type: 'user', sortable: true, filterable: true, editable: true, width: 140 },
-  { key: 'campaign_name', label: 'Kampanya', type: 'text', sortable: true, filterable: true, editable: true, width: 150 },
-  { key: 'city', label: 'Sehir', type: 'text', sortable: true, filterable: true, editable: true, width: 120 },
-  { key: 'company', label: 'Sirket', type: 'text', sortable: true, filterable: true, editable: true, width: 140 },
-  { key: 'tags', label: 'Etiketler', type: 'tags', sortable: false, filterable: true, editable: true, width: 180 },
-  { key: 'first_seen_at', label: 'Ilk Gorulme', type: 'date', sortable: true, filterable: false, editable: false, width: 130 },
-  { key: 'last_activity_at', label: 'Son Aktivite', type: 'date', sortable: true, filterable: false, editable: false, width: 130 },
+  { key: 'full_name', label: 'full_name', type: 'text', sortable: true, filterable: true, editable: true, width: 200 },
+  { key: 'phone', label: 'phone', type: 'phone', sortable: true, filterable: true, editable: true, width: 140 },
+  { key: 'email', label: 'email', type: 'email', sortable: true, filterable: true, editable: true, width: 200 },
+  { key: 'source_platform', label: 'source_platform', type: 'platform', sortable: true, filterable: true, editable: true, width: 130 },
+  { key: 'stage', label: 'stage', type: 'stage', sortable: true, filterable: true, editable: true, width: 150 },
+  { key: 'score', label: 'score', type: 'number', sortable: true, filterable: true, editable: true, width: 80 },
+  { key: 'assigned_to', label: 'assigned_to', type: 'user', sortable: true, filterable: true, editable: true, width: 140 },
+  { key: 'campaign_name', label: 'campaign_name', type: 'text', sortable: true, filterable: true, editable: true, width: 150 },
+  { key: 'city', label: 'city', type: 'text', sortable: true, filterable: true, editable: true, width: 120 },
+  { key: 'company', label: 'company', type: 'text', sortable: true, filterable: true, editable: true, width: 140 },
+  { key: 'tags', label: 'tags', type: 'tags', sortable: false, filterable: true, editable: true, width: 180 },
+  { key: 'first_seen_at', label: 'first_seen_at', type: 'date', sortable: true, filterable: false, editable: false, width: 130 },
+  { key: 'last_activity_at', label: 'last_activity_at', type: 'date', sortable: true, filterable: false, editable: false, width: 130 },
 ];
 
 // ── Helpers ─────────────────────────────────────────────
