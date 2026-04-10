@@ -17,7 +17,7 @@ export async function GET(_request: NextRequest) {
 
     const { data: imports, error } = await supabase
       .from('import_jobs')
-      .select('id, file_name, status, total_rows, created_rows, updated_rows, skipped_rows, error_rows, created_at')
+      .select('id, file_name, status, total_rows, created_rows, updated_rows, skipped_rows, error_rows, created_at, column_mapping')
       .eq('organization_id', membership.organization_id)
       .order('created_at', { ascending: false })
       .limit(10);
