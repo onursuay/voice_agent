@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createAdminSupabaseClient } from '@/lib/supabase/admin';
-import { fetchMetaLeadDetails } from '@/lib/meta-graph';
+import { fetchMetaLeadDetails, isSampleLeadgenId } from '@/lib/meta-graph';
 import { ingestLead, resolveLeadIngestionOrganization } from '@/lib/leads/ingest';
 import { createHmac, timingSafeEqual } from 'crypto';
 
