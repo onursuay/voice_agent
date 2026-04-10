@@ -545,7 +545,7 @@ export default function ImportPage() {
       };
       reader.readAsArrayBuffer(f);
     } else {
-      setParseError('Desteklenmeyen dosya formati. Lutfen .csv, .xlsx veya .xls dosyasi yukleyin.');
+      setParseError(t('unsupportedFormat'));
     }
   }, []);
 
