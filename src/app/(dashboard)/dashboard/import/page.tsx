@@ -284,6 +284,7 @@ type SheetFile = { id: string; name: string; modifiedTime: string };
 type SheetTab = { id: number; title: string; index: number };
 
 export default function ImportPage() {
+  const t = useTranslations('import');
   const router = useRouter();
   const searchParams = useSearchParams();
   const stages = useAppStore((s) => s.stages);
