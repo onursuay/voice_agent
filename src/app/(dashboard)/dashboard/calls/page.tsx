@@ -266,13 +266,13 @@ function HistoryTab() {
               <div className="border-t border-gray-100 px-4 py-3 bg-gray-50/50 space-y-3">
                 {call.summary && (
                   <div>
-                    <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">AI Özet</p>
+                    <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">{t('aiSummary')}</p>
                     <p className="text-sm text-gray-700">{call.summary}</p>
                   </div>
                 )}
                 {call.transcript && (
                   <div>
-                    <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">Transkript</p>
+                    <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">{t('transcript')}</p>
                     <p className="text-sm text-gray-600 whitespace-pre-wrap bg-white rounded-lg p-3 border border-gray-200">{call.transcript}</p>
                   </div>
                 )}
