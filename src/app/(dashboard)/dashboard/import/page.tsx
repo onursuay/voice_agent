@@ -985,7 +985,7 @@ export default function ImportPage() {
           ) : recentImports.length === 0 ? (
             <div className="rounded-lg border border-gray-200 bg-white p-6 text-center">
               <Clock className="mx-auto mb-2 h-8 w-8 text-gray-300" />
-              <p className="text-sm text-gray-500">Henuz ice aktarma yapilmamis.</p>
+              <p className="text-sm text-gray-500">{t('noRecentImports')}</p>
             </div>
           ) : (
             <div className="overflow-hidden rounded-lg border border-gray-200 bg-white">
