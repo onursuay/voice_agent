@@ -38,6 +38,7 @@ export default function LeadsPage() {
         params.set('sort_dir', sort.direction);
       }
       if (filters.length > 0) params.set('filters', JSON.stringify(filters));
+      if (sourceFilter) params.set('source_platform', sourceFilter);
       params.set('per_page', String(perPage));
 
       const res = await fetch(`/api/leads?${params.toString()}`);
