@@ -163,6 +163,7 @@ function CollapsibleSection({ title, children }: { title: string; children: Reac
 // Detail Tab
 // ============================================
 function DetailTab({ lead }: { lead: Lead }) {
+  const t = useTranslations('leads');
   const { stages, members, updateLead } = useAppStore();
   const [tagInput, setTagInput] = useState('');
   const [showTagInput, setShowTagInput] = useState(false);
