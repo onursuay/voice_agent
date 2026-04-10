@@ -1081,7 +1081,7 @@ export default function ImportPage() {
                         [header]: e.target.value,
                       }))
                     }
-                    placeholder="Alan secin..."
+                    placeholder={t('selectFieldPlaceholder')}
                   />
                 </div>
               </div>
