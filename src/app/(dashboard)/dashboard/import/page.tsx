@@ -287,6 +287,30 @@ export default function ImportPage() {
   const t = useTranslations('import');
   const router = useRouter();
   const searchParams = useSearchParams();
+
+  // Build translated field options
+  const LEAD_FIELD_OPTIONS_I18N = [
+    { value: 'first_name', label: t('fieldFirstName') },
+    { value: 'last_name', label: t('fieldLastName') },
+    { value: 'full_name', label: t('fieldFullName') },
+    { value: 'email', label: t('fieldEmail') },
+    { value: 'phone', label: t('fieldPhone') },
+    { value: 'company', label: t('fieldCompany') },
+    { value: 'job_title', label: t('fieldJobTitle') },
+    { value: 'city', label: t('fieldCity') },
+    { value: 'country', label: t('fieldCountry') },
+    { value: 'source_platform', label: t('fieldSource') },
+    { value: 'campaign_name', label: t('fieldCampaign') },
+    { value: 'ad_set_name', label: t('fieldAdSet') },
+    { value: 'ad_name', label: t('fieldAd') },
+    { value: 'form_name', label: t('fieldFormName') },
+    { value: 'utm_source', label: t('fieldUtmSource') },
+    { value: 'utm_medium', label: t('fieldUtmMedium') },
+    { value: 'utm_campaign', label: t('fieldUtmCampaign') },
+    { value: 'tags', label: t('fieldTags') },
+    { value: 'score', label: t('fieldScore') },
+    { value: '_skip', label: t('fieldSkip') },
+  ];
   const stages = useAppStore((s) => s.stages);
   const setStages = useAppStore((s) => s.setStages);
 
