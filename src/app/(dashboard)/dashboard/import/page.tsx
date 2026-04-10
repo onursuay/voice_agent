@@ -345,7 +345,7 @@ export default function ImportPage() {
     const googleError = searchParams.get('google_error');
 
     if (googleError) {
-      setSheetsError(`Google bağlantısı başarısız: ${googleError}`);
+      setSheetsError(`${t('googleConnectError')} ${googleError}`);
       setSourceTab('sheets');
     }
 
