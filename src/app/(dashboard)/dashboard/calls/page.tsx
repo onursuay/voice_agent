@@ -158,8 +158,8 @@ function QueueTab() {
                 </div>
               </div>
               <div className="flex items-center gap-3">
-                <Badge color="gray" size="sm">Bekliyor</Badge>
-                <Button size="sm" variant="secondary" icon={<Play className="h-3.5 w-3.5" />} onClick={() => {}}>Başlat</Button>
+                <Badge color="gray" size="sm">{t('waiting')}</Badge>
+                <Button size="sm" variant="secondary" icon={<Play className="h-3.5 w-3.5" />} onClick={() => {}}>{t('start')}</Button>
                 <button onClick={() => handleCancel(call.id)} className="rounded-md p-1.5 text-gray-400 hover:bg-red-50 hover:text-red-500"><Trash2 className="h-4 w-4" /></button>
               </div>
             </div>
