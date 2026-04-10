@@ -201,6 +201,18 @@ const AUTO_MAP: Record<string, string> = {
   skor: 'score',
   score: 'score',
   puan: 'score',
+  // date
+  tarih: 'date',
+  date: 'date',
+  'created at': 'date',
+  created_at: 'date',
+  'olusturma tarihi': 'date',
+  // external id
+  id: 'external_id',
+  'external id': 'external_id',
+  external_id: 'external_id',
+  'dis id': 'external_id',
+  'lead id': 'external_id',
   // utm
   utm_source: 'utm_source',
   utm_medium: 'utm_medium',
