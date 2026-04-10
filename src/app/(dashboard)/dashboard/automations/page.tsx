@@ -10,6 +10,7 @@ import { Modal } from '@/components/ui/modal';
 import { Badge } from '@/components/ui/badge';
 import { EmptyState } from '@/components/ui/empty-state';
 import { Spinner } from '@/components/ui/loading';
+import { useTranslations } from 'next-intl';
 
 interface AutomationRule {
   id: string;
