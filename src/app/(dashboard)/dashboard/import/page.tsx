@@ -1347,7 +1347,7 @@ export default function ImportPage() {
               onClick={() => router.push('/dashboard/leads')}
               icon={<ExternalLink className="h-4 w-4" />}
             >
-              Lead&apos;lere Git
+              {t('viewLeads')}
             </Button>
           </div>
         </div>
