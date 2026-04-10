@@ -1206,7 +1206,7 @@ export default function ImportPage() {
         <div className="flex items-center gap-2 rounded-lg border border-indigo-200 bg-indigo-50 px-4 py-3 text-sm">
           <FileSpreadsheet className="h-4 w-4 text-indigo-500" />
           <span className="font-medium text-indigo-800">
-            Toplam {rows.length} satir ice aktarilacak
+            {t('totalRows', { count: rows.length })}
           </span>
         </div>
 
