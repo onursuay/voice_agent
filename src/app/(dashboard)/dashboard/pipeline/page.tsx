@@ -182,7 +182,7 @@ function StageColumn({ stage, leads, onLeadClick }: StageColumnProps) {
           {leads.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-8 text-center">
               <Layers className="h-8 w-8 text-gray-300 mb-2" />
-              <p className="text-xs text-gray-400">Bu aşamada lead yok</p>
+              <p className="text-xs text-gray-400">{t('noLeadsInStage')}</p>
             </div>
           ) : (
             leads.map((lead) => (
