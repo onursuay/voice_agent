@@ -64,6 +64,14 @@ export async function GET(request: NextRequest) {
 
   const configuredToken = process.env.META_WEBHOOK_VERIFY_TOKEN;
 
+  console.log('[meta_leads] webhook verify attempt', {
+    mode,
+    verifyToken,
+    challenge,
+    configuredToken: configuredToken ? `set(${configuredToken.length} chars)` : 'NOT SET',
+    match: verifyToken === configuredToken,
+  });
+
   if (!configuredToken) {
     console.error('[meta_leads] META_WEBHOOK_VERIFY_TOKEN env is not set — webhook verify disabled');
     return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
