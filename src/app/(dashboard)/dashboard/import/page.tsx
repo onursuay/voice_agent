@@ -362,6 +362,8 @@ export default function ImportPage() {
   // Recent imports
   const [recentImports, setRecentImports] = useState<ImportJob[]>([]);
   const [loadingHistory, setLoadingHistory] = useState(true);
+  const [selectedImportIds, setSelectedImportIds] = useState<Set<string>>(new Set());
+  const [deletingImports, setDeletingImports] = useState(false);
 
   // Step 2 - Column mapping
   const [mapping, setMapping] = useState<Record<string, string>>({});
