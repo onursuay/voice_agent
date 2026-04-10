@@ -43,6 +43,10 @@ interface AppStore {
   searchQuery: string;
   setSearchQuery: (query: string) => void;
 
+  // Source filter
+  sourceFilter: string;
+  setSourceFilter: (source: string) => void;
+
   // Per-page
   perPage: number;
   setPerPage: (n: number) => void;
