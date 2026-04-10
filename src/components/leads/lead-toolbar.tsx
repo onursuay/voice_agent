@@ -270,7 +270,7 @@ export function BulkActionBar() {
       const res = await fetch('/api/leads/bulk', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ action, lead_ids: ids, ...extra }),
+        body: JSON.stringify({ action, lead_ids: ids, data: extra }),
       });
       if (!res.ok) {
         const body = await res.json().catch(() => ({}));
