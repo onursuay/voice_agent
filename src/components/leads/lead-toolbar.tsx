@@ -332,7 +332,7 @@ export function BulkActionBar() {
               onChange={(e) => setSelectedStageId(e.target.value)}
               className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none"
             >
-              <option value="">— Aşama seç —</option>
+              <option value="">Seçim Yapın</option>
               {stages.map((s) => <option key={s.id} value={s.id}>{s.name}</option>)}
             </select>
             {error && <p className="mt-2 text-sm text-red-600">{error}</p>}
