@@ -388,6 +388,8 @@ export function LeadGrid() {
   const addLead = useAppStore((s) => s.addLead);
   const deleteLead = useAppStore((s) => s.deleteLead);
   const toggleColumn = useAppStore((s) => s.toggleColumn);
+  const setSelectedLeadIds = useAppStore((s) => s.setSelectedLeadIds);
+  const setBulkActionModal = useAppStore((s) => s.setBulkActionModal);
 
   // -- Grid state
   const [selectedCell, setSelectedCell] = useState<CellAddress>(null);
