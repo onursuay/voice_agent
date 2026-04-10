@@ -1040,9 +1040,9 @@ export default function ImportPage() {
       <div className="space-y-6">
         <div className="rounded-lg border border-gray-200 bg-white">
           <div className="border-b border-gray-100 px-5 py-3">
-            <h3 className="text-sm font-semibold text-gray-700">Sutun Eslestirme</h3>
+            <h3 className="text-sm font-semibold text-gray-700">{t('mappingTitle')}</h3>
             <p className="mt-0.5 text-xs text-gray-500">
-              Dosyadaki her sutunu ilgili lead alanina eslestirin. Kullanmak istemediginiz sutunlari &quot;Atla&quot; olarak birakin.
+              {t('mappingDesc')}
             </p>
           </div>
           <div className="divide-y divide-gray-100">
