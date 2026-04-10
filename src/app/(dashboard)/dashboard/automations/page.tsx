@@ -140,7 +140,7 @@ export default function AutomationsPage() {
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-3 mb-2">
                     <h3 className="font-semibold text-gray-900">{rule.name}</h3>
-                    {rule.is_active ? <Badge color="green" size="sm">Aktif</Badge> : <Badge color="gray" size="sm">Pasif</Badge>}
+                    {rule.is_active ? <Badge color="green" size="sm">{t('active')}</Badge> : <Badge color="gray" size="sm">{t('passive')}</Badge>}
                   </div>
                   <div className="flex items-center gap-2 text-sm text-gray-600">
                     <Badge color="blue" size="sm">{TRIGGER_LABELS[rule.trigger_type] || rule.trigger_type}</Badge>
