@@ -715,20 +715,11 @@ export default function ImportPage() {
       );
     }
 
-    return (
-      <div className="space-y-4">
-        {/* Search */}
-        <div className="relative">
-          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
-          <input
-            type="text"
-            placeholder={t('sheetsSearchPlaceholder')}
-            value={sheetsSearch}
-            onChange={(e) => setSheetsSearch(e.target.value)}
-            className="w-full rounded-lg border border-gray-300 py-2.5 pl-10 pr-4 text-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
-          />
-        </div>
+    const [sheetsDropdownOpen, setSheetsDropdownOpen] = useState(false);
+    const [tabDropdownOpen, setTabDropdownOpen] = useState(false);
 
+    return (
+      <div className="space-y-3">
         {sheetsError && (
           <div className="flex items-start gap-2 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
             <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0" />
@@ -736,110 +727,176 @@ export default function ImportPage() {
           </div>
         )}
 
-        {/* File list */}
-        {loadingSheets ? (
-          <div className="flex items-center justify-center py-8">
-            <Loader2 className="h-5 w-5 animate-spin text-gray-400" />
-            <span className="ml-2 text-sm text-gray-500">{t('sheetsLoading')}</span>
-          </div>
-        ) : sheetsFiles.length === 0 ? (
-          <div className="rounded-lg border border-gray-200 bg-white p-6 text-center">
-            <p className="text-sm text-gray-500">{t('sheetsNotFound')}</p>
-          </div>
-        ) : (
-          <div className="max-h-60 overflow-y-auto rounded-lg border border-gray-200 bg-white divide-y divide-gray-100">
-            {sheetsFiles.map((sf) => (
-              <button
-                key={sf.id}
-                onClick={() => {
-                  setSelectedSpreadsheet(sf);
-                  setHeaders([]);
-                  setRows([]);
-                  setSelectedTab('');
-                }}
-                className={cn(
-                  'flex w-full items-center gap-3 px-4 py-3 text-left text-sm transition-colors hover:bg-gray-50',
-                  selectedSpreadsheet?.id === sf.id && 'bg-indigo-50 hover:bg-indigo-50'
-                )}
-              >
-                <FileSpreadsheet className={cn('h-4 w-4 shrink-0', selectedSpreadsheet?.id === sf.id ? 'text-indigo-500' : 'text-green-500')} />
-                <div className="min-w-0 flex-1">
-                  <p className={cn('font-medium truncate', selectedSpreadsheet?.id === sf.id ? 'text-indigo-700' : 'text-gray-800')}>
-                    {sf.name}
-                  </p>
-                  <p className="text-xs text-gray-400">
-                    {new Date(sf.modifiedTime).toLocaleDateString('tr-TR')}
-                  </p>
-                </div>
-                {selectedSpreadsheet?.id === sf.id && (
-                  <CheckCircle2 className="h-4 w-4 shrink-0 text-indigo-500" />
-                )}
-              </button>
-            ))}
-          </div>
-        )}
-
-        {/* Sheet tab selector */}
-        {selectedSpreadsheet && spreadsheetTabs.length > 0 && (
-          <div className="rounded-lg border border-gray-200 bg-white p-4">
-            <p className="mb-2 text-sm font-medium text-gray-700">
-              <span className="text-indigo-600">{selectedSpreadsheet.name}</span> — {t('sheetsSelectTab')}
-            </p>
-            <div className="flex flex-wrap gap-2 mb-4">
-              {spreadsheetTabs.map((tab) => (
-                <button
-                  key={tab.id}
-                  onClick={() => setSelectedTab(tab.title)}
-                  className={cn(
-                    'rounded-lg border px-3 py-1.5 text-sm font-medium transition-colors',
-                    selectedTab === tab.title
-                      ? 'border-indigo-400 bg-indigo-50 text-indigo-700'
-                      : 'border-gray-300 bg-white text-gray-600 hover:border-gray-400 hover:bg-gray-50'
-                  )}
-                >
-                  {tab.title}
-                </button>
-              ))}
-            </div>
-
-            {selectedTab && (
-              <>
-                {sheetDataError && (
-                  <div className="mb-3 flex items-start gap-2 rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">
-                    <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0" />
-                    {sheetDataError}
-                  </div>
-                )}
-                {rows.length > 0 && !loadingSheetData ? (
-                  <div className="flex items-center gap-2 rounded-lg bg-green-50 border border-green-200 px-3 py-2 text-sm">
-                    <CheckCircle2 className="h-4 w-4 text-green-500" />
-                    <span className="text-green-700 font-medium">
-                      {t('sheetsDataLoaded', { rows: rows.length, cols: headers.length })}
-                    </span>
-                  </div>
+        {/* Spreadsheet dropdown */}
+        <div className="relative">
+          <button
+            onClick={() => setSheetsDropdownOpen(prev => !prev)}
+            className={cn(
+              'flex w-full items-center justify-between gap-3 rounded-xl border bg-white px-4 py-3 text-sm transition-all shadow-sm',
+              sheetsDropdownOpen ? 'border-green-400 ring-2 ring-green-100' : 'border-gray-200 hover:border-green-300'
+            )}
+          >
+            <div className="flex items-center gap-3 min-w-0">
+              <div className={cn('flex h-8 w-8 shrink-0 items-center justify-center rounded-lg', selectedSpreadsheet ? 'bg-green-100' : 'bg-gray-100')}>
+                <FileSpreadsheet className={cn('h-4 w-4', selectedSpreadsheet ? 'text-green-600' : 'text-gray-400')} />
+              </div>
+              <div className="min-w-0 text-left">
+                {selectedSpreadsheet ? (
+                  <>
+                    <p className="font-semibold text-gray-800 truncate">{selectedSpreadsheet.name}</p>
+                    <p className="text-xs text-gray-400">{new Date(selectedSpreadsheet.modifiedTime).toLocaleDateString('tr-TR')}</p>
+                  </>
                 ) : (
-                  <button
-                    onClick={loadSheetData}
-                    disabled={loadingSheetData}
-                    className="inline-flex items-center gap-2 rounded-lg bg-indigo-500 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-600 disabled:opacity-50 transition-colors"
-                  >
-                    {loadingSheetData ? (
-                      <Loader2 className="h-4 w-4 animate-spin" />
-                    ) : (
-                      <ChevronDown className="h-4 w-4" />
-                    )}
-                    {t('sheetsLoadData')}
-                  </button>
+                  <p className="text-gray-400">{t('sheetsSearchPlaceholder')}</p>
                 )}
-              </>
+              </div>
+            </div>
+            <ChevronDown className={cn('h-4 w-4 shrink-0 text-gray-400 transition-transform duration-200', sheetsDropdownOpen && 'rotate-180')} />
+          </button>
+
+          {sheetsDropdownOpen && (
+            <div className="absolute left-0 right-0 top-full z-50 mt-1.5 overflow-hidden rounded-xl border border-gray-200 bg-white shadow-lg">
+              {/* Search inside dropdown */}
+              <div className="border-b border-gray-100 p-2">
+                <div className="relative">
+                  <Search className="absolute left-3 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-gray-400" />
+                  <input
+                    type="text"
+                    placeholder={t('sheetsSearchPlaceholder')}
+                    value={sheetsSearch}
+                    onChange={(e) => setSheetsSearch(e.target.value)}
+                    className="w-full rounded-lg border border-gray-200 bg-gray-50 py-2 pl-9 pr-3 text-sm focus:border-green-400 focus:outline-none focus:ring-1 focus:ring-green-100"
+                    autoFocus
+                  />
+                </div>
+              </div>
+
+              <div className="max-h-52 overflow-y-auto">
+                {loadingSheets ? (
+                  <div className="flex items-center justify-center py-6">
+                    <Loader2 className="h-4 w-4 animate-spin text-gray-400" />
+                    <span className="ml-2 text-sm text-gray-400">{t('sheetsLoading')}</span>
+                  </div>
+                ) : sheetsFiles.length === 0 ? (
+                  <div className="py-6 text-center text-sm text-gray-400">{t('sheetsNotFound')}</div>
+                ) : (
+                  sheetsFiles.map((sf) => (
+                    <button
+                      key={sf.id}
+                      onClick={() => {
+                        setSelectedSpreadsheet(sf);
+                        setHeaders([]);
+                        setRows([]);
+                        setSelectedTab('');
+                        setSheetsDropdownOpen(false);
+                      }}
+                      className={cn(
+                        'flex w-full items-center gap-3 px-4 py-2.5 text-left text-sm transition-colors',
+                        selectedSpreadsheet?.id === sf.id
+                          ? 'bg-green-50 text-green-700'
+                          : 'hover:bg-gray-50 text-gray-700'
+                      )}
+                    >
+                      <FileSpreadsheet className={cn('h-4 w-4 shrink-0', selectedSpreadsheet?.id === sf.id ? 'text-green-500' : 'text-gray-400')} />
+                      <div className="min-w-0 flex-1">
+                        <p className="font-medium truncate">{sf.name}</p>
+                        <p className="text-xs text-gray-400">{new Date(sf.modifiedTime).toLocaleDateString('tr-TR')}</p>
+                      </div>
+                      {selectedSpreadsheet?.id === sf.id && <CheckCircle2 className="h-4 w-4 shrink-0 text-green-500" />}
+                    </button>
+                  ))
+                )}
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Sheet tab dropdown */}
+        {selectedSpreadsheet && spreadsheetTabs.length > 0 && (
+          <div className="relative">
+            <button
+              onClick={() => setTabDropdownOpen(prev => !prev)}
+              className={cn(
+                'flex w-full items-center justify-between gap-3 rounded-xl border bg-white px-4 py-3 text-sm transition-all shadow-sm',
+                tabDropdownOpen ? 'border-green-400 ring-2 ring-green-100' : 'border-gray-200 hover:border-green-300'
+              )}
+            >
+              <div className="flex items-center gap-3 min-w-0">
+                <div className={cn('flex h-8 w-8 shrink-0 items-center justify-center rounded-lg', selectedTab ? 'bg-green-100' : 'bg-gray-100')}>
+                  <Table2 className={cn('h-4 w-4', selectedTab ? 'text-green-600' : 'text-gray-400')} />
+                </div>
+                <span className={selectedTab ? 'font-semibold text-gray-800' : 'text-gray-400'}>
+                  {selectedTab || t('sheetsSelectTab')}
+                </span>
+              </div>
+              <ChevronDown className={cn('h-4 w-4 shrink-0 text-gray-400 transition-transform duration-200', tabDropdownOpen && 'rotate-180')} />
+            </button>
+
+            {tabDropdownOpen && (
+              <div className="absolute left-0 right-0 top-full z-50 mt-1.5 overflow-hidden rounded-xl border border-gray-200 bg-white shadow-lg">
+                {spreadsheetTabs.map((tab) => (
+                  <button
+                    key={tab.id}
+                    onClick={() => { setSelectedTab(tab.title); setTabDropdownOpen(false); }}
+                    className={cn(
+                      'flex w-full items-center gap-3 px-4 py-2.5 text-left text-sm transition-colors',
+                      selectedTab === tab.title
+                        ? 'bg-green-50 text-green-700 font-medium'
+                        : 'hover:bg-gray-50 text-gray-700'
+                    )}
+                  >
+                    <Table2 className={cn('h-4 w-4 shrink-0', selectedTab === tab.title ? 'text-green-500' : 'text-gray-400')} />
+                    {tab.title}
+                    {selectedTab === tab.title && <CheckCircle2 className="ml-auto h-4 w-4 text-green-500" />}
+                  </button>
+                ))}
+              </div>
             )}
           </div>
         )}
 
-        {/* Disconnect toggle */}
-        <div className="flex items-center justify-between rounded-lg border border-gray-200 bg-gray-50 px-4 py-3">
-          <div className="flex items-center gap-2 text-sm text-gray-600">
-            <Link2 className="h-4 w-4 text-green-500" />
+        {/* Load Data / result */}
+        {selectedTab && (
+          <div>
+            {sheetDataError && (
+              <div className="mb-2 flex items-start gap-2 rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">
+                <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0" />
+                {sheetDataError}
+              </div>
+            )}
+            {rows.length > 0 && !loadingSheetData ? (
+              <div className="flex items-center gap-2 rounded-xl border border-green-200 bg-green-50 px-4 py-3 text-sm">
+                <CheckCircle2 className="h-4 w-4 text-green-500" />
+                <span className="font-medium text-green-700">
+                  {t('sheetsDataLoaded', { rows: rows.length, cols: headers.length })}
+                </span>
+              </div>
+            ) : (
+              <button
+                onClick={loadSheetData}
+                disabled={loadingSheetData}
+                className={cn(
+                  'group flex w-full items-center justify-center gap-2.5 rounded-xl px-5 py-3 text-sm font-semibold text-white shadow-sm transition-all duration-200',
+                  loadingSheetData
+                    ? 'bg-green-400 cursor-not-allowed'
+                    : 'bg-green-500 hover:bg-green-600 hover:shadow-md active:scale-[0.98]'
+                )}
+              >
+                {loadingSheetData ? (
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                ) : (
+                  <ChevronDown className="h-4 w-4 transition-transform duration-300 group-hover:translate-y-0.5" />
+                )}
+                {t('sheetsLoadData')}
+              </button>
+            )}
+          </div>
+        )}
+
+        {/* Disconnect */}
+        <div className="flex items-center justify-between rounded-xl border border-gray-100 bg-gray-50 px-4 py-2.5">
+          <div className="flex items-center gap-2 text-sm text-gray-500">
+            <div className="h-2 w-2 rounded-full bg-green-400" />
             <span>{t('sheetsConnected')}</span>
           </div>
           <button
@@ -853,7 +910,7 @@ export default function ImportPage() {
               setHeaders([]);
               setRows([]);
             }}
-            className="rounded-lg border border-red-200 bg-white px-3 py-1.5 text-xs font-medium text-red-600 hover:bg-red-50 transition-colors"
+            className="rounded-lg border border-red-200 bg-white px-3 py-1.5 text-xs font-medium text-red-500 hover:bg-red-50 transition-colors"
           >
             {t('sheetsDisconnect')}
           </button>
