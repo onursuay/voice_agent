@@ -204,6 +204,8 @@ function ComposeTab() {
 // TEMPLATES TAB
 // ============================================
 function TemplatesTab() {
+  const t = useTranslations('email');
+  const tCommon = useTranslations('common');
   const [templates, setTemplates] = useState<EmailTemplate[]>([]);
   const [loading, setLoading] = useState(true);
   const [modalOpen, setModalOpen] = useState(false);
