@@ -404,7 +404,7 @@ export default function PipelinePage() {
               <TrendingUp className="h-4.5 w-4.5 text-green-600" />
             </div>
             <div>
-              <p className="text-xs text-gray-500">Kazanılan</p>
+              <p className="text-xs text-gray-500">{t('won')}</p>
               <p className="text-lg font-bold text-gray-900">{stats.wonCount}</p>
             </div>
           </div>
