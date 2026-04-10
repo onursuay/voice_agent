@@ -33,7 +33,7 @@ export async function GET(request: NextRequest) {
   const supabase = await createServerSupabaseClient();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) {
-    return NextResponse.redirect(`${dashboardUrl}&meta_error=not_authenticated`);
+    return NextResponse.redirect(`${dashboardUrl}?meta_error=not_authenticated`);
   }
 
   const { data: membership } = await supabase
@@ -44,7 +44,7 @@ export async function GET(request: NextRequest) {
     .single();
 
   if (!membership) {
-    return NextResponse.redirect(`${dashboardUrl}&meta_error=no_org`);
+    return NextResponse.redirect(`${dashboardUrl}?meta_error=no_org`);
   }
 
   const orgId = request.nextUrl.searchParams.get('org_id');
@@ -52,7 +52,7 @@ export async function GET(request: NextRequest) {
 
   // Verify the org_id matches the authenticated user
   if (orgId !== membership.organization_id) {
-    return NextResponse.redirect(`${dashboardUrl}&meta_error=invalid_session`);
+    return NextResponse.redirect(`${dashboardUrl}?meta_error=invalid_session`);
   }
 
   // Read pending session from DB
@@ -64,18 +64,18 @@ export async function GET(request: NextRequest) {
     .maybeSingle();
 
   if (!pendingRow?.config) {
-    return NextResponse.redirect(`${dashboardUrl}&meta_error=session_expired`);
+    return NextResponse.redirect(`${dashboardUrl}?meta_error=session_expired`);
   }
 
   const session = pendingRow.config as PendingConfig;
 
   if (Date.now() - session.ts > 10 * 60 * 1000) {
-    return NextResponse.redirect(`${dashboardUrl}&meta_error=session_expired`);
+    return NextResponse.redirect(`${dashboardUrl}?meta_error=session_expired`);
   }
 
   const page = session.pages.find((p) => p.id === pageId);
   if (!page) {
-    return NextResponse.redirect(`${dashboardUrl}&meta_error=invalid_page`);
+    return NextResponse.redirect(`${dashboardUrl}?meta_error=invalid_page`);
   }
 
   // Subscribe the selected page to leadgen webhook
