@@ -851,8 +851,8 @@ export function LeadGrid() {
             onDelete={() => handleDeleteLead(lead.id)}
             onCopy={() => handleCopyLead(lead)}
             onStageChange={() => {
-              const rowIdx = leads.findIndex((l) => l.id === lead.id);
-              setDropdownCell({ row: rowIdx, col: 'stage' });
+              setSelectedLeadIds(new Set([lead.id]));
+              setBulkActionModal('stage');
             }}
             onOpenDrawer={() => setActiveLeadId(lead.id)}
             labels={{
