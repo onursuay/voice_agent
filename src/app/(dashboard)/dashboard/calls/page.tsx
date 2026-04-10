@@ -30,27 +30,29 @@ interface CallLog {
   lead?: { id: string; full_name: string; phone: string; company: string };
 }
 
-const CALL_TABS = [
-  { key: 'queue', label: 'Arama Kuyruğu', icon: <Phone className="h-4 w-4" /> },
-  { key: 'history', label: 'Arama Geçmişi', icon: <Clock className="h-4 w-4" /> },
-  { key: 'config', label: 'Yapılandırma', icon: <Settings2 className="h-4 w-4" /> },
-];
-
-const STATUS_MAP: Record<string, { label: string; color: 'gray' | 'blue' | 'green' | 'red' | 'yellow' }> = {
-  pending: { label: 'Bekliyor', color: 'gray' },
-  calling: { label: 'Aranıyor', color: 'blue' },
-  completed: { label: 'Tamamlandı', color: 'green' },
-  failed: { label: 'Başarısız', color: 'red' },
-  cancelled: { label: 'İptal', color: 'yellow' },
-};
-
-const RESULT_MAP: Record<string, { label: string; color: 'green' | 'red' | 'yellow' | 'gray' | 'blue' }> = {
-  interested: { label: 'İlgili', color: 'green' },
-  not_interested: { label: 'İlgisiz', color: 'red' },
-  busy: { label: 'Meşgul', color: 'yellow' },
-  no_answer: { label: 'Ulaşılamadı', color: 'gray' },
-  callback: { label: 'Geri Aranacak', color: 'blue' },
-};
+function useCallTranslations() {
+  const t = useTranslations('calls');
+  const CALL_TABS = [
+    { key: 'queue', label: t('queue'), icon: <Phone className="h-4 w-4" /> },
+    { key: 'history', label: t('history'), icon: <Clock className="h-4 w-4" /> },
+    { key: 'config', label: t('config'), icon: <Settings2 className="h-4 w-4" /> },
+  ];
+  const STATUS_MAP: Record<string, { label: string; color: 'gray' | 'blue' | 'green' | 'red' | 'yellow' }> = {
+    pending: { label: t('statusWaiting'), color: 'gray' },
+    calling: { label: t('statusCalling'), color: 'blue' },
+    completed: { label: t('statusCompleted'), color: 'green' },
+    failed: { label: t('statusFailed'), color: 'red' },
+    cancelled: { label: t('statusCancelled'), color: 'yellow' },
+  };
+  const RESULT_MAP: Record<string, { label: string; color: 'green' | 'red' | 'yellow' | 'gray' | 'blue' }> = {
+    interested: { label: t('resultInterested'), color: 'green' },
+    not_interested: { label: t('resultNotInterested'), color: 'red' },
+    busy: { label: t('resultBusy'), color: 'yellow' },
+    no_answer: { label: t('resultNoAnswer'), color: 'gray' },
+    callback: { label: t('resultCallback'), color: 'blue' },
+  };
+  return { t, CALL_TABS, STATUS_MAP, RESULT_MAP };
+}
 
 const MOCK_CALLS: CallLog[] = [
   { id: 'call-1', lead_id: 'lead-01', phone_number: '+905321234567', direction: 'outbound', duration_seconds: 145, status: 'completed', transcript: 'Merhaba Ahmet Bey, Yo Dijital\'den arıyorum. Dijital pazarlama hizmetlerimiz hakkında bilgi vermek isterdik. Ahmet: Evet, ilgileniyorum. Özellikle sosyal medya yönetimi konusunda destek arıyoruz. Tamam, size detaylı bir teklif hazırlayalım.', summary: 'Ahmet Bey sosyal medya yönetimi ile ilgileniyor. Detaylı teklif gönderilecek.', result_classification: 'interested', metadata: { voice_profile: 'erkek-formal', lead_name: 'Ahmet Yılmaz' }, created_at: '2026-03-28T14:30:00Z', lead: { id: 'lead-01', full_name: 'Ahmet Yılmaz', phone: '+905321234567', company: 'Yılmaz Teknoloji' } },
