@@ -135,13 +135,14 @@ export async function POST(request: NextRequest) {
       }
 
       case 'delete': {
-        const { count, error } = await supabase
+        const { data: deleted, error } = await supabase
           .from('leads')
           .delete()
           .eq('organization_id', orgId)
-          .in('id', lead_ids);
+          .in('id', lead_ids)
+          .select('id');
         if (error) return NextResponse.json({ error: error.message }, { status: 500 });
-        updated = count || 0;
+        updated = deleted?.length || 0;
         break;
       }
 
