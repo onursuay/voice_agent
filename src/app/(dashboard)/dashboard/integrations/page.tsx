@@ -204,6 +204,32 @@ export default function IntegrationsPage() {
               </div>
             </div>
           </div>
+
+          {/* Recent Webhook Events */}
+          {metaStatus?.connected && recentEvents.length > 0 && (
+            <div>
+              <h3 className="text-xs font-semibold text-muted uppercase tracking-wider mb-3">Son Webhook Olayları</h3>
+              <div className="space-y-2">
+                {recentEvents.map((event) => (
+                  <div key={event.id} className="flex items-center justify-between rounded-lg border border-gray-100 bg-gray-50 px-3 py-2">
+                    <div className="flex items-center gap-2">
+                      <span className={`inline-block h-2 w-2 rounded-full ${event.status === 'processed' ? 'bg-green-500' : event.status === 'failed' ? 'bg-red-500' : 'bg-yellow-500'}`} />
+                      <span className="text-xs font-medium text-gray-700">leadgen webhook received</span>
+                      {event.external_id && (
+                        <span className="text-xs text-gray-400 font-mono truncate max-w-[120px]">{event.external_id}</span>
+                      )}
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <span className={`text-xs font-medium ${event.status === 'processed' ? 'text-green-600' : event.status === 'failed' ? 'text-red-600' : 'text-yellow-600'}`}>
+                        {event.status === 'processed' ? 'işlendi' : event.status === 'failed' ? 'hata' : 'alındı'}
+                      </span>
+                      <span className="text-xs text-gray-400">{new Date(event.created_at).toLocaleString('tr-TR')}</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>
