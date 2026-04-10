@@ -422,7 +422,7 @@ export default function PipelinePage() {
               <BarChart3 className="h-4.5 w-4.5 text-amber-600" />
             </div>
             <div>
-              <p className="text-xs text-gray-500">Ort. Skor</p>
+              <p className="text-xs text-gray-500">{t('avgScore')}</p>
               <p className="text-lg font-bold text-gray-900">{stats.avgScore}</p>
             </div>
           </div>
