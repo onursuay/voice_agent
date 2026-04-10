@@ -122,6 +122,7 @@ function ColumnVisibilityDropdown() {
   const [open, setOpen] = useState(false);
   const hiddenColumns = useAppStore((s) => s.hiddenColumns);
   const toggleColumn = useAppStore((s) => s.toggleColumn);
+  const columnLabelOverrides = useAppStore((s) => s.columnLabelOverrides);
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -135,6 +136,11 @@ function ColumnVisibilityDropdown() {
   }, [open]);
 
   const toggleableColumns = LEAD_COLUMNS.filter((c) => c.key !== '_select' && c.key !== '_row_num');
+
+  const getLabel = (col: typeof LEAD_COLUMNS[number]) => {
+    if (columnLabelOverrides[col.key]) return columnLabelOverrides[col.key];
+    try { return t(`colLabels.${col.key}` as Parameters<typeof t>[0]); } catch { return col.label; }
+  };
 
   return (
     <div ref={ref} className="relative">
@@ -163,7 +169,7 @@ function ColumnVisibilityDropdown() {
                 onChange={() => toggleColumn(col.key)}
                 className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
               />
-              {col.label}
+              {getLabel(col)}
             </label>
           ))}
         </div>
