@@ -417,7 +417,7 @@ export default function ImportPage() {
       );
       const data = await res.json();
       if (!res.ok || data.error) {
-        setSheetDataError(data.error || 'Veri yüklenemedi.');
+        setSheetDataError(data.error || t('sheetDataError'));
         return;
       }
       setHeaders(data.headers || []);
@@ -430,7 +430,7 @@ export default function ImportPage() {
       });
       setMapping(autoMap);
     } catch {
-      setSheetDataError('Veri yüklenemedi.');
+      setSheetDataError(t('sheetDataError'));
     } finally {
       setLoadingSheetData(false);
     }
