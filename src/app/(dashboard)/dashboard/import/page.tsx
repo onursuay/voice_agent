@@ -783,7 +783,7 @@ export default function ImportPage() {
         {selectedSpreadsheet && spreadsheetTabs.length > 0 && (
           <div className="rounded-lg border border-gray-200 bg-white p-4">
             <p className="mb-2 text-sm font-medium text-gray-700">
-              <span className="text-indigo-600">{selectedSpreadsheet.name}</span> — Sayfa Seçin
+              <span className="text-indigo-600">{selectedSpreadsheet.name}</span> — {t('sheetsSelectTab')}
             </p>
             <div className="flex flex-wrap gap-2 mb-4">
               {spreadsheetTabs.map((tab) => (
