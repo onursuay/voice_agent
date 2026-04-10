@@ -170,7 +170,7 @@ function ColumnVisibilityDropdown() {
 
 // ── Bulk Action Bar ─────────────────────────────────────
 
-function BulkActionBar() {
+export function BulkActionBar() {
   const selectedLeadIds = useAppStore((s) => s.selectedLeadIds);
   const clearSelection = useAppStore((s) => s.clearSelection);
   const deleteLeads = useAppStore((s) => s.deleteLeads);
