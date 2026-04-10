@@ -694,9 +694,9 @@ export default function ImportPage() {
           <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-green-100">
             <Table2 className="h-6 w-6 text-green-600" />
           </div>
-          <p className="mb-1 text-base font-semibold text-gray-700">Google Sheets Bağlantısı</p>
+          <p className="mb-1 text-base font-semibold text-gray-700">{t('googleSheetsTitle')}</p>
           <p className="mb-6 text-sm text-gray-500">
-            Google hesabınızı bağlayarak tablolarınızı doğrudan içe aktarın.
+            {t('googleSheetsDesc')}
           </p>
           {sheetsError && (
             <div className="mb-4 flex items-start gap-2 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
