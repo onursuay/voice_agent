@@ -148,7 +148,7 @@ export default function AutomationsPage() {
                     <Badge color="purple" size="sm">{ACTION_LABELS[rule.action_type] || rule.action_type}</Badge>
                   </div>
                   {rule.trigger_config && Object.keys(rule.trigger_config).length > 0 && (
-                    <p className="mt-2 text-xs text-gray-400">Yapılandırma: {JSON.stringify(rule.trigger_config)}</p>
+                    <p className="mt-2 text-xs text-gray-400">{t('configLabel')}: {JSON.stringify(rule.trigger_config)}</p>
                   )}
                 </div>
                 <div className="flex items-center gap-2">
