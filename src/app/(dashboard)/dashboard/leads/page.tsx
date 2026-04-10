@@ -21,6 +21,7 @@ export default function LeadsPage() {
   const activeLeadId = useAppStore(s => s.activeLeadId);
   const leadsNeedRefresh = useAppStore(s => s.leadsNeedRefresh);
   const perPage = useAppStore(s => s.perPage);
+  const sourceFilter = useAppStore(s => s.sourceFilter);
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
