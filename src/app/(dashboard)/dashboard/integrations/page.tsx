@@ -43,6 +43,7 @@ export default function IntegrationsPage() {
   const [metaStatus, setMetaStatus] = useState<MetaStatus | null>(null);
   const [metaLoading, setMetaLoading] = useState(false);
   const [metaDisconnecting, setMetaDisconnecting] = useState(false);
+  const [recentEvents, setRecentEvents] = useState<LeadEvent[]>([]);
 
   const loadMetaStatus = useCallback(async () => {
     setMetaLoading(true);
