@@ -128,12 +128,11 @@ export async function GET(request: NextRequest) {
     ts: Date.now(),
   };
 
-  // Upsert: delete existing pending record for this org, then insert fresh one
+  // Upsert pending session — delete any existing record first (provider is UNIQUE)
   await supabase
     .from('integration_settings')
     .delete()
-    .eq('provider', 'meta_oauth_pending')
-    .filter('config->>organization_id', 'eq', orgId);
+    .eq('provider', 'meta_oauth_pending');
 
   await supabase
     .from('integration_settings')
