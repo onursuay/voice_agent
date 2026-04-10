@@ -43,6 +43,10 @@ interface AppStore {
   searchQuery: string;
   setSearchQuery: (query: string) => void;
 
+  // Per-page
+  perPage: number;
+  setPerPage: (n: number) => void;
+
   // Refresh trigger
   leadsNeedRefresh: number;
   triggerLeadsRefresh: () => void;
