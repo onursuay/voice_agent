@@ -169,10 +169,10 @@ function QueueTab() {
 
       {/* New Call Job Modal */}
       {modalOpen && (
-        <Modal open={modalOpen} title="Yeni Arama Görevi" onClose={() => setModalOpen(false)} size="lg">
+        <Modal open={modalOpen} title={t('newCallJob')} onClose={() => setModalOpen(false)} size="lg">
           <div className="space-y-4">
             <div>
-              <Input placeholder="Lead ara (isim veya telefon)..." value={searchQuery} onChange={e => setSearchQuery(e.target.value)} icon={<Search className="h-4 w-4" />} />
+              <Input placeholder={t('searchLead')} value={searchQuery} onChange={e => setSearchQuery(e.target.value)} icon={<Search className="h-4 w-4" />} />
               <div className="mt-2 max-h-48 overflow-y-auto rounded-lg border border-gray-200 bg-white divide-y divide-gray-100">
                 {filteredLeads.slice(0, 20).map(l => (
                   <label key={l.id} className="flex items-center gap-3 px-3 py-2 text-sm hover:bg-gray-50 cursor-pointer">
