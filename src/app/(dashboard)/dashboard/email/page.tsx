@@ -186,12 +186,12 @@ function ComposeTab() {
       {/* Send */}
       <div className="flex items-center gap-3">
         <Button onClick={handleSend} loading={sending} disabled={!subject || !body || (mode === 'single' ? !to : selectedLeadIds.length === 0)} icon={<Send className="h-4 w-4" />}>
-          {mode === 'single' ? 'Gönder' : `${selectedLeadIds.length} Lead'e Gönder`}
+          {mode === 'single' ? t('sendBtn') : t('sendBulkBtn', { count: selectedLeadIds.length })}
         </Button>
         {result && (
           <div className="flex items-center gap-2 text-sm">
-            {result.sent > 0 && <span className="flex items-center gap-1 text-green-600"><CheckCircle className="h-4 w-4" />{result.sent} gönderildi</span>}
-            {result.failed > 0 && <span className="flex items-center gap-1 text-red-500"><XCircle className="h-4 w-4" />{result.failed} başarısız</span>}
+            {result.sent > 0 && <span className="flex items-center gap-1 text-green-600"><CheckCircle className="h-4 w-4" />{t('sentCount', { count: result.sent })}</span>}
+            {result.failed > 0 && <span className="flex items-center gap-1 text-red-500"><XCircle className="h-4 w-4" />{t('failedCount', { count: result.failed })}</span>}
             {result.mock && <Badge color="yellow" size="sm">Mock Mode</Badge>}
           </div>
         )}
