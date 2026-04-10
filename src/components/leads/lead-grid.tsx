@@ -828,7 +828,7 @@ export function LeadGrid() {
 
   return (
     <div ref={gridRef} className="h-full w-full overflow-auto rounded-lg border border-gray-200 bg-white">
-      <SavedToast show={showSaved} />
+      <SavedToast show={showSaved} label={t('saved')} />
 
       {contextMenu && (() => {
         const lead = leads.find((l) => l.id === contextMenu.leadId);
@@ -850,6 +850,13 @@ export function LeadGrid() {
               setDropdownCell({ row: rowIdx, col: 'stage' });
             }}
             onOpenDrawer={() => setActiveLeadId(lead.id)}
+            labels={{
+              edit: t('gridActions.edit'),
+              open: t('gridActions.open'),
+              copy: t('gridActions.copy'),
+              changeStage: t('gridActions.changeStage'),
+              delete: t('gridActions.delete'),
+            }}
           />
         );
       })()}
@@ -862,6 +869,9 @@ export function LeadGrid() {
           onClose={() => setHeaderContextMenu(null)}
           onSort={(dir) => setSort({ column: headerContextMenu.colKey, direction: dir })}
           onHide={() => toggleColumn(headerContextMenu.colKey)}
+          sortAscLabel={t('gridActions.sortAsc')}
+          sortDescLabel={t('gridActions.sortDesc')}
+          hideLabel={t('gridActions.hide')}
         />
       )}
 
