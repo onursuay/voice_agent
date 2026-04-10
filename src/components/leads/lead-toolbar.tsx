@@ -272,19 +272,6 @@ export function BulkActionBar() {
       setBulkActionModal(null);
     }
   }, [bulkActionModal, openModal, setBulkActionModal]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-
-  // Stage modal state
-  const [selectedStageId, setSelectedStageId] = useState('');
-  // Assign modal state
-  const [selectedUserId, setSelectedUserId] = useState('');
-  // Tag modal state
-  const [tagInput, setTagInput] = useState('');
-  // Delete modal state
-  const [deleteError, setDeleteError] = useState<string | null>(null);
-  const [deleting, setDeleting] = useState(false);
-
   if (selectedLeadIds.size === 0) return null;
 
   const ids = Array.from(selectedLeadIds);
