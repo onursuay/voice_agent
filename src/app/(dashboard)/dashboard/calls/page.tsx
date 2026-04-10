@@ -81,6 +81,8 @@ export default function CallsPage() {
 // QUEUE TAB
 // ============================================
 function QueueTab() {
+  const { t } = useCallTranslations();
+  const tCommon = useTranslations('common');
   const leads = useAppStore(s => s.leads);
   const stages = useAppStore(s => s.stages);
   const [calls, setCalls] = useState<CallLog[]>([]);
