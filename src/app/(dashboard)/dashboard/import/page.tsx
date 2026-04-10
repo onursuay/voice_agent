@@ -744,7 +744,7 @@ export default function ImportPage() {
           </div>
         ) : sheetsFiles.length === 0 ? (
           <div className="rounded-lg border border-gray-200 bg-white p-6 text-center">
-            <p className="text-sm text-gray-500">Tablo bulunamadı.</p>
+            <p className="text-sm text-gray-500">{t('sheetsNotFound')}</p>
           </div>
         ) : (
           <div className="max-h-60 overflow-y-auto rounded-lg border border-gray-200 bg-white divide-y divide-gray-100">
