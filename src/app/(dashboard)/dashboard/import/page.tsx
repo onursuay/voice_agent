@@ -656,7 +656,7 @@ export default function ImportPage() {
         errors: data.errors ?? [],
       });
     } catch (err: unknown) {
-      const message = err instanceof Error ? err.message : 'Bilinmeyen bir hata olustu.';
+      const message = err instanceof Error ? err.message : 'An unknown error occurred.';
       setImportError(message);
     } finally {
       setImporting(false);
