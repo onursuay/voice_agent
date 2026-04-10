@@ -173,14 +173,14 @@ function HeaderContextMenu({ x, y, colKey, onClose, onSort, onHide, sortAscLabel
       style={{ left: x, top: y }}
     >
       <button onClick={() => { onSort('asc'); onClose(); }} className="flex w-full items-center gap-2 px-3 py-1.5 text-sm text-gray-700 hover:bg-gray-100">
-        <ArrowUp className="h-3.5 w-3.5" /> A-Z Sirala
+        <ArrowUp className="h-3.5 w-3.5" /> {sortAscLabel}
       </button>
       <button onClick={() => { onSort('desc'); onClose(); }} className="flex w-full items-center gap-2 px-3 py-1.5 text-sm text-gray-700 hover:bg-gray-100">
-        <ArrowDown className="h-3.5 w-3.5" /> Z-A Sirala
+        <ArrowDown className="h-3.5 w-3.5" /> {sortDescLabel}
       </button>
       <div className="my-1 border-t border-gray-100" />
       <button onClick={() => { onHide(); onClose(); }} className="flex w-full items-center gap-2 px-3 py-1.5 text-sm text-gray-700 hover:bg-gray-100">
-        <X className="h-3.5 w-3.5" /> Gizle
+        <X className="h-3.5 w-3.5" /> {hideLabel}
       </button>
     </div>
   );
