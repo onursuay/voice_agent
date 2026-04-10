@@ -118,6 +118,9 @@ export const useAppStore = create<AppStore>((set, get) => ({
   searchQuery: '',
   setSearchQuery: (searchQuery) => set({ searchQuery }),
 
+  sourceFilter: '',
+  setSourceFilter: (sourceFilter) => set({ sourceFilter }),
+
   perPage: 25,
   setPerPage: (perPage) => set({ perPage }),
 
