@@ -255,9 +255,9 @@ function TemplatesTab() {
   return (
     <div>
       <div className="flex items-center justify-between mb-4">
-        <h2 className="text-lg font-semibold text-gray-900">E-posta Şablonları</h2>
+        <h2 className="text-lg font-semibold text-gray-900">{t('templateTitle')}</h2>
         <Button size="sm" icon={<Plus className="h-4 w-4" />} onClick={() => { setEditingId(null); setForm({ name: '', subject: '', body: '', variables: '' }); setModalOpen(true); }}>
-          Yeni Şablon
+          {t('newTemplate')}
         </Button>
       </div>
 
