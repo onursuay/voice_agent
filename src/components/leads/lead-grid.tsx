@@ -112,11 +112,11 @@ function ContextMenu({ x, y, onClose, onEdit, onDelete, onCopy, onStageChange, o
       style={{ left: x, top: y }}
     >
       {[
-        { label: 'Duzenle', icon: '✏️', action: onEdit },
-        { label: 'Ac', icon: '📄', action: onOpenDrawer },
-        { label: 'Kopyala', icon: '📋', action: onCopy },
-        { label: 'Aşama Değiştir', icon: '🔄', action: onStageChange },
-        { label: 'Sil', icon: '🗑️', action: onDelete, danger: true },
+        { label: labels.edit, icon: '✏️', action: onEdit },
+        { label: labels.open, icon: '📄', action: onOpenDrawer },
+        { label: labels.copy, icon: '📋', action: onCopy },
+        { label: labels.changeStage, icon: '🔄', action: onStageChange },
+        { label: labels.delete, icon: '🗑️', action: onDelete, danger: true },
       ].map((item) => (
         <button
           key={item.label}
