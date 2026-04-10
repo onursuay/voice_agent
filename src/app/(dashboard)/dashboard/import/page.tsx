@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useCallback, useRef, useEffect } from 'react';
+import { useTranslations } from 'next-intl';
 import { useRouter, useSearchParams } from 'next/navigation';
 import * as Papa from 'papaparse';
 import * as XLSX from 'xlsx';
