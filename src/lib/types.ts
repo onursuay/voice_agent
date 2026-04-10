@@ -74,6 +74,8 @@ export interface Lead {
   ad_set_name: string | null;
   ad_name: string | null;
   form_name: string | null;
+  meta_lead_id: string | null;
+  meta_page_id: string | null;
   utm_source: string | null;
   utm_medium: string | null;
   utm_campaign: string | null;
