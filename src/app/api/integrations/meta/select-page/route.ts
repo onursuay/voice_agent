@@ -116,5 +116,5 @@ export async function GET(request: NextRequest) {
     .delete()
     .eq('id', pendingRow.id);
 
-  return NextResponse.redirect(`${dashboardUrl}&meta_connected=1`);
+  return NextResponse.redirect(`${dashboardUrl}?meta_connected=1`);
 }
