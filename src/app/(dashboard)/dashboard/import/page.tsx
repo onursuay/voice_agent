@@ -643,12 +643,8 @@ export default function ImportPage() {
           });
           setRows(cleaned);
           // Auto-map
-          const autoMap: Record<string, string> = {};
-          h.forEach((col) => {
-            const samples = cleaned.slice(0, 5).map((r: Record<string, string>) => r[col]).filter(Boolean);
-            autoMap[col] = autoMapHeader(col, samples);
-          });
-          setMapping(autoMap);
+          const crmFields = LEAD_FIELD_OPTIONS_I18N.map(o => o.value);
+          setMapping(buildReverseAutoMap(crmFields, h, cleaned));
         } catch {
           setParseError(t('xlsxError'));
         }
