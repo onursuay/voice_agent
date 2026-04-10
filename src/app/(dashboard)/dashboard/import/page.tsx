@@ -629,7 +629,7 @@ export default function ImportPage() {
   const activeMappedFields = Object.values(mapping).filter((v) => v && v !== '_skip');
   const uniqueMappedFields = [...new Set(activeMappedFields)];
   const fieldLabels: Record<string, string> = {};
-  LEAD_FIELD_OPTIONS.forEach((o) => {
+  LEAD_FIELD_OPTIONS_I18N.forEach((o) => {
     fieldLabels[o.value] = o.label;
   });
 
