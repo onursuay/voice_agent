@@ -645,7 +645,7 @@ export default function ImportPage() {
 
       if (!res.ok) {
         const errData = await res.json().catch(() => ({}));
-        throw new Error(errData.error || `Sunucu hatasi (${res.status})`);
+        throw new Error(errData.error || `Server error (${res.status})`);
       }
 
       const data = await res.json();
