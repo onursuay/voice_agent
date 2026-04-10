@@ -59,15 +59,6 @@ export default function RootPage() {
     footer: '2025 Yo Dijital. Tüm hakları saklıdır.',
   }
 
-  /* ────────────────────── Legal links ────────────────────── */
-
-  const legal = {
-    privacy: { label: 'Gizlilik Politikası', href: '/privacy-policy' },
-    cookie: { label: 'Çerez Politikası', href: '/cookie-policy' },
-    terms: { label: 'Kullanım Koşulları', href: '/terms-of-service' },
-    dataDeletion: { label: 'Veri Silme', href: '/data-deletion' },
-  }
-
   /* ────────────────────── SVG Icons ────────────────────── */
 
   const icons: Record<string, string> = {
