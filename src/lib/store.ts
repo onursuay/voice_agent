@@ -125,6 +125,9 @@ export const useAppStore = create<AppStore>((set, get) => ({
   sourceFilter: '',
   setSourceFilter: (sourceFilter) => set({ sourceFilter }),
 
+  importJobFilter: null,
+  setImportJobFilter: (importJobFilter) => set({ importJobFilter }),
+
   perPage: 25,
   setPerPage: (perPage) => set({ perPage }),
 
