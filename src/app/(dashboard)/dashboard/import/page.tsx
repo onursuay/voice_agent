@@ -1324,8 +1324,8 @@ export default function ImportPage() {
                 <table className="w-full text-sm">
                   <thead>
                     <tr className="border-b border-red-200">
-                      <th className="px-4 py-2 text-left text-xs font-medium text-red-600">Satir</th>
-                      <th className="px-4 py-2 text-left text-xs font-medium text-red-600">Hata</th>
+                      <th className="px-4 py-2 text-left text-xs font-medium text-red-600">{t('rowLabel')}</th>
+                      <th className="px-4 py-2 text-left text-xs font-medium text-red-600">{t('errorLabel')}</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-red-100">
