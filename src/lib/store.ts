@@ -71,6 +71,10 @@ interface AppStore {
   setSidebarOpen: (open: boolean) => void;
   drawerOpen: boolean;
   setDrawerOpen: (open: boolean) => void;
+
+  // Bulk action trigger (e.g. from context menu)
+  bulkActionModal: 'stage' | 'assign' | 'tag' | null;
+  setBulkActionModal: (modal: 'stage' | 'assign' | 'tag' | null) => void;
 }
 
 export const useAppStore = create<AppStore>((set, get) => ({
