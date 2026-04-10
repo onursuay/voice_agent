@@ -131,6 +131,24 @@ export async function POST(request: NextRequest) {
         return;
       }
 
+      // Skip sample/fake payloads from Meta's webhook "Test" button
+      if (isSampleLeadgenId(leadgenId)) {
+        console.log(`[meta_leads] Ignoring sample payload: leadgen_id=${leadgenId}`);
+        try {
+          const supabase = createAdminSupabaseClient();
+          await supabase.from('lead_events').insert({
+            provider: 'meta_leads',
+            event_type: 'leadgen',
+            external_id: leadgenId,
+            payload: change as unknown as Record<string, unknown>,
+            status: 'ignored_sample_payload',
+          });
+        } catch { /* best effort */ }
+        return;
+      }
+
+      console.log(`[meta_leads] Processing real lead: leadgen_id=${leadgenId} page_id=${pageId} form_id=${formId}`);
+
       // Resolve org by page_id — each org registers their own page via OAuth
       const organizationId = await resolveLeadIngestionOrganization('meta_leads', pageId);
       if (!organizationId) {
