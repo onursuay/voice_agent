@@ -327,25 +327,25 @@ function DetailTab({ lead }: { lead: Lead }) {
           </div>
           {lead.campaign_name && (
             <div className="flex items-start gap-2">
-              <span className="text-xs text-gray-500 shrink-0">Kampanya:</span>
+              <span className="text-xs text-gray-500 shrink-0">{t('drawer.campaign')}</span>
               <span className="text-sm text-gray-900">{lead.campaign_name}</span>
             </div>
           )}
           {lead.ad_set_name && (
             <div className="flex items-start gap-2">
-              <span className="text-xs text-gray-500 shrink-0">Reklam Seti:</span>
+              <span className="text-xs text-gray-500 shrink-0">{t('drawer.adSet')}</span>
               <span className="text-sm text-gray-900">{lead.ad_set_name}</span>
             </div>
           )}
           {lead.ad_name && (
             <div className="flex items-start gap-2">
-              <span className="text-xs text-gray-500 shrink-0">Reklam:</span>
+              <span className="text-xs text-gray-500 shrink-0">{t('drawer.ad')}</span>
               <span className="text-sm text-gray-900">{lead.ad_name}</span>
             </div>
           )}
           {lead.form_name && (
             <div className="flex items-start gap-2">
-              <span className="text-xs text-gray-500 shrink-0">Form:</span>
+              <span className="text-xs text-gray-500 shrink-0">{t('drawer.form')}</span>
               <span className="text-sm text-gray-900">{lead.form_name}</span>
             </div>
           )}
