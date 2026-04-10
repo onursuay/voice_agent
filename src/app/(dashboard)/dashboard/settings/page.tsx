@@ -152,31 +152,10 @@ export default function SettingsPage() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [session]);
 
-  const loadMetaStatus = useCallback(async () => {
-    setMetaLoading(true);
-    try {
-      const res = await fetch('/api/integrations/meta/status');
-      if (res.ok) setMetaStatus(await res.json());
-    } catch { /* ignore */ } finally {
-      setMetaLoading(false);
-    }
-  }, []);
-
-  const disconnectMeta = async () => {
-    setMetaDisconnecting(true);
-    try {
-      await fetch('/api/integrations/meta/disconnect', { method: 'DELETE' });
-      setMetaStatus({ connected: false });
-    } catch { /* ignore */ } finally {
-      setMetaDisconnecting(false);
-    }
-  };
-
   useEffect(() => {
     if (activeTab === 'members') loadMembers();
     if (activeTab === 'pipeline') loadStageLeadCounts();
-    if (activeTab === 'integrations') loadMetaStatus();
-  }, [activeTab, loadMembers, loadStageLeadCounts, loadMetaStatus]);
+  }, [activeTab, loadMembers, loadStageLeadCounts]);
 
   // Clear feedback messages after delay
   useEffect(() => {
