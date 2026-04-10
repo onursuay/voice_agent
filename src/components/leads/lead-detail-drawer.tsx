@@ -713,9 +713,9 @@ export function LeadDetailDrawer({ onDelete, onEdit }: LeadDetailDrawerProps) {
   if (!drawerOpen || !lead) return null;
 
   const tabItems = [
-    { key: 'detail', label: 'Detay' },
-    { key: 'activities', label: 'Aktiviteler' },
-    { key: 'notes', label: 'Notlar' },
+    { key: 'detail', label: t('drawer.tabs.detail') },
+    { key: 'activities', label: t('drawer.tabs.activities') },
+    { key: 'notes', label: t('drawer.tabs.notes') },
   ];
 
   return (
