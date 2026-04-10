@@ -501,6 +501,7 @@ export function LeadToolbar() {
         </div>
 
         <LeadFilters />
+        <SourceFilterDropdown />
         <SortDropdown />
         <ColumnVisibilityDropdown />
         <PerPageDropdown />
