@@ -253,14 +253,6 @@ export function Sidebar() {
               collapsed ? 'left-full ml-2 bottom-0' : 'bottom-full mb-2 left-0'
             }`}
           >
-            {/* User header */}
-            <div className="px-4 py-3 border-b border-gray-100">
-              <p className="text-sm font-medium text-gray-900">
-                {session?.user?.full_name || tSidebar('user')}
-              </p>
-              <p className="text-xs text-indigo-600 font-medium">{statusLabel}</p>
-            </div>
-
             {/* Menu items */}
             <div className="py-1">
               <Link href="/dashboard/hesabim" onClick={() => setDropdownOpen(false)}
