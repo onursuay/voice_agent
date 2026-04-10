@@ -411,7 +411,7 @@ function DetailTab({ lead }: { lead: Lead }) {
                     setTagInput('');
                   }
                 }}
-                placeholder="Etiket adi..."
+                placeholder={t('fields.tagPlaceholder')}
                 autoFocus
                 className="h-6 w-28 rounded border border-gray-300 px-2 text-xs focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500/20"
               />
