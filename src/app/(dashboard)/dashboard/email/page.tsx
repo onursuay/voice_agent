@@ -58,6 +58,8 @@ export default function EmailPage() {
 // COMPOSE TAB
 // ============================================
 function ComposeTab() {
+  const t = useTranslations('email');
+  const tCommon = useTranslations('common');
   const leads = useAppStore(s => s.leads);
   const stages = useAppStore(s => s.stages);
   const [mode, setMode] = useState<'single' | 'bulk'>('single');
