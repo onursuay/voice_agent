@@ -516,7 +516,7 @@ export default function ImportPage() {
           const ws = wb.Sheets[sheetName];
           const json = XLSX.utils.sheet_to_json<Record<string, string>>(ws, { defval: '' });
           if (json.length === 0) {
-            setParseError('Dosya bos gorunuyor.');
+            setParseError(t('fileEmpty'));
             return;
           }
           const h = Object.keys(json[0]);
