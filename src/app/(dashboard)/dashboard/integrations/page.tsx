@@ -180,50 +180,6 @@ export default function IntegrationsPage() {
               </div>
             </div>
           </div>
-
-          {/* Instagram Card — Coming Soon */}
-          <div className="rounded-xl border border-gray-200 bg-white overflow-hidden opacity-70">
-            <div className="flex items-start justify-between p-5">
-              <div className="flex items-start gap-4">
-                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-pink-500 via-rose-500 to-orange-400 text-white font-bold text-lg">
-                  I
-                </div>
-                <div>
-                  <h3 className="text-sm font-semibold text-foreground">Instagram Lead Ads</h3>
-                  <p className="mt-0.5 text-xs text-muted">Instagram reklam formlarından gelen lead&apos;leri otomatik olarak sisteme aktar.</p>
-                  <div className="mt-2 flex items-center gap-1.5">
-                    <span className="inline-block h-2 w-2 rounded-full bg-gray-300" />
-                    <span className="text-xs text-muted">Yakında</span>
-                  </div>
-                </div>
-              </div>
-              <Button variant="ghost" size="sm" disabled>
-                Yakında
-              </Button>
-            </div>
-          </div>
-
-          {/* WhatsApp Card — Coming Soon */}
-          <div className="rounded-xl border border-gray-200 bg-white overflow-hidden opacity-70">
-            <div className="flex items-start justify-between p-5">
-              <div className="flex items-start gap-4">
-                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-green-500 to-emerald-600 text-white font-bold text-lg">
-                  W
-                </div>
-                <div>
-                  <h3 className="text-sm font-semibold text-foreground">WhatsApp Business</h3>
-                  <p className="mt-0.5 text-xs text-muted">WhatsApp Business API üzerinden gelen mesajları ve lead&apos;leri yönet.</p>
-                  <div className="mt-2 flex items-center gap-1.5">
-                    <span className="inline-block h-2 w-2 rounded-full bg-gray-300" />
-                    <span className="text-xs text-muted">Yakında</span>
-                  </div>
-                </div>
-              </div>
-              <Button variant="ghost" size="sm" disabled>
-                Yakında
-              </Button>
-            </div>
-          </div>
         </div>
       </div>
     </div>
