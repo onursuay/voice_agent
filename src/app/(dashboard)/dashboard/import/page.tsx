@@ -582,7 +582,8 @@ export default function ImportPage() {
           // Auto-map
           const autoMap: Record<string, string> = {};
           h.forEach((col) => {
-            autoMap[col] = autoMapHeader(col);
+            const samples = data.slice(0, 5).map((r: Record<string, string>) => r[col]).filter(Boolean);
+            autoMap[col] = autoMapHeader(col, samples);
           });
           setMapping(autoMap);
         },
