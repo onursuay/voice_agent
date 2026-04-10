@@ -265,15 +265,15 @@ function TemplatesTab() {
         <EmptyState icon={<FileText className="h-6 w-6" />} title={t('noTemplates')} description={t('noTemplatesDesc')} />
       ) : (
         <div className="space-y-3">
-          {templates.map(t => (
-            <div key={t.id} className="flex items-center justify-between rounded-lg border border-gray-200 bg-white px-4 py-3">
+          {templates.map(tmpl => (
+            <div key={tmpl.id} className="flex items-center justify-between rounded-lg border border-gray-200 bg-white px-4 py-3">
               <div className="min-w-0">
-                <p className="font-medium text-gray-900">{t.name}</p>
-                <p className="text-sm text-gray-500 truncate">{t('subjectLabel')}{t.subject}</p>
+                <p className="font-medium text-gray-900">{tmpl.name}</p>
+                <p className="text-sm text-gray-500 truncate">{t('subjectLabel')}{tmpl.subject}</p>
               </div>
               <div className="flex items-center gap-2">
-                <button onClick={() => handleEdit(t)} className="rounded-md p-1.5 text-gray-400 hover:bg-gray-100 hover:text-gray-600"><Edit3 className="h-4 w-4" /></button>
-                <button onClick={() => handleDelete(t.id)} className="rounded-md p-1.5 text-gray-400 hover:bg-red-50 hover:text-red-500"><Trash2 className="h-4 w-4" /></button>
+                <button onClick={() => handleEdit(tmpl)} className="rounded-md p-1.5 text-gray-400 hover:bg-gray-100 hover:text-gray-600"><Edit3 className="h-4 w-4" /></button>
+                <button onClick={() => handleDelete(tmpl.id)} className="rounded-md p-1.5 text-gray-400 hover:bg-red-50 hover:text-red-500"><Trash2 className="h-4 w-4" /></button>
               </div>
             </div>
           ))}
