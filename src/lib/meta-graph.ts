@@ -1,6 +1,8 @@
 import { parseMetaLeadFields } from '@/lib/meta';
 import { getIntegrationConfig } from '@/lib/leads/ingest';
 
+const META_GRAPH_VERSION = 'v23.0';
+
 interface MetaLeadField {
   name: string;
   values?: string[];
@@ -14,7 +16,18 @@ interface MetaLeadResponse {
   form_id?: string;
 }
 
+interface MetaGraphError {
+  error?: {
+    message?: string;
+    type?: string;
+    code?: number;
+    error_subcode?: number;
+    fbtrace_id?: string;
+  };
+}
+
 function getMetaAccessToken(config: Record<string, unknown> | null): string | null {
+  // Prefer page-level token from integration_settings (set during OAuth)
   const configuredToken =
     (typeof config?.access_token === 'string' && config.access_token) ||
     (typeof config?.page_access_token === 'string' && config.page_access_token) ||
@@ -22,10 +35,22 @@ function getMetaAccessToken(config: Record<string, unknown> | null): string | nu
 
   return (
     configuredToken ||
-    process.env.META_APP_ACCESS_TOKEN ||
     process.env.META_PAGE_ACCESS_TOKEN ||
+    process.env.META_APP_ACCESS_TOKEN ||
     null
   );
+}
+
+/**
+ * Returns true if the leadgen_id looks like a sample/fake value
+ * from Meta's webhook test button (all repeated digits, etc.)
+ */
+export function isSampleLeadgenId(leadgenId: string): boolean {
+  // Meta sample payloads use 444444444444 or similar repeating patterns
+  if (/^(\d)\1{5,}$/.test(leadgenId)) return true;
+  // Our own manual test IDs
+  if (leadgenId.startsWith('test_')) return true;
+  return false;
 }
 
 export async function fetchMetaLeadDetails(leadgenId: string, organizationId: string) {
@@ -34,12 +59,12 @@ export async function fetchMetaLeadDetails(leadgenId: string, organizationId: st
 
   if (!accessToken) {
     throw new Error(
-      'Missing Meta access token. Set META_APP_ACCESS_TOKEN or META_PAGE_ACCESS_TOKEN env variable, or configure it in integration_settings.'
+      'Missing Meta access token. Set META_PAGE_ACCESS_TOKEN env variable, or connect your Facebook page in Settings → Entegrasyonlar.'
     );
   }
 
-  const url = new URL(`https://graph.facebook.com/v19.0/${encodeURIComponent(leadgenId)}`);
-  url.searchParams.set('fields', 'id,created_time,field_data,ad_id,form_id');
+  // Only fetch by leadgen_id — never by form_id or page_id
+  const url = `https://graph.facebook.com/${META_GRAPH_VERSION}/${encodeURIComponent(leadgenId)}?fields=field_data,created_time,ad_id,form_id`;
 
   const controller = new AbortController();
   const timeoutId = setTimeout(() => controller.abort(), 8000);
@@ -50,7 +75,6 @@ export async function fetchMetaLeadDetails(leadgenId: string, organizationId: st
       method: 'GET',
       headers: {
         Authorization: `Bearer ${accessToken}`,
-        'Content-Type': 'application/json',
       },
       cache: 'no-store',
       signal: controller.signal,
@@ -65,12 +89,24 @@ export async function fetchMetaLeadDetails(leadgenId: string, organizationId: st
     clearTimeout(timeoutId);
   }
 
+  const responseBody = await response.text();
+
   if (!response.ok) {
-    const body = await response.text();
-    throw new Error(`Meta Graph lead fetch failed (${response.status}): ${body}`);
+    // Parse and log detailed error
+    let errorDetail = `status=${response.status}`;
+    try {
+      const parsed = JSON.parse(responseBody) as MetaGraphError;
+      if (parsed.error) {
+        errorDetail = `status=${response.status} code=${parsed.error.code} subcode=${parsed.error.error_subcode} type=${parsed.error.type} message=${parsed.error.message} fbtrace=${parsed.error.fbtrace_id}`;
+      }
+    } catch { /* use raw */ }
+    console.error(`[meta-graph] Lead fetch failed for leadgen_id=${leadgenId}: ${errorDetail}`);
+    throw new Error(`Meta Graph lead fetch failed (${response.status}): ${responseBody}`);
   }
 
-  const lead = (await response.json()) as MetaLeadResponse;
+  const lead = JSON.parse(responseBody) as MetaLeadResponse;
+  console.log(`[meta-graph] Lead fetched OK: leadgen_id=${lead.id} form_id=${lead.form_id} ad_id=${lead.ad_id}`);
+
   const parsed = parseMetaLeadFields(
     (lead.field_data || []).map((field) => ({
       name: field.name,
