@@ -171,10 +171,10 @@ function ComposeTab() {
       )}
 
       {/* Subject & Body */}
-      <Input label="Konu" value={subject} onChange={e => setSubject(e.target.value)} placeholder="E-posta konusu..." />
+      <Input label={t('subject')} value={subject} onChange={e => setSubject(e.target.value)} placeholder={t('subjectPlaceholder')} />
       <div>
-        <label className="mb-1.5 block text-sm font-medium text-gray-700">İçerik</label>
-        <textarea value={body} onChange={e => setBody(e.target.value)} rows={10} className="w-full rounded-lg border border-gray-300 px-3 py-2.5 text-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20" placeholder="E-posta içeriğini yazın... Değişkenler: {{full_name}}, {{company}} vb." />
+        <label className="mb-1.5 block text-sm font-medium text-gray-700">{t('body')}</label>
+        <textarea value={body} onChange={e => setBody(e.target.value)} rows={10} className="w-full rounded-lg border border-gray-300 px-3 py-2.5 text-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20" placeholder={t('bodyPlaceholder')} />
         <div className="mt-1.5 flex flex-wrap gap-1.5">
           {VARIABLE_OPTIONS.map(v => (
             <button key={v} onClick={() => setBody(prev => prev + ' ' + v)} className="rounded-md bg-gray-100 px-2 py-1 text-xs text-gray-600 hover:bg-gray-200">{v}</button>
