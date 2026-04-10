@@ -245,27 +245,27 @@ function DetailTab({ lead }: { lead: Lead }) {
   return (
     <div className="p-4 space-y-0 overflow-y-auto">
       {/* Contact Info */}
-      <Section title="İletişim Bilgileri">
-        <InfoRow icon={<Phone className="h-4 w-4" />} label="Telefon" value={lead.phone} copyable />
-        <InfoRow icon={<Mail className="h-4 w-4" />} label="E-posta" value={lead.email} copyable />
-        <InfoRow icon={<Building2 className="h-4 w-4" />} label="Şirket" value={lead.company} />
-        <InfoRow icon={<Briefcase className="h-4 w-4" />} label="Ünvan" value={lead.job_title} />
-        <InfoRow icon={<MapPin className="h-4 w-4" />} label="Şehir" value={lead.city} />
-        <InfoRow icon={<Globe className="h-4 w-4" />} label="Ülke" value={lead.country} />
+      <Section title={t('drawer.contactInfo')}>
+        <InfoRow icon={<Phone className="h-4 w-4" />} label={t('drawer.phone')} value={lead.phone} copyable />
+        <InfoRow icon={<Mail className="h-4 w-4" />} label={t('drawer.email')} value={lead.email} copyable />
+        <InfoRow icon={<Building2 className="h-4 w-4" />} label={t('drawer.company')} value={lead.company} />
+        <InfoRow icon={<Briefcase className="h-4 w-4" />} label={t('drawer.jobTitle')} value={lead.job_title} />
+        <InfoRow icon={<MapPin className="h-4 w-4" />} label={t('drawer.city')} value={lead.city} />
+        <InfoRow icon={<Globe className="h-4 w-4" />} label={t('drawer.country')} value={lead.country} />
       </Section>
 
       {/* CRM Section */}
-      <Section title="CRM">
+      <Section title={t('drawer.crm')}>
         <div className="space-y-3">
           {/* Stage */}
           <div>
-            <p className="text-xs text-gray-500 mb-1">Aşama</p>
+            <p className="text-xs text-gray-500 mb-1">{t('drawer.stage')}</p>
             <select
               value={lead.stage_id || ''}
               onChange={(e) => handleStageChange(e.target.value)}
               className="block w-full appearance-none rounded-lg border border-gray-300 bg-white px-3 py-1.5 text-sm text-gray-900 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
             >
-              <option value="">Aşama Seçin</option>
+              <option value="">{t('drawer.stageSelect')}</option>
               {stages
                 .sort((a, b) => a.position - b.position)
                 .map((s) => (
