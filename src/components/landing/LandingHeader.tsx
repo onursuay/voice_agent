@@ -6,26 +6,58 @@ import Link from 'next/link'
 import ScheduleModal from './ScheduleModal'
 
 interface Props {
+  lang: 'tr' | 'en'
   ctaSchedule: string
   ctaTrial: string
   ctaDemo?: string
 }
 
-const productItems = [
-  { icon: 'zap', label: 'Çok Kanallı Lead Toplama', desc: 'Meta, WhatsApp, Instagram ve Messenger\'dan gelen leadleri otomatik toplayın.', href: '/#ozellikler' },
-  { icon: 'layers', label: 'CRM Pipeline', desc: 'Aşama bazlı satış takibi ile hangi lead\'in nerede olduğunu anlık görün.', href: '/#ozellikler' },
-  { icon: 'phone', label: 'AI Destekli Arama', desc: 'Yapay zeka ile lead\'lerinizi otomatik arayın ve takip edin.', href: '/#ozellikler' },
-  { icon: 'mail', label: 'Toplu E-posta', desc: 'Segmentlere göre kişiselleştirilmiş e-posta kampanyaları gönderin.', href: '/#ozellikler' },
-  { icon: 'chart', label: 'Detaylı Analitik', desc: 'Kaynak bazlı lead ve dönüşüm raporları alın.', href: '/#ozellikler' },
-  { icon: 'settings', label: 'Otomasyon Kuralları', desc: 'Lead geldiğinde otomatik ata, bildirim gönder, e-posta çalıştır.', href: '/#ozellikler' },
-]
+/* ─────────────────────────── Nav i18n ─────────────────────────── */
 
-const integrationItems = [
-  { icon: 'meta', label: 'Meta Ads', desc: 'Facebook ve Instagram reklam leadlerini otomatik çekin.', href: '/#entegrasyonlar' },
-  { icon: 'whatsapp', label: 'WhatsApp', desc: 'WhatsApp mesajlarından gelen leadleri yakalayın.', href: '/#entegrasyonlar' },
-  { icon: 'instagram', label: 'Instagram', desc: 'Instagram\'dan gelen leadleri otomatik kaydedin.', href: '/#entegrasyonlar' },
-  { icon: 'webhook', label: 'Webhook / Zapier', desc: 'Mevcut araçlarınızla webhook ile kolayca entegre olun.', href: '/#entegrasyonlar' },
-]
+const navContent = {
+  tr: {
+    product: 'Ürün',
+    integrations: 'Entegrasyonlar',
+    pricing: 'Fiyatlandırma',
+    login: 'Giriş Yap',
+    productItems: [
+      { icon: 'zap', label: 'Çok Kanallı Lead Toplama', desc: "Meta, WhatsApp, Instagram ve Messenger'dan gelen leadleri otomatik toplayın.", href: '/#ozellikler' },
+      { icon: 'layers', label: 'CRM Pipeline', desc: "Aşama bazlı satış takibi ile hangi lead'in nerede olduğunu anlık görün.", href: '/#ozellikler' },
+      { icon: 'phone', label: 'AI Destekli Arama', desc: "Yapay zeka ile lead'lerinizi otomatik arayın ve takip edin.", href: '/#ozellikler' },
+      { icon: 'mail', label: 'Toplu E-posta', desc: 'Segmentlere göre kişiselleştirilmiş e-posta kampanyaları gönderin.', href: '/#ozellikler' },
+      { icon: 'chart', label: 'Detaylı Analitik', desc: 'Kaynak bazlı lead ve dönüşüm raporları alın.', href: '/#ozellikler' },
+      { icon: 'settings', label: 'Otomasyon Kuralları', desc: 'Lead geldiğinde otomatik ata, bildirim gönder, e-posta çalıştır.', href: '/#ozellikler' },
+    ],
+    integrationItems: [
+      { icon: 'meta', label: 'Meta Ads', desc: 'Facebook ve Instagram reklam leadlerini otomatik çekin.', href: '/#entegrasyonlar' },
+      { icon: 'whatsapp', label: 'WhatsApp', desc: "WhatsApp mesajlarından gelen leadleri yakalayın.", href: '/#entegrasyonlar' },
+      { icon: 'instagram', label: 'Instagram', desc: "Instagram'dan gelen leadleri otomatik kaydedin.", href: '/#entegrasyonlar' },
+      { icon: 'webhook', label: 'Webhook / Zapier', desc: 'Mevcut araçlarınızla webhook ile kolayca entegre olun.', href: '/#entegrasyonlar' },
+    ],
+  },
+  en: {
+    product: 'Product',
+    integrations: 'Integrations',
+    pricing: 'Pricing',
+    login: 'Sign In',
+    productItems: [
+      { icon: 'zap', label: 'Multi-Channel Lead Collection', desc: 'Automatically collect leads from Meta, WhatsApp, Instagram, and Messenger.', href: '/#ozellikler' },
+      { icon: 'layers', label: 'CRM Pipeline', desc: 'See where each lead is in real-time with stage-based sales tracking.', href: '/#ozellikler' },
+      { icon: 'phone', label: 'AI-Powered Calling', desc: 'Automatically call your leads with AI and do smart follow-ups.', href: '/#ozellikler' },
+      { icon: 'mail', label: 'Bulk Email', desc: 'Send personalized email campaigns by segment.', href: '/#ozellikler' },
+      { icon: 'chart', label: 'Detailed Analytics', desc: 'Get source-based lead and conversion reports.', href: '/#ozellikler' },
+      { icon: 'settings', label: 'Automation Rules', desc: 'Auto-assign, send notifications, run emails when a lead arrives.', href: '/#ozellikler' },
+    ],
+    integrationItems: [
+      { icon: 'meta', label: 'Meta Ads', desc: 'Automatically pull Facebook and Instagram ad leads.', href: '/#entegrasyonlar' },
+      { icon: 'whatsapp', label: 'WhatsApp', desc: 'Capture leads from WhatsApp messages.', href: '/#entegrasyonlar' },
+      { icon: 'instagram', label: 'Instagram', desc: 'Automatically save leads from Instagram.', href: '/#entegrasyonlar' },
+      { icon: 'webhook', label: 'Webhook / Zapier', desc: 'Easily integrate with your existing tools via webhook.', href: '/#entegrasyonlar' },
+    ],
+  },
+}
+
+/* ─────────────────────────── Icons ─────────────────────────── */
 
 const menuIcons: Record<string, string> = {
   zap: '<polygon points="13,2 3,14 12,14 11,22 21,10 12,10 13,2"/>',
@@ -46,10 +78,12 @@ function MIcon({ name }: { name: string }) {
 
 const pillBase = 'btn-shimmer text-[14px] font-medium border border-emerald-400/30 text-emerald-400 px-5 py-2 rounded-full transition-colors cursor-pointer'
 
-export default function LandingHeader({ ctaSchedule, ctaTrial }: Props) {
+export default function LandingHeader({ lang, ctaSchedule, ctaTrial }: Props) {
   const [openMenu, setOpenMenu] = useState<string | null>(null)
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined)
   const headerRef = useRef<HTMLDivElement>(null)
+
+  const nav = navContent[lang]
 
   const handleEnter = (menu: string) => { if (timeoutRef.current) clearTimeout(timeoutRef.current); setOpenMenu(menu) }
   const handleLeave = () => { timeoutRef.current = setTimeout(() => setOpenMenu(null), 200) }
@@ -69,16 +103,16 @@ export default function LandingHeader({ ctaSchedule, ctaTrial }: Props) {
         </Link>
 
         <nav className="hidden lg:flex items-center gap-2">
-          {/* Ürün */}
+          {/* Product */}
           <div className="relative" onMouseEnter={() => handleEnter('product')} onMouseLeave={handleLeave}>
             <button className={`${pillBase} flex items-center gap-1.5 hover:bg-emerald-400/10`}>
-              Ürün
+              {nav.product}
               <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M6 9l6 6 6-6"/></svg>
             </button>
             {openMenu === 'product' && (
               <div className="absolute top-full left-0 mt-2 w-[560px] bg-[#1a1d21] border border-white/[0.06] rounded-2xl p-4 shadow-2xl shadow-black/50" onMouseEnter={() => handleEnter('product')} onMouseLeave={handleLeave}>
                 <div className="grid grid-cols-3 gap-2">
-                  {productItems.map((item, i) => (
+                  {nav.productItems.map((item, i) => (
                     <Link key={i} href={item.href} className="flex flex-col gap-1 p-3 rounded-xl hover:bg-white/[0.04] transition-colors group" onClick={() => setOpenMenu(null)}>
                       <div className="flex items-center gap-2 text-gray-200 group-hover:text-emerald-400 transition-colors">
                         <MIcon name={item.icon} />
@@ -92,16 +126,16 @@ export default function LandingHeader({ ctaSchedule, ctaTrial }: Props) {
             )}
           </div>
 
-          {/* Entegrasyonlar */}
+          {/* Integrations */}
           <div className="relative" onMouseEnter={() => handleEnter('integrations')} onMouseLeave={handleLeave}>
             <button className={`${pillBase} flex items-center gap-1.5 hover:bg-emerald-400/10`}>
-              Entegrasyonlar
+              {nav.integrations}
               <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M6 9l6 6 6-6"/></svg>
             </button>
             {openMenu === 'integrations' && (
               <div className="absolute top-full left-0 mt-2 w-[480px] bg-[#1a1d21] border border-white/[0.06] rounded-2xl p-4 shadow-2xl shadow-black/50" onMouseEnter={() => handleEnter('integrations')} onMouseLeave={handleLeave}>
                 <div className="grid grid-cols-2 gap-2">
-                  {integrationItems.map((item, i) => (
+                  {nav.integrationItems.map((item, i) => (
                     <Link key={i} href={item.href} className="flex flex-col gap-1 p-3 rounded-xl hover:bg-white/[0.04] transition-colors group" onClick={() => setOpenMenu(null)}>
                       <div className="flex items-center gap-2 text-gray-200 group-hover:text-emerald-400 transition-colors">
                         <MIcon name={item.icon} />
@@ -116,13 +150,13 @@ export default function LandingHeader({ ctaSchedule, ctaTrial }: Props) {
           </div>
 
           <Link href="/pricing" className={`${pillBase} hover:bg-emerald-400/10`}>
-            Fiyatlandırma
+            {nav.pricing}
           </Link>
         </nav>
 
         <div className="flex items-center gap-2.5">
           <Link href="/login" className="hidden lg:inline-flex text-[14px] font-medium text-gray-400 hover:text-white px-3 py-2 transition-colors">
-            Giriş Yap
+            {nav.login}
           </Link>
           <ScheduleModal label={ctaSchedule} />
           <Link href="/register" className={`${pillBase} bg-emerald-400/10 hover:bg-emerald-400/15`}>
