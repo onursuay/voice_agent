@@ -814,7 +814,7 @@ export default function ImportPage() {
                   <div className="flex items-center gap-2 rounded-lg bg-green-50 border border-green-200 px-3 py-2 text-sm">
                     <CheckCircle2 className="h-4 w-4 text-green-500" />
                     <span className="text-green-700 font-medium">
-                      {rows.length} satır, {headers.length} sütun yüklendi
+                      {t('sheetsDataLoaded', { rows: rows.length, cols: headers.length })}
                     </span>
                   </div>
                 ) : (
