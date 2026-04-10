@@ -123,16 +123,16 @@ function ComposeTab() {
       {/* Mode toggle */}
       <div className="flex gap-2">
         <button onClick={() => setMode('single')} className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${mode === 'single' ? 'bg-indigo-600 text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}`}>
-          Tek Gönderim
+          {t('singleSend')}
         </button>
         <button onClick={() => setMode('bulk')} className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${mode === 'bulk' ? 'bg-indigo-600 text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}`}>
-          Toplu Gönderim
+          {t('bulkSend')}
         </button>
       </div>
 
       {/* Template selector */}
       {templates.length > 0 && (
-        <Select label="Şablon Seç (opsiyonel)" value={selectedTemplate} onChange={e => applyTemplate(e.target.value)} options={[{ value: '', label: 'Şablon seçin...' }, ...templates.map(t => ({ value: t.id, label: t.name }))]} />
+        <Select label={t('selectTemplate')} value={selectedTemplate} onChange={e => applyTemplate(e.target.value)} options={[{ value: '', label: t('templateSelectPlaceholder') }, ...templates.map(tmpl => ({ value: tmpl.id, label: tmpl.name }))]} />
       )}
 
       {/* Recipient */}
