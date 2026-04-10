@@ -149,6 +149,7 @@ interface StageColumnProps {
 }
 
 function StageColumn({ stage, leads, onLeadClick }: StageColumnProps) {
+  const t = useTranslations('pipeline');
   const leadIds = useMemo(() => leads.map((l) => l.id), [leads]);
 
   const headerBg = stage.is_won
