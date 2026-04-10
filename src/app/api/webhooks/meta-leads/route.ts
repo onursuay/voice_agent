@@ -103,7 +103,7 @@ export async function POST(request: NextRequest) {
   const sigValid = verifyMetaSignature(rawBody, signatureHeader);
 
   // ── HIGH-SIGNAL ARRIVAL LOG ──────────────────────────────────────────────
-  console.log(`[meta_leads][${reqId}] POST ARRIVED`, {
+  console.log(`[meta_leads][${DEPLOY_MARKER}][${reqId}] POST ARRIVED`, {
     ts: new Date().toISOString(),
     sigValid,
     hasSignature: !!signatureHeader,
