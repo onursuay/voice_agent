@@ -298,9 +298,6 @@ export function LeadToolbar() {
         </Button>
       </div>
 
-      {/* Bulk Actions */}
-      <BulkActionBar />
-
       {/* Create Modal */}
       <LeadCreateModal open={createOpen} onClose={() => setCreateOpen(false)} />
     </>
