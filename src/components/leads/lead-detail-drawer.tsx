@@ -354,7 +354,7 @@ function DetailTab({ lead }: { lead: Lead }) {
 
       {/* UTM Section (Collapsible) */}
       {(lead.utm_source || lead.utm_medium || lead.utm_campaign || lead.utm_content || lead.utm_term) && (
-        <CollapsibleSection title="UTM Parametreleri">
+        <CollapsibleSection title={t('drawer.utmParams')}>
           <div className="space-y-1.5">
             {lead.utm_source && (
               <div className="flex items-center gap-2 text-sm">
