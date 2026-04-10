@@ -32,6 +32,7 @@ import { cn, formatRelativeTime, getSourceColor, getScoreColor, getInitials } fr
 import { useAppStore } from '@/lib/store';
 import type { Lead, LeadActivity, LeadNote, ActivityType, CrmStage } from '@/lib/types';
 import { SOURCE_PLATFORM_LABELS } from '@/lib/types';
+import { useTranslations } from 'next-intl';
 import { Tabs } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
