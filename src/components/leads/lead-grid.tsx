@@ -849,7 +849,7 @@ export function LeadGrid() {
               <div
                 key={col.key}
                 className={cn(
-                  'group/hdr relative flex shrink-0 items-center border-r border-gray-200 px-3 py-2 text-xs font-semibold uppercase tracking-wider text-gray-500',
+                  'group/hdr relative flex shrink-0 items-center overflow-hidden border-r border-gray-200 px-3 py-2 text-xs font-semibold uppercase tracking-wider text-gray-500',
                   col.sortable && 'cursor-pointer select-none hover:bg-gray-100 hover:text-gray-700',
                   isSticky && 'sticky bg-gray-50 z-30'
                 )}
