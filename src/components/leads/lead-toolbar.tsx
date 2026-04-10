@@ -458,6 +458,7 @@ function TableFilterDropdown() {
   const importJobFilter = useAppStore((s) => s.importJobFilter);
   const setImportJobFilter = useAppStore((s) => s.setImportJobFilter);
   const setHiddenColumns = useAppStore((s) => s.setHiddenColumns);
+  const setColumnLabelOverrides = useAppStore((s) => s.setColumnLabelOverrides);
   const [open, setOpen] = useState(false);
   const [jobs, setJobs] = useState<ImportJobSummary[]>([]);
   const [loading, setLoading] = useState(false);
