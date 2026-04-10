@@ -40,6 +40,7 @@ export default function LeadsPage() {
       }
       if (filters.length > 0) params.set('filters', JSON.stringify(filters));
       if (sourceFilter) params.set('source_platform', sourceFilter);
+      if (importJobFilter) params.set('import_job_id', importJobFilter.id);
       params.set('per_page', String(perPage));
 
       const res = await fetch(`/api/leads?${params.toString()}`);
