@@ -131,7 +131,7 @@ export default function AutomationsPage() {
       </div>
 
       {rules.length === 0 ? (
-        <EmptyState icon={<Zap className="h-6 w-6" />} title="Henüz otomasyon yok" description="İlk otomasyonunuzu oluşturun." />
+        <EmptyState icon={<Zap className="h-6 w-6" />} title={t('noAutomations')} description={t('noAutomationsDesc')} />
       ) : (
         <div className="space-y-3">
           {rules.map(rule => (
