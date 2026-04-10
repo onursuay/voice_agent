@@ -12,11 +12,11 @@ interface PendingConfig {
 
 async function subscribePageToWebhook(pageId: string, pageToken: string): Promise<boolean> {
   const url = new URL(`https://graph.facebook.com/v19.0/${pageId}/subscribed_apps`);
-  const res = await fetch(url.toString(), {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ access_token: pageToken, subscribed_fields: ['leadgen'] }),
-  });
+  url.searchParams.set('access_token', pageToken);
+  url.searchParams.set('subscribed_fields', 'leadgen');
+  const res = await fetch(url.toString(), { method: 'POST' });
+  const body = await res.text();
+  console.log(`[Meta] subscribePageToWebhook page=${pageId} status=${res.status} body=${body}`);
   return res.ok;
 }
 
