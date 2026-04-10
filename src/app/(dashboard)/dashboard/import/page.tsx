@@ -828,7 +828,7 @@ export default function ImportPage() {
                     ) : (
                       <ChevronDown className="h-4 w-4" />
                     )}
-                    Veriyi Yükle
+                    {t('sheetsLoadData')}
                   </button>
                 )}
               </>
