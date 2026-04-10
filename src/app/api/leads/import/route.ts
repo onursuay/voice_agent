@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createServerSupabaseClient } from '@/lib/supabase/server';
+import { createAdminSupabaseClient } from '@/lib/supabase/admin';
 
 export async function GET(_request: NextRequest) {
   try {
@@ -15,7 +16,8 @@ export async function GET(_request: NextRequest) {
       .single();
     if (!membership) return NextResponse.json({ error: 'No organization' }, { status: 403 });
 
-    const { data: imports, error } = await supabase
+    const admin = createAdminSupabaseClient();
+    const { data: imports, error } = await admin
       .from('import_jobs')
       .select('id, file_name, status, total_rows, created_rows, updated_rows, skipped_rows, error_rows, created_at, column_mapping')
       .eq('organization_id', membership.organization_id)
