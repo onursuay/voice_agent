@@ -138,10 +138,10 @@ function QueueTab() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-lg font-semibold text-gray-900">Arama Kuyruğu</h2>
-          <p className="text-sm text-gray-500">{pendingCalls.length} arama bekliyor</p>
+          <h2 className="text-lg font-semibold text-gray-900">{t('queue')}</h2>
+          <p className="text-sm text-gray-500">{t('queueSubtitle', { count: pendingCalls.length })}</p>
         </div>
-        <Button icon={<Plus className="h-4 w-4" />} onClick={() => setModalOpen(true)}>Yeni Arama Görevi</Button>
+        <Button icon={<Plus className="h-4 w-4" />} onClick={() => setModalOpen(true)}>{t('newCallJob')}</Button>
       </div>
 
       {pendingCalls.length === 0 ? (
