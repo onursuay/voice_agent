@@ -391,7 +391,7 @@ function DetailTab({ lead }: { lead: Lead }) {
       )}
 
       {/* Tags */}
-      <Section title="Etiketler">
+      <Section title={t('drawer.tags')}>
         <div className="flex flex-wrap gap-1.5">
           {lead.tags.map((tag) => (
             <Badge key={tag} color="indigo" size="sm" removable onRemove={() => handleRemoveTag(tag)}>
