@@ -183,25 +183,25 @@ function QueueTab() {
                   </label>
                 ))}
               </div>
-              <p className="mt-1 text-sm text-gray-500">{selectedLeadIds.length} lead seçili</p>
+              <p className="mt-1 text-sm text-gray-500">{t('selectedLeads', { count: selectedLeadIds.length })}</p>
             </div>
 
-            <Select label="Ses Profili" value={voiceProfile} onChange={e => setVoiceProfile(e.target.value)} options={[
-              { value: 'erkek-formal', label: 'Erkek - Formal' },
-              { value: 'erkek-casual', label: 'Erkek - Samimi' },
-              { value: 'kadın-formal', label: 'Kadın - Formal' },
-              { value: 'kadın-casual', label: 'Kadın - Samimi' },
+            <Select label={t('voiceProfile')} value={voiceProfile} onChange={e => setVoiceProfile(e.target.value)} options={[
+              { value: 'erkek-formal', label: t('voiceMaleFormal') },
+              { value: 'erkek-casual', label: t('voiceMaleCasual') },
+              { value: 'kadın-formal', label: t('voiceFemaleFormal') },
+              { value: 'kadın-casual', label: t('voiceFemaleCasual') },
             ]} />
 
             <div>
-              <label className="mb-1.5 block text-sm font-medium text-gray-700">Arama Senaryosu</label>
-              <textarea value={script} onChange={e => setScript(e.target.value)} rows={5} className="w-full rounded-lg border border-gray-300 px-3 py-2.5 text-sm" placeholder="AI'ın söyleyeceği senaryo..." />
+              <label className="mb-1.5 block text-sm font-medium text-gray-700">{t('callScript')}</label>
+              <textarea value={script} onChange={e => setScript(e.target.value)} rows={5} className="w-full rounded-lg border border-gray-300 px-3 py-2.5 text-sm" placeholder={t('callScriptPlaceholder')} />
             </div>
 
             <div className="flex justify-end gap-2">
-              <Button variant="secondary" onClick={() => setModalOpen(false)}>İptal</Button>
+              <Button variant="secondary" onClick={() => setModalOpen(false)}>{tCommon('cancel')}</Button>
               <Button onClick={handleCreateJob} disabled={selectedLeadIds.length === 0 || !script} icon={<Phone className="h-4 w-4" />}>
-                {selectedLeadIds.length} Arama Kuyruğa Ekle
+                {t('addToQueue', { count: selectedLeadIds.length })}
               </Button>
             </div>
           </div>
