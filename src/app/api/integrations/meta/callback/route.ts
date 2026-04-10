@@ -59,14 +59,27 @@ export interface FacebookPage {
 }
 
 async function getPages(userToken: string): Promise<FacebookPage[]> {
-  const url = new URL(`${META_GRAPH_BASE}/me/accounts`);
-  url.searchParams.set('access_token', userToken);
-  url.searchParams.set('fields', 'id,name,access_token');
+  const allPages: FacebookPage[] = [];
+  let nextUrl: string | null = null;
 
-  const res = await fetch(url.toString());
-  if (!res.ok) return [];
-  const data = await res.json() as { data?: FacebookPage[] };
-  return data.data || [];
+  const initialUrl = new URL(`${META_GRAPH_BASE}/me/accounts`);
+  initialUrl.searchParams.set('access_token', userToken);
+  initialUrl.searchParams.set('fields', 'id,name,access_token');
+  initialUrl.searchParams.set('limit', '100');
+  nextUrl = initialUrl.toString();
+
+  while (nextUrl) {
+    const res = await fetch(nextUrl);
+    if (!res.ok) break;
+    const data = await res.json() as {
+      data?: FacebookPage[];
+      paging?: { next?: string };
+    };
+    if (data.data) allPages.push(...data.data);
+    nextUrl = data.paging?.next ?? null;
+  }
+
+  return allPages;
 }
 
 /**
