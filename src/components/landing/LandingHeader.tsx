@@ -78,7 +78,7 @@ function MIcon({ name }: { name: string }) {
 
 const pillBase = 'btn-shimmer text-[14px] font-medium border border-emerald-400/30 text-emerald-400 px-5 py-2 rounded-full transition-colors cursor-pointer'
 
-export default function LandingHeader({ lang, ctaSchedule, ctaTrial }: Props) {
+export default function LandingHeader({ lang = 'tr', ctaSchedule, ctaTrial }: Props) {
   const [openMenu, setOpenMenu] = useState<string | null>(null)
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined)
   const headerRef = useRef<HTMLDivElement>(null)
