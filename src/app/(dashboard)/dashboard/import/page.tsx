@@ -1185,15 +1185,15 @@ export default function ImportPage() {
             {/* Default stage */}
             <div className="grid gap-4 sm:grid-cols-2">
               <Select
-                label="Varsayılan Aşama"
+                label={t('defaultStage')}
                 options={stageOptions}
-                placeholder="Aşama seçin..."
+                placeholder={t('stagePlaceholder')}
                 value={defaultStageId}
                 onChange={(e) => setDefaultStageId(e.target.value)}
               />
 
               <Select
-                label="Varsayilan Kaynak"
+                label={t('defaultSource')}
                 options={SOURCE_OPTIONS}
                 value={defaultSource}
                 onChange={(e) => setDefaultSource(e.target.value)}
