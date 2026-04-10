@@ -10,8 +10,8 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "VoiceAgent — Yo Dijital Lead CRM",
-  description: "VoiceAgent — Lead yönetimi ve CRM platformu - Yo Dijital",
+  title: "Voice Agent",
+  description: "Voice Agent",
   icons: {
     icon: "/favicon-32.png",
     apple: "/logo.png",
