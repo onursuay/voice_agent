@@ -616,8 +616,8 @@ function NotesTab({ leadId }: { leadId: string }) {
         {notes.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-12 text-center">
             <MessageSquare className="h-10 w-10 text-gray-300 mb-3" />
-            <p className="text-sm font-medium text-gray-500">Henüz not yok</p>
-            <p className="text-xs text-gray-400 mt-1">Bu lead için ilk notu siz ekleyin.</p>
+            <p className="text-sm font-medium text-gray-500">{t('drawer.noNotes')}</p>
+            <p className="text-xs text-gray-400 mt-1">{t('drawer.noNotesDesc')}</p>
           </div>
         ) : (
           notes.map((note) => (
