@@ -26,7 +26,7 @@ async function subscribePageToWebhook(pageId: string, pageToken: string): Promis
  * Reads pending session from DB, saves chosen page to integration_settings.
  */
 export async function GET(request: NextRequest) {
-  const dashboardUrl = `${request.nextUrl.origin}/dashboard/settings?tab=integrations`;
+  const dashboardUrl = `${request.nextUrl.origin}/dashboard/integrations`;
   const admin = createAdminSupabaseClient();
 
   // Get authenticated user's org to verify ownership
