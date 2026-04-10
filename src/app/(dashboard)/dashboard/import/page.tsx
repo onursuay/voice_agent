@@ -740,7 +740,7 @@ export default function ImportPage() {
         {loadingSheets ? (
           <div className="flex items-center justify-center py-8">
             <Loader2 className="h-5 w-5 animate-spin text-gray-400" />
-            <span className="ml-2 text-sm text-gray-500">Tablolar yükleniyor...</span>
+            <span className="ml-2 text-sm text-gray-500">{t('sheetsLoading')}</span>
           </div>
         ) : sheetsFiles.length === 0 ? (
           <div className="rounded-lg border border-gray-200 bg-white p-6 text-center">
