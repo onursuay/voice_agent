@@ -403,8 +403,8 @@ export function LeadGrid() {
   const savedTimerRef = useRef<ReturnType<typeof setTimeout>>(undefined);
 
   const visibleColumns = useMemo(() =>
-    LEAD_COLUMNS.filter((col) => col.key === '_select' || col.key === '_row_num' || !hiddenColumns.has(col.key)),
-    [hiddenColumns]
+    translatedColumns.filter((col) => col.key === '_select' || col.key === '_row_num' || !hiddenColumns.has(col.key)),
+    [translatedColumns, hiddenColumns]
   );
 
   const editableVisibleColumns = useMemo(() =>
