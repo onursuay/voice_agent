@@ -79,6 +79,7 @@ export default function LeadsPage() {
       )}
 
       {activeLeadId && <LeadDetailDrawer />}
+      <BulkActionBar />
     </div>
   );
 }
