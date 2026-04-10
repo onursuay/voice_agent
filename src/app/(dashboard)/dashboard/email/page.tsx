@@ -337,7 +337,7 @@ function HistoryTab() {
               <td className="px-4 py-3 text-gray-700">{(h.metadata?.subject as string) || h.description || '-'}</td>
               <td className="px-4 py-3">
                 <Badge color={(h.metadata?.status as string) === 'sent' ? 'green' : 'red'} size="sm">
-                  {(h.metadata?.status as string) === 'sent' ? 'Gönderildi' : 'Başarısız'}
+                  {(h.metadata?.status as string) === 'sent' ? t('statusSent') : t('statusFailed')}
                 </Badge>
               </td>
               <td className="px-4 py-3 text-gray-500">{formatDateTime(h.created_at)}</td>
