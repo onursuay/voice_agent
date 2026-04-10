@@ -291,13 +291,13 @@ function DetailTab({ lead }: { lead: Lead }) {
 
           {/* Assigned */}
           <div>
-            <p className="text-xs text-gray-500 mb-1">Atanan Kişi</p>
+            <p className="text-xs text-gray-500 mb-1">{t('drawer.assignee')}</p>
             <select
               value={lead.assigned_to || ''}
               onChange={(e) => handleAssignChange(e.target.value)}
               className="block w-full appearance-none rounded-lg border border-gray-300 bg-white px-3 py-1.5 text-sm text-gray-900 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
             >
-              <option value="">Atanmamış</option>
+              <option value="">{t('drawer.unassigned')}</option>
               {members.map((m) => (
                 <option key={m.user_id} value={m.user_id}>
                   {m.profile?.full_name || m.user_id}
