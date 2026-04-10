@@ -19,7 +19,13 @@
   --info: #3b82f6;
 }
 
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(200%); }
+}
+
 @theme inline {
+  --animate-shimmer: shimmer 2s linear infinite;
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-muted: var(--muted);
