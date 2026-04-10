@@ -51,7 +51,7 @@ export default function LeadsPage() {
     } finally {
       setLoading(false);
     }
-  }, [searchQuery, filters, sort, setLeads, t, perPage]);
+  }, [searchQuery, filters, sort, setLeads, t, perPage, sourceFilter]);
 
   useEffect(() => { fetchLeads(); }, [fetchLeads]);
 
