@@ -626,11 +626,11 @@ function NotesTab({ leadId }: { leadId: string }) {
                 <div className="flex items-center gap-2">
                   <Avatar
                     src={note.user?.avatar_url}
-                    name={note.user?.full_name || 'Sistem'}
+                    name={note.user?.full_name || 'System'}
                     size="xs"
                   />
                   <span className="text-xs font-medium text-gray-700">
-                    {note.user?.full_name || 'Sistem'}
+                    {note.user?.full_name || 'System'}
                   </span>
                 </div>
                 <span className="text-xs text-gray-400">
