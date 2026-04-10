@@ -166,7 +166,7 @@ function ComposeTab() {
               </label>
             ))}
           </div>
-          <p className="text-sm text-gray-500">{selectedLeadIds.length} lead seçili</p>
+          <p className="text-sm text-gray-500">{t('selectedLeads', { count: selectedLeadIds.length })}</p>
         </div>
       )}
 
