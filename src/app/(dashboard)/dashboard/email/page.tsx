@@ -262,7 +262,7 @@ function TemplatesTab() {
       </div>
 
       {templates.length === 0 ? (
-        <EmptyState icon={<FileText className="h-6 w-6" />} title="Henüz şablon yok" description="E-posta şablonu oluşturarak tekrar eden gönderimlerinizi hızlandırın." />
+        <EmptyState icon={<FileText className="h-6 w-6" />} title={t('noTemplates')} description={t('noTemplatesDesc')} />
       ) : (
         <div className="space-y-3">
           {templates.map(t => (
