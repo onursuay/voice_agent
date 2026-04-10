@@ -323,15 +323,6 @@ export function BulkActionBar() {
     }
   };
 
-  const openModal = (m: BulkModal) => {
-    setError(null);
-    setDeleteError(null);
-    setSelectedStageId('');
-    setSelectedUserId('');
-    setTagInput('');
-    setModal(m);
-  };
-
   return (
     <>
       {/* Stage Modal */}
