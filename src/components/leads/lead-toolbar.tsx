@@ -494,11 +494,20 @@ function TableFilterDropdown() {
   const selectJob = (job: ImportJobSummary) => {
     // Derive which grid columns are relevant from this import's column_mapping
     const mappedFields = new Set<string>();
+    const labelOverrides: Record<string, string> = {};
+
     if (job.column_mapping) {
-      Object.keys(job.column_mapping).forEach((field) => {
-        if (field && field !== '_skip') {
-          const col = FIELD_TO_COLUMN[field];
-          if (col) mappedFields.add(col);
+      // column_mapping is now Record<crmField, fileCol>
+      Object.entries(job.column_mapping).forEach(([crmField, fileCol]) => {
+        if (crmField && crmField !== '_skip' && fileCol && fileCol !== '_skip') {
+          const gridCol = FIELD_TO_COLUMN[crmField];
+          if (gridCol) {
+            mappedFields.add(gridCol);
+            // Use title-cased file column name as the grid column label
+            if (!labelOverrides[gridCol]) {
+              labelOverrides[gridCol] = toTitleCase(fileCol);
+            }
+          }
         }
       });
     }
@@ -514,12 +523,14 @@ function TableFilterDropdown() {
 
     setImportJobFilter({ id: job.id, name: job.file_name, columns: [...mappedFields] });
     setHiddenColumns(newHidden);
+    setColumnLabelOverrides(labelOverrides);
     setOpen(false);
   };
 
   const clearFilter = () => {
     setImportJobFilter(null);
     setHiddenColumns(new Set());
+    setColumnLabelOverrides({});
     setOpen(false);
   };
 
