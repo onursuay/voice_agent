@@ -922,10 +922,10 @@ export default function ImportPage() {
                 <Upload className="h-6 w-6 text-indigo-500" />
               </div>
               <p className="mb-1 text-base font-semibold text-gray-700">
-                Dosyanizi surukleyip birakin
+                {t('dragDrop')}
               </p>
               <p className="mb-4 text-sm text-gray-500">
-                veya bilgisayarinizdan secin
+                {t('orSelect')}
               </p>
               <Button
                 variant="secondary"
@@ -933,10 +933,10 @@ export default function ImportPage() {
                 onClick={() => fileInputRef.current?.click()}
                 icon={<FileUp className="h-4 w-4" />}
               >
-                Dosya Sec
+                {t('selectFile')}
               </Button>
               <p className="mt-4 text-xs text-gray-400">
-                Desteklenen formatlar: CSV, XLSX, XLS
+                {t('supportedFormats')}
               </p>
             </>
           ) : (
