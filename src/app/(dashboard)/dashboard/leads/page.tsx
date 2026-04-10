@@ -22,6 +22,7 @@ export default function LeadsPage() {
   const leadsNeedRefresh = useAppStore(s => s.leadsNeedRefresh);
   const perPage = useAppStore(s => s.perPage);
   const sourceFilter = useAppStore(s => s.sourceFilter);
+  const importJobFilter = useAppStore(s => s.importJobFilter);
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
