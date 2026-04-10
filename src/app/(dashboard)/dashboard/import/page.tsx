@@ -1081,7 +1081,34 @@ export default function ImportPage() {
 
         {/* Recent imports */}
         <div>
-          <h3 className="mb-3 text-sm font-semibold text-gray-700">{t('recentImports')}</h3>
+          <div className="mb-3 flex items-center justify-between">
+            <h3 className="text-sm font-semibold text-gray-700">{t('recentImports')}</h3>
+            {selectedImportIds.size > 0 && (
+              <button
+                onClick={async () => {
+                  setDeletingImports(true);
+                  const ids = Array.from(selectedImportIds);
+                  try {
+                    await Promise.all(ids.map(id =>
+                      fetch(`/api/leads/import/${id}`, { method: 'DELETE' })
+                    ));
+                    setRecentImports(prev => prev.filter(imp => !selectedImportIds.has(imp.id)));
+                    setSelectedImportIds(new Set());
+                  } catch {}
+                  setDeletingImports(false);
+                }}
+                disabled={deletingImports}
+                className="flex items-center gap-1.5 rounded-lg border border-red-200 bg-white px-3 py-1.5 text-xs font-medium text-red-600 hover:bg-red-50 transition-colors disabled:opacity-50"
+              >
+                {deletingImports ? (
+                  <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                ) : (
+                  <Trash2 className="h-3.5 w-3.5" />
+                )}
+                {selectedImportIds.size} {t('deleteSelected')}
+              </button>
+            )}
+          </div>
           {loadingHistory ? (
             <div className="flex items-center justify-center py-8">
               <Spinner size="sm" />
@@ -1096,6 +1123,17 @@ export default function ImportPage() {
               <table className="w-full text-sm">
                 <thead>
                   <tr className="border-b border-gray-100 bg-gray-50">
+                    <th className="w-10 px-3 py-2.5">
+                      <input
+                        type="checkbox"
+                        checked={selectedImportIds.size === recentImports.length}
+                        onChange={(e) => {
+                          if (e.target.checked) setSelectedImportIds(new Set(recentImports.map(i => i.id)));
+                          else setSelectedImportIds(new Set());
+                        }}
+                        className="h-4 w-4 rounded border-gray-300 text-indigo-500 focus:ring-indigo-500"
+                      />
+                    </th>
                     <th className="px-4 py-2.5 text-left font-medium text-gray-600">{t('fileName')}</th>
                     <th className="px-4 py-2.5 text-left font-medium text-gray-600">{t('statusColHeader')}</th>
                     <th className="px-4 py-2.5 text-right font-medium text-gray-600">{t('rowCount')}</th>
@@ -1103,16 +1141,28 @@ export default function ImportPage() {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-100">
-                  {recentImports.slice(0, 5).map((imp) => (
-                    <tr key={imp.id} className="hover:bg-gray-50">
+                  {recentImports.map((imp) => (
+                    <tr
+                      key={imp.id}
+                      className={cn('hover:bg-gray-50 transition-colors', selectedImportIds.has(imp.id) && 'bg-red-50 hover:bg-red-50')}
+                    >
+                      <td className="px-3 py-2.5">
+                        <input
+                          type="checkbox"
+                          checked={selectedImportIds.has(imp.id)}
+                          onChange={(e) => {
+                            const next = new Set(selectedImportIds);
+                            if (e.target.checked) next.add(imp.id);
+                            else next.delete(imp.id);
+                            setSelectedImportIds(next);
+                          }}
+                          className="h-4 w-4 rounded border-gray-300 text-indigo-500 focus:ring-indigo-500"
+                        />
+                      </td>
                       <td className="px-4 py-2.5 font-medium text-gray-800">{imp.file_name}</td>
                       <td className="px-4 py-2.5"><StatusBadge status={imp.status} /></td>
-                      <td className="px-4 py-2.5 text-right text-gray-600">
-                        {imp.total_rows}
-                      </td>
-                      <td className="px-4 py-2.5 text-right text-gray-500">
-                        {formatRelativeTime(imp.created_at)}
-                      </td>
+                      <td className="px-4 py-2.5 text-right text-gray-600">{imp.total_rows}</td>
+                      <td className="px-4 py-2.5 text-right text-gray-500">{formatRelativeTime(imp.created_at)}</td>
                     </tr>
                   ))}
                 </tbody>
