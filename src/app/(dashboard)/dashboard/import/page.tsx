@@ -1093,7 +1093,7 @@ export default function ImportPage() {
         <div className="flex items-center gap-2 text-sm text-gray-600">
           <CheckCircle2 className="h-4 w-4 text-indigo-500" />
           <span>
-            {uniqueMappedFields.length} alan eslesti, {headers.length - uniqueMappedFields.length} sutun atlanacak
+            {t('fieldsMapped', { mapped: uniqueMappedFields.length, skipped: headers.length - uniqueMappedFields.length })}
           </span>
         </div>
 
