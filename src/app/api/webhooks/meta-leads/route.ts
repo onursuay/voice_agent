@@ -4,6 +4,10 @@ import { fetchMetaLeadDetails, isSampleLeadgenId } from '@/lib/meta-graph';
 import { ingestLead, resolveLeadIngestionOrganization } from '@/lib/leads/ingest';
 import { createHmac, timingSafeEqual, randomUUID } from 'crypto';
 
+// ── DEPLOYMENT MARKER — update this to confirm new deploys are live ──────────
+const DEPLOY_MARKER = 'WEBHOOK_DIAG_v2_20260410';
+// ────────────────────────────────────────────────────────────────────────────
+
 type MetaLeadWebhookChange = {
   field?: string;
   value?: {
