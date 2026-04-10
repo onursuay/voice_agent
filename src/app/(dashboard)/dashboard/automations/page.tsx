@@ -23,31 +23,33 @@ interface AutomationRule {
   created_at: string;
 }
 
-const TRIGGER_OPTIONS = [
-  { value: 'lead_created', label: 'Lead oluşturulduğunda' },
-  { value: 'stage_changed', label: 'Aşama değiştiğinde' },
-  { value: 'lead_assigned', label: 'Lead atandığında' },
-  { value: 'inactivity', label: 'Hareketsizlik süresi dolduğunda' },
-  { value: 'score_changed', label: 'Skor değiştiğinde' },
-  { value: 'tag_added', label: 'Etiket eklendiğinde' },
-];
-
-const ACTION_OPTIONS = [
-  { value: 'assign', label: 'Lead\'i ata' },
-  { value: 'change_stage', label: 'Aşama değiştir' },
-  { value: 'send_email', label: 'E-posta gönder' },
-  { value: 'add_tag', label: 'Etiket ekle' },
-  { value: 'create_reminder', label: 'Hatırlatıcı oluştur' },
-  { value: 'add_note', label: 'Not ekle' },
-  { value: 'change_score', label: 'Skoru değiştir' },
-];
-
-const TRIGGER_LABELS: Record<string, string> = Object.fromEntries(TRIGGER_OPTIONS.map(o => [o.value, o.label]));
-const ACTION_LABELS: Record<string, string> = Object.fromEntries(ACTION_OPTIONS.map(o => [o.value, o.label]));
-
 export default function AutomationsPage() {
+  const t = useTranslations('automations');
+  const tCommon = useTranslations('common');
   const stages = useAppStore(s => s.stages);
   const members = useAppStore(s => s.members);
+
+  const TRIGGER_OPTIONS = [
+    { value: 'lead_created', label: t('triggerLeadCreated') },
+    { value: 'stage_changed', label: t('triggerStageChanged') },
+    { value: 'lead_assigned', label: t('triggerLeadAssigned') },
+    { value: 'inactivity', label: t('triggerInactivity') },
+    { value: 'score_changed', label: t('triggerScoreChanged') },
+    { value: 'tag_added', label: t('triggerTagAdded') },
+  ];
+
+  const ACTION_OPTIONS = [
+    { value: 'assign', label: t('actionAssign') },
+    { value: 'change_stage', label: t('actionChangeStage') },
+    { value: 'send_email', label: t('actionSendEmail') },
+    { value: 'add_tag', label: t('actionAddTag') },
+    { value: 'create_reminder', label: t('actionReminder') },
+    { value: 'add_note', label: t('actionAddNote') },
+    { value: 'change_score', label: t('actionChangeScore') },
+  ];
+
+  const TRIGGER_LABELS: Record<string, string> = Object.fromEntries(TRIGGER_OPTIONS.map(o => [o.value, o.label]));
+  const ACTION_LABELS: Record<string, string> = Object.fromEntries(ACTION_OPTIONS.map(o => [o.value, o.label]));
   const [rules, setRules] = useState<AutomationRule[]>([]);
   const [loading, setLoading] = useState(true);
   const [modalOpen, setModalOpen] = useState(false);
