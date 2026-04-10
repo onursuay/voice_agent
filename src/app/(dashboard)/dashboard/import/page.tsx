@@ -877,7 +877,7 @@ export default function ImportPage() {
             )}
           >
             <FileUp className="h-4 w-4" />
-            Dosya Yükle
+            {t('fileUpload')}
           </button>
           <button
             onClick={() => setSourceTab('sheets')}
@@ -889,7 +889,7 @@ export default function ImportPage() {
             )}
           >
             <Table2 className="h-4 w-4" />
-            Google Sheets
+            {t('googleSheets')}
           </button>
         </div>
 
