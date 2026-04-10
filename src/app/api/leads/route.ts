@@ -25,7 +25,7 @@ export async function GET(request: NextRequest) {
     const sortBy = params.get('sort_by') || 'created_at';
     const sortDir = params.get('sort_dir') === 'asc' ? true : false;
     const page = Math.max(1, parseInt(params.get('page') || '1', 10));
-    const perPage = Math.min(100, Math.max(1, parseInt(params.get('per_page') || '25', 10)));
+    const perPage = Math.min(500, Math.max(1, parseInt(params.get('per_page') || '25', 10)));
 
     const from = (page - 1) * perPage;
     const to = from + perPage - 1;
