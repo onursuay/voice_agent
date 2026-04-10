@@ -941,7 +941,7 @@ export function LeadGrid() {
                   <div
                     key={col.key}
                     className={cn(
-                      'relative flex shrink-0 items-center border-r border-gray-200 px-2 py-1.5 text-sm',
+                      'relative flex shrink-0 items-center overflow-hidden border-r border-gray-200 px-2 py-1.5 text-sm',
                       isSticky && 'sticky z-10',
                       isSticky && (isSelected ? 'bg-indigo-50/60' : isEvenRow ? 'bg-white' : 'bg-gray-50/30'),
                       isSticky && isHovered && !isSelected && 'bg-blue-50/30',
