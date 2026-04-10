@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useCallback } from 'react';
+import { useTranslations } from 'next-intl';
 import { Mail, Send, FileText, Clock, Plus, Trash2, Edit3, Search, Loader2, CheckCircle, XCircle, Users } from 'lucide-react';
 import { useAppStore } from '@/lib/store';
 import { Button } from '@/components/ui/button';
