@@ -1,6 +1,36 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createServerSupabaseClient } from '@/lib/supabase/server';
 
+export async function GET(_request: NextRequest) {
+  try {
+    const supabase = await createServerSupabaseClient();
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+
+    const { data: membership } = await supabase
+      .from('organization_members')
+      .select('organization_id')
+      .eq('user_id', user.id)
+      .eq('is_active', true)
+      .single();
+    if (!membership) return NextResponse.json({ error: 'No organization' }, { status: 403 });
+
+    const { data: imports, error } = await supabase
+      .from('import_jobs')
+      .select('id, file_name, status, total_rows, created_rows, updated_rows, skipped_rows, error_rows, created_at')
+      .eq('organization_id', membership.organization_id)
+      .order('created_at', { ascending: false })
+      .limit(10);
+
+    if (error) return NextResponse.json({ error: error.message }, { status: 500 });
+
+    return NextResponse.json({ imports: imports || [] });
+  } catch (err) {
+    console.error('GET /api/leads/import error:', err);
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+  }
+}
+
 function normalizePhone(phone: string | null | undefined): string | null {
   if (!phone) return null;
   const cleaned = phone.replace(/[^\d+]/g, '');
