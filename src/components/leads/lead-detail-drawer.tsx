@@ -420,7 +420,7 @@ function DetailTab({ lead }: { lead: Lead }) {
                 onClick={handleAddTag}
                 className="inline-flex h-6 items-center rounded bg-indigo-500 px-2 text-xs text-white hover:bg-indigo-600"
               >
-                Ekle
+                {t('fields.tagAdd')}
               </button>
             </div>
           ) : (
