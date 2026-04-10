@@ -305,6 +305,7 @@ function TemplatesTab() {
 // HISTORY TAB
 // ============================================
 function HistoryTab() {
+  const t = useTranslations('email');
   const [history, setHistory] = useState<Array<{ id: string; title: string; description: string; metadata: Record<string, unknown>; created_at: string }>>([]);
   const [loading, setLoading] = useState(true);
 
