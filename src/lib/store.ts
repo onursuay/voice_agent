@@ -144,6 +144,8 @@ export const useAppStore = create<AppStore>((set, get) => ({
     set({ hiddenColumns: current });
   },
   setHiddenColumns: (cols) => set({ hiddenColumns: cols }),
+  columnLabelOverrides: {},
+  setColumnLabelOverrides: (columnLabelOverrides) => set({ columnLabelOverrides }),
 
   sidebarOpen: true,
   setSidebarOpen: (open) => set({ sidebarOpen: open }),
