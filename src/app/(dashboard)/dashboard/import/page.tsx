@@ -1174,10 +1174,10 @@ export default function ImportPage() {
               />
               <div>
                 <span className="text-sm font-medium text-gray-700">
-                  Mevcut kayitlarla eslesmenleri guncelle
+                  {t('dedupeUpdateLabel')}
                 </span>
                 <p className="text-xs text-gray-500">
-                  E-posta veya telefon numarasi eslesirse mevcut lead guncellenir.
+                  {t('dedupeUpdateDesc')}
                 </p>
               </div>
             </label>
