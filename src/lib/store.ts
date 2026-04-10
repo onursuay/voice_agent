@@ -155,4 +155,7 @@ export const useAppStore = create<AppStore>((set, get) => ({
   setSidebarOpen: (open) => set({ sidebarOpen: open }),
   drawerOpen: false,
   setDrawerOpen: (open) => set({ drawerOpen: open }),
+
+  bulkActionModal: null,
+  setBulkActionModal: (modal) => set({ bulkActionModal: modal }),
 }));
