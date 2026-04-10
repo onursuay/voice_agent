@@ -542,12 +542,8 @@ export default function ImportPage() {
       setRows(data.rows || []);
       setSourceFileName(`${selectedSpreadsheet.name} / ${selectedTab}`);
       // Auto-map columns
-      const autoMap: Record<string, string> = {};
-      (data.headers || []).forEach((col: string) => {
-        const samples = (data.rows || []).slice(0, 5).map((r: Record<string, string>) => r[col]).filter(Boolean);
-        autoMap[col] = autoMapHeader(col, samples);
-      });
-      setMapping(autoMap);
+      const crmFields = LEAD_FIELD_OPTIONS_I18N.map(o => o.value);
+      setMapping(buildReverseAutoMap(crmFields, data.headers || [], data.rows || []));
     } catch {
       setSheetDataError(t('sheetDataError'));
     } finally {
