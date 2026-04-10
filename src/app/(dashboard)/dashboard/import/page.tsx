@@ -1284,9 +1284,9 @@ export default function ImportPage() {
             <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-green-100">
               <CheckCircle2 className="h-8 w-8 text-green-500" />
             </div>
-            <h3 className="mb-1 text-lg font-semibold text-gray-800">Ice aktarma tamamlandi</h3>
+            <h3 className="mb-1 text-lg font-semibold text-gray-800">{t('importResultTitle')}</h3>
             <p className="text-sm text-gray-500">
-              Toplam {totalProcessed} satir islendi.
+              {t('totalProcessed', { count: totalProcessed })}
             </p>
           </div>
 
