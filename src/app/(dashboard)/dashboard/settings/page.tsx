@@ -25,9 +25,6 @@ import {
   UserPlus,
   AlertCircle,
   Check,
-  Plug,
-  ExternalLink,
-  RefreshCw,
 } from 'lucide-react';
 
 type SettingsTab = 'organization' | 'members' | 'pipeline' | 'profile';
