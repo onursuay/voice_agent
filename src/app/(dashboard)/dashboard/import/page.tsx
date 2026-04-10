@@ -1002,7 +1002,7 @@ export default function ImportPage() {
                   {recentImports.slice(0, 5).map((imp) => (
                     <tr key={imp.id} className="hover:bg-gray-50">
                       <td className="px-4 py-2.5 font-medium text-gray-800">{imp.file_name}</td>
-                      <td className="px-4 py-2.5">{statusBadge(imp.status)}</td>
+                      <td className="px-4 py-2.5"><StatusBadge status={imp.status} /></td>
                       <td className="px-4 py-2.5 text-right text-gray-600">
                         {imp.total_rows}
                       </td>
