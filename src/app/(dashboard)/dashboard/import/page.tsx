@@ -537,11 +537,11 @@ export default function ImportPage() {
           });
           setMapping(autoMap);
         } catch {
-          setParseError('Excel dosyasi okunurken hata olustu.');
+          setParseError(t('xlsxError'));
         }
       };
       reader.onerror = () => {
-        setParseError('Dosya okunamadi.');
+        setParseError(t('fileReadError'));
       };
       reader.readAsArrayBuffer(f);
     } else {
