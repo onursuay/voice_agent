@@ -215,6 +215,7 @@ function QueueTab() {
 // HISTORY TAB
 // ============================================
 function HistoryTab() {
+  const { t, STATUS_MAP, RESULT_MAP } = useCallTranslations();
   const [calls, setCalls] = useState<CallLog[]>([]);
   const [loading, setLoading] = useState(true);
   const [expandedId, setExpandedId] = useState<string | null>(null);
