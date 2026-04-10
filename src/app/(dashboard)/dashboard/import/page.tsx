@@ -1157,7 +1157,7 @@ export default function ImportPage() {
                 {/* Target field select */}
                 <div className="w-full sm:w-56">
                   <Select
-                    options={LEAD_FIELD_OPTIONS}
+                    options={LEAD_FIELD_OPTIONS_I18N}
                     value={mapping[header] || '_skip'}
                     onChange={(e) =>
                       setMapping((prev) => ({
