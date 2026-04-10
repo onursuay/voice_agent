@@ -1162,7 +1162,7 @@ export default function ImportPage() {
 
         {/* Options */}
         <div className="rounded-lg border border-gray-200 bg-white p-5">
-          <h3 className="mb-4 text-sm font-semibold text-gray-700">İçe Aktarma Ayarları</h3>
+          <h3 className="mb-4 text-sm font-semibold text-gray-700">{t('importOptions')}</h3>
           <div className="space-y-5">
             {/* Dedupe */}
             <label className="flex items-start gap-3 cursor-pointer">
