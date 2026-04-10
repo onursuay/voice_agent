@@ -796,17 +796,17 @@ export function LeadGrid() {
   // ── Placeholder text for new row ──────────────────────
   const getPlaceholder = (colKey: string): string => {
     const map: Record<string, string> = {
-      full_name: 'Ad Soyad...',
+      full_name: t('placeholders.full_name'),
       phone: '+90...',
       email: 'email@...',
-      source_platform: 'Kaynak...',
-      stage: 'Aşama...',
+      source_platform: t('placeholders.source_platform'),
+      stage: t('placeholders.stage'),
       score: '0',
-      assigned_to: 'Atanan...',
-      campaign_name: 'Kampanya...',
-      city: 'Sehir...',
-      company: 'Sirket...',
-      tags: 'Etiketler...',
+      assigned_to: t('placeholders.assigned_to'),
+      campaign_name: t('placeholders.campaign_name'),
+      city: t('placeholders.city'),
+      company: t('placeholders.company'),
+      tags: t('placeholders.tags'),
     };
     return map[colKey] || '...';
   };
