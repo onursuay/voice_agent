@@ -80,7 +80,7 @@ export async function GET(request: NextRequest) {
   const state = params.get('state');
   const error = params.get('error');
 
-  const dashboardUrl = `${request.nextUrl.origin}/dashboard/settings?tab=integrations`;
+  const dashboardUrl = `${request.nextUrl.origin}/dashboard/integrations`;
 
   if (error || !code || !state) {
     return NextResponse.redirect(`${dashboardUrl}&meta_error=${encodeURIComponent(error || 'cancelled')}`);
