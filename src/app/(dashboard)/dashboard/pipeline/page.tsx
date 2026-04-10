@@ -62,7 +62,7 @@ function LeadCardContent({ lead, onClick, isDragging }: LeadCardProps) {
       <div className="flex items-start justify-between gap-2 mb-2">
         <div className="min-w-0 flex-1">
           <p className="text-sm font-semibold text-gray-900 truncate">
-            {lead.full_name || 'Isimsiz Lead'}
+            {lead.full_name || t('namelessLead')}
           </p>
           {lead.company && (
             <div className="flex items-center gap-1 mt-0.5">
