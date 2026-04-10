@@ -68,17 +68,22 @@ async function getPages(userToken: string): Promise<FacebookPage[]> {
   initialUrl.searchParams.set('limit', '100');
   nextUrl = initialUrl.toString();
 
+  let pageNum = 0;
   while (nextUrl) {
+    pageNum++;
     const res = await fetch(nextUrl);
-    if (!res.ok) break;
-    const data = await res.json() as {
+    const body = await res.json() as {
       data?: FacebookPage[];
-      paging?: { next?: string };
+      paging?: { cursors?: { after?: string }; next?: string };
+      error?: { message: string; code: number };
     };
-    if (data.data) allPages.push(...data.data);
-    nextUrl = data.paging?.next ?? null;
+    console.log(`[Meta getPages] page=${pageNum} status=${res.status} count=${body.data?.length ?? 0} hasNext=${!!body.paging?.next} error=${body.error?.message ?? 'none'}`);
+    if (!res.ok || body.error) break;
+    if (body.data) allPages.push(...body.data);
+    nextUrl = body.paging?.next ?? null;
   }
 
+  console.log(`[Meta getPages] TOTAL pages fetched: ${allPages.length}`);
   return allPages;
 }
 
