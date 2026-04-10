@@ -257,16 +257,13 @@ function formatFileSize(bytes: number): string {
   return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
 }
 
-function statusBadge(status: string) {
+function StatusBadge({ status }: { status: string }) {
+  const t = useTranslations('import');
   switch (status) {
-    case 'completed':
-      return <Badge color="green">Tamamlandi</Badge>;
-    case 'processing':
-      return <Badge color="blue">Isleniyor</Badge>;
-    case 'failed':
-      return <Badge color="red">Hata</Badge>;
-    default:
-      return <Badge color="gray">Beklemede</Badge>;
+    case 'completed': return <Badge color="green">{t('statusCompleted')}</Badge>;
+    case 'processing': return <Badge color="blue">{t('statusProcessing')}</Badge>;
+    case 'failed': return <Badge color="red">{t('statusFailed')}</Badge>;
+    default: return <Badge color="gray">{t('statusPending')}</Badge>;
   }
 }
 
