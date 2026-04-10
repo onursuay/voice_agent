@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { createAdminSupabaseClient } from '@/lib/supabase/admin';
 import { fetchMetaLeadDetails, isSampleLeadgenId } from '@/lib/meta-graph';
 import { ingestLead, resolveLeadIngestionOrganization } from '@/lib/leads/ingest';
-import { createHmac, timingSafeEqual } from 'crypto';
+import { createHmac, timingSafeEqual, randomUUID } from 'crypto';
 
 type MetaLeadWebhookChange = {
   field?: string;
@@ -87,53 +87,79 @@ export async function GET(request: NextRequest) {
 }
 
 export async function POST(request: NextRequest) {
+  const reqId = randomUUID().slice(0, 8);
+  const t0 = Date.now();
+
   // Read raw body first for signature verification
   const rawBody = await request.text();
   const signatureHeader = request.headers.get('x-hub-signature-256');
+  const userAgent = request.headers.get('user-agent') || '';
+  const cfIp = request.headers.get('cf-connecting-ip') || request.headers.get('x-forwarded-for') || '';
 
   const sigValid = verifyMetaSignature(rawBody, signatureHeader);
-  console.log('[meta_leads] POST received', {
+
+  // ── HIGH-SIGNAL ARRIVAL LOG ──────────────────────────────────────────────
+  console.log(`[meta_leads][${reqId}] POST ARRIVED`, {
+    ts: new Date().toISOString(),
     sigValid,
     hasSignature: !!signatureHeader,
     signaturePrefix: signatureHeader?.slice(0, 20),
     bodyLength: rawBody.length,
+    userAgent,
+    ip: cfIp,
     hasSecret: !!process.env.META_APP_SECRET,
     secretLength: process.env.META_APP_SECRET?.length,
   });
 
+  // Log first 1000 chars of body so we can see the actual payload structure in Vercel logs
+  console.log(`[meta_leads][${reqId}] RAW BODY (first 1000):`, rawBody.slice(0, 1000));
+
   if (!sigValid) {
-    console.warn('[meta_leads] Webhook signature verification failed — processing anyway for debug');
+    console.warn(`[meta_leads][${reqId}] Signature verification failed — processing anyway for debug`);
   }
 
   let body: MetaLeadWebhookPayload;
   try {
     body = JSON.parse(rawBody) as MetaLeadWebhookPayload;
   } catch (error) {
-    console.error('[meta_leads] Invalid webhook body', error);
+    console.error(`[meta_leads][${reqId}] Invalid JSON body`, error);
     return NextResponse.json({ received: true }, { status: 200 });
   }
 
+  console.log(`[meta_leads][${reqId}] PARSED: object=${body.object} entries=${body.entry?.length ?? 0}`);
+
   if (body.object !== 'page' || !Array.isArray(body.entry)) {
+    console.warn(`[meta_leads][${reqId}] Unexpected object type or missing entry — object=${body.object}`);
     return NextResponse.json({ received: true }, { status: 200 });
   }
 
   const jobs = body.entry.flatMap((entry) =>
     (entry.changes || []).map(async (change) => {
-      if (change.field !== 'leadgen') return;
+      const changeId = randomUUID().slice(0, 6);
+
+      console.log(`[meta_leads][${reqId}][${changeId}] CHANGE: field=${change.field} value=${JSON.stringify(change.value)}`);
+
+      if (change.field !== 'leadgen') {
+        console.log(`[meta_leads][${reqId}][${changeId}] Skipping non-leadgen field: ${change.field}`);
+        return;
+      }
 
       const leadgenId = change.value?.leadgen_id || null;
       const pageId = change.value?.page_id || entry.id || null;
       const formId = change.value?.form_id || null;
       const adIdFromWebhook = change.value?.ad_id || null;
 
+      console.log(`[meta_leads][${reqId}][${changeId}] LEAD IDs: leadgen_id=${leadgenId} page_id=${pageId} form_id=${formId} ad_id=${adIdFromWebhook}`);
+
       if (!leadgenId) {
+        console.error(`[meta_leads][${reqId}][${changeId}] Missing leadgen_id`);
         await logWebhookFailure('meta_leads', 'leadgen', null, change, 'Missing leadgen_id');
         return;
       }
 
       // Skip sample/fake payloads from Meta's webhook "Test" button
       if (isSampleLeadgenId(leadgenId)) {
-        console.log(`[meta_leads] Ignoring sample payload: leadgen_id=${leadgenId}`);
+        console.log(`[meta_leads][${reqId}][${changeId}] SAMPLE PAYLOAD — skipping: leadgen_id=${leadgenId}`);
         try {
           const supabase = createAdminSupabaseClient();
           await supabase.from('lead_events').insert({
@@ -147,20 +173,28 @@ export async function POST(request: NextRequest) {
         return;
       }
 
-      console.log(`[meta_leads] Processing real lead: leadgen_id=${leadgenId} page_id=${pageId} form_id=${formId}`);
+      console.log(`[meta_leads][${reqId}][${changeId}] REAL LEAD — processing: leadgen_id=${leadgenId} page_id=${pageId} form_id=${formId}`);
 
-      // Resolve org by page_id — each org registers their own page via OAuth
+      // Resolve org by page_id
+      const tOrg = Date.now();
       const organizationId = await resolveLeadIngestionOrganization('meta_leads', pageId);
+      console.log(`[meta_leads][${reqId}][${changeId}] ORG RESOLVED: organizationId=${organizationId} (${Date.now() - tOrg}ms)`);
+
       if (!organizationId) {
-        await logWebhookFailure('meta_leads', 'configuration_error', leadgenId, change,
-          `No organization found for page_id: ${pageId}. Connect your Facebook page in Settings → Entegrasyonlar.`);
+        const errMsg = `No organization found for page_id: ${pageId}. Connect your Facebook page in Settings → Entegrasyonlar.`;
+        console.error(`[meta_leads][${reqId}][${changeId}] ${errMsg}`);
+        await logWebhookFailure('meta_leads', 'configuration_error', leadgenId, change, errMsg);
         return;
       }
 
       try {
+        const tGraph = Date.now();
+        console.log(`[meta_leads][${reqId}][${changeId}] FETCHING from Meta Graph API...`);
         const metaLead = await fetchMetaLeadDetails(leadgenId, organizationId);
+        console.log(`[meta_leads][${reqId}][${changeId}] GRAPH FETCHED OK (${Date.now() - tGraph}ms): name=${metaLead.fullName} email=${metaLead.email} phone=${metaLead.phone} form_id=${metaLead.metaFormId} ad_id=${metaLead.metaAdId}`);
 
-        await ingestLead({
+        const tIngest = Date.now();
+        const result = await ingestLead({
           organizationId,
           provider: 'meta_leads',
           eventType: 'leadgen',
@@ -180,9 +214,11 @@ export async function POST(request: NextRequest) {
             graph_lead: metaLead.rawLead,
           },
         });
+        console.log(`[meta_leads][${reqId}][${changeId}] INGESTED (${Date.now() - tIngest}ms): action=${result.action} lead_id=${result.lead?.id} event_id=${result.eventId}`);
+
       } catch (error) {
         const message = error instanceof Error ? error.message : 'Unknown Meta ingestion error';
-        console.error('[meta_leads] Lead processing failed', { leadgenId, error: message });
+        console.error(`[meta_leads][${reqId}][${changeId}] LEAD PROCESSING FAILED:`, { leadgenId, pageId, error: message });
         await logWebhookFailure('meta_leads', 'leadgen', leadgenId, change, message);
       }
     })
@@ -190,5 +226,6 @@ export async function POST(request: NextRequest) {
 
   await Promise.allSettled(jobs);
 
+  console.log(`[meta_leads][${reqId}] DONE in ${Date.now() - t0}ms`);
   return NextResponse.json({ received: true }, { status: 200 });
 }
