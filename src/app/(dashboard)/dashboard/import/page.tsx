@@ -386,7 +386,7 @@ export default function ImportPage() {
           setSheetsFiles(data.files || []);
         }
       })
-      .catch(() => setSheetsError('Tablolar yüklenemedi.'))
+      .catch(() => setSheetsError(t('sheetsLoadError')))
       .finally(() => setLoadingSheets(false));
   }, [googleConnected, sheetsSearch]);
 
