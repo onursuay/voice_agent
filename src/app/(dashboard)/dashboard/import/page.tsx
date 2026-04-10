@@ -1061,7 +1061,7 @@ export default function ImportPage() {
                         key={i}
                         className="inline-block max-w-[180px] truncate rounded bg-gray-100 px-2 py-0.5 text-xs text-gray-600"
                       >
-                        {row[header] || <span className="italic text-gray-400">bos</span>}
+                        {row[header] || <span className="italic text-gray-400">{t('emptyValue')}</span>}
                       </span>
                     ))}
                   </div>
