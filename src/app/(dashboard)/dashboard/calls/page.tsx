@@ -145,7 +145,7 @@ function QueueTab() {
       </div>
 
       {pendingCalls.length === 0 ? (
-        <EmptyState icon={<Phone className="h-6 w-6" />} title="Kuyrukta arama yok" description="Yeni bir arama görevi oluşturun." />
+        <EmptyState icon={<Phone className="h-6 w-6" />} title={t('noQueue')} description={t('noQueueDesc')} />
       ) : (
         <div className="space-y-3">
           {pendingCalls.map(call => (
