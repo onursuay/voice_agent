@@ -359,6 +359,17 @@ function TagsEditor({
 const NEW_ROW_SENTINEL = '__NEW_ROW__';
 
 export function LeadGrid() {
+  const t = useTranslations('leads');
+
+  // Translated column labels
+  const translatedColumns = useMemo(() =>
+    LEAD_COLUMNS.map((col) => {
+      if (col.key === '_select' || col.key === '_row_num') return col;
+      const labelKey = `colLabels.${col.key}` as Parameters<typeof t>[0];
+      try { return { ...col, label: t(labelKey) }; } catch { return col; }
+    }),
+  [t]);
+
   const leads = useAppStore((s) => s.leads);
   const selectedLeadIds = useAppStore((s) => s.selectedLeadIds);
   const toggleLeadSelection = useAppStore((s) => s.toggleLeadSelection);
