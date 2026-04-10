@@ -362,7 +362,7 @@ export function BulkActionBar() {
               <option value="">— Kişi seç —</option>
               {members.map((m) => (
                 <option key={m.user_id} value={m.user_id}>
-                  {m.full_name || m.email || m.user_id}
+                  {m.profile?.full_name || m.profile?.email || m.user_id}
                 </option>
               ))}
             </select>
