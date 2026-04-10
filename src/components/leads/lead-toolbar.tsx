@@ -478,7 +478,7 @@ function TableFilterDropdown() {
     // Derive which grid columns are relevant from this import's column_mapping
     const mappedFields = new Set<string>();
     if (job.column_mapping) {
-      Object.values(job.column_mapping).forEach((field) => {
+      Object.keys(job.column_mapping).forEach((field) => {
         if (field && field !== '_skip') {
           const col = FIELD_TO_COLUMN[field];
           if (col) mappedFields.add(col);
