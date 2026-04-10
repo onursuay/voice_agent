@@ -960,7 +960,7 @@ export default function ImportPage() {
                   if (fileInputRef.current) fileInputRef.current.value = '';
                 }}
                 className="ml-2 rounded-lg p-2 text-gray-400 transition-colors hover:bg-gray-200 hover:text-gray-600"
-                title="Dosyayi kaldir"
+                title={t('fileRemove')}
               >
                 <Trash2 className="h-4 w-4" />
               </button>
