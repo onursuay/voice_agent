@@ -136,7 +136,9 @@ export async function POST(request: NextRequest) {
       }
 
       case 'delete': {
-        const { data: deleted, error } = await supabase
+        // Use admin client to bypass RLS for delete — auth is already verified above
+        const adminSupabase = createAdminSupabaseClient();
+        const { data: deleted, error } = await adminSupabase
           .from('leads')
           .delete()
           .eq('organization_id', orgId)
@@ -144,6 +146,9 @@ export async function POST(request: NextRequest) {
           .select('id');
         if (error) return NextResponse.json({ error: error.message }, { status: 500 });
         updated = deleted?.length || 0;
+        if (updated === 0) {
+          return NextResponse.json({ error: 'No leads were deleted. They may not exist or belong to this organization.' }, { status: 404 });
+        }
         break;
       }
 
