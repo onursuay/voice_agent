@@ -150,9 +150,12 @@ interface HeaderContextMenuProps {
   onClose: () => void;
   onSort: (dir: 'asc' | 'desc') => void;
   onHide: () => void;
+  sortAscLabel: string;
+  sortDescLabel: string;
+  hideLabel: string;
 }
 
-function HeaderContextMenu({ x, y, colKey, onClose, onSort, onHide }: HeaderContextMenuProps) {
+function HeaderContextMenu({ x, y, colKey, onClose, onSort, onHide, sortAscLabel, sortDescLabel, hideLabel }: HeaderContextMenuProps) {
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
