@@ -278,7 +278,7 @@ function DetailTab({ lead }: { lead: Lead }) {
 
           {/* Score */}
           <div>
-            <p className="text-xs text-gray-500 mb-1">Skor</p>
+            <p className="text-xs text-gray-500 mb-1">{t('drawer.score')}</p>
             <span
               className={cn(
                 'inline-flex items-center rounded-full px-2.5 py-0.5 text-sm font-semibold',
