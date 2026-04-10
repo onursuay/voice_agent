@@ -1124,9 +1124,9 @@ export default function ImportPage() {
         {/* Preview table */}
         <div className="overflow-hidden rounded-lg border border-gray-200 bg-white">
           <div className="border-b border-gray-100 px-5 py-3">
-            <h3 className="text-sm font-semibold text-gray-700">Veri Onizleme</h3>
+            <h3 className="text-sm font-semibold text-gray-700">{t('previewTitle')}</h3>
             <p className="mt-0.5 text-xs text-gray-500">
-              Ilk 10 satirin eslesmis hali
+              {t('previewRowInfo')}
             </p>
           </div>
           <div className="overflow-x-auto">
