@@ -248,6 +248,22 @@ export function BulkActionBar() {
   const setBulkActionModal = useAppStore((s) => s.setBulkActionModal);
 
   const [modal, setModal] = useState<BulkModal>(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [selectedStageId, setSelectedStageId] = useState('');
+  const [selectedUserId, setSelectedUserId] = useState('');
+  const [tagInput, setTagInput] = useState('');
+  const [deleteError, setDeleteError] = useState<string | null>(null);
+  const [deleting, setDeleting] = useState(false);
+
+  const openModal = useCallback((m: BulkModal) => {
+    setError(null);
+    setDeleteError(null);
+    setSelectedStageId('');
+    setSelectedUserId('');
+    setTagInput('');
+    setModal(m);
+  }, []);
 
   // Sync external trigger (e.g. from context menu)
   useEffect(() => {
@@ -255,8 +271,7 @@ export function BulkActionBar() {
       openModal(bulkActionModal);
       setBulkActionModal(null);
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [bulkActionModal]);
+  }, [bulkActionModal, openModal, setBulkActionModal]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
