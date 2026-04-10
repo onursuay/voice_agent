@@ -172,7 +172,7 @@ export async function POST(request: NextRequest) {
               email,
               first_name: row.first_name || null,
               last_name: row.last_name || null,
-              full_name: row.full_name || null,
+              full_name: row.full_name || [row.first_name, row.last_name].filter(Boolean).join(' ') || null,
               company: row.company || null,
               job_title: row.job_title || null,
               city: row.city || null,
