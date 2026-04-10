@@ -47,6 +47,10 @@ interface AppStore {
   sourceFilter: string;
   setSourceFilter: (source: string) => void;
 
+  // Import table filter
+  importJobFilter: { id: string; name: string; columns: string[] } | null;
+  setImportJobFilter: (job: { id: string; name: string; columns: string[] } | null) => void;
+
   // Per-page
   perPage: number;
   setPerPage: (n: number) => void;
