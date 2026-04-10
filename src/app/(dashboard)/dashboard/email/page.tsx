@@ -181,7 +181,7 @@ function ComposeTab() {
           ))}
         </div>
       </div>
-      <p className="text-xs text-gray-400">Gönderici: info@yodijital.com</p>
+      <p className="text-xs text-gray-400">{t('sender')}</p>
 
       {/* Send */}
       <div className="flex items-center gap-3">
