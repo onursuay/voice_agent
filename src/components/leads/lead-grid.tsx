@@ -83,6 +83,10 @@ function SavedToast({ show, label }: { show: boolean; label: string }) {
 
 // ── Context Menu ────────────────────────────────────────
 
+interface ContextMenuLabels {
+  edit: string; open: string; copy: string; changeStage: string; delete: string;
+}
+
 interface ContextMenuProps {
   x: number;
   y: number;
@@ -92,9 +96,10 @@ interface ContextMenuProps {
   onCopy: () => void;
   onStageChange: () => void;
   onOpenDrawer: () => void;
+  labels: ContextMenuLabels;
 }
 
-function ContextMenu({ x, y, onClose, onEdit, onDelete, onCopy, onStageChange, onOpenDrawer }: ContextMenuProps) {
+function ContextMenu({ x, y, onClose, onEdit, onDelete, onCopy, onStageChange, onOpenDrawer, labels }: ContextMenuProps) {
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
