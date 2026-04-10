@@ -408,6 +408,22 @@ function SourceFilterDropdown() {
 
 // ── Table (Import Job) Filter ────────────────────────────
 
+function toTitleCase(str: string): string {
+  return str
+    .toLowerCase()
+    .split(' ')
+    .map((word) => {
+      if (!word) return word;
+      const first = word[0];
+      const upper =
+        first === 'i' ? 'İ' :
+        first === 'ı' ? 'I' :
+        first.toUpperCase();
+      return upper + word.slice(1);
+    })
+    .join(' ');
+}
+
 // Mapping from import field names to lead grid column keys
 const FIELD_TO_COLUMN: Record<string, string> = {
   full_name: 'full_name',
