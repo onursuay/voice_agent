@@ -132,9 +132,15 @@ export default function IntegrationsPage() {
                     </div>
                   ) : metaStatus?.connected ? (
                     <div className="mt-2 space-y-1">
-                      <div className="flex items-center gap-1.5">
+                      <div className="flex items-center gap-1.5 flex-wrap">
                         <span className="inline-block h-2 w-2 rounded-full bg-green-500" />
                         <span className="text-xs font-medium text-green-700">{tCommon('connected')}</span>
+                        {metaStatus.webhook_subscribed && (
+                          <span className="inline-flex items-center gap-1 rounded-full bg-green-100 px-2 py-0.5 text-xs font-medium text-green-700">
+                            <span className="inline-block h-1.5 w-1.5 rounded-full bg-green-500 animate-pulse" />
+                            Webhook Aktif
+                          </span>
+                        )}
                         {metaStatus.is_expired && (
                           <Badge color="red" size="sm">{t('integrations.tokenExpired')}</Badge>
                         )}
