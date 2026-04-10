@@ -611,12 +611,8 @@ export default function ImportPage() {
           setHeaders(h);
           setRows(data);
           // Auto-map
-          const autoMap: Record<string, string> = {};
-          h.forEach((col) => {
-            const samples = data.slice(0, 5).map((r: Record<string, string>) => r[col]).filter(Boolean);
-            autoMap[col] = autoMapHeader(col, samples);
-          });
-          setMapping(autoMap);
+          const crmFields = LEAD_FIELD_OPTIONS_I18N.map(o => o.value);
+          setMapping(buildReverseAutoMap(crmFields, h, data));
         },
         error() {
           setParseError(t('csvError'));
