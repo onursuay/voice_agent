@@ -438,7 +438,7 @@ function DetailTab({ lead }: { lead: Lead }) {
 
       {/* Custom Fields */}
       {lead.custom_fields && Object.keys(lead.custom_fields).length > 0 && (
-        <Section title="Özel Alanlar">
+        <Section title={t('drawer.customFields')}>
           <div className="space-y-2">
             {Object.entries(lead.custom_fields).map(([key, value]) => (
               <div key={key} className="flex items-start gap-2">
