@@ -291,6 +291,19 @@ function autoMapHeader(header: string, sampleValues: string[] = []): string {
   return '_skip';
 }
 
+function toTitleCase(str: string): string {
+  return str
+    .toLowerCase()
+    .split(' ')
+    .map((word) => {
+      if (!word) return word;
+      const first = word[0];
+      const upper = first === 'i' ? 'İ' : first === 'ı' ? 'I' : first.toUpperCase();
+      return upper + word.slice(1);
+    })
+    .join(' ');
+}
+
 function looksLikeHeaderless(headers: string[]): boolean {
   let dataLike = 0;
   for (const h of headers) {
@@ -1255,7 +1268,7 @@ export default function ImportPage() {
     // File column options for the dropdown: all headers + skip
     const fileColOptions = [
       { value: '_skip', label: `— ${t('fieldSkip')} —` },
-      ...headers.map(h => ({ value: h, label: h })),
+      ...headers.map(h => ({ value: h, label: toTitleCase(h) })),
     ];
 
     // Only show CRM fields that have a match OR are essential
