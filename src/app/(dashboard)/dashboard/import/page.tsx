@@ -1388,6 +1388,12 @@ export default function ImportPage() {
                     }
                     <div>
                       <span className="text-sm font-medium text-gray-800">{fieldOpt.label}</span>
+                      {(() => {
+                        const src = aiMappingSource[fieldOpt.value];
+                        if (src === 'ai') return <span className="rounded-full bg-purple-100 px-2 py-0.5 text-xs font-medium text-purple-700">✨ AI</span>;
+                        if (src === 'learned') return <span className="rounded-full bg-blue-100 px-2 py-0.5 text-xs font-medium text-blue-700">🧠 {t('learned')}</span>;
+                        return null;
+                      })()}
                       {sampleValues.length > 0 && (
                         <div className="mt-0.5 flex flex-wrap gap-1">
                           {sampleValues.map((v, i) => (
