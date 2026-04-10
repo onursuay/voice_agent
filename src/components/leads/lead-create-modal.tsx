@@ -8,6 +8,7 @@ import { Select } from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
 import { SOURCE_PLATFORM_LABELS } from '@/lib/types';
 import type { Lead, LeadSourcePlatform } from '@/lib/types';
+import { useTranslations } from 'next-intl';
 
 interface LeadCreateModalProps {
   open: boolean;
@@ -27,6 +28,8 @@ const initialForm = {
 };
 
 export function LeadCreateModal({ open, onClose }: LeadCreateModalProps) {
+  const t = useTranslations('leads');
+  const tCommon = useTranslations('common');
   const stages = useAppStore((s) => s.stages);
   const members = useAppStore((s) => s.members);
   const leads = useAppStore((s) => s.leads);
@@ -45,7 +48,7 @@ export function LeadCreateModal({ open, onClose }: LeadCreateModalProps) {
     setError('');
 
     if (!form.first_name.trim() && !form.phone.trim()) {
-      setError('Ad veya telefon alanı zorunludur.');
+      setError(t('createError'));
       return;
     }
 
@@ -63,7 +66,7 @@ export function LeadCreateModal({ open, onClose }: LeadCreateModalProps) {
 
       if (!res.ok) {
         const data = await res.json().catch(() => ({}));
-        throw new Error(data.error || 'Lead oluşturulamadı.');
+        throw new Error(data.error || t('createFailed'));
       }
 
       const newLead: Lead = await res.json();
@@ -71,7 +74,7 @@ export function LeadCreateModal({ open, onClose }: LeadCreateModalProps) {
       setForm(initialForm);
       onClose();
     } catch (err: unknown) {
-      setError(err instanceof Error ? err.message : 'Bir hata olustu.');
+      setError(err instanceof Error ? err.message : t('createFailed'));
     } finally {
       setLoading(false);
     }
@@ -95,16 +98,16 @@ export function LeadCreateModal({ open, onClose }: LeadCreateModalProps) {
     <Modal
       open={open}
       onClose={onClose}
-      title="Yeni Lead Oluştur"
-      description="Yeni bir lead kaydı ekleyin."
+      title={t('createTitle')}
+      description={t('createDesc')}
       size="lg"
       footer={
         <>
           <Button variant="secondary" onClick={onClose} disabled={loading}>
-            İptal
+            {tCommon('cancel')}
           </Button>
           <Button variant="primary" loading={loading} onClick={handleSubmit}>
-            Oluştur
+            {t('createBtn')}
           </Button>
         </>
       }
@@ -118,24 +121,24 @@ export function LeadCreateModal({ open, onClose }: LeadCreateModalProps) {
 
         <div className="grid grid-cols-2 gap-4">
           <Input
-            label="Ad"
+            label={t('fields.firstName')}
             name="first_name"
             value={form.first_name}
             onChange={(e) => handleChange('first_name', e.target.value)}
-            placeholder="Örnek: Ahmet"
+            placeholder="John"
           />
           <Input
-            label="Soyad"
+            label={t('fields.lastName')}
             name="last_name"
             value={form.last_name}
             onChange={(e) => handleChange('last_name', e.target.value)}
-            placeholder="Örnek: Yılmaz"
+            placeholder="Doe"
           />
         </div>
 
         <div className="grid grid-cols-2 gap-4">
           <Input
-            label="Telefon"
+            label={t('fields.phone')}
             name="phone"
             type="tel"
             value={form.phone}
@@ -143,25 +146,25 @@ export function LeadCreateModal({ open, onClose }: LeadCreateModalProps) {
             placeholder="+90 5XX XXX XX XX"
           />
           <Input
-            label="E-posta"
+            label={t('fields.email')}
             name="email"
             type="email"
             value={form.email}
             onChange={(e) => handleChange('email', e.target.value)}
-            placeholder="ornek@firma.com"
+            placeholder="example@company.com"
           />
         </div>
 
         <div className="grid grid-cols-2 gap-4">
           <Input
-            label="Şirket"
+            label={t('fields.company')}
             name="company"
             value={form.company}
             onChange={(e) => handleChange('company', e.target.value)}
-            placeholder="Şirket adı"
+            placeholder="Company name"
           />
           <Input
-            label="Şehir"
+            label={t('fields.city')}
             name="city"
             value={form.city}
             onChange={(e) => handleChange('city', e.target.value)}
@@ -171,27 +174,27 @@ export function LeadCreateModal({ open, onClose }: LeadCreateModalProps) {
 
         <div className="grid grid-cols-3 gap-4">
           <Select
-            label="Kaynak Platform"
+            label={t('fields.sourcePlatform')}
             name="source_platform"
             value={form.source_platform}
             onChange={(e) => handleChange('source_platform', e.target.value)}
             options={platformOptions}
           />
           <Select
-            label="Aşama"
+            label={t('fields.stage')}
             name="stage_id"
             value={form.stage_id}
             onChange={(e) => handleChange('stage_id', e.target.value)}
             options={stageOptions}
-            placeholder="Aşama seçin"
+            placeholder={t('fields.stageSelect')}
           />
           <Select
-            label="Atanan Kişi"
+            label={t('fields.assignee')}
             name="assigned_to"
             value={form.assigned_to}
             onChange={(e) => handleChange('assigned_to', e.target.value)}
             options={memberOptions}
-            placeholder="Kişi seçin"
+            placeholder={t('fields.assigneeSelect')}
           />
         </div>
       </form>
