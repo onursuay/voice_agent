@@ -141,19 +141,19 @@ export async function GET(request: NextRequest) {
   const dashboardUrl = `${request.nextUrl.origin}/dashboard/integrations`;
 
   if (error || !code || !state) {
-    return NextResponse.redirect(`${dashboardUrl}&meta_error=${encodeURIComponent(error || 'cancelled')}`);
+    return NextResponse.redirect(`${dashboardUrl}?meta_error=${encodeURIComponent(error || 'cancelled')}`);
   }
 
   const orgId = verifyState(state);
   if (!orgId) {
-    return NextResponse.redirect(`${dashboardUrl}&meta_error=invalid_state`);
+    return NextResponse.redirect(`${dashboardUrl}?meta_error=invalid_state`);
   }
 
   const redirectUri = `${request.nextUrl.origin}/api/integrations/meta/callback`;
 
   const shortToken = await exchangeCodeForToken(code, redirectUri);
   if (!shortToken) {
-    return NextResponse.redirect(`${dashboardUrl}&meta_error=token_exchange_failed`);
+    return NextResponse.redirect(`${dashboardUrl}?meta_error=token_exchange_failed`);
   }
 
   const longToken = await getLongLivedToken(shortToken);
@@ -161,7 +161,7 @@ export async function GET(request: NextRequest) {
 
   const pages = await getPages(userToken);
   if (!pages.length) {
-    return NextResponse.redirect(`${dashboardUrl}&meta_error=no_pages`);
+    return NextResponse.redirect(`${dashboardUrl}?meta_error=no_pages`);
   }
 
   // Store pending OAuth session in DB (keyed by org_id) instead of a cookie
