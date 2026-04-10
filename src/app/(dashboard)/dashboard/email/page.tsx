@@ -33,13 +33,13 @@ interface SendResult {
 
 const VARIABLE_OPTIONS = ['{{full_name}}', '{{first_name}}', '{{last_name}}', '{{email}}', '{{phone}}', '{{company}}', '{{city}}'];
 
-const EMAIL_TABS = [
-  { key: 'compose', label: 'Gönder', icon: <Send className="h-4 w-4" /> },
-  { key: 'templates', label: 'Şablonlar', icon: <FileText className="h-4 w-4" /> },
-  { key: 'history', label: 'Gönderim Geçmişi', icon: <Clock className="h-4 w-4" /> },
-];
-
 export default function EmailPage() {
+  const t = useTranslations('email');
+  const EMAIL_TABS = [
+    { key: 'compose', label: t('send'), icon: <Send className="h-4 w-4" /> },
+    { key: 'templates', label: t('templates'), icon: <FileText className="h-4 w-4" /> },
+    { key: 'history', label: t('history'), icon: <Clock className="h-4 w-4" /> },
+  ];
   const [activeTab, setActiveTab] = useState('compose');
 
   return (
