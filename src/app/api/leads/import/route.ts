@@ -105,7 +105,7 @@ export async function POST(request: NextRequest) {
         if (phone) {
           const { data } = await supabase
             .from('leads')
-            .select('id, tags, custom_fields, notes_count')
+            .select('id, tags, custom_fields, notes_count, first_name, last_name')
             .eq('organization_id', orgId)
             .eq('phone', phone)
             .single();
@@ -114,7 +114,7 @@ export async function POST(request: NextRequest) {
         if (!existingLead && email) {
           const { data } = await supabase
             .from('leads')
-            .select('id, tags, custom_fields, notes_count')
+            .select('id, tags, custom_fields, notes_count, first_name, last_name')
             .eq('organization_id', orgId)
             .eq('email', email)
             .single();
