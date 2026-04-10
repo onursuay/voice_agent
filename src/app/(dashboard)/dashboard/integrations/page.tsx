@@ -48,8 +48,15 @@ export default function IntegrationsPage() {
   const loadMetaStatus = useCallback(async () => {
     setMetaLoading(true);
     try {
-      const res = await fetch('/api/integrations/meta/status');
-      if (res.ok) setMetaStatus(await res.json());
+      const [statusRes, eventsRes] = await Promise.all([
+        fetch('/api/integrations/meta/status'),
+        fetch('/api/integrations/meta/events'),
+      ]);
+      if (statusRes.ok) setMetaStatus(await statusRes.json());
+      if (eventsRes.ok) {
+        const data = await eventsRes.json() as { events: LeadEvent[] };
+        setRecentEvents(data.events);
+      }
     } catch { /* ignore */ } finally {
       setMetaLoading(false);
     }
