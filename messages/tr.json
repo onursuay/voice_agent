@@ -600,6 +600,8 @@
     "fieldUtmCampaign": "UTM Campaign",
     "fieldTags": "Etiketler",
     "fieldScore": "Skor",
+    "fieldDate": "Tarih",
+    "fieldExternalId": "ID",
     "fieldSkip": "— Atla —",
     "fileColumn": "Dosya Sütunu",
     "leadField": "Lead Alanı",
