@@ -709,6 +709,7 @@ export default function ImportPage() {
           // Auto-map
           const crmFields = LEAD_FIELD_OPTIONS_I18N.map(o => o.value);
           setMapping(buildReverseAutoMap(crmFields, h, cleaned));
+          callAiMapping(h, cleaned);
         } catch {
           setParseError(t('xlsxError'));
         }
