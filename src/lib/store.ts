@@ -63,6 +63,8 @@ interface AppStore {
   hiddenColumns: Set<string>;
   toggleColumn: (col: string) => void;
   setHiddenColumns: (cols: Set<string>) => void;
+  columnLabelOverrides: Record<string, string>;
+  setColumnLabelOverrides: (overrides: Record<string, string>) => void;
 
   // UI
   sidebarOpen: boolean;
