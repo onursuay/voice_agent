@@ -683,6 +683,7 @@ export interface LeadDetailDrawerProps {
 }
 
 export function LeadDetailDrawer({ onDelete, onEdit }: LeadDetailDrawerProps) {
+  const t = useTranslations('leads');
   const { leads, activeLeadId, setActiveLeadId, drawerOpen, setDrawerOpen } = useAppStore();
   const [activeTab, setActiveTab] = useState('detail');
 
