@@ -5,7 +5,7 @@ import LandingHeader from '@/components/landing/LandingHeader'
 
 export const metadata: Metadata = {
   title: 'Cookie Policy - VoiceAgent by Yo Dijital',
-  description: 'Cookie Policy for VoiceAgent (voiceagant.yodijital.com).',
+  description: 'Cookie Policy for VoiceAgent (voiceagent.yodijital.com).',
 }
 
 export default function CookiePolicyEnPage() {
@@ -21,7 +21,7 @@ export default function CookiePolicyEnPage() {
         <div className="relative rounded-2xl border border-indigo-400/10 bg-white/[0.02] px-8 py-10 shadow-[0_0_60px_rgba(99,102,241,0.07),inset_0_0_40px_rgba(99,102,241,0.03)]">
           <p className="text-sm text-gray-500 mb-2">Last updated: April 2025</p>
           <h1 className="text-3xl font-bold mb-2 text-white">Cookie Policy</h1>
-          <p className="text-gray-500 mb-10">YO Dijital Medya A.Ş. · voiceagant.yodijital.com</p>
+          <p className="text-gray-500 mb-10">YO Dijital Medya A.Ş. · voiceagent.yodijital.com</p>
 
           <div className="space-y-8">
             <section>

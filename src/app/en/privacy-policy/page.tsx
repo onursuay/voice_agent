@@ -6,7 +6,7 @@ import LandingHeader from '@/components/landing/LandingHeader'
 export const metadata: Metadata = {
   title: 'Privacy Policy - VoiceAgent by Yo Dijital',
   description:
-    'Privacy Policy for VoiceAgent (voiceagant.yodijital.com). Learn how we collect, use, and protect your data, including our use of Google API Services.',
+    'Privacy Policy for VoiceAgent (voiceagent.yodijital.com). Learn how we collect, use, and protect your data, including our use of Google API Services.',
 }
 
 export default function PrivacyPolicyEnPage() {
@@ -22,13 +22,13 @@ export default function PrivacyPolicyEnPage() {
         <div className="relative rounded-2xl border border-indigo-400/10 bg-white/[0.02] px-8 py-10 shadow-[0_0_60px_rgba(99,102,241,0.07),inset_0_0_40px_rgba(99,102,241,0.03)]">
           <p className="text-sm text-gray-500 mb-2">Last updated: April 2025</p>
           <h1 className="text-3xl font-bold mb-2 text-white">Privacy Policy</h1>
-          <p className="text-gray-500 mb-10">YO Dijital Medya A.Ş. · voiceagant.yodijital.com</p>
+          <p className="text-gray-500 mb-10">YO Dijital Medya A.Ş. · voiceagent.yodijital.com</p>
 
           <div className="space-y-8">
             <section>
               <h2 className="text-xl font-semibold mb-3 text-white">1. Introduction</h2>
               <p className="text-[14px] text-[#8a8f98] leading-relaxed">
-                YO Dijital Medya A.Ş. (&quot;VoiceAgent&quot;, &quot;we&quot;, &quot;us&quot;, or &quot;our&quot;) is committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our platform at <strong className="text-gray-300">voiceagant.yodijital.com</strong> (&quot;Service&quot;).
+                YO Dijital Medya A.Ş. (&quot;VoiceAgent&quot;, &quot;we&quot;, &quot;us&quot;, or &quot;our&quot;) is committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our platform at <strong className="text-gray-300">voiceagent.yodijital.com</strong> (&quot;Service&quot;).
               </p>
             </section>
 

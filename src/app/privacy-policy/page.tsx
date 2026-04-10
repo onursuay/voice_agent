@@ -20,7 +20,7 @@ export default function PrivacyPolicyPage() {
         <div className="prose prose-invert max-w-none space-y-8 text-gray-300 leading-relaxed">
           <section>
             <h2 className="text-xl font-semibold text-white mb-3">1. Giriş</h2>
-            <p>Yo Dijital (&quot;biz&quot;, &quot;bizim&quot; veya &quot;şirketimiz&quot;) olarak gizliliğinize saygı duyuyoruz. Bu Gizlilik Politikası, voiceagant.yodijital.com adresindeki platformumuzu (&quot;Hizmet&quot;) kullandığınızda kişisel verilerinizi nasıl topladığımızı, kullandığımızı ve koruduğumuzu açıklamaktadır.</p>
+            <p>Yo Dijital (&quot;biz&quot;, &quot;bizim&quot; veya &quot;şirketimiz&quot;) olarak gizliliğinize saygı duyuyoruz. Bu Gizlilik Politikası, voiceagent.yodijital.com adresindeki platformumuzu (&quot;Hizmet&quot;) kullandığınızda kişisel verilerinizi nasıl topladığımızı, kullandığımızı ve koruduğumuzu açıklamaktadır.</p>
           </section>
 
           <section>
