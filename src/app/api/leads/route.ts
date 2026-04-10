@@ -46,6 +46,18 @@ export async function GET(request: NextRequest) {
       const tagList = tags.split(',').map(t => t.trim()).filter(Boolean);
       query = query.overlaps('tags', tagList);
     }
+    if (importJobId) {
+      const { data: activities } = await supabase
+        .from('lead_activities')
+        .select('lead_id')
+        .eq('organization_id', orgId)
+        .contains('metadata', { import_job_id: importJobId });
+      const leadIds = [...new Set((activities || []).map((a: { lead_id: string }) => a.lead_id))];
+      if (leadIds.length === 0) {
+        return NextResponse.json({ leads: [], total: 0, page: 1, per_page: perPage });
+      }
+      query = query.in('id', leadIds);
+    }
 
     query = query.order(sortBy, { ascending: sortDir }).range(from, to);
 
