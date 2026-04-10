@@ -140,6 +140,9 @@ export async function POST(request: NextRequest) {
             updateFields.tags = [...new Set([...existingTags, ...newTagsRaw])];
           }
           if (row.score !== undefined) updateFields.score = Number(row.score);
+          if (!row.full_name && (row.first_name || row.last_name)) {
+            updateFields.full_name = [updateFields.first_name || existingLead.first_name, updateFields.last_name || existingLead.last_name].filter(Boolean).join(' ') || undefined;
+          }
           updateFields.updated_at = new Date().toISOString();
 
           await supabase.from('leads').update(updateFields).eq('id', existingLead.id);
