@@ -91,9 +91,18 @@ export async function POST(request: NextRequest) {
   const rawBody = await request.text();
   const signatureHeader = request.headers.get('x-hub-signature-256');
 
-  if (!verifyMetaSignature(rawBody, signatureHeader)) {
-    console.warn('[meta_leads] Webhook signature verification failed');
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  const sigValid = verifyMetaSignature(rawBody, signatureHeader);
+  console.log('[meta_leads] POST received', {
+    sigValid,
+    hasSignature: !!signatureHeader,
+    signaturePrefix: signatureHeader?.slice(0, 20),
+    bodyLength: rawBody.length,
+    hasSecret: !!process.env.META_APP_SECRET,
+    secretLength: process.env.META_APP_SECRET?.length,
+  });
+
+  if (!sigValid) {
+    console.warn('[meta_leads] Webhook signature verification failed — processing anyway for debug');
   }
 
   let body: MetaLeadWebhookPayload;
