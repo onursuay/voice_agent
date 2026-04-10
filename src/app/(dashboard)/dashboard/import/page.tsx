@@ -29,7 +29,6 @@ import { Badge } from '@/components/ui/badge';
 import { Spinner } from '@/components/ui/loading';
 import { cn, formatRelativeTime } from '@/lib/utils';
 import {
-  LEAD_FIELD_OPTIONS,
   SOURCE_PLATFORM_LABELS,
   STAGE_LABELS,
   type ImportJob,
