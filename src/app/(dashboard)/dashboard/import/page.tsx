@@ -699,15 +699,15 @@ export default function ImportPage() {
 
   const mappedPreviewRows = rows.slice(0, 10).map((row) => {
     const mapped: Record<string, string> = {};
-    Object.entries(mapping).forEach(([srcCol, targetField]) => {
-      if (targetField && targetField !== '_skip') {
-        mapped[targetField] = row[srcCol] || '';
+    Object.entries(mapping).forEach(([crmField, fileCol]) => {
+      if (fileCol && fileCol !== '_skip') {
+        mapped[crmField] = row[fileCol] || '';
       }
     });
     return mapped;
   });
 
-  const activeMappedFields = Object.values(mapping).filter((v) => v && v !== '_skip');
+  const activeMappedFields = Object.entries(mapping).filter(([_, v]) => v && v !== '_skip').map(([k]) => k);
   const uniqueMappedFields = [...new Set(activeMappedFields)];
   const fieldLabels: Record<string, string> = {};
   LEAD_FIELD_OPTIONS_I18N.forEach((o) => {
