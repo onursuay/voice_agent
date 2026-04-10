@@ -203,6 +203,7 @@ function StageColumn({ stage, leads, onLeadClick }: StageColumnProps) {
 // Pipeline Page
 // ============================================
 export default function PipelinePage() {
+  const t = useTranslations('pipeline');
   const {
     leads,
     setLeads,
