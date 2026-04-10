@@ -231,7 +231,37 @@ function normalizeTr(s: string): string {
     .trim();
 }
 
-function autoMapHeader(header: string): string {
+function detectFieldFromValues(values: string[]): string {
+  const samples = values.filter(Boolean);
+  if (samples.length === 0) return '_skip';
+
+  const threshold = Math.ceil(samples.length * 0.5);
+
+  const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+  const phoneRe = /^[\+]?[\d\s\-\(\)]{7,20}$/;
+  const dateRe = /^\d{4}[-\/]\d{2}[-\/]\d{2}/;
+  // Large numeric string (likely ID/phone without spaces)
+  const largeNumRe = /^\d{8,}$/;
+
+  const emailCount = samples.filter(v => emailRe.test(v.trim())).length;
+  const phoneCount = samples.filter(v => phoneRe.test(v.replace(/[\s\-\(\)]/g, '')) && /\d{7,}/.test(v)).length;
+  const dateCount = samples.filter(v => dateRe.test(v.trim())).length;
+  const largeNumCount = samples.filter(v => largeNumRe.test(v.replace(/\s/g, ''))).length;
+
+  if (emailCount >= threshold) return 'email';
+  if (phoneCount >= threshold) return 'phone';
+  if (dateCount >= threshold) return 'date';
+  // Large numbers that look like phone numbers (starts with country code like 90...)
+  if (largeNumCount >= threshold) {
+    const looksLikePhone = samples.filter(v => /^(90|1|44|49|33|7)\d{9,11}$/.test(v.replace(/\s/g, ''))).length;
+    if (looksLikePhone >= threshold) return 'phone';
+    return 'external_id';
+  }
+
+  return '_skip';
+}
+
+function autoMapHeader(header: string, sampleValues: string[] = []): string {
   // Try original lowercase first
   const raw = header.trim().toLowerCase().replace(/[_\-]+/g, ' ').replace(/\s+/g, ' ').trim();
   if (AUTO_MAP[raw]) return AUTO_MAP[raw];
@@ -252,6 +282,11 @@ function autoMapHeader(header: string): string {
   if ((normalized.includes('soyad') || normalized === 'surname' || normalized === 'lastname')) return 'last_name';
   if ((normalized === 'ad' || normalized === 'adi' || normalized === 'isim') && !normalized.includes('soyad')) return 'first_name';
   if (normalized.includes('ulke') || normalized === 'country') return 'country';
+
+  // Content-based fallback: analyze sample values if header name didn't match
+  if (sampleValues.length > 0) {
+    return detectFieldFromValues(sampleValues);
+  }
 
   return '_skip';
 }
