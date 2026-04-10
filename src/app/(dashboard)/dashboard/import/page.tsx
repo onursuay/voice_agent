@@ -450,6 +450,8 @@ export default function ImportPage() {
 
   // Step 2 - Column mapping
   const [mapping, setMapping] = useState<Record<string, string>>({});
+  const [aiMappingSource, setAiMappingSource] = useState<Record<string, 'auto' | 'learned' | 'ai' | 'skip'>>({});
+  const [aiLoading, setAiLoading] = useState(false);
 
   // Step 3 - Options
   const [dedupeUpdate, setDedupeUpdate] = useState(true);
