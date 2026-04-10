@@ -1213,10 +1213,10 @@ export default function ImportPage() {
         {/* Navigation */}
         <div className="flex items-center justify-between">
           <Button variant="secondary" onClick={() => setStep(2)} icon={<ArrowLeft className="h-4 w-4" />}>
-            Geri
+            {t('back')}
           </Button>
           <Button onClick={() => setStep(4)} icon={<ArrowRight className="h-4 w-4" />}>
-            İçe Aktar
+            {t('startImport')}
           </Button>
         </div>
       </div>
