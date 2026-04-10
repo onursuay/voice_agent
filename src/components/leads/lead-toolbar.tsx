@@ -323,6 +323,89 @@ export function BulkActionBar() {
   );
 }
 
+// ── Source Filter Dropdown ──────────────────────────────
+
+const SOURCE_FILTER_OPTIONS = [
+  { value: 'meta_lead_form', label: 'Meta Lead Form' },
+  { value: 'zapier', label: 'Zapier' },
+  { value: 'whatsapp', label: 'WhatsApp' },
+  { value: 'instagram_dm', label: 'Instagram DM' },
+  { value: 'messenger', label: 'Messenger' },
+  { value: 'website', label: 'Website' },
+  { value: 'manual', label: 'Manual' },
+  { value: 'import', label: 'Import' },
+  { value: 'other', label: 'Other' },
+];
+
+function SourceFilterDropdown() {
+  const t = useTranslations('leads');
+  const sourceFilter = useAppStore((s) => s.sourceFilter);
+  const setSourceFilter = useAppStore((s) => s.setSourceFilter);
+  const [open, setOpen] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    function handleClickOutside(e: MouseEvent) {
+      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
+    }
+    if (open) document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [open]);
+
+  const activeLabel = SOURCE_FILTER_OPTIONS.find((o) => o.value === sourceFilter)?.label;
+
+  return (
+    <div ref={ref} className="relative">
+      <button
+        onClick={() => setOpen((o) => !o)}
+        className={cn(
+          'flex items-center gap-1.5 rounded-lg border px-3 py-2 text-sm transition-colors',
+          sourceFilter
+            ? 'border-indigo-300 bg-indigo-50 text-indigo-700'
+            : 'border-gray-300 bg-white text-gray-700 hover:bg-gray-50'
+        )}
+      >
+        <span>{activeLabel || t('source')}</span>
+        {sourceFilter ? (
+          <X
+            className="h-3.5 w-3.5 text-indigo-400 hover:text-indigo-700"
+            onClick={(e) => { e.stopPropagation(); setSourceFilter(''); setOpen(false); }}
+          />
+        ) : (
+          <ChevronDown className={`h-3.5 w-3.5 text-gray-400 transition-transform duration-150 ${open ? 'rotate-180' : ''}`} />
+        )}
+      </button>
+
+      {open && (
+        <div className="absolute left-0 top-full z-50 mt-1.5 w-44 overflow-hidden rounded-xl border border-gray-200 bg-white shadow-lg">
+          {sourceFilter && (
+            <button
+              onClick={() => { setSourceFilter(''); setOpen(false); }}
+              className="flex w-full items-center gap-2 px-3 py-2 text-sm text-red-500 hover:bg-red-50"
+            >
+              <X className="h-3.5 w-3.5" />
+              {t('clearFilter')}
+            </button>
+          )}
+          {SOURCE_FILTER_OPTIONS.map((opt) => (
+            <button
+              key={opt.value}
+              onClick={() => { setSourceFilter(opt.value); setOpen(false); }}
+              className={cn(
+                'flex w-full items-center justify-between px-3 py-2 text-sm transition-colors',
+                sourceFilter === opt.value ? 'bg-indigo-50 font-medium text-indigo-700' : 'text-gray-700 hover:bg-gray-50'
+              )}
+            >
+              {opt.label}
+              {sourceFilter === opt.value && <span className="h-1.5 w-1.5 rounded-full bg-indigo-500" />}
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
 // ── Per-page Dropdown ────────────────────────────────────
 
 const PER_PAGE_OPTIONS = [25, 50, 100, 150, 200, 250, 300, 350, 400, 450, 500];
