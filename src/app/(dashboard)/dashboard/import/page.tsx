@@ -1335,6 +1335,13 @@ export default function ImportPage() {
 
     return (
       <div className="space-y-6">
+        {aiLoading && (
+          <div className="flex items-center gap-3 rounded-xl border border-indigo-100 bg-indigo-50 px-4 py-3 text-sm text-indigo-700">
+            <Loader2 className="h-4 w-4 animate-spin" />
+            <span>{t('aiMapping')}</span>
+          </div>
+        )}
+
         {/* No-headers warning */}
         {hasNoHeaders && (
           <div className="flex items-start gap-4 rounded-xl border border-amber-200 bg-amber-50 p-4">
