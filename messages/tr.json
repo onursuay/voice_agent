@@ -210,7 +210,23 @@
       "sortAsc": "A-Z Sırala",
       "sortDesc": "Z-A Sırala",
       "hide": "Gizle"
-    }
+    },
+    "colLabels": {
+      "full_name": "Ad Soyad",
+      "phone": "Telefon",
+      "email": "E-posta",
+      "source_platform": "Kaynak",
+      "stage": "Aşama",
+      "score": "Skor",
+      "assigned_to": "Atanan",
+      "campaign_name": "Kampanya",
+      "city": "Şehir",
+      "company": "Şirket",
+      "tags": "Etiketler",
+      "first_seen_at": "İlk Görülme",
+      "last_activity_at": "Son Aktivite"
+    },
+    "saved": "Kaydedildi"
   },
   "settings": {
     "title": "Ayarlar",
