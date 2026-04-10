@@ -977,7 +977,7 @@ export default function ImportPage() {
 
         {/* Recent imports */}
         <div>
-          <h3 className="mb-3 text-sm font-semibold text-gray-700">Son İçe Aktarmalar</h3>
+          <h3 className="mb-3 text-sm font-semibold text-gray-700">{t('recentImports')}</h3>
           {loadingHistory ? (
             <div className="flex items-center justify-center py-8">
               <Spinner size="sm" />
