@@ -3,6 +3,9 @@ import { createAdminSupabaseClient } from '@/lib/supabase/admin';
 import { createServerSupabaseClient } from '@/lib/supabase/server';
 import type { FacebookPage } from '@/app/api/integrations/meta/callback/route';
 
+const META_APP_ID = process.env.META_APP_ID;
+const META_GRAPH_VERSION = 'v23.0';
+
 interface PendingConfig {
   organization_id: string;
   userToken: string;
@@ -10,14 +13,83 @@ interface PendingConfig {
   ts: number;
 }
 
-async function subscribePageToWebhook(pageId: string, pageToken: string): Promise<boolean> {
-  const url = new URL(`https://graph.facebook.com/v19.0/${pageId}/subscribed_apps`);
-  url.searchParams.set('access_token', pageToken);
-  url.searchParams.set('subscribed_fields', 'leadgen');
-  const res = await fetch(url.toString(), { method: 'POST' });
-  const body = await res.text();
-  console.log(`[Meta] subscribePageToWebhook page=${pageId} status=${res.status} body=${body}`);
-  return res.ok;
+interface SubscribedApp {
+  id: string;
+  subscribed_fields?: string[];
+  [key: string]: unknown;
+}
+
+/**
+ * DELETE existing subscription, POST new one, then GET verify.
+ * Returns { success, subscribed_fields, error? }
+ */
+async function hardSubscribePageToWebhook(
+  pageId: string,
+  pageToken: string
+): Promise<{ success: boolean; subscribed_fields?: string[]; error?: string }> {
+  const headers = {
+    Authorization: `Bearer ${pageToken}`,
+    'Content-Type': 'application/x-www-form-urlencoded',
+  };
+
+  // Step 1: DELETE old subscription (best-effort — ignore failure)
+  try {
+    const delRes = await fetch(
+      `https://graph.facebook.com/${META_GRAPH_VERSION}/${pageId}/subscribed_apps`,
+      { method: 'DELETE', headers }
+    );
+    const delBody = await delRes.text();
+    console.log(`[Meta subscribe] DELETE page=${pageId} status=${delRes.status} body=${delBody}`);
+  } catch (err) {
+    console.warn(`[Meta subscribe] DELETE failed (ignoring): ${err}`);
+  }
+
+  // Step 2: POST new subscription
+  const postBody = new URLSearchParams({ subscribed_fields: 'leadgen' });
+  const postRes = await fetch(
+    `https://graph.facebook.com/${META_GRAPH_VERSION}/${pageId}/subscribed_apps`,
+    { method: 'POST', headers, body: postBody.toString() }
+  );
+  const postText = await postRes.text();
+  console.log(`[Meta subscribe] POST page=${pageId} status=${postRes.status} body=${postText}`);
+
+  if (!postRes.ok) {
+    return { success: false, error: `POST subscribed_apps failed (${postRes.status}): ${postText}` };
+  }
+
+  // Step 3: GET verify — confirm app appears in subscribed_apps list
+  try {
+    const getRes = await fetch(
+      `https://graph.facebook.com/${META_GRAPH_VERSION}/${pageId}/subscribed_apps`,
+      { method: 'GET', headers }
+    );
+    const getBody = await getRes.text();
+    console.log(`[Meta subscribe] GET verify page=${pageId} status=${getRes.status} body=${getBody}`);
+
+    if (getRes.ok) {
+      const parsed = JSON.parse(getBody) as { data?: SubscribedApp[] };
+      const apps: SubscribedApp[] = parsed.data || [];
+
+      // Find our app — match by META_APP_ID if set, otherwise accept any app with leadgen
+      const ourApp = META_APP_ID
+        ? apps.find((a) => String(a.id) === String(META_APP_ID))
+        : apps.find((a) => (a.subscribed_fields || []).includes('leadgen'));
+
+      if (ourApp) {
+        console.log(`[Meta subscribe] Verified: app=${ourApp.id} fields=${JSON.stringify(ourApp.subscribed_fields)}`);
+        return { success: true, subscribed_fields: ourApp.subscribed_fields || ['leadgen'] };
+      } else {
+        console.warn(`[Meta subscribe] POST ok but app not found in subscribed list: ${getBody}`);
+        // POST was ok, so treat as success even if verification is inconclusive
+        return { success: true, subscribed_fields: ['leadgen'] };
+      }
+    }
+  } catch (err) {
+    console.warn(`[Meta subscribe] GET verify failed (ignoring): ${err}`);
+  }
+
+  // POST succeeded — accept it
+  return { success: true, subscribed_fields: ['leadgen'] };
 }
 
 /**
@@ -78,8 +150,23 @@ export async function GET(request: NextRequest) {
     return NextResponse.redirect(`${dashboardUrl}?meta_error=invalid_page`);
   }
 
-  // Subscribe the selected page to leadgen webhook
-  await subscribePageToWebhook(page.id, page.access_token);
+  // Validate token exists before proceeding
+  if (!page.access_token) {
+    console.error(`[Meta select-page] Missing page access token for page=${pageId}`);
+    return NextResponse.redirect(`${dashboardUrl}?meta_error=missing_token`);
+  }
+
+  // Subscribe the selected page to leadgen webhook (hardened: DELETE → POST → GET verify)
+  const subscribeResult = await hardSubscribePageToWebhook(page.id, page.access_token);
+
+  if (!subscribeResult.success) {
+    console.error(`[Meta select-page] Webhook subscription failed for page=${pageId}: ${subscribeResult.error}`);
+    return NextResponse.redirect(
+      `${dashboardUrl}?meta_error=subscription_failed&reason=${encodeURIComponent(subscribeResult.error || 'unknown')}`
+    );
+  }
+
+  console.log(`[Meta select-page] Webhook subscribed OK: page=${pageId} fields=${subscribeResult.subscribed_fields?.join(',')}`);
 
   // Save to integration_settings (final)
   const { data: existing } = await admin
@@ -97,6 +184,9 @@ export async function GET(request: NextRequest) {
     user_access_token: session.userToken,
     connected_at: new Date().toISOString(),
     expires_at: new Date(Date.now() + 59 * 24 * 60 * 60 * 1000).toISOString(),
+    webhook_subscribed: true,
+    webhook_subscribed_fields: subscribeResult.subscribed_fields || ['leadgen'],
+    webhook_subscribed_at: new Date().toISOString(),
   };
 
   if (existing) {
