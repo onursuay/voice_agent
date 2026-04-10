@@ -268,10 +268,17 @@ function StatusBadge({ status }: { status: string }) {
 // Source platform options for default selector
 // ============================================
 
-const SOURCE_OPTIONS = Object.entries(SOURCE_PLATFORM_LABELS).map(([value, label]) => ({
-  value,
-  label,
-}));
+const SOURCE_OPTIONS = [
+  { value: 'meta_lead_form', label: 'Lead Form' },
+  { value: 'zapier', label: 'Zapier' },
+  { value: 'whatsapp', label: 'WhatsApp' },
+  { value: 'instagram_dm', label: 'Instagram DM' },
+  { value: 'messenger', label: 'Messenger' },
+  { value: 'website', label: 'Website' },
+  { value: 'manual', label: 'Manual' },
+  { value: 'import', label: 'Import' },
+  { value: 'other', label: 'Other' },
+];
 
 // ============================================
 // Main Page Component
