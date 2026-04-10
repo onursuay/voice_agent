@@ -1314,56 +1314,6 @@ export default function ImportPage() {
           </div>
         </div>
 
-        {/* Options */}
-        <div className="rounded-lg border border-gray-200 bg-white p-5">
-          <h3 className="mb-4 text-sm font-semibold text-gray-700">{t('importOptions')}</h3>
-          <div className="space-y-5">
-            {/* Dedupe */}
-            <label className="flex items-start gap-3 cursor-pointer">
-              <input
-                type="checkbox"
-                checked={dedupeUpdate}
-                onChange={(e) => setDedupeUpdate(e.target.checked)}
-                className="mt-0.5 h-4 w-4 rounded border-gray-300 text-indigo-500 focus:ring-indigo-500"
-              />
-              <div>
-                <span className="text-sm font-medium text-gray-700">
-                  {t('dedupeUpdateLabel')}
-                </span>
-                <p className="text-xs text-gray-500">
-                  {t('dedupeUpdateDesc')}
-                </p>
-              </div>
-            </label>
-
-            {/* Default stage */}
-            <div className="grid gap-4 sm:grid-cols-2">
-              <Select
-                label={t('defaultStage')}
-                options={stageOptions}
-                placeholder={t('stagePlaceholder')}
-                value={defaultStageId}
-                onChange={(e) => setDefaultStageId(e.target.value)}
-              />
-
-              <Select
-                label={t('defaultSource')}
-                options={SOURCE_OPTIONS}
-                value={defaultSource}
-                onChange={(e) => setDefaultSource(e.target.value)}
-              />
-            </div>
-          </div>
-        </div>
-
-        {/* Row count */}
-        <div className="flex items-center gap-2 rounded-lg border border-indigo-200 bg-indigo-50 px-4 py-3 text-sm">
-          <FileSpreadsheet className="h-4 w-4 text-indigo-500" />
-          <span className="font-medium text-indigo-800">
-            {t('totalRows', { count: rows.length })}
-          </span>
-        </div>
-
         {/* Navigation */}
         <div className="flex items-center justify-between">
           <Button variant="secondary" onClick={() => setStep(2)} icon={<ArrowLeft className="h-4 w-4" />}>
