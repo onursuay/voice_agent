@@ -273,13 +273,14 @@ export function MetaConnectWizard({ initialStep = 1 }: { initialStep?: number })
                         <button
                           key={page.id}
                           onClick={() => togglePage(page.id)}
-                          className={`flex w-full items-center gap-3 rounded-xl border-2 px-4 py-3 text-left transition-all ${isSelected ? 'border-indigo-500 bg-indigo-50' : 'border-gray-200 bg-white hover:border-gray-300'}`}
+                          className={`flex w-full items-center gap-3 rounded-xl border-2 px-4 py-3 text-left transition-all duration-150 active:scale-[0.98] active:brightness-95 ${isSelected ? 'border-indigo-500 bg-indigo-50 shadow-sm' : 'border-gray-200 bg-white hover:border-indigo-300 hover:bg-indigo-50/30'}`}
                         >
-                          <div className={`flex h-5 w-5 shrink-0 items-center justify-center rounded border-2 transition-colors ${isSelected ? 'border-indigo-600 bg-indigo-600' : 'border-gray-300 bg-white'}`}>
-                            {isSelected && <Check className="h-3 w-3 text-white" />}
+                          {/* Toggle switch */}
+                          <div className={`relative inline-flex h-6 w-11 shrink-0 items-center rounded-full border-2 border-transparent transition-colors duration-200 ${isSelected ? 'bg-indigo-600' : 'bg-gray-200'}`}>
+                            <span className={`inline-block h-5 w-5 transform rounded-full bg-white shadow transition-transform duration-200 ${isSelected ? 'translate-x-5' : 'translate-x-0'}`} />
                           </div>
                           <div className="min-w-0 flex-1">
-                            <p className="truncate text-sm font-medium text-gray-800">{page.name}</p>
+                            <p className={`truncate text-sm font-medium transition-colors ${isSelected ? 'text-indigo-700' : 'text-gray-800'}`}>{page.name}</p>
                             <p className="text-xs text-gray-400 font-mono">ID: {page.id}</p>
                           </div>
                         </button>
