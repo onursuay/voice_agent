@@ -9,16 +9,18 @@ import {
   AlertCircle,
   Check,
   RefreshCw,
+  Plus,
+  Trash2,
 } from 'lucide-react';
 
-type MetaStatus = {
-  connected: boolean;
-  page_id?: string;
-  page_name?: string;
-  connected_at?: string;
-  expires_at?: string;
-  is_expired?: boolean;
-  webhook_subscribed?: boolean;
+type MetaConnection = {
+  id: string;
+  page_id: string | null;
+  page_name: string | null;
+  connected_at: string | null;
+  expires_at: string | null;
+  is_expired: boolean;
+  webhook_subscribed: boolean;
 };
 
 type LeadEvent = {
@@ -38,9 +40,9 @@ export default function IntegrationsPage() {
   const metaConnected = searchParams.get('meta_connected');
   const metaError = searchParams.get('meta_error');
 
-  const [metaStatus, setMetaStatus] = useState<MetaStatus | null>(null);
+  const [connections, setConnections] = useState<MetaConnection[]>([]);
   const [metaLoading, setMetaLoading] = useState(false);
-  const [metaDisconnecting, setMetaDisconnecting] = useState(false);
+  const [disconnecting, setDisconnecting] = useState<string | null>(null);
   const [recentEvents, setRecentEvents] = useState<LeadEvent[]>([]);
 
   const loadMetaStatus = useCallback(async () => {
@@ -50,7 +52,10 @@ export default function IntegrationsPage() {
         fetch('/api/integrations/meta/status'),
         fetch('/api/integrations/meta/events'),
       ]);
-      if (statusRes.ok) setMetaStatus(await statusRes.json());
+      if (statusRes.ok) {
+        const data = await statusRes.json() as { connections: MetaConnection[] };
+        setConnections(data.connections ?? []);
+      }
       if (eventsRes.ok) {
         const data = await eventsRes.json() as { events: LeadEvent[] };
         setRecentEvents(data.events);
@@ -60,21 +65,13 @@ export default function IntegrationsPage() {
     }
   }, []);
 
-  const disconnectMeta = async () => {
-    setMetaDisconnecting(true);
+  const disconnectPage = async (id: string) => {
+    setDisconnecting(id);
     try {
-      await fetch('/api/integrations/meta/disconnect', { method: 'DELETE' });
-      setMetaStatus({ connected: false });
+      await fetch(`/api/integrations/meta/disconnect?id=${encodeURIComponent(id)}`, { method: 'DELETE' });
+      setConnections((prev) => prev.filter((c) => c.id !== id));
     } catch { /* ignore */ } finally {
-      setMetaDisconnecting(false);
-    }
-  };
-
-  const handleToggleMeta = () => {
-    if (metaStatus?.connected) {
-      disconnectMeta();
-    } else {
-      window.location.href = '/api/integrations/meta/connect';
+      setDisconnecting(null);
     }
   };
 
@@ -82,7 +79,7 @@ export default function IntegrationsPage() {
     loadMetaStatus();
   }, [loadMetaStatus]);
 
-  const isMetaConnected = metaStatus?.connected ?? false;
+  const hasConnections = connections.length > 0;
 
   return (
     <div className="space-y-6">
@@ -109,7 +106,7 @@ export default function IntegrationsPage() {
         </div>
       )}
 
-      {/* Section header */}
+      {/* Integration Cards Grid */}
       <div className="rounded-xl border border-card-border bg-card-bg p-6">
         <div className="flex items-center gap-3 mb-6">
           <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-blue-100">
@@ -121,12 +118,12 @@ export default function IntegrationsPage() {
           </div>
         </div>
 
-        {/* Integration Cards Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
 
-          {/* Meta Lead Ads Card */}
-          <div className={`relative rounded-xl border-2 p-5 transition-all ${isMetaConnected ? 'border-blue-500 bg-blue-50/30' : 'border-gray-200 bg-white'}`}>
-            <div className="flex items-center justify-between mb-4">
+          {/* ── Meta Lead Ads ─────────────────────────────────────── */}
+          <div className="rounded-xl border-2 border-gray-200 bg-white p-5 space-y-4">
+            {/* Provider header */}
+            <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-blue-600 to-indigo-600">
                   <svg className="h-5 w-5 text-white" viewBox="0 0 24 24" fill="currentColor">
@@ -135,74 +132,87 @@ export default function IntegrationsPage() {
                 </div>
                 <div>
                   <h3 className="text-sm font-semibold text-foreground">Meta Lead Ads</h3>
-                  {isMetaConnected ? (
-                    <span className="text-xs font-medium text-green-600">{tCommon('connected')}</span>
+                  {metaLoading ? (
+                    <span className="text-xs text-muted flex items-center gap-1">
+                      <RefreshCw className="h-3 w-3 animate-spin" />{tCommon('checking')}
+                    </span>
+                  ) : hasConnections ? (
+                    <span className="text-xs font-medium text-green-600">
+                      {connections.length} {connections.length === 1 ? 'sayfa bağlı' : 'sayfa bağlı'}
+                    </span>
                   ) : (
                     <span className="text-xs text-muted">{tCommon('notConnected')}</span>
                   )}
                 </div>
               </div>
-
-              {/* Toggle Switch */}
+              {/* Add new page button */}
               <button
-                onClick={handleToggleMeta}
-                disabled={metaLoading || metaDisconnecting}
-                className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${
-                  isMetaConnected ? 'bg-blue-600' : 'bg-gray-200'
-                } ${(metaLoading || metaDisconnecting) ? 'opacity-50 cursor-not-allowed' : ''}`}
+                onClick={() => { window.location.href = '/api/integrations/meta/connect'; }}
+                disabled={metaLoading}
+                title="Yeni sayfa ekle"
+                className="flex items-center gap-1 rounded-lg bg-blue-600 px-2.5 py-1.5 text-xs font-medium text-white hover:bg-blue-700 disabled:opacity-50 transition-colors"
               >
-                <span
-                  className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${
-                    isMetaConnected ? 'translate-x-5' : 'translate-x-0'
-                  }`}
-                />
+                <Plus className="h-3 w-3" />
+                Ekle
               </button>
             </div>
 
-            <p className="text-xs text-muted mb-3">{t('integrations.metaDesc')}</p>
+            <p className="text-xs text-muted">{t('integrations.metaDesc')}</p>
 
-            {metaLoading ? (
-              <div className="flex items-center gap-1.5 text-xs text-muted">
-                <RefreshCw className="h-3 w-3 animate-spin" />
-                {tCommon('checking')}
+            {/* Connected pages list */}
+            {!metaLoading && connections.length > 0 && (
+              <div className="space-y-2 pt-2 border-t border-gray-100">
+                {connections.map((conn) => (
+                  <div key={conn.id} className="flex items-start justify-between gap-2 rounded-lg bg-gray-50 px-3 py-2">
+                    <div className="min-w-0 flex-1 space-y-0.5">
+                      <div className="flex items-center gap-1.5">
+                        {conn.webhook_subscribed && (
+                          <span className="inline-block h-1.5 w-1.5 rounded-full bg-green-500 animate-pulse shrink-0" />
+                        )}
+                        <span className="text-xs font-medium text-foreground truncate">
+                          {conn.page_name || conn.page_id || 'Bilinmeyen sayfa'}
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-2 flex-wrap">
+                        {conn.webhook_subscribed && (
+                          <span className="text-xs text-green-600 font-medium">Webhook Aktif</span>
+                        )}
+                        {conn.is_expired && (
+                          <Badge color="red" size="sm">{t('integrations.tokenExpired')}</Badge>
+                        )}
+                        {conn.connected_at && (
+                          <span className="text-xs text-muted">
+                            {new Date(conn.connected_at).toLocaleDateString('tr-TR')}
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                    <button
+                      onClick={() => disconnectPage(conn.id)}
+                      disabled={disconnecting === conn.id}
+                      title="Bağlantıyı kes"
+                      className="shrink-0 rounded p-1 text-gray-400 hover:text-red-500 hover:bg-red-50 transition-colors disabled:opacity-50"
+                    >
+                      {disconnecting === conn.id
+                        ? <RefreshCw className="h-3.5 w-3.5 animate-spin" />
+                        : <Trash2 className="h-3.5 w-3.5" />}
+                    </button>
+                  </div>
+                ))}
               </div>
-            ) : isMetaConnected && (
-              <div className="space-y-2 pt-3 border-t border-gray-200/60">
-                {metaStatus?.webhook_subscribed && (
-                  <div className="flex items-center gap-1.5">
-                    <span className="inline-block h-1.5 w-1.5 rounded-full bg-green-500 animate-pulse" />
-                    <span className="text-xs font-medium text-green-600">Webhook Aktif</span>
-                  </div>
-                )}
-                {metaStatus?.is_expired && (
-                  <Badge color="red" size="sm">{t('integrations.tokenExpired')}</Badge>
-                )}
-                {metaStatus?.page_name && (
-                  <div className="text-xs text-muted">
-                    {t('integrations.pageLabel')}<span className="font-medium text-foreground">{metaStatus.page_name}</span>
-                  </div>
-                )}
-                {metaStatus?.connected_at && (
-                  <div className="text-xs text-muted">
-                    {t('integrations.connectedAt')}{new Date(metaStatus.connected_at).toLocaleDateString()}
-                  </div>
-                )}
-                {metaStatus?.expires_at && (
-                  <div className="text-xs text-muted">
-                    {t('integrations.tokenExpiry')}{new Date(metaStatus.expires_at).toLocaleDateString()}
-                  </div>
-                )}
-                <button
-                  onClick={() => window.location.href = '/api/integrations/meta/connect'}
-                  className="text-xs text-blue-600 hover:text-blue-700 font-medium mt-1"
-                >
-                  {t('integrations.reconnect')}
-                </button>
+            )}
+
+            {/* Empty state */}
+            {!metaLoading && connections.length === 0 && (
+              <div className="pt-2 border-t border-gray-100">
+                <p className="text-xs text-muted">
+                  Facebook sayfanızı bağlamak için <strong>Ekle</strong> butonuna tıklayın.
+                </p>
               </div>
             )}
           </div>
 
-          {/* Google Ads Card — Coming Soon */}
+          {/* ── Google Ads — Coming Soon ─────────────────────────── */}
           <div className="relative rounded-xl border-2 border-gray-200 bg-white p-5 opacity-60">
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-3">
@@ -219,8 +229,9 @@ export default function IntegrationsPage() {
                   <span className="text-xs text-muted">{tCommon('notConnected')}</span>
                 </div>
               </div>
-              <div className="relative inline-flex h-6 w-11 rounded-full bg-gray-200 cursor-not-allowed">
-                <span className="pointer-events-none inline-block h-5 w-5 translate-x-0 transform rounded-full bg-white shadow mt-0.5 ml-0.5" />
+              <div className="flex items-center gap-1 rounded-lg bg-gray-100 px-2.5 py-1.5 cursor-not-allowed">
+                <Plus className="h-3 w-3 text-gray-400" />
+                <span className="text-xs font-medium text-gray-400">Ekle</span>
               </div>
             </div>
             <p className="text-xs text-muted">Google Ads lead formlarından gelen verileri otomatik olarak sisteme aktar.</p>
@@ -229,7 +240,7 @@ export default function IntegrationsPage() {
             </div>
           </div>
 
-          {/* TikTok Ads Card — Coming Soon */}
+          {/* ── TikTok Ads — Coming Soon ─────────────────────────── */}
           <div className="relative rounded-xl border-2 border-gray-200 bg-white p-5 opacity-60">
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-3">
@@ -243,8 +254,9 @@ export default function IntegrationsPage() {
                   <span className="text-xs text-muted">{tCommon('notConnected')}</span>
                 </div>
               </div>
-              <div className="relative inline-flex h-6 w-11 rounded-full bg-gray-200 cursor-not-allowed">
-                <span className="pointer-events-none inline-block h-5 w-5 translate-x-0 transform rounded-full bg-white shadow mt-0.5 ml-0.5" />
+              <div className="flex items-center gap-1 rounded-lg bg-gray-100 px-2.5 py-1.5 cursor-not-allowed">
+                <Plus className="h-3 w-3 text-gray-400" />
+                <span className="text-xs font-medium text-gray-400">Ekle</span>
               </div>
             </div>
             <p className="text-xs text-muted">TikTok reklam formlarından gelen lead&apos;leri otomatik olarak sisteme aktar.</p>
@@ -256,7 +268,7 @@ export default function IntegrationsPage() {
         </div>
 
         {/* Recent Webhook Events */}
-        {isMetaConnected && recentEvents.length > 0 && (
+        {hasConnections && recentEvents.length > 0 && (
           <div className="mt-6">
             <h3 className="text-xs font-semibold text-muted uppercase tracking-wider mb-3">Son Webhook Olayları</h3>
             <div className="space-y-2">
@@ -264,14 +276,14 @@ export default function IntegrationsPage() {
                 <div key={event.id} className="flex items-center justify-between rounded-lg border border-gray-100 bg-gray-50 px-3 py-2">
                   <div className="flex items-center gap-2">
                     <span className={`inline-block h-2 w-2 rounded-full ${event.status === 'processed' ? 'bg-green-500' : event.status === 'failed' ? 'bg-red-500' : 'bg-yellow-500'}`} />
-                    <span className="text-xs font-medium text-gray-700">leadgen webhook received</span>
+                    <span className="text-xs font-medium text-gray-700">leadgen</span>
                     {event.external_id && (
                       <span className="text-xs text-gray-400 font-mono truncate max-w-[120px]">{event.external_id}</span>
                     )}
                   </div>
                   <div className="flex items-center gap-2">
                     <span className={`text-xs font-medium ${event.status === 'processed' ? 'text-green-600' : event.status === 'failed' ? 'text-red-600' : 'text-yellow-600'}`}>
-                      {event.status === 'processed' ? 'işlendi' : event.status === 'failed' ? 'hata' : 'alındı'}
+                      {event.status === 'processed' ? 'işlendi' : event.status === 'failed' ? 'hata' : event.status}
                     </span>
                     <span className="text-xs text-gray-400">{new Date(event.created_at).toLocaleString('tr-TR')}</span>
                   </div>
