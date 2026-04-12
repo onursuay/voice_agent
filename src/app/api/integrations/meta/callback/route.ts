@@ -184,14 +184,6 @@ export async function GET(request: NextRequest) {
     .from('integration_settings')
     .insert({ provider: 'meta_oauth_pending', config: pendingConfig, is_active: false });
 
-  // If only 1 page, skip selection and save directly
-  if (pages.length === 1) {
-    const selectUrl = new URL(`${request.nextUrl.origin}/api/integrations/meta/select-page`);
-    selectUrl.searchParams.set('org_id', orgId);
-    selectUrl.searchParams.set('page_id', pages[0].id);
-    return NextResponse.redirect(selectUrl.toString());
-  }
-
-  // Multiple pages → redirect to selection UI
+  // Always redirect to wizard page selection UI (even for single page)
   return NextResponse.redirect(`${request.nextUrl.origin}/dashboard/meta-select`);
 }
