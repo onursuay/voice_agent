@@ -201,11 +201,94 @@ export async function GET(request: NextRequest) {
       .insert({ provider: 'meta_leads', config, is_active: true });
   }
 
-  // Delete the pending OAuth session record
-  await admin
-    .from('integration_settings')
-    .delete()
-    .eq('id', pendingRow.id);
+  // Keep pending session alive so more pages can be connected from same OAuth flow.
+  // It will expire in 10 min naturally.
 
   return NextResponse.redirect(`${dashboardUrl}?meta_connected=1`);
+}
+
+/**
+ * POST /api/integrations/meta/select-page
+ * Body: { org_id, page_id }
+ * Same logic as GET but returns JSON — used by multi-page selection UI.
+ * Does NOT delete the pending session so multiple pages can be connected.
+ */
+export async function POST(request: NextRequest) {
+  const admin = createAdminSupabaseClient();
+
+  const supabase = await createServerSupabaseClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) return NextResponse.json({ success: false, error: 'not_authenticated' }, { status: 401 });
+
+  const { data: membership } = await supabase
+    .from('organization_members')
+    .select('organization_id')
+    .eq('user_id', user.id)
+    .eq('is_active', true)
+    .single();
+  if (!membership) return NextResponse.json({ success: false, error: 'no_org' }, { status: 403 });
+
+  const body = await request.json() as { org_id?: string; page_id?: string };
+  const orgId = body.org_id;
+  const pageId = body.page_id;
+
+  if (!orgId || !pageId || orgId !== membership.organization_id) {
+    return NextResponse.json({ success: false, error: 'invalid_params' }, { status: 400 });
+  }
+
+  const { data: pendingRow } = await admin
+    .from('integration_settings')
+    .select('id, config')
+    .eq('provider', 'meta_oauth_pending')
+    .filter('config->>organization_id', 'eq', orgId)
+    .maybeSingle();
+
+  if (!pendingRow?.config) {
+    return NextResponse.json({ success: false, error: 'session_expired' }, { status: 401 });
+  }
+
+  const session = pendingRow.config as PendingConfig;
+  if (Date.now() - session.ts > 10 * 60 * 1000) {
+    return NextResponse.json({ success: false, error: 'session_expired' }, { status: 401 });
+  }
+
+  const page = session.pages.find((p) => p.id === pageId);
+  if (!page) return NextResponse.json({ success: false, error: 'invalid_page' }, { status: 400 });
+  if (!page.access_token) return NextResponse.json({ success: false, error: 'missing_token' }, { status: 400 });
+
+  const subscribeResult = await hardSubscribePageToWebhook(page.id, page.access_token);
+  if (!subscribeResult.success) {
+    console.error(`[Meta select-page POST] Subscribe failed page=${pageId}: ${subscribeResult.error}`);
+    return NextResponse.json({ success: false, error: subscribeResult.error }, { status: 502 });
+  }
+
+  const { data: existing } = await admin
+    .from('integration_settings')
+    .select('id')
+    .eq('provider', 'meta_leads')
+    .filter('config->>organization_id', 'eq', orgId)
+    .filter('config->>page_id', 'eq', page.id)
+    .maybeSingle();
+
+  const config = {
+    organization_id: orgId,
+    page_id: page.id,
+    page_name: page.name,
+    access_token: page.access_token,
+    user_access_token: session.userToken,
+    connected_at: new Date().toISOString(),
+    expires_at: new Date(Date.now() + 59 * 24 * 60 * 60 * 1000).toISOString(),
+    webhook_subscribed: true,
+    webhook_subscribed_fields: subscribeResult.subscribed_fields || ['leadgen'],
+    webhook_subscribed_at: new Date().toISOString(),
+  };
+
+  if (existing) {
+    await admin.from('integration_settings').update({ config, is_active: true }).eq('id', existing.id);
+  } else {
+    await admin.from('integration_settings').insert({ provider: 'meta_leads', config, is_active: true });
+  }
+
+  console.log(`[Meta select-page POST] Connected page=${page.name} (${page.id}) for org=${orgId}`);
+  return NextResponse.json({ success: true, page_id: page.id, page_name: page.name });
 }
