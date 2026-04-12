@@ -50,8 +50,8 @@ export function MetaConnectWizard({ initialStep = 1 }: { initialStep?: number })
           const items: PageItem[] = data.pages.map((p) => ({ ...p, status: 'pending' }));
           setPages(items);
           setOrgId(data.orgId || '');
-          // Pre-select all
-          setSelected(new Set(items.map((p) => p.id)));
+          // Start with nothing selected — user must explicitly pick
+          setSelected(new Set());
           setStep3Phase('select');
           return;
         }
