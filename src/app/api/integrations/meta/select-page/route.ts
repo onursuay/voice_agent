@@ -168,12 +168,13 @@ export async function GET(request: NextRequest) {
 
   console.log(`[Meta select-page] Webhook subscribed OK: page=${pageId} fields=${subscribeResult.subscribed_fields?.join(',')}`);
 
-  // Save to integration_settings (final)
+  // Save to integration_settings (final) — upsert by (org, page_id) to allow multiple pages per org
   const { data: existing } = await admin
     .from('integration_settings')
     .select('id')
     .eq('provider', 'meta_leads')
     .filter('config->>organization_id', 'eq', orgId)
+    .filter('config->>page_id', 'eq', page.id)
     .maybeSingle();
 
   const config = {
