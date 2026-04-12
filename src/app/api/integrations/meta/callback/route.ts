@@ -173,11 +173,12 @@ export async function GET(request: NextRequest) {
     ts: Date.now(),
   };
 
-  // Upsert pending session — delete any existing record first (provider is UNIQUE)
+  // Delete existing pending session for THIS org only (not all orgs)
   await supabase
     .from('integration_settings')
     .delete()
-    .eq('provider', 'meta_oauth_pending');
+    .eq('provider', 'meta_oauth_pending')
+    .filter('config->>organization_id', 'eq', orgId);
 
   await supabase
     .from('integration_settings')
