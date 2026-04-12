@@ -191,14 +191,22 @@ export async function GET(request: NextRequest) {
   };
 
   if (existing) {
-    await admin
+    const { error: updateErr } = await admin
       .from('integration_settings')
       .update({ config, is_active: true })
       .eq('id', existing.id);
+    if (updateErr) {
+      console.error(`[Meta select-page GET] Update failed page=${pageId}: ${updateErr.message}`);
+      return NextResponse.redirect(`${dashboardUrl}?meta_error=${encodeURIComponent(updateErr.message)}`);
+    }
   } else {
-    await admin
+    const { error: insertErr } = await admin
       .from('integration_settings')
       .insert({ provider: 'meta_leads', config, is_active: true });
+    if (insertErr) {
+      console.error(`[Meta select-page GET] Insert failed page=${pageId}: ${insertErr.message}`);
+      return NextResponse.redirect(`${dashboardUrl}?meta_error=${encodeURIComponent(insertErr.message)}`);
+    }
   }
 
   // Keep pending session alive so more pages can be connected from same OAuth flow.
