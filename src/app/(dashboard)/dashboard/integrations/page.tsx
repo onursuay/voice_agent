@@ -143,7 +143,10 @@ export default function IntegrationsPage() {
         </div>
       )}
 
-      {/* ── Meta Integration Block ─────────────────────────────── */}
+      {/* ── Integration Cards Grid ─────────────────────────────── */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-start">
+
+      {/* ── Meta Integration Block ────────────────────────────── */}
       <div className="overflow-hidden rounded-xl border border-gray-200 bg-white">
 
         {/* Account-level row */}
