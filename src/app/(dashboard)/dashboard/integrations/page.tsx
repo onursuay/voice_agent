@@ -110,7 +110,7 @@ export default function IntegrationsPage() {
   };
 
   return (
-    <div className="max-w-2xl space-y-6">
+    <div className="space-y-6">
       {/* Page header */}
       <div>
         <h1 className="text-2xl font-bold text-foreground">{t('integrations.title')}</h1>
