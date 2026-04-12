@@ -350,6 +350,8 @@ export default function IntegrationsPage() {
         </div>
       </div>
 
+      </div>{/* end grid */}
+
       {/* Recent Webhook Events */}
       {hasConnections && recentEvents.length > 0 && (
         <div className="rounded-xl border border-card-border bg-card-bg p-5">
