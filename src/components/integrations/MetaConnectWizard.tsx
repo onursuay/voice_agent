@@ -60,7 +60,7 @@ export function MetaConnectWizard({ initialStep = 1 }: { initialStep?: number })
     setStep3Phase('connecting');
 
     // Connect each page sequentially
-    const results = [...pages.map((p) => ({ ...p, status: 'pending' as const }))];
+    const results: PageResult[] = pages.map((p) => ({ ...p, status: 'pending' }));
     for (let i = 0; i < pages.length; i++) {
       results[i] = { ...results[i], status: 'connecting' };
       setPageResults([...results]);
