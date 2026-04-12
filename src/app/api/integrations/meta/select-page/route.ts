@@ -284,9 +284,17 @@ export async function POST(request: NextRequest) {
   };
 
   if (existing) {
-    await admin.from('integration_settings').update({ config, is_active: true }).eq('id', existing.id);
+    const { error: updateErr } = await admin.from('integration_settings').update({ config, is_active: true }).eq('id', existing.id);
+    if (updateErr) {
+      console.error(`[Meta select-page POST] Update failed page=${pageId}: ${updateErr.message}`);
+      return NextResponse.json({ success: false, error: updateErr.message }, { status: 500 });
+    }
   } else {
-    await admin.from('integration_settings').insert({ provider: 'meta_leads', config, is_active: true });
+    const { error: insertErr } = await admin.from('integration_settings').insert({ provider: 'meta_leads', config, is_active: true });
+    if (insertErr) {
+      console.error(`[Meta select-page POST] Insert failed page=${pageId}: ${insertErr.message}`);
+      return NextResponse.json({ success: false, error: insertErr.message }, { status: 500 });
+    }
   }
 
   console.log(`[Meta select-page POST] Connected page=${page.name} (${page.id}) for org=${orgId}`);
