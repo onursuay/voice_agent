@@ -12,9 +12,9 @@ interface PageResult {
   status: 'pending' | 'connecting' | 'done' | 'error';
 }
 
-export function MetaConnectWizard() {
+export function MetaConnectWizard({ initialStep = 1 }: { initialStep?: number }) {
   const router = useRouter();
-  const [step, setStep] = useState(1);
+  const [step, setStep] = useState(initialStep);
   const [step3Phase, setStep3Phase] = useState<Step3Phase>('waiting');
   const [pageResults, setPageResults] = useState<PageResult[]>([]);
   const [errorMsg, setErrorMsg] = useState('');
