@@ -85,17 +85,16 @@ export default function MetaSelectPage() {
       setResults([...finalResults]);
 
       try {
-        const res = await fetch(
-          `/api/integrations/meta/select-page?org_id=${encodeURIComponent(orgId)}&page_id=${encodeURIComponent(page.id)}`
-        );
-        // select-page redirects on success — we follow it and check the final URL
-        // But since it returns a redirect we can't easily detect success from fetch.
-        // Instead we call it as a no-follow fetch.
-        // Actually: select-page returns a redirect — use fetch with redirect:'manual'
-        if (res.ok || res.status === 200 || res.type === 'opaqueredirect') {
+        const res = await fetch('/api/integrations/meta/select-page', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ org_id: orgId, page_id: page.id }),
+        });
+        const json = await res.json() as { success: boolean; error?: string };
+        if (json.success) {
           finalResults[i] = { ...finalResults[i], status: 'done' };
         } else {
-          finalResults[i] = { ...finalResults[i], status: 'error', error: `HTTP ${res.status}` };
+          finalResults[i] = { ...finalResults[i], status: 'error', error: json.error || `HTTP ${res.status}` };
         }
       } catch {
         finalResults[i] = { ...finalResults[i], status: 'error', error: 'Bağlantı hatası' };
