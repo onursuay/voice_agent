@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import { Check, RefreshCw, AlertTriangle } from 'lucide-react';
 
 type ConnectStatus = 'pending' | 'connecting' | 'done' | 'error';
@@ -12,25 +13,23 @@ interface PageItem {
   status: ConnectStatus;
 }
 
-type Step3Phase = 'loading' | 'select' | 'connecting' | 'error';
+type Step2Phase = 'loading' | 'select' | 'connecting' | 'error';
 
-// Steps: 1=Bağlan, 2=Sayfalar, 3=Tamamlandı
-// initialStep mapping: old step 2 → new step 1, old step 3 → new step 2
+// Steps: 1=Connect, 2=Pages, 3=Done
+// initialStep mapping: 1=connect page, 3=page select (post-OAuth) → maps to step 2
 export function MetaConnectWizard({ initialStep = 1 }: { initialStep?: number }) {
   const router = useRouter();
+  const w = useTranslations('settings.integrations.wizard');
 
-  // Remap: caller passes 1 (connect page) or 3 (page select, which is now step 2)
   const mappedStep = initialStep === 3 ? 2 : 1;
   const [step, setStep] = useState(mappedStep);
 
-  // Step 2 state (page selection)
-  const [step2Phase, setStep2Phase] = useState<Step3Phase>('loading');
+  const [step2Phase, setStep2Phase] = useState<Step2Phase>('loading');
   const [pages, setPages] = useState<PageItem[]>([]);
   const [selected, setSelected] = useState<Set<string>>(new Set());
   const [orgId, setOrgId] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
 
-  // When step becomes 2, fetch pending pages
   useEffect(() => {
     if (step !== 2) return;
     fetchPendingPages();
@@ -60,7 +59,7 @@ export function MetaConnectWizard({ initialStep = 1 }: { initialStep?: number })
       } catch { /* retry */ }
     }
     setStep2Phase('error');
-    setErrorMsg('Sayfalar yüklenemedi. Lütfen tekrar deneyin.');
+    setErrorMsg(w('loadError'));
   }
 
   function togglePage(id: string) {
@@ -81,7 +80,6 @@ export function MetaConnectWizard({ initialStep = 1 }: { initialStep?: number })
     if (selected.size === 0) return;
     setStep2Phase('connecting');
 
-    // Only keep selected pages in the progress list
     const toConnect = pages.filter((p) => selected.has(p.id));
     const results: PageItem[] = toConnect.map((p) => ({ ...p, status: 'pending' }));
     setPages([...results]);
@@ -110,7 +108,7 @@ export function MetaConnectWizard({ initialStep = 1 }: { initialStep?: number })
   }
 
   const doneCount = pages.filter((p) => p.status === 'done').length;
-  const stepLabels = ['Bağlan', 'Sayfalar', 'Tamamlandı'];
+  const stepLabels = [w('step1Label'), w('step2Label'), w('step3Label')];
 
   return (
     <div className="flex min-h-[60vh] items-center justify-center px-4 py-10">
@@ -150,16 +148,14 @@ export function MetaConnectWizard({ initialStep = 1 }: { initialStep?: number })
                   <path d="M12 2C6.477 2 2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.879V14.89h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.989C18.343 21.129 22 16.99 22 12c0-5.523-4.477-10-10-10z"/>
                 </svg>
               </div>
-              <h2 className="mb-2 text-xl font-bold text-gray-900">Meta ile Bağlan</h2>
-              <p className="mb-6 text-sm text-gray-500">
-                Meta hesabınıza giriş yapın ve izinleri verin. Bir sonraki adımda hangi sayfaları bağlayacağınızı siz seçeceksiniz.
-              </p>
+              <h2 className="mb-2 text-xl font-bold text-gray-900">{w('connectTitle')}</h2>
+              <p className="mb-6 text-sm text-gray-500">{w('connectDesc')}</p>
               <div className="mb-7 rounded-xl border border-gray-100 bg-gray-50 p-4 text-left space-y-2">
-                <p className="text-xs font-semibold uppercase tracking-wider text-gray-400 mb-3">İstenen İzinler</p>
-                {['Facebook sayfalarınızı listele', 'Lead form verilerini oku', 'Webhook aboneliği yönet'].map((perm) => (
-                  <div key={perm} className="flex items-center gap-2">
+                <p className="text-xs font-semibold uppercase tracking-wider text-gray-400 mb-3">{w('permissionsLabel')}</p>
+                {(['perm1', 'perm2', 'perm3'] as const).map((key) => (
+                  <div key={key} className="flex items-center gap-2">
                     <Check className="h-4 w-4 text-green-500 shrink-0" />
-                    <span className="text-sm text-gray-600">{perm}</span>
+                    <span className="text-sm text-gray-600">{w(key)}</span>
                   </div>
                 ))}
               </div>
@@ -170,13 +166,13 @@ export function MetaConnectWizard({ initialStep = 1 }: { initialStep?: number })
                 <svg className="h-5 w-5" viewBox="0 0 24 24" fill="currentColor">
                   <path d="M12 2C6.477 2 2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.879V14.89h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.989C18.343 21.129 22 16.99 22 12c0-5.523-4.477-10-10-10z"/>
                 </svg>
-                Meta ile Bağlan
+                {w('connectButton')}
               </button>
               <button
                 onClick={() => router.push('/dashboard/integrations')}
                 className="mt-3 w-full rounded-xl border border-gray-200 py-3 text-sm font-medium text-gray-600 hover:bg-gray-50 transition-colors"
               >
-                İptal
+                {w('cancelButton')}
               </button>
             </div>
           )}
@@ -188,7 +184,7 @@ export function MetaConnectWizard({ initialStep = 1 }: { initialStep?: number })
               {step2Phase === 'loading' && (
                 <div className="flex flex-col items-center gap-3 py-10">
                   <RefreshCw className="h-9 w-9 animate-spin text-indigo-600" />
-                  <p className="text-sm text-gray-500">Sayfalar yükleniyor...</p>
+                  <p className="text-sm text-gray-500">{w('loadingPages')}</p>
                 </div>
               )}
 
@@ -203,7 +199,7 @@ export function MetaConnectWizard({ initialStep = 1 }: { initialStep?: number })
                     onClick={fetchPendingPages}
                     className="mt-2 rounded-xl bg-indigo-600 px-6 py-2.5 text-sm font-semibold text-white hover:bg-indigo-700 transition-colors"
                   >
-                    Tekrar Dene
+                    {w('retry')}
                   </button>
                 </div>
               )}
@@ -211,10 +207,8 @@ export function MetaConnectWizard({ initialStep = 1 }: { initialStep?: number })
               {/* Page Selection */}
               {step2Phase === 'select' && (
                 <>
-                  <h2 className="mb-1 text-lg font-bold text-gray-900">Sayfaları Seç</h2>
-                  <p className="mb-4 text-sm text-gray-500">
-                    Lead formlarını takip etmek istediğiniz sayfaları seçin.
-                  </p>
+                  <h2 className="mb-1 text-lg font-bold text-gray-900">{w('selectTitle')}</h2>
+                  <p className="mb-4 text-sm text-gray-500">{w('selectDesc')}</p>
 
                   {/* Select all */}
                   <button
@@ -224,7 +218,7 @@ export function MetaConnectWizard({ initialStep = 1 }: { initialStep?: number })
                     <div className={`flex h-4 w-4 items-center justify-center rounded border-2 transition-colors ${selected.size === pages.length ? 'border-indigo-600 bg-indigo-600' : 'border-gray-300 bg-white'}`}>
                       {selected.size === pages.length && <Check className="h-2.5 w-2.5 text-white" />}
                     </div>
-                    {selected.size === pages.length ? 'Tümünü Kaldır' : 'Tümünü Seç'} ({pages.length} sayfa)
+                    {selected.size === pages.length ? w('deselectAll') : w('selectAll')} ({pages.length})
                   </button>
 
                   {/* Page list */}
@@ -237,7 +231,6 @@ export function MetaConnectWizard({ initialStep = 1 }: { initialStep?: number })
                           onClick={() => togglePage(page.id)}
                           className={`flex w-full items-center gap-3 rounded-xl border-2 px-4 py-3 text-left transition-all duration-150 active:scale-[0.98] ${isSelected ? 'border-indigo-500 bg-indigo-50' : 'border-gray-200 bg-white hover:border-indigo-300 hover:bg-indigo-50/30'}`}
                         >
-                          {/* Toggle switch */}
                           <div className={`relative inline-flex h-6 w-11 shrink-0 items-center rounded-full border-2 border-transparent transition-colors duration-200 ${isSelected ? 'bg-indigo-600' : 'bg-gray-200'}`}>
                             <span className={`inline-block h-5 w-5 transform rounded-full bg-white shadow transition-transform duration-200 ${isSelected ? 'translate-x-5' : 'translate-x-0'}`} />
                           </div>
@@ -255,14 +248,14 @@ export function MetaConnectWizard({ initialStep = 1 }: { initialStep?: number })
                       onClick={() => router.push('/dashboard/integrations')}
                       className="flex-1 rounded-xl border border-gray-200 py-3 text-sm font-medium text-gray-600 hover:bg-gray-50 transition-colors"
                     >
-                      İptal
+                      {w('cancelButton')}
                     </button>
                     <button
                       onClick={handleConnect}
                       disabled={selected.size === 0}
                       className="flex-1 rounded-xl bg-indigo-600 py-3 text-sm font-semibold text-white hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                     >
-                      {selected.size === 0 ? 'Sayfa Seçin' : `${selected.size} Sayfayı Bağla`}
+                      {selected.size === 0 ? w('selectFirst') : w('connectPages').replace('{count}', String(selected.size))}
                     </button>
                   </div>
                 </>
@@ -273,7 +266,7 @@ export function MetaConnectWizard({ initialStep = 1 }: { initialStep?: number })
                 <>
                   <div className="mb-5 text-center">
                     <RefreshCw className="mx-auto mb-3 h-9 w-9 animate-spin text-indigo-600" />
-                    <h2 className="text-lg font-bold text-gray-900">Sayfalar Bağlanıyor...</h2>
+                    <h2 className="text-lg font-bold text-gray-900">{w('connectingPages')}</h2>
                   </div>
                   <div className="max-h-64 space-y-2 overflow-y-auto">
                     {pages.map((page) => (
@@ -290,9 +283,9 @@ export function MetaConnectWizard({ initialStep = 1 }: { initialStep?: number })
                         </div>
                         <span className="flex-1 truncate text-sm font-medium text-gray-700">{page.name}</span>
                         <span className="shrink-0 text-xs text-gray-400">
-                          {page.status === 'done' ? 'Bağlandı' :
-                           page.status === 'error' ? 'Hata' :
-                           page.status === 'connecting' ? 'Bağlanıyor...' : 'Bekliyor'}
+                          {page.status === 'done' ? w('statusDone') :
+                           page.status === 'error' ? w('statusError') :
+                           page.status === 'connecting' ? w('statusConnecting') : w('statusWaiting')}
                         </span>
                       </div>
                     ))}
@@ -308,18 +301,18 @@ export function MetaConnectWizard({ initialStep = 1 }: { initialStep?: number })
               <div className="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-full bg-green-100">
                 <Check className="h-8 w-8 text-green-600" />
               </div>
-              <h2 className="mb-2 text-xl font-bold text-gray-900">Bağlantı Başarılı!</h2>
-              <p className="mb-2 text-sm text-gray-500">
-                Seçtiğiniz sayfalar başarıyla bağlandı. Lead formlarından gelen veriler artık CRM'e otomatik olarak aktarılacak.
-              </p>
+              <h2 className="mb-2 text-xl font-bold text-gray-900">{w('successTitle')}</h2>
+              <p className="mb-2 text-sm text-gray-500">{w('successDesc')}</p>
               {doneCount > 0 && (
-                <p className="mb-6 text-sm font-semibold text-green-600">{doneCount} sayfa başarıyla bağlandı</p>
+                <p className="mb-6 text-sm font-semibold text-green-600">
+                  {w('successCount').replace('{count}', String(doneCount))}
+                </p>
               )}
               <button
                 onClick={() => router.push('/dashboard/integrations?meta_connected=1')}
                 className="w-full rounded-xl bg-green-600 py-3 font-semibold text-white hover:bg-green-700 transition-colors"
               >
-                Entegrasyonlara Git
+                {w('goToIntegrations')}
               </button>
             </div>
           )}

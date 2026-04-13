@@ -91,7 +91,7 @@
     "leadsUnit": "leads"
   },
   "leads": {
-    "loadError": "Could not load leads.",
+    "loadError": "Failed to load leads.",
     "noLeadsTitle": "No leads yet",
     "noLeadsDesc": "Add a new lead or import from outside.",
     "leadsUnit": "leads",
@@ -116,7 +116,6 @@
     "deleteError": "Deletion failed ({status})",
     "emptyTitle": "No leads yet",
     "emptyDesc": "Add a new lead or import from an external source.",
-    "loadError": "Failed to load leads.",
     "retry": "Try Again",
     "cancel": "Cancel",
     "source": "Source",
@@ -223,7 +222,6 @@
       "sortDesc": "Sort Z-A",
       "hide": "Hide"
     },
-    "columns": "Columns",
     "colLabels": {
       "full_name": "Full Name",
       "phone": "Phone",
@@ -311,7 +309,39 @@
       "connectedAt": "Connected: ",
       "tokenExpiry": "Token expires: ",
       "reconnect": "Reconnect",
-      "connectMeta": "Connect to Meta"
+      "connectMeta": "Connect to Meta",
+      "wizard": {
+        "step1Label": "Connect",
+        "step2Label": "Pages",
+        "step3Label": "Done",
+        "connectTitle": "Connect with Meta",
+        "connectDesc": "Log in to your Meta account and grant permissions. In the next step, you will choose which pages to connect.",
+        "permissionsLabel": "Requested Permissions",
+        "perm1": "List your Facebook pages",
+        "perm2": "Read lead form data",
+        "perm3": "Manage webhook subscriptions",
+        "connectButton": "Connect with Meta",
+        "cancelButton": "Cancel",
+        "selectTitle": "Select Pages",
+        "selectDesc": "Choose the pages you want to track lead forms from.",
+        "selectAll": "Select All",
+        "deselectAll": "Deselect All",
+        "pageCount": "{count} pages",
+        "connectPages": "Connect {count} Pages",
+        "selectFirst": "Select a Page",
+        "loadingPages": "Loading pages...",
+        "connectingPages": "Connecting Pages...",
+        "loadError": "Could not load pages. Please try again.",
+        "retry": "Try Again",
+        "statusConnecting": "Connecting...",
+        "statusDone": "Connected",
+        "statusError": "Error",
+        "statusWaiting": "Waiting",
+        "successTitle": "Connection Successful!",
+        "successDesc": "Your selected pages have been successfully connected. Leads from ad forms will now be automatically imported into the CRM.",
+        "successCount": "{count} pages successfully connected",
+        "goToIntegrations": "Go to Integrations"
+      }
     }
   },
   "hesabim": {
@@ -612,7 +642,7 @@
     "fieldDate": "Date",
     "fieldExternalId": "ID",
     "fieldSkip": "— Skip —",
-    "fileColumn": "File Column",
+    "fileColumn": "Your File Column",
     "leadField": "Lead Field",
     "skip": "Skip",
     "preview": "Preview",
@@ -653,7 +683,6 @@
     "noHeadersTitle": "Add headers to your table",
     "noHeadersDesc": "Your file appears to have no header row. Please add a header row (e.g. Name, Phone, Email) to the first row of your file for accurate field matching.",
     "crmField": "CRM Field",
-    "fileColumn": "Your File Column",
     "addMoreFields": "Add more fields",
     "aiMapping": "AI is analyzing your columns...",
     "learned": "Learned",
