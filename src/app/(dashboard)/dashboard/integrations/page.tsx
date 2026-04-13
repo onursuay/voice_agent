@@ -249,7 +249,6 @@ export default function IntegrationsPage() {
           description={t('integrations.metaDesc')}
           connected={hasConnections}
           loading={metaLoading}
-          accountLabel={primaryPageName}
           onToggle={hasConnections ? handleMetaToggleOff : handleMetaConnect}
           onConnect={handleMetaConnect}
           onChangeAccount={handleMetaConnect}
