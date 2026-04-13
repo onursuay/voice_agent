@@ -72,16 +72,6 @@ export default function IntegrationsPage() {
     }
   };
 
-  const disconnectAll = async () => {
-    setDisconnectingAll(true);
-    try {
-      await fetch('/api/integrations/meta/disconnect', { method: 'DELETE' });
-      setConnections([]);
-    } catch { /* ignore */ } finally {
-      setDisconnectingAll(false);
-    }
-  };
-
   return (
     <div className="space-y-6">
       {/* Header */}
