@@ -150,7 +150,7 @@ export default function IntegrationsPage() {
                 {connections.map((conn) => (
                   <div
                     key={conn.id}
-                    className="flex items-center gap-2 rounded-lg border border-gray-100 bg-gray-50 px-3 py-2 group"
+                    className="flex items-center gap-2 rounded-lg border border-gray-100 bg-gray-50 px-3 py-2"
                   >
                     <span className={`h-2 w-2 shrink-0 rounded-full transition-colors ${conn.webhook_subscribed ? 'bg-green-500 animate-pulse' : 'bg-gray-300'}`} />
                     <span className="flex-1 min-w-0 text-xs font-medium text-gray-700 truncate">
@@ -160,7 +160,7 @@ export default function IntegrationsPage() {
                       onClick={() => disconnectPage(conn.id)}
                       disabled={disconnecting === conn.id}
                       title="Bağlantıyı kes"
-                      className="shrink-0 rounded p-1 text-gray-300 hover:text-red-400 hover:bg-red-50 transition-all opacity-0 group-hover:opacity-100 disabled:opacity-50"
+                      className="shrink-0 rounded p-1 text-gray-400 hover:text-red-500 hover:bg-red-50 transition-all disabled:opacity-50"
                     >
                       {disconnecting === conn.id
                         ? <RefreshCw className="h-3 w-3 animate-spin" />
