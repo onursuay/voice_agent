@@ -26,15 +26,23 @@ type LeadEvent = {
 
 /* ── Toggle ─────────────────────────────────────────────── */
 function Toggle({ checked, onChange, disabled }: { checked: boolean; onChange: () => void; disabled?: boolean }) {
+  const [pressed, setPressed] = useState(false);
+
+  function handleClick() {
+    setPressed(true);
+    setTimeout(() => setPressed(false), 200);
+    onChange();
+  }
+
   return (
     <button
       role="switch"
       aria-checked={checked}
-      onClick={onChange}
+      onClick={handleClick}
       disabled={disabled}
-      className={`relative inline-flex h-6 w-11 shrink-0 items-center rounded-full border-2 border-transparent transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 ${checked ? 'bg-green-500' : 'bg-gray-200'}`}
+      className={`relative inline-flex h-6 w-11 shrink-0 items-center rounded-full border-2 border-transparent transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 ${checked ? 'bg-green-500' : 'bg-gray-200'} ${pressed ? 'scale-90 brightness-90' : 'scale-100'}`}
     >
-      <span className={`inline-block h-5 w-5 transform rounded-full bg-white shadow transition duration-200 ${checked ? 'translate-x-5' : 'translate-x-0'}`} />
+      <span className={`inline-block h-5 w-5 transform rounded-full bg-white shadow-md transition-all duration-200 ${checked ? 'translate-x-5' : 'translate-x-0'} ${pressed ? 'scale-90' : 'scale-100'}`} />
     </button>
   );
 }
