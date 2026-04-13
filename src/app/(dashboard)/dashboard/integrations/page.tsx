@@ -36,7 +36,6 @@ export default function IntegrationsPage() {
   const [connections, setConnections] = useState<MetaConnection[]>([]);
   const [metaLoading, setMetaLoading] = useState(true);
   const [disconnecting, setDisconnecting] = useState<string | null>(null);
-  const [disconnectingAll, setDisconnectingAll] = useState(false);
   const [recentEvents, setRecentEvents] = useState<LeadEvent[]>([]);
 
   const hasConnections = connections.length > 0;
