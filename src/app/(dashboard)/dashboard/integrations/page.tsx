@@ -161,12 +161,22 @@ export default function IntegrationsPage() {
                 {connections.map((conn) => (
                   <div
                     key={conn.id}
-                    className="flex items-center gap-2 rounded-lg border border-gray-100 bg-gray-50 px-3 py-2"
+                    className={`flex items-center gap-2 rounded-lg border px-3 py-2 ${conn.webhook_subscribed ? 'border-gray-100 bg-gray-50' : 'border-orange-200 bg-orange-50'}`}
                   >
-                    <span className={`h-2 w-2 shrink-0 rounded-full transition-colors ${conn.webhook_subscribed ? 'bg-green-500 animate-pulse' : 'bg-gray-300'}`} />
+                    <span className={`h-2 w-2 shrink-0 rounded-full transition-colors ${conn.webhook_subscribed ? 'bg-green-500 animate-pulse' : 'bg-orange-400'}`} />
                     <span className="flex-1 min-w-0 text-xs font-medium text-gray-700 truncate">
                       {conn.page_name || conn.page_id}
                     </span>
+                    {!conn.webhook_subscribed && (
+                      <button
+                        onClick={() => resubscribePage(conn.id)}
+                        disabled={resubscribing === conn.id}
+                        title="Webhook'u yeniden bağla"
+                        className="shrink-0 rounded px-1.5 py-0.5 text-[10px] font-medium text-orange-600 hover:bg-orange-100 transition-all disabled:opacity-50"
+                      >
+                        {resubscribing === conn.id ? <RefreshCw className="h-3 w-3 animate-spin" /> : 'Yenile'}
+                      </button>
+                    )}
                     <button
                       onClick={() => disconnectPage(conn.id)}
                       disabled={disconnecting === conn.id}
