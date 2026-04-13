@@ -315,7 +315,7 @@ export function MetaConnectWizard({ initialStep = 1 }: { initialStep?: number })
                 Seçtiğiniz sayfalar başarıyla bağlandı. Lead formlarından gelen veriler artık CRM'e otomatik olarak aktarılacak.
               </p>
               {doneCount > 0 && (
-                <p className="mb-6 text-sm font-semibold text-green-600">{doneCount} sayfa bağlandı</p>
+                <p className="mb-6 text-sm font-semibold text-green-600">{doneCount} sayfa başarıyla bağlandı</p>
               )}
               <button
                 onClick={() => router.push('/dashboard/integrations?meta_connected=1')}
