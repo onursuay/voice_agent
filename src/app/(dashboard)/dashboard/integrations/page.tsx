@@ -3,7 +3,7 @@
 import { useEffect, useState, useCallback } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
-import { AlertCircle, Check, RefreshCw, Trash2, Plus, AlertTriangle } from 'lucide-react';
+import { AlertCircle, Check, RefreshCw, Trash2, Plus } from 'lucide-react';
 
 type MetaConnection = {
   id: string;
