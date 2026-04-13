@@ -81,11 +81,9 @@ export function MetaConnectWizard({ initialStep = 1 }: { initialStep?: number })
     if (selected.size === 0) return;
     setStep2Phase('connecting');
 
+    // Only keep selected pages in the progress list
     const toConnect = pages.filter((p) => selected.has(p.id));
-    const results: PageItem[] = pages.map((p) => ({
-      ...p,
-      status: selected.has(p.id) ? 'pending' : 'done',
-    }));
+    const results: PageItem[] = toConnect.map((p) => ({ ...p, status: 'pending' }));
     setPages([...results]);
 
     for (let i = 0; i < toConnect.length; i++) {
