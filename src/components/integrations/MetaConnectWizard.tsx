@@ -14,28 +14,31 @@ interface PageItem {
 
 type Step3Phase = 'loading' | 'select' | 'connecting' | 'error';
 
+// Steps: 1=Bağlan, 2=Sayfalar, 3=Tamamlandı
+// initialStep mapping: old step 2 → new step 1, old step 3 → new step 2
 export function MetaConnectWizard({ initialStep = 1 }: { initialStep?: number }) {
   const router = useRouter();
 
-  // step: 1=Welcome, 2=Connect, 3=Select Pages, 4=Success
-  const [step, setStep] = useState(initialStep);
+  // Remap: caller passes 1 (connect page) or 3 (page select, which is now step 2)
+  const mappedStep = initialStep === 3 ? 2 : 1;
+  const [step, setStep] = useState(mappedStep);
 
-  // Step 3 state
-  const [step3Phase, setStep3Phase] = useState<Step3Phase>('loading');
+  // Step 2 state (page selection)
+  const [step2Phase, setStep2Phase] = useState<Step3Phase>('loading');
   const [pages, setPages] = useState<PageItem[]>([]);
   const [selected, setSelected] = useState<Set<string>>(new Set());
   const [orgId, setOrgId] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
 
-  // When step becomes 3, fetch pending pages
+  // When step becomes 2, fetch pending pages
   useEffect(() => {
-    if (step !== 3) return;
+    if (step !== 2) return;
     fetchPendingPages();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [step]);
 
   async function fetchPendingPages() {
-    setStep3Phase('loading');
+    setStep2Phase('loading');
     const delays = [400, 900, 1800];
     for (let i = 0; i < delays.length; i++) {
       await new Promise((r) => setTimeout(r, delays[i]));
@@ -50,14 +53,13 @@ export function MetaConnectWizard({ initialStep = 1 }: { initialStep?: number })
           const items: PageItem[] = data.pages.map((p) => ({ ...p, status: 'pending' }));
           setPages(items);
           setOrgId(data.orgId || '');
-          // Start with nothing selected — user must explicitly pick
           setSelected(new Set());
-          setStep3Phase('select');
+          setStep2Phase('select');
           return;
         }
       } catch { /* retry */ }
     }
-    setStep3Phase('error');
+    setStep2Phase('error');
     setErrorMsg('Sayfalar yüklenemedi. Lütfen tekrar deneyin.');
   }
 
@@ -77,7 +79,7 @@ export function MetaConnectWizard({ initialStep = 1 }: { initialStep?: number })
 
   async function handleConnect() {
     if (selected.size === 0) return;
-    setStep3Phase('connecting');
+    setStep2Phase('connecting');
 
     const toConnect = pages.filter((p) => selected.has(p.id));
     const results: PageItem[] = pages.map((p) => ({
@@ -106,14 +108,11 @@ export function MetaConnectWizard({ initialStep = 1 }: { initialStep?: number })
       setPages([...results]);
     }
 
-    // Advance to success
-    setTimeout(() => setStep(4), 600);
+    setTimeout(() => setStep(3), 600);
   }
 
   const doneCount = pages.filter((p) => p.status === 'done').length;
-
-  /* ─── Progress Bar ───────────────────────────────────────── */
-  const stepLabels = ['Hoşgeldin', 'Bağlan', 'Sayfalar', 'Tamamlandı'];
+  const stepLabels = ['Bağlan', 'Sayfalar', 'Tamamlandı'];
 
   return (
     <div className="flex min-h-[60vh] items-center justify-center px-4 py-10">
@@ -121,7 +120,7 @@ export function MetaConnectWizard({ initialStep = 1 }: { initialStep?: number })
 
         {/* Progress */}
         <div className="flex items-center justify-center gap-2 mb-8">
-          {[1, 2, 3, 4].map((num) => (
+          {[1, 2, 3].map((num) => (
             <div key={num} className="flex items-center">
               <div className="flex flex-col items-center">
                 <div className={`flex h-9 w-9 items-center justify-center rounded-full text-sm font-semibold transition-colors ${
@@ -135,8 +134,8 @@ export function MetaConnectWizard({ initialStep = 1 }: { initialStep?: number })
                   {stepLabels[num - 1]}
                 </span>
               </div>
-              {num < 4 && (
-                <div className={`mb-4 h-0.5 w-10 mx-1 transition-colors ${step > num ? 'bg-green-500' : 'bg-gray-200'}`} />
+              {num < 3 && (
+                <div className={`mb-4 h-0.5 w-12 mx-1 transition-colors ${step > num ? 'bg-green-500' : 'bg-gray-200'}`} />
               )}
             </div>
           ))}
@@ -145,47 +144,12 @@ export function MetaConnectWizard({ initialStep = 1 }: { initialStep?: number })
         {/* Card */}
         <div className="rounded-2xl border border-gray-200 bg-white p-7 shadow-sm">
 
-          {/* ── Step 1: Welcome ──────────────────────────────── */}
+          {/* ── Step 1: Connect OAuth ─────────────────────────── */}
           {step === 1 && (
             <div className="text-center">
               <div className="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-blue-600 to-indigo-600">
                 <svg className="h-8 w-8 text-white" viewBox="0 0 24 24" fill="currentColor">
                   <path d="M12 2C6.477 2 2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.879V14.89h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.989C18.343 21.129 22 16.99 22 12c0-5.523-4.477-10-10-10z"/>
-                </svg>
-              </div>
-              <h2 className="mb-2 text-xl font-bold text-gray-900">Meta Lead Ads'ı Bağla</h2>
-              <p className="mb-7 text-sm text-gray-500">
-                Facebook sayfalarınızdan gelen lead formlarını otomatik olarak CRM'e aktarın.
-              </p>
-              <ul className="mb-7 space-y-3 text-left">
-                {[
-                  'Reklam formlarından lead\'leri otomatik yakala',
-                  'Lead\'leri CRM\'e anında aktar',
-                  'Birden fazla Facebook sayfası bağla',
-                ].map((item) => (
-                  <li key={item} className="flex items-start gap-3">
-                    <div className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-green-100">
-                      <Check className="h-3 w-3 text-green-600" />
-                    </div>
-                    <span className="text-sm text-gray-600">{item}</span>
-                  </li>
-                ))}
-              </ul>
-              <button
-                onClick={() => setStep(2)}
-                className="w-full rounded-xl bg-indigo-600 py-3 font-semibold text-white hover:bg-indigo-700 transition-colors"
-              >
-                Başla
-              </button>
-            </div>
-          )}
-
-          {/* ── Step 2: Connect OAuth ─────────────────────────── */}
-          {step === 2 && (
-            <div className="text-center">
-              <div className="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-2xl bg-green-100">
-                <svg className="h-8 w-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
                 </svg>
               </div>
               <h2 className="mb-2 text-xl font-bold text-gray-900">Meta ile Bağlan</h2>
@@ -203,7 +167,7 @@ export function MetaConnectWizard({ initialStep = 1 }: { initialStep?: number })
               </div>
               <button
                 onClick={() => { window.location.href = '/api/integrations/meta/connect'; }}
-                className="w-full flex items-center justify-center gap-3 rounded-xl bg-[#1877F2] py-3 font-semibold text-white hover:bg-[#166fe5] transition-colors"
+                className="w-full flex items-center justify-center gap-3 rounded-xl bg-[#1877F2] py-3 font-semibold text-white hover:bg-[#166fe5] active:scale-[0.98] transition-all"
               >
                 <svg className="h-5 w-5" viewBox="0 0 24 24" fill="currentColor">
                   <path d="M12 2C6.477 2 2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.879V14.89h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.989C18.343 21.129 22 16.99 22 12c0-5.523-4.477-10-10-10z"/>
@@ -219,11 +183,11 @@ export function MetaConnectWizard({ initialStep = 1 }: { initialStep?: number })
             </div>
           )}
 
-          {/* ── Step 3: Page Selection / Connecting ──────────── */}
-          {step === 3 && (
+          {/* ── Step 2: Page Selection / Connecting ──────────── */}
+          {step === 2 && (
             <div>
               {/* Loading */}
-              {step3Phase === 'loading' && (
+              {step2Phase === 'loading' && (
                 <div className="flex flex-col items-center gap-3 py-10">
                   <RefreshCw className="h-9 w-9 animate-spin text-indigo-600" />
                   <p className="text-sm text-gray-500">Sayfalar yükleniyor...</p>
@@ -231,7 +195,7 @@ export function MetaConnectWizard({ initialStep = 1 }: { initialStep?: number })
               )}
 
               {/* Error */}
-              {step3Phase === 'error' && (
+              {step2Phase === 'error' && (
                 <div className="flex flex-col items-center gap-3 py-8 text-center">
                   <div className="flex h-12 w-12 items-center justify-center rounded-full bg-red-100">
                     <AlertTriangle className="h-6 w-6 text-red-500" />
@@ -247,7 +211,7 @@ export function MetaConnectWizard({ initialStep = 1 }: { initialStep?: number })
               )}
 
               {/* Page Selection */}
-              {step3Phase === 'select' && (
+              {step2Phase === 'select' && (
                 <>
                   <h2 className="mb-1 text-lg font-bold text-gray-900">Sayfaları Seç</h2>
                   <p className="mb-4 text-sm text-gray-500">
@@ -273,7 +237,7 @@ export function MetaConnectWizard({ initialStep = 1 }: { initialStep?: number })
                         <button
                           key={page.id}
                           onClick={() => togglePage(page.id)}
-                          className={`flex w-full items-center gap-3 rounded-xl border-2 px-4 py-3 text-left transition-all duration-150 active:scale-[0.98] active:brightness-95 ${isSelected ? 'border-indigo-500 bg-indigo-50 shadow-sm' : 'border-gray-200 bg-white hover:border-indigo-300 hover:bg-indigo-50/30'}`}
+                          className={`flex w-full items-center gap-3 rounded-xl border-2 px-4 py-3 text-left transition-all duration-150 active:scale-[0.98] ${isSelected ? 'border-indigo-500 bg-indigo-50' : 'border-gray-200 bg-white hover:border-indigo-300 hover:bg-indigo-50/30'}`}
                         >
                           {/* Toggle switch */}
                           <div className={`relative inline-flex h-6 w-11 shrink-0 items-center rounded-full border-2 border-transparent transition-colors duration-200 ${isSelected ? 'bg-indigo-600' : 'bg-gray-200'}`}>
@@ -307,7 +271,7 @@ export function MetaConnectWizard({ initialStep = 1 }: { initialStep?: number })
               )}
 
               {/* Connecting progress */}
-              {step3Phase === 'connecting' && (
+              {step2Phase === 'connecting' && (
                 <>
                   <div className="mb-5 text-center">
                     <RefreshCw className="mx-auto mb-3 h-9 w-9 animate-spin text-indigo-600" />
@@ -340,8 +304,8 @@ export function MetaConnectWizard({ initialStep = 1 }: { initialStep?: number })
             </div>
           )}
 
-          {/* ── Step 4: Success ──────────────────────────────── */}
-          {step === 4 && (
+          {/* ── Step 3: Success ──────────────────────────────── */}
+          {step === 3 && (
             <div className="text-center">
               <div className="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-full bg-green-100">
                 <Check className="h-8 w-8 text-green-600" />
