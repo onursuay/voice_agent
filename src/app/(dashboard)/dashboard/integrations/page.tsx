@@ -196,9 +196,6 @@ export default function IntegrationsPage() {
     for (const c of connections) await disconnectPage(c.id);
   };
 
-  // Account label: first connected page name
-  const primaryPageName = connections[0]?.page_name ?? null;
-
   return (
     <div className="space-y-6">
       {/* Header */}
