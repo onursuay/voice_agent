@@ -73,6 +73,16 @@ export default function IntegrationsPage() {
     }
   };
 
+  const resubscribePage = async (id: string) => {
+    setResubscribing(id);
+    try {
+      await fetch(`/api/integrations/meta/resubscribe?id=${encodeURIComponent(id)}`, { method: 'POST' });
+      await loadMetaStatus();
+    } catch { /* ignore */ } finally {
+      setResubscribing(null);
+    }
+  };
+
   return (
     <div className="space-y-6">
       {/* Header */}
