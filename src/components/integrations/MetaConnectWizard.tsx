@@ -276,7 +276,7 @@ export function MetaConnectWizard({ initialStep = 1 }: { initialStep?: number })
                     <h2 className="text-lg font-bold text-gray-900">Sayfalar Bağlanıyor...</h2>
                   </div>
                   <div className="max-h-64 space-y-2 overflow-y-auto">
-                    {pages.filter((p) => p.status !== 'done' || selected.has(p.id)).map((page) => (
+                    {pages.map((page) => (
                       <div key={page.id} className={`flex items-center gap-3 rounded-xl px-3 py-2.5 ${
                         page.status === 'done' ? 'bg-green-50' :
                         page.status === 'error' ? 'bg-red-50' :
