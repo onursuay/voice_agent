@@ -179,17 +179,6 @@ export default function IntegrationsPage() {
                 Sayfa Ekle
               </button>
 
-              {/* Disconnect all */}
-              <button
-                onClick={disconnectAll}
-                disabled={disconnectingAll}
-                className="flex w-full items-center justify-center gap-2 rounded-xl border border-red-200 py-2.5 text-xs font-medium text-red-500 hover:bg-red-50 hover:border-red-300 transition-all disabled:opacity-50"
-              >
-                {disconnectingAll
-                  ? <><RefreshCw className="h-3.5 w-3.5 animate-spin" /> Kesiliyor...</>
-                  : <><AlertTriangle className="h-3.5 w-3.5" /> Tüm Bağlantıları Kes</>
-                }
-              </button>
             </>
           )}
 
