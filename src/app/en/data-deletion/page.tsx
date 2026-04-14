@@ -93,7 +93,7 @@ export default function DataDeletionEnPage() {
               <h2 className="text-xl font-semibold mb-3 text-white">Google Data Deletion</h2>
               <p className="text-[14px] text-[#8a8f98] leading-relaxed">
                 VoiceAgent does not persistently store your Google Sheets content. The OAuth access token used for Google Sheets import is stored in a short-lived cookie and expires automatically within 1 hour. You may revoke VoiceAgent&apos;s access to your Google account at any time via{' '}
-                <a href="https://myaccount.google.com/permissions" target="_blank" rel="noopener noreferrer" className="text-indigo-400 hover:text-indigo-300">
+                <a href="https://myaccount.google.com/permissions" target="_blank" rel="noopener noreferrer" className="text-emerald-400 hover:text-emerald-300">
                   Google Account Permissions
                 </a>.
               </p>
