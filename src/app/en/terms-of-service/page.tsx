@@ -14,11 +14,11 @@ export default function TermsOfServiceEnPage() {
       <LandingHeader ctaSchedule="Book a Call" ctaTrial="14-Day Free Trial" />
 
       <div className="max-w-5xl mx-auto px-6 py-16">
-        <Link href="/" className="text-indigo-400 hover:text-indigo-300 transition-colors mb-6 inline-block text-sm">
+        <Link href="/" className="text-emerald-400 hover:text-emerald-300 transition-colors mb-6 inline-block text-sm">
           &larr; Back to Home
         </Link>
 
-        <div className="relative rounded-2xl border border-indigo-400/10 bg-white/[0.02] px-8 py-10 shadow-[0_0_60px_rgba(99,102,241,0.07),inset_0_0_40px_rgba(99,102,241,0.03)]">
+        <div className="relative rounded-2xl border border-emerald-400/10 bg-white/[0.02] px-8 py-10 shadow-[0_0_60px_rgba(16,185,129,0.07),inset_0_0_40px_rgba(16,185,129,0.03)]">
           <p className="text-sm text-gray-500 mb-2">Last updated: April 2025</p>
           <h1 className="text-3xl font-bold mb-2 text-white">Terms of Service</h1>
           <p className="text-gray-500 mb-10">YO Dijital Medya A.Ş. · voiceagent.yodijital.com</p>
