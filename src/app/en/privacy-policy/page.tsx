@@ -59,7 +59,7 @@ export default function PrivacyPolicyEnPage() {
               <h2 className="text-xl font-semibold mb-3 text-white">4. Google API Services — Limited Use Disclosure</h2>
               <p className="text-[14px] text-[#8a8f98] leading-relaxed mb-3">
                 VoiceAgent&apos;s use and transfer to any other app of information received from Google APIs will adhere to the{' '}
-                <a href="https://developers.google.com/terms/api-services-user-data-policy" target="_blank" rel="noopener noreferrer" className="text-indigo-400 hover:text-indigo-300 underline">
+                <a href="https://developers.google.com/terms/api-services-user-data-policy" target="_blank" rel="noopener noreferrer" className="text-emerald-400 hover:text-emerald-300 underline">
                   Google API Services User Data Policy
                 </a>
                 , including the Limited Use requirements. Specifically:
