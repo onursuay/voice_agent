@@ -33,12 +33,12 @@ export default function DataDeletionEnPage() {
 
             <section>
               <h2 className="text-xl font-semibold mb-3 text-white">How to Submit a Request</h2>
-              <div className="rounded-2xl border border-indigo-400/20 bg-indigo-400/[0.06] p-6 mb-6">
-                <h3 className="text-base font-semibold text-indigo-400 mb-3">Send a Data Deletion Request</h3>
+              <div className="rounded-2xl border border-emerald-400/20 bg-emerald-400/[0.06] p-6 mb-6">
+                <h3 className="text-base font-semibold text-emerald-400 mb-3">Send a Data Deletion Request</h3>
                 <p className="text-[14px] text-[#8a8f98] mb-4">Send an email with the subject &quot;Data Deletion Request&quot; to:</p>
                 <a
                   href="mailto:info@yodijital.com?subject=Data%20Deletion%20Request"
-                  className="inline-flex items-center gap-2 bg-indigo-500 hover:bg-indigo-400 text-white font-semibold px-6 py-3 rounded-xl transition-colors text-sm"
+                  className="inline-flex items-center gap-2 bg-emerald-500 hover:bg-emerald-400 text-black font-semibold px-6 py-3 rounded-xl transition-colors text-sm"
                 >
                   info@yodijital.com — Send Request
                 </a>
