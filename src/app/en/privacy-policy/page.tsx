@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 export default function PrivacyPolicyEnPage() {
   return (
     <div className="min-h-screen bg-[#060609] text-white">
-      <LandingHeader ctaSchedule="Book a Call" ctaTrial="14-Day Free Trial" />
+      <LandingHeader lang="en" ctaSchedule="Book a Call" ctaTrial="14-Day Free Trial" />
 
       <div className="max-w-5xl mx-auto px-6 py-16">
         <Link href="/" className="text-emerald-400 hover:text-emerald-300 transition-colors mb-6 inline-block text-sm">
