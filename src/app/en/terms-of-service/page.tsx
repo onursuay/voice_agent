@@ -74,7 +74,7 @@ export default function TermsOfServiceEnPage() {
             <section>
               <h2 className="text-xl font-semibold mb-3 text-white">7) Account Security</h2>
               <p className="text-[14px] text-[#8a8f98] leading-relaxed">
-                The user is responsible for the security of their account and the protection of access credentials. Please notify us immediately of any unauthorized use at <a href="mailto:info@yodijital.com" className="text-indigo-400 hover:text-indigo-300">info@yodijital.com</a>.
+                The user is responsible for the security of their account and the protection of access credentials. Please notify us immediately of any unauthorized use at <a href="mailto:info@yodijital.com" className="text-emerald-400 hover:text-emerald-300">info@yodijital.com</a>.
               </p>
             </section>
 
