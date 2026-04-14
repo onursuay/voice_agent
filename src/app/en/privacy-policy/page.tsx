@@ -123,7 +123,7 @@ export default function PrivacyPolicyEnPage() {
               <h2 className="text-xl font-semibold mb-3 text-white">11. Contact</h2>
               <p className="text-[14px] text-[#8a8f98] leading-relaxed">
                 <strong className="text-gray-300">YO Dijital Medya A.Ş.</strong><br />
-                Email: <a href="mailto:info@yodijital.com" className="text-indigo-400 hover:text-indigo-300">info@yodijital.com</a>
+                Email: <a href="mailto:info@yodijital.com" className="text-emerald-400 hover:text-emerald-300">info@yodijital.com</a>
               </p>
             </section>
           </div>
