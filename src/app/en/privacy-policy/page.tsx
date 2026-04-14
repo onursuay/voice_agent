@@ -72,7 +72,7 @@ export default function PrivacyPolicyEnPage() {
                 <li><strong className="text-gray-300">No data sales:</strong> Google user data is not sold to any party under any circumstances.</li>
                 <li><strong className="text-gray-300">Human access restrictions:</strong> No VoiceAgent personnel reads your Google Sheets content unless required by law or for security purposes.</li>
                 <li><strong className="text-gray-300">Token storage:</strong> Your Google OAuth access token is stored in a short-lived, httpOnly cookie (expires within 1 hour). Never exposed to client-side JavaScript.</li>
-                <li><strong className="text-gray-300">Revocation:</strong> You may revoke access at any time via <a href="https://myaccount.google.com/permissions" target="_blank" rel="noopener noreferrer" className="text-indigo-400 hover:text-indigo-300 underline">Google Account Permissions</a>.</li>
+                <li><strong className="text-gray-300">Revocation:</strong> You may revoke access at any time via <a href="https://myaccount.google.com/permissions" target="_blank" rel="noopener noreferrer" className="text-emerald-400 hover:text-emerald-300 underline">Google Account Permissions</a>.</li>
               </ul>
             </section>
 
