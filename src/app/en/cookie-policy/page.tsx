@@ -74,7 +74,7 @@ export default function CookiePolicyEnPage() {
             <section>
               <h2 className="text-xl font-semibold mb-3 text-white">5. Contact</h2>
               <p className="text-[14px] text-[#8a8f98] leading-relaxed">
-                For questions about our cookie policy: <a href="mailto:info@yodijital.com" className="text-indigo-400 hover:text-indigo-300">info@yodijital.com</a>
+                For questions about our cookie policy: <a href="mailto:info@yodijital.com" className="text-emerald-400 hover:text-emerald-300">info@yodijital.com</a>
               </p>
             </section>
           </div>
