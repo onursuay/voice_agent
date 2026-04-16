@@ -75,7 +75,7 @@ export default function DashboardPage() {
   ];
 
   const quickActions = [
-    { label: t('importLeads'), icon: Upload, href: '/dashboard/import', color: '#6366f1', bg: '#eef2ff' },
+    { label: t('importLeads'), icon: Upload, href: '/dashboard/import', color: '#10b981', bg: '#d1fae5' },
     { label: t('aiCall'), icon: Phone, href: '/dashboard/calls', color: '#059669', bg: '#ecfdf5' },
     { label: t('sendEmail'), icon: Mail, href: '/dashboard/email', color: '#d97706', bg: '#fffbeb' },
     { label: t('setupAutomation'), icon: Zap, href: '/dashboard/automations', color: '#7c3aed', bg: '#f5f3ff' },
@@ -257,7 +257,7 @@ export default function DashboardPage() {
                   <div key={stage.id} className="group">
                     <div className="mb-2 flex items-center justify-between">
                       <div className="flex items-center gap-2">
-                        <span className="h-2.5 w-2.5 rounded-full" style={{ backgroundColor: stage.color || '#6366f1' }} />
+                        <span className="h-2.5 w-2.5 rounded-full" style={{ backgroundColor: stage.color || '#10b981' }} />
                         <span className="text-sm font-medium text-gray-700">{stage.name}</span>
                       </div>
                       <div className="flex items-center gap-2">
@@ -270,7 +270,7 @@ export default function DashboardPage() {
                         className="stage-bar-fill"
                         style={{
                           width: `${Math.max((count / maxCount) * 100, count > 0 ? 4 : 0)}%`,
-                          backgroundColor: stage.color || '#6366f1',
+                          backgroundColor: stage.color || '#10b981',
                         }}
                       />
                     </div>

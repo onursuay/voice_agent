@@ -11,7 +11,7 @@ export const MOCK_LEADS: Lead[] = [
     tags: ['sıcak', 'VIP'], custom_fields: {}, notes_count: 2, activities_count: 5,
     last_activity_at: new Date(Date.now() - 3600000).toISOString(), first_seen_at: '2026-03-15T10:00:00Z',
     created_at: '2026-03-15T10:00:00Z', updated_at: new Date().toISOString(),
-    stage: { id: 'stage-1', organization_id: 'mock-org-1', name: 'Yeni', slug: 'new', color: '#6366f1', position: 0, is_won: false, is_lost: false, created_at: '' },
+    stage: { id: 'stage-1', organization_id: 'mock-org-1', name: 'Yeni', slug: 'new', color: '#10b981', position: 0, is_won: false, is_lost: false, created_at: '' },
   },
   {
     id: 'lead-02', organization_id: 'mock-org-1', phone: '+905551112233', email: 'elif.kaya@outlook.com',
@@ -95,7 +95,7 @@ export const MOCK_LEADS: Lead[] = [
     tags: ['yeni'], custom_fields: {}, notes_count: 0, activities_count: 1,
     last_activity_at: new Date(Date.now() - 14400000).toISOString(), first_seen_at: '2026-03-28T15:00:00Z',
     created_at: '2026-03-28T15:00:00Z', updated_at: new Date().toISOString(),
-    stage: { id: 'stage-1', organization_id: 'mock-org-1', name: 'Yeni', slug: 'new', color: '#6366f1', position: 0, is_won: false, is_lost: false, created_at: '' },
+    stage: { id: 'stage-1', organization_id: 'mock-org-1', name: 'Yeni', slug: 'new', color: '#10b981', position: 0, is_won: false, is_lost: false, created_at: '' },
   },
   {
     id: 'lead-09', organization_id: 'mock-org-1', phone: '+905367654321', email: 'emre.koc@firma.com',
@@ -143,7 +143,7 @@ export const MOCK_LEADS: Lead[] = [
     tags: ['yeni'], custom_fields: {}, notes_count: 0, activities_count: 1,
     last_activity_at: new Date(Date.now() - 3600000 * 5).toISOString(), first_seen_at: '2026-03-29T17:00:00Z',
     created_at: '2026-03-29T17:00:00Z', updated_at: new Date().toISOString(),
-    stage: { id: 'stage-1', organization_id: 'mock-org-1', name: 'Yeni', slug: 'new', color: '#6366f1', position: 0, is_won: false, is_lost: false, created_at: '' },
+    stage: { id: 'stage-1', organization_id: 'mock-org-1', name: 'Yeni', slug: 'new', color: '#10b981', position: 0, is_won: false, is_lost: false, created_at: '' },
   },
 ];
 

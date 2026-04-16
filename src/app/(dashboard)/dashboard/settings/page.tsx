@@ -39,7 +39,7 @@ const ROLE_COLORS: Record<UserRole, 'indigo' | 'purple' | 'blue' | 'green' | 'ye
 };
 
 const STAGE_COLOR_OPTIONS = [
-  '#6366f1', '#3b82f6', '#8b5cf6', '#f59e0b', '#f97316',
+  '#10b981', '#3b82f6', '#8b5cf6', '#f59e0b', '#f97316',
   '#22c55e', '#ef4444', '#ec4899', '#14b8a6', '#6b7280',
 ];
 
@@ -71,7 +71,7 @@ export default function SettingsPage() {
   // Pipeline state
   const [localStages, setLocalStages] = useState<CrmStage[]>([]);
   const [newStageName, setNewStageName] = useState('');
-  const [newStageColor, setNewStageColor] = useState('#6366f1');
+  const [newStageColor, setNewStageColor] = useState('#10b981');
   const [pipelineSaving, setPipelineSaving] = useState(false);
   const [pipelineSuccess, setPipelineSuccess] = useState(false);
   const [stageLeadCounts, setStageLeadCounts] = useState<Record<string, number>>({});
@@ -249,7 +249,7 @@ export default function SettingsPage() {
       setLocalStages([...localStages, newStage]);
       setStages([...stages, newStage]);
       setNewStageName('');
-      setNewStageColor('#6366f1');
+      setNewStageColor('#10b981');
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Aşama eklenemedi');
     }

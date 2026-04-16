@@ -75,7 +75,7 @@ export default function SunumPage() {
                   { label: "WA", angle: 72, color: "#25D366" },
                   { label: "IG", angle: 144, color: "#E4405F" },
                   { label: "Msg", angle: 216, color: "#0084FF" },
-                  { label: "Web", angle: 288, color: "#6366f1" },
+                  { label: "Web", angle: 288, color: "#10b981" },
                 ].map((p) => {
                   const r = 76;
                   const rad = (p.angle - 90) * (Math.PI / 180);
@@ -137,7 +137,7 @@ export default function SunumPage() {
                 { label: "Lead", pct: 40, color: "#3b82f6" },
                 { label: "WhatsApp", pct: 25, color: "#22c55e" },
                 { label: "Instagram", pct: 18, color: "#ec4899" },
-                { label: "Messenger", pct: 10, color: "#6366f1" },
+                { label: "Messenger", pct: 10, color: "#10b981" },
                 { label: "Website / Di\u011fer", pct: 7, color: "#9ca3af" },
               ].map((bar) => (
                 <div key={bar.label} className="flex items-center gap-3">
@@ -171,7 +171,7 @@ export default function SunumPage() {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             {[
-              { name: "Dashboard", color: "#6366f1", desc: "Toplam lead, haftal\u0131k yeni, d\u00f6n\u00fc\u015f\u00fcm oran\u0131, pipeline \u00f6zeti", icon: "\u2726" },
+              { name: "Dashboard", color: "#10b981", desc: "Toplam lead, haftal\u0131k yeni, d\u00f6n\u00fc\u015f\u00fcm oran\u0131, pipeline \u00f6zeti", icon: "\u2726" },
               { name: "Lead\u2019ler", color: "#3b82f6", desc: "Airtable benzeri tablo, inline edit, filtre, arama, yeni lead", icon: "\u2630" },
               { name: "Pipeline", color: "#8b5cf6", desc: "Kanban board, s\u00fcr\u00fckle-b\u0131rak ile a\u015fama de\u011fi\u015ftirme", icon: "\u2b95" },
               { name: "\u0130\u00e7e Aktar", color: "#f59e0b", desc: "CSV/XLSX y\u00fckleme, kolon e\u015fle\u015ftirme, dedupe", icon: "\u2b06" },

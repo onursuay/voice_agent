@@ -76,7 +76,7 @@ export function getSourceColor(platform: string): string {
     whatsapp: '#25D366',
     instagram_dm: '#E4405F',
     messenger: '#0084FF',
-    website: '#6366f1',
+    website: '#10b981',
     manual: '#8b5cf6',
     import: '#f59e0b',
     other: '#6b7280',
