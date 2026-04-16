@@ -6,11 +6,13 @@ import type { FacebookPage } from '@/app/api/integrations/meta/callback/route';
 const META_APP_ID = process.env.META_APP_ID;
 const META_GRAPH_VERSION = 'v23.0';
 
-interface PendingConfig {
+interface AccountConfig {
   organization_id: string;
   userToken: string;
   pages: FacebookPage[];
-  ts: number;
+  connected_at?: string;
+  expires_at?: string;
+  ts?: number;
 }
 
 interface SubscribedApp {
