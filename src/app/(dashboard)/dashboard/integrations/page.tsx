@@ -284,9 +284,12 @@ export default function IntegrationsPage() {
 
           {/* ── Account not connected: prompt via toggle ── */}
           {!metaLoading && !isAccountConnected && (
-            <div className="rounded-xl border border-dashed border-gray-200 bg-gray-50 px-4 py-5 text-center">
-              <p className="text-xs text-gray-500">
-                {t('integrations.metaAccountNotConnected')}. {t('integrations.metaAccountConnect')} →
+            <div className="flex flex-col items-center gap-2 rounded-xl border border-dashed border-gray-200 bg-gray-50 px-4 py-5 text-center">
+              <div className="flex h-9 w-9 items-center justify-center rounded-full bg-emerald-100">
+                <Link2 className="h-4.5 w-4.5 text-emerald-600" />
+              </div>
+              <p className="text-sm font-medium text-gray-700">
+                {t('integrations.metaConnectAccountPrompt')}
               </p>
             </div>
           )}
