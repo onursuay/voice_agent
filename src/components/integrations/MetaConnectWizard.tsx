@@ -152,7 +152,7 @@ export function MetaConnectWizard({ initialStep = 1 }: { initialStep?: number })
               <p className="mb-6 text-sm text-gray-500">{w('connectDesc')}</p>
               <div className="mb-7 rounded-xl border border-gray-100 bg-gray-50 p-4 text-left space-y-2">
                 <p className="text-xs font-semibold uppercase tracking-wider text-gray-400 mb-3">{w('permissionsLabel')}</p>
-                {(['perm1', 'perm2', 'perm3'] as const).map((key) => (
+                {(['perm1', 'perm2', 'perm3', 'perm4', 'perm5'] as const).map((key) => (
                   <div key={key} className="flex items-center gap-2">
                     <Check className="h-4 w-4 text-green-500 shrink-0" />
                     <span className="text-sm text-gray-600">{w(key)}</span>
