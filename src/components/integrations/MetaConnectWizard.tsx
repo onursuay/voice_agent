@@ -114,24 +114,23 @@ export function MetaConnectWizard({ initialStep = 1 }: { initialStep?: number })
     <div className="flex min-h-[60vh] items-center justify-center px-4 py-10">
       <div className="w-full max-w-md">
 
-        {/* Progress */}
+        {/* Progress — green fills progressively as steps complete */}
         <div className="flex items-center justify-center gap-2 mb-8">
           {[1, 2, 3].map((num) => (
             <div key={num} className="flex items-center">
               <div className="flex flex-col items-center">
-                <div className={`flex h-9 w-9 items-center justify-center rounded-full text-sm font-semibold transition-colors ${
-                  step > num ? 'bg-green-500 text-white' :
-                  step === num ? 'bg-indigo-600 text-white' :
+                <div className={`flex h-9 w-9 items-center justify-center rounded-full text-sm font-semibold transition-colors duration-300 ${
+                  step >= num ? 'bg-emerald-500 text-white' :
                   'bg-gray-200 text-gray-400'
                 }`}>
                   {step > num ? <Check className="h-4 w-4" /> : num}
                 </div>
-                <span className={`mt-1 text-[10px] font-medium ${step === num ? 'text-indigo-600' : 'text-gray-400'}`}>
+                <span className={`mt-1 text-[10px] font-medium transition-colors ${step >= num ? 'text-emerald-600' : 'text-gray-400'}`}>
                   {stepLabels[num - 1]}
                 </span>
               </div>
               {num < 3 && (
-                <div className={`mb-4 h-0.5 w-12 mx-1 transition-colors ${step > num ? 'bg-green-500' : 'bg-gray-200'}`} />
+                <div className={`mb-4 h-0.5 w-12 mx-1 transition-colors duration-300 ${step > num ? 'bg-emerald-500' : 'bg-gray-200'}`} />
               )}
             </div>
           ))}
