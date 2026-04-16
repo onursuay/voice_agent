@@ -164,22 +164,23 @@ export async function GET(request: NextRequest) {
     return NextResponse.redirect(`${dashboardUrl}?meta_error=invalid_session`);
   }
 
-  // Read pending session from DB
-  const { data: pendingRow } = await admin
+  // Read connected account from DB (persistent)
+  const { data: accountRow } = await admin
     .from('integration_settings')
     .select('id, config')
-    .eq('provider', 'meta_oauth_pending')
+    .eq('provider', 'meta_account')
+    .eq('is_active', true)
     .filter('config->>organization_id', 'eq', orgId)
     .maybeSingle();
 
-  if (!pendingRow?.config) {
-    return NextResponse.redirect(`${dashboardUrl}?meta_error=session_expired`);
+  if (!accountRow?.config) {
+    return NextResponse.redirect(`${dashboardUrl}?meta_error=account_not_connected`);
   }
 
-  const session = pendingRow.config as PendingConfig;
+  const session = accountRow.config as AccountConfig;
 
-  if (Date.now() - session.ts > 10 * 60 * 1000) {
-    return NextResponse.redirect(`${dashboardUrl}?meta_error=session_expired`);
+  if (session.expires_at && new Date(session.expires_at) < new Date()) {
+    return NextResponse.redirect(`${dashboardUrl}?meta_error=account_expired`);
   }
 
   const page = session.pages.find((p) => p.id === pageId);
