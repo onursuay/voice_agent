@@ -19,6 +19,41 @@ interface SubscribedApp {
   [key: string]: unknown;
 }
 
+interface LeadgenForm {
+  id: string;
+  name?: string;
+  status?: string;
+  created_time?: string;
+}
+
+/**
+ * Fetch Lead Forms for the given page. Requires pages_manage_ads permission.
+ * Non-fatal: returns [] on failure so the connection flow continues.
+ */
+async function fetchLeadgenForms(
+  pageId: string,
+  pageToken: string
+): Promise<LeadgenForm[]> {
+  const url = new URL(
+    `https://graph.facebook.com/${META_GRAPH_VERSION}/${pageId}/leadgen_forms`
+  );
+  url.searchParams.set('fields', 'id,name,status,created_time');
+  url.searchParams.set('limit', '100');
+  url.searchParams.set('access_token', pageToken);
+
+  try {
+    const res = await fetch(url.toString());
+    const body = await res.text();
+    console.log(`[Meta leadgen_forms] page=${pageId} status=${res.status} body=${body.slice(0, 500)}`);
+    if (!res.ok) return [];
+    const parsed = JSON.parse(body) as { data?: LeadgenForm[] };
+    return parsed.data ?? [];
+  } catch (err) {
+    console.warn(`[Meta leadgen_forms] fetch failed page=${pageId}: ${err}`);
+    return [];
+  }
+}
+
 /**
  * DELETE existing subscription, POST new one, then GET verify.
  * Returns { success, subscribed_fields, error? }
