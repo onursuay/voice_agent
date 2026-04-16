@@ -63,7 +63,7 @@ body {
 .dashboard-focus input:focus, .dashboard-focus select:focus, .dashboard-focus textarea:focus {
   outline: none;
   border-color: var(--accent) !important;
-  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.15);
 }
 
 /* Table cell editing */
