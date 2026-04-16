@@ -312,6 +312,7 @@
       "metaConnectPageButton": "Connect Page",
       "metaNoPagesYet": "No pages connected yet",
       "metaNoPagesYetDesc": "Connect your pages to start receiving leads.",
+      "metaConnectAccountPrompt": "Connect Your Meta Account",
       "metaConnectError": "Connection error: ",
       "tokenExpired": "Token expired",
       "pageLabel": "Page: ",
