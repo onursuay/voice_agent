@@ -310,6 +310,7 @@
       "metaConnectPageButton": "Sayfa Bağla",
       "metaNoPagesYet": "Henüz sayfa bağlanmadı",
       "metaNoPagesYetDesc": "Lead almaya başlamak için sayfalarınızı bağlayın.",
+      "metaConnectAccountPrompt": "Meta Hesabınızı Bağlayın",
       "metaConnectError": "Bağlantı hatası: ",
       "tokenExpired": "Token süresi dolmuş",
       "pageLabel": "Sayfa: ",
