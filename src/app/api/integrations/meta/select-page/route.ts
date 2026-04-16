@@ -288,20 +288,21 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ success: false, error: 'invalid_params' }, { status: 400 });
   }
 
-  const { data: pendingRow } = await admin
+  const { data: accountRow } = await admin
     .from('integration_settings')
     .select('id, config')
-    .eq('provider', 'meta_oauth_pending')
+    .eq('provider', 'meta_account')
+    .eq('is_active', true)
     .filter('config->>organization_id', 'eq', orgId)
     .maybeSingle();
 
-  if (!pendingRow?.config) {
-    return NextResponse.json({ success: false, error: 'session_expired' }, { status: 401 });
+  if (!accountRow?.config) {
+    return NextResponse.json({ success: false, error: 'account_not_connected' }, { status: 401 });
   }
 
-  const session = pendingRow.config as PendingConfig;
-  if (Date.now() - session.ts > 10 * 60 * 1000) {
-    return NextResponse.json({ success: false, error: 'session_expired' }, { status: 401 });
+  const session = accountRow.config as AccountConfig;
+  if (session.expires_at && new Date(session.expires_at) < new Date()) {
+    return NextResponse.json({ success: false, error: 'account_expired' }, { status: 401 });
   }
 
   const page = session.pages.find((p) => p.id === pageId);
