@@ -27,24 +27,30 @@ export async function GET(_request: NextRequest) {
 
   const orgId = membership.organization_id;
 
-  // Read pending session from DB
+  // Read connected Meta account from DB (persistent, no 10-min expiry)
   const admin = createAdminSupabaseClient();
-  const { data: pending } = await admin
+  const { data: account } = await admin
     .from('integration_settings')
     .select('config')
-    .eq('provider', 'meta_oauth_pending')
+    .eq('provider', 'meta_account')
+    .eq('is_active', true)
     .filter('config->>organization_id', 'eq', orgId)
     .maybeSingle();
 
-  if (!pending?.config) {
-    return NextResponse.json({ error: 'session_expired', reason: 'no_pending_session' }, { status: 401 });
+  if (!account?.config) {
+    return NextResponse.json({ error: 'account_not_connected', reason: 'no_account' }, { status: 401 });
   }
 
-  const session = pending.config as { organization_id: string; userToken: string; pages: { id: string; name: string }[]; ts: number };
+  const session = account.config as {
+    organization_id: string;
+    userToken: string;
+    pages: { id: string; name: string }[];
+    expires_at?: string;
+  };
 
-  // Check expiry (10 minutes)
-  if (Date.now() - session.ts > 10 * 60 * 1000) {
-    return NextResponse.json({ error: 'session_expired', reason: 'expired' }, { status: 401 });
+  // Check long-lived token expiry (~59 days)
+  if (session.expires_at && new Date(session.expires_at) < new Date()) {
+    return NextResponse.json({ error: 'account_expired', reason: 'token_expired' }, { status: 401 });
   }
 
   // Return only id + name, never expose tokens to frontend
