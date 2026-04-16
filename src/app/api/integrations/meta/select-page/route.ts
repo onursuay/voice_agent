@@ -212,6 +212,10 @@ export async function GET(request: NextRequest) {
     .filter('config->>page_id', 'eq', page.id)
     .maybeSingle();
 
+  // Fetch Lead Forms for this page (exercises pages_manage_ads permission)
+  const leadgenForms = await fetchLeadgenForms(page.id, page.access_token);
+  console.log(`[Meta select-page] Fetched ${leadgenForms.length} lead forms for page=${page.id}`);
+
   const config = {
     organization_id: orgId,
     page_id: page.id,
@@ -223,6 +227,8 @@ export async function GET(request: NextRequest) {
     webhook_subscribed: true,
     webhook_subscribed_fields: subscribeResult.subscribed_fields || ['leadgen'],
     webhook_subscribed_at: new Date().toISOString(),
+    leadgen_forms: leadgenForms,
+    leadgen_forms_fetched_at: new Date().toISOString(),
   };
 
   if (existing) {
@@ -313,6 +319,10 @@ export async function POST(request: NextRequest) {
     .filter('config->>page_id', 'eq', page.id)
     .maybeSingle();
 
+  // Fetch Lead Forms for this page (exercises pages_manage_ads permission)
+  const leadgenForms = await fetchLeadgenForms(page.id, page.access_token);
+  console.log(`[Meta select-page] Fetched ${leadgenForms.length} lead forms for page=${page.id}`);
+
   const config = {
     organization_id: orgId,
     page_id: page.id,
@@ -324,6 +334,8 @@ export async function POST(request: NextRequest) {
     webhook_subscribed: true,
     webhook_subscribed_fields: subscribeResult.subscribed_fields || ['leadgen'],
     webhook_subscribed_at: new Date().toISOString(),
+    leadgen_forms: leadgenForms,
+    leadgen_forms_fetched_at: new Date().toISOString(),
   };
 
   if (existing) {
