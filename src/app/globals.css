@@ -74,7 +74,7 @@ body {
 
 /* Airtable-style row hover */
 .grid-row:hover { background: #f8fafc; }
-.grid-row.selected { background: #eef2ff; }
+.grid-row.selected { background: #d1fae5; }
 
 /* Pipeline card */
 .pipeline-card { transition: box-shadow 0.15s ease; }
