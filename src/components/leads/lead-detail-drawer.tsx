@@ -62,7 +62,7 @@ const activityColorMap: Record<ActivityType, string> = {
   created: 'bg-green-100 text-green-600',
   stage_change: 'bg-blue-100 text-blue-600',
   note_added: 'bg-yellow-100 text-yellow-600',
-  email_sent: 'bg-indigo-100 text-indigo-600',
+  email_sent: 'bg-emerald-100 text-emerald-600',
   call_made: 'bg-purple-100 text-purple-600',
   assigned: 'bg-cyan-100 text-cyan-600',
   tag_added: 'bg-pink-100 text-pink-600',
@@ -263,7 +263,7 @@ function DetailTab({ lead }: { lead: Lead }) {
             <select
               value={lead.stage_id || ''}
               onChange={(e) => handleStageChange(e.target.value)}
-              className="block w-full appearance-none rounded-lg border border-gray-300 bg-white px-3 py-1.5 text-sm text-gray-900 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
+              className="block w-full appearance-none rounded-lg border border-gray-300 bg-white px-3 py-1.5 text-sm text-gray-900 focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/20"
             >
               <option value="">{t('drawer.stageSelect')}</option>
               {stages
@@ -295,7 +295,7 @@ function DetailTab({ lead }: { lead: Lead }) {
             <select
               value={lead.assigned_to || ''}
               onChange={(e) => handleAssignChange(e.target.value)}
-              className="block w-full appearance-none rounded-lg border border-gray-300 bg-white px-3 py-1.5 text-sm text-gray-900 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
+              className="block w-full appearance-none rounded-lg border border-gray-300 bg-white px-3 py-1.5 text-sm text-gray-900 focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/20"
             >
               <option value="">{t('drawer.unassigned')}</option>
               {members.map((m) => (
@@ -419,12 +419,12 @@ function DetailTab({ lead }: { lead: Lead }) {
                 }}
                 placeholder={t('fields.tagPlaceholder')}
                 autoFocus
-                className="h-6 w-28 rounded border border-gray-300 px-2 text-xs focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500/20"
+                className="h-6 w-28 rounded border border-gray-300 px-2 text-xs focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500/20"
               />
               <button
                 type="button"
                 onClick={handleAddTag}
-                className="inline-flex h-6 items-center rounded bg-indigo-500 px-2 text-xs text-white hover:bg-indigo-600"
+                className="inline-flex h-6 items-center rounded bg-emerald-500 px-2 text-xs text-white hover:bg-emerald-600"
               >
                 {t('fields.tagAdd')}
               </button>
@@ -656,7 +656,7 @@ function NotesTab({ leadId }: { leadId: string }) {
           onChange={(e) => setNewNote(e.target.value)}
           placeholder={t('drawer.notePlaceholder')}
           rows={3}
-          className="block w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 placeholder:text-gray-400 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 resize-none"
+          className="block w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 placeholder:text-gray-400 focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 resize-none"
           onKeyDown={(e) => {
             if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) {
               handleAddNote();

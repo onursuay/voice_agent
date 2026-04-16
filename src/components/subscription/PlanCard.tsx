@@ -55,17 +55,17 @@ export default function PlanCard({
     <div
       className={`relative flex flex-col rounded-2xl border p-6 transition-all bg-gray-800 ${
         highlighted
-          ? 'border-indigo-500 shadow-lg shadow-indigo-500/20 ring-1 ring-indigo-500/30'
+          ? 'border-emerald-500 shadow-lg shadow-emerald-500/20 ring-1 ring-emerald-500/30'
           : 'border-gray-700 hover:border-gray-600'
       }`}
     >
       {/* Badge */}
       {highlighted && plan.trialDays > 0 ? (
-        <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 bg-indigo-600 text-white text-[10px] font-bold rounded-full uppercase tracking-wide">
+        <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 bg-emerald-600 text-white text-[10px] font-bold rounded-full uppercase tracking-wide">
           {t('trialDays', { days: plan.trialDays })}
         </div>
       ) : highlighted ? (
-        <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 bg-indigo-600 text-white text-[10px] font-bold rounded-full uppercase tracking-wide">
+        <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 bg-emerald-600 text-white text-[10px] font-bold rounded-full uppercase tracking-wide">
           {t('popular')}
         </div>
       ) : null}
@@ -75,7 +75,7 @@ export default function PlanCard({
         <div className="flex items-center gap-2">
           <h3 className="text-lg font-bold text-white">{plan.name}</h3>
           {plan.trialDays > 0 && !highlighted && !isEnterprise && (
-            <span className="px-2 py-0.5 text-[10px] font-semibold bg-indigo-500/20 text-indigo-400 rounded-full">
+            <span className="px-2 py-0.5 text-[10px] font-semibold bg-emerald-500/20 text-emerald-400 rounded-full">
               {t('trialDays', { days: plan.trialDays })}
             </span>
           )}
@@ -150,7 +150,7 @@ export default function PlanCard({
         <ul className="space-y-2.5">
           {plan.features.map(feature => (
             <li key={feature} className="flex items-center gap-2 text-sm text-gray-300">
-              <Check className="w-4 h-4 text-indigo-400 shrink-0" />
+              <Check className="w-4 h-4 text-emerald-400 shrink-0" />
               <span>{feature}</span>
             </li>
           ))}
@@ -160,7 +160,7 @@ export default function PlanCard({
       {/* CTA */}
       <div className="mt-6">
         {isCurrentPlan ? (
-          <div className="w-full py-2.5 text-center text-sm font-medium text-indigo-400 bg-indigo-500/10 rounded-lg">
+          <div className="w-full py-2.5 text-center text-sm font-medium text-emerald-400 bg-emerald-500/10 rounded-lg">
             {t('currentPlanBadge')}
           </div>
         ) : isEnterprise ? (
@@ -175,7 +175,7 @@ export default function PlanCard({
             onClick={() => onSelect(plan.id)}
             className={`w-full py-2.5 text-sm font-medium rounded-lg transition-colors ${
               highlighted
-                ? 'bg-indigo-600 text-white hover:bg-indigo-700'
+                ? 'bg-emerald-600 text-white hover:bg-emerald-700'
                 : 'bg-white text-gray-900 hover:bg-gray-100'
             }`}
           >

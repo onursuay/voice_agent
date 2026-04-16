@@ -122,10 +122,10 @@ function ComposeTab() {
     <div className="max-w-4xl space-y-6">
       {/* Mode toggle */}
       <div className="flex gap-2">
-        <button onClick={() => setMode('single')} className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${mode === 'single' ? 'bg-indigo-600 text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}`}>
+        <button onClick={() => setMode('single')} className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${mode === 'single' ? 'bg-emerald-600 text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}`}>
           {t('singleSend')}
         </button>
-        <button onClick={() => setMode('bulk')} className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${mode === 'bulk' ? 'bg-indigo-600 text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}`}>
+        <button onClick={() => setMode('bulk')} className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${mode === 'bulk' ? 'bg-emerald-600 text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}`}>
           {t('bulkSend')}
         </button>
       </div>
@@ -159,7 +159,7 @@ function ComposeTab() {
           <div className="max-h-48 overflow-y-auto rounded-lg border border-gray-200 bg-white divide-y divide-gray-100">
             {filteredLeads.filter(l => l.email).map(l => (
               <label key={l.id} className="flex items-center gap-3 px-3 py-2 text-sm hover:bg-gray-50 cursor-pointer">
-                <input type="checkbox" checked={selectedLeadIds.includes(l.id)} onChange={() => toggleLead(l.id)} className="rounded border-gray-300 text-indigo-600" />
+                <input type="checkbox" checked={selectedLeadIds.includes(l.id)} onChange={() => toggleLead(l.id)} className="rounded border-gray-300 text-emerald-600" />
                 <span className="font-medium">{l.full_name}</span>
                 <span className="text-gray-500">{l.email}</span>
                 {l.stage && <Badge color="blue" size="sm">{l.stage.name}</Badge>}
@@ -174,7 +174,7 @@ function ComposeTab() {
       <Input label={t('subject')} value={subject} onChange={e => setSubject(e.target.value)} placeholder={t('subjectPlaceholder')} />
       <div>
         <label className="mb-1.5 block text-sm font-medium text-gray-700">{t('body')}</label>
-        <textarea value={body} onChange={e => setBody(e.target.value)} rows={10} className="w-full rounded-lg border border-gray-300 px-3 py-2.5 text-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20" placeholder={t('bodyPlaceholder')} />
+        <textarea value={body} onChange={e => setBody(e.target.value)} rows={10} className="w-full rounded-lg border border-gray-300 px-3 py-2.5 text-sm focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20" placeholder={t('bodyPlaceholder')} />
         <div className="mt-1.5 flex flex-wrap gap-1.5">
           {VARIABLE_OPTIONS.map(v => (
             <button key={v} onClick={() => setBody(prev => prev + ' ' + v)} className="rounded-md bg-gray-100 px-2 py-1 text-xs text-gray-600 hover:bg-gray-200">{v}</button>

@@ -85,7 +85,7 @@ function SortDropdown() {
                 className={cn(
                   'flex w-full items-center justify-between px-3 py-1.5 text-sm hover:bg-gray-50',
                   sort?.column === col.key && sort?.direction === 'asc'
-                    ? 'text-indigo-600 bg-indigo-50'
+                    ? 'text-emerald-600 bg-emerald-50'
                     : 'text-gray-700'
                 )}
               >
@@ -100,7 +100,7 @@ function SortDropdown() {
                 className={cn(
                   'flex w-full items-center justify-between px-3 py-1.5 text-sm hover:bg-gray-50',
                   sort?.column === col.key && sort?.direction === 'desc'
-                    ? 'text-indigo-600 bg-indigo-50'
+                    ? 'text-emerald-600 bg-emerald-50'
                     : 'text-gray-700'
                 )}
               >
@@ -167,7 +167,7 @@ function ColumnVisibilityDropdown() {
                 type="checkbox"
                 checked={!hiddenColumns.has(col.key)}
                 onChange={() => toggleColumn(col.key)}
-                className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+                className="h-4 w-4 rounded border-gray-300 text-emerald-600 focus:ring-emerald-500"
               />
               {getLabel(col)}
             </label>
@@ -334,7 +334,7 @@ export function BulkActionBar() {
             <select
               value={selectedStageId}
               onChange={(e) => setSelectedStageId(e.target.value)}
-              className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none"
+              className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-emerald-500 focus:outline-none"
             >
               <option value="">Seçim Yapın</option>
               {stages.map((s) => <option key={s.id} value={s.id}>{s.name}</option>)}
@@ -361,7 +361,7 @@ export function BulkActionBar() {
             <select
               value={selectedUserId}
               onChange={(e) => setSelectedUserId(e.target.value)}
-              className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none"
+              className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-emerald-500 focus:outline-none"
             >
               <option value="">Seçim Yapın</option>
               {members.map((m) => (
@@ -394,7 +394,7 @@ export function BulkActionBar() {
               placeholder="Etiket ekle (virgülle ayırın)"
               value={tagInput}
               onChange={(e) => setTagInput(e.target.value)}
-              className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none"
+              className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-emerald-500 focus:outline-none"
               onKeyDown={(e) => { if (e.key === 'Enter' && tagInput.trim()) bulkApi('tag', { tags: tagInput.split(',').map(t => t.trim()).filter(Boolean) }); }}
             />
             <p className="mt-1 text-xs text-gray-400">Birden fazla etiket için virgülle ayırın</p>
@@ -490,14 +490,14 @@ function SourceFilterDropdown() {
         className={cn(
           'flex items-center gap-1.5 rounded-lg border px-3 py-2 text-sm transition-colors',
           sourceFilter
-            ? 'border-indigo-300 bg-indigo-50 text-indigo-700'
+            ? 'border-emerald-300 bg-emerald-50 text-emerald-700'
             : 'border-gray-300 bg-white text-gray-700 hover:bg-gray-50'
         )}
       >
         <span>{activeLabel || t('source')}</span>
         {sourceFilter ? (
           <X
-            className="h-3.5 w-3.5 text-indigo-400 hover:text-indigo-700"
+            className="h-3.5 w-3.5 text-emerald-400 hover:text-emerald-700"
             onClick={(e) => { e.stopPropagation(); setSourceFilter(''); setOpen(false); }}
           />
         ) : (
@@ -522,11 +522,11 @@ function SourceFilterDropdown() {
               onClick={() => { setSourceFilter(opt.value); setOpen(false); }}
               className={cn(
                 'flex w-full items-center justify-between px-3 py-2 text-sm transition-colors',
-                sourceFilter === opt.value ? 'bg-indigo-50 font-medium text-indigo-700' : 'text-gray-700 hover:bg-gray-50'
+                sourceFilter === opt.value ? 'bg-emerald-50 font-medium text-emerald-700' : 'text-gray-700 hover:bg-gray-50'
               )}
             >
               {opt.label}
-              {sourceFilter === opt.value && <span className="h-1.5 w-1.5 rounded-full bg-indigo-500" />}
+              {sourceFilter === opt.value && <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />}
             </button>
           ))}
         </div>
@@ -770,11 +770,11 @@ function PerPageDropdown() {
               key={n}
               onClick={() => { setPerPage(n); setOpen(false); }}
               className={`flex w-full items-center justify-between px-4 py-2 text-sm transition-colors ${
-                perPage === n ? 'bg-indigo-50 font-medium text-indigo-700' : 'text-gray-700 hover:bg-gray-50'
+                perPage === n ? 'bg-emerald-50 font-medium text-emerald-700' : 'text-gray-700 hover:bg-gray-50'
               }`}
             >
               {n}
-              {perPage === n && <span className="h-1.5 w-1.5 rounded-full bg-indigo-500" />}
+              {perPage === n && <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />}
             </button>
           ))}
         </div>
@@ -824,7 +824,7 @@ export function LeadToolbar() {
             className={cn(
               'block w-full rounded-lg border border-gray-300 bg-white py-2 pl-10 pr-3.5 text-sm text-gray-900',
               'placeholder:text-gray-400 transition-colors',
-              'focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20'
+              'focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/20'
             )}
           />
         </div>

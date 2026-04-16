@@ -25,16 +25,16 @@ export default function SunumPage() {
         <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#1a1a2e] via-[#16213e] to-[#0f3460] p-8 sm:p-10">
           {/* Animated bg elements */}
           <div className="absolute inset-0 overflow-hidden pointer-events-none">
-            <div className="absolute -top-20 -right-20 w-72 h-72 rounded-full bg-indigo-500/10 blur-3xl" />
+            <div className="absolute -top-20 -right-20 w-72 h-72 rounded-full bg-emerald-500/10 blur-3xl" />
             <div className="absolute -bottom-16 -left-16 w-56 h-56 rounded-full bg-purple-500/10 blur-3xl" />
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 rounded-full bg-blue-500/5 blur-3xl" />
             {/* Grid pattern */}
             <div className="absolute inset-0 opacity-[0.03]" style={{ backgroundImage: 'linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
             {/* Floating dots */}
-            <div className="absolute top-6 right-12 w-2 h-2 rounded-full bg-indigo-400/40 animate-pulse" style={{ animationDuration: '3s' }} />
+            <div className="absolute top-6 right-12 w-2 h-2 rounded-full bg-emerald-400/40 animate-pulse" style={{ animationDuration: '3s' }} />
             <div className="absolute top-16 right-32 w-1.5 h-1.5 rounded-full bg-purple-400/30 animate-pulse" style={{ animationDuration: '4s', animationDelay: '1s' }} />
             <div className="absolute bottom-8 left-20 w-2 h-2 rounded-full bg-blue-400/30 animate-pulse" style={{ animationDuration: '3.5s', animationDelay: '0.5s' }} />
-            <div className="absolute bottom-16 right-20 w-1 h-1 rounded-full bg-indigo-300/40 animate-pulse" style={{ animationDuration: '2.5s', animationDelay: '1.5s' }} />
+            <div className="absolute bottom-16 right-20 w-1 h-1 rounded-full bg-emerald-300/40 animate-pulse" style={{ animationDuration: '2.5s', animationDelay: '1.5s' }} />
           </div>
 
           <div className="relative z-10 flex flex-col sm:flex-row items-center gap-8">
@@ -101,11 +101,11 @@ export default function SunumPage() {
         {/* ===== SECTION 1 ===== */}
         <section>
           <div className="flex items-center gap-3 mb-5">
-            <span className="flex items-center justify-center w-7 h-7 rounded-lg bg-indigo-600 text-white text-xs font-bold">1</span>
+            <span className="flex items-center justify-center w-7 h-7 rounded-lg bg-emerald-600 text-white text-xs font-bold">1</span>
             <h2 className="text-lg font-bold tracking-tight">Ama{"\u00e7"} ve Avantajlar</h2>
           </div>
 
-          <div className="rounded-2xl bg-gradient-to-br from-indigo-600 to-indigo-700 p-6 mb-6 text-white">
+          <div className="rounded-2xl bg-gradient-to-br from-emerald-600 to-emerald-700 p-6 mb-6 text-white">
             <p className="text-sm font-semibold text-white/80 mb-1">Ne yapar?</p>
             <p className="text-[15px] leading-relaxed">Meta reklamlar{"\u0131"}ndan (Facebook, Instagram, WhatsApp, Messenger) gelen t{"\u00fc"}m lead{"\u2019"}leri tek merkezde toplar, CRM pipeline ile y{"\u00f6"}netir, e-posta ve AI arama ile aksiyona d{"\u00f6"}n{"\u00fc"}{"\u015f"}t{"\u00fc"}r{"\u00fc"}r.</p>
           </div>
@@ -165,7 +165,7 @@ export default function SunumPage() {
         {/* ===== SECTION 2 ===== */}
         <section>
           <div className="flex items-center gap-3 mb-5">
-            <span className="flex items-center justify-center w-7 h-7 rounded-lg bg-indigo-600 text-white text-xs font-bold">2</span>
+            <span className="flex items-center justify-center w-7 h-7 rounded-lg bg-emerald-600 text-white text-xs font-bold">2</span>
             <h2 className="text-lg font-bold tracking-tight">Mod{"\u00fc"}ller (Sidebar)</h2>
           </div>
 
@@ -194,7 +194,7 @@ export default function SunumPage() {
         {/* ===== SECTION 3 ===== */}
         <section>
           <div className="flex items-center gap-3 mb-5">
-            <span className="flex items-center justify-center w-7 h-7 rounded-lg bg-indigo-600 text-white text-xs font-bold">3</span>
+            <span className="flex items-center justify-center w-7 h-7 rounded-lg bg-emerald-600 text-white text-xs font-bold">3</span>
             <h2 className="text-lg font-bold tracking-tight">Maliyet ve Kazan{"\u00e7"}</h2>
           </div>
 
@@ -400,8 +400,8 @@ export default function SunumPage() {
               { plan: "B\u00fcy\u00fcme", m: "$79", y: "$63", leads: "10.000", users: "10", email: "10.000", ai: "500 dk", pop: true, perUser: "$7.90" },
               { plan: "Kurumsal", m: "$149", y: "$119", leads: "S\u0131n\u0131rs\u0131z", users: "S\u0131n\u0131rs\u0131z", email: "50.000", ai: "2.000 dk", perUser: "\u2014" },
             ].map((p) => (
-              <div key={p.plan} className={`rounded-2xl border-2 p-5 transition-shadow hover:shadow-lg ${p.pop ? 'border-indigo-500 bg-indigo-50/30 shadow-md shadow-indigo-100/50' : 'border-gray-200 bg-white'}`}>
-                {p.pop && <span className="inline-block bg-indigo-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-full mb-2">Pop{"\u00fc"}ler</span>}
+              <div key={p.plan} className={`rounded-2xl border-2 p-5 transition-shadow hover:shadow-lg ${p.pop ? 'border-emerald-500 bg-emerald-50/30 shadow-md shadow-emerald-100/50' : 'border-gray-200 bg-white'}`}>
+                {p.pop && <span className="inline-block bg-emerald-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-full mb-2">Pop{"\u00fc"}ler</span>}
                 <p className="text-base font-bold">{p.plan}</p>
                 <div className="mt-2">
                   <span className="text-2xl font-extrabold">{p.m}</span>
@@ -447,8 +447,8 @@ export default function SunumPage() {
                   { name: "Bitrix24", start: "$49", mid: "$99", ent: "$199", ai: "\u2717", model: "Sabit (5-50 user)", highlight: false },
                   { name: "Yo Dijital", start: "$29", mid: "$79", ent: "$149", ai: "\u2713", model: "Sabit (org)", highlight: true },
                 ].map((r) => (
-                  <tr key={r.name} className={`border-b border-gray-50 ${r.highlight ? 'bg-indigo-50/50' : 'hover:bg-gray-50/50'}`}>
-                    <td className={`px-4 py-2 font-semibold ${r.highlight ? 'text-indigo-700' : ''}`}>{r.name}</td>
+                  <tr key={r.name} className={`border-b border-gray-50 ${r.highlight ? 'bg-emerald-50/50' : 'hover:bg-gray-50/50'}`}>
+                    <td className={`px-4 py-2 font-semibold ${r.highlight ? 'text-emerald-700' : ''}`}>{r.name}</td>
                     <td className="px-4 py-2 text-right">{r.start}/ay</td>
                     <td className="px-4 py-2 text-right">{r.mid}/ay</td>
                     <td className="px-4 py-2 text-right">{r.ent}/ay</td>
@@ -482,7 +482,7 @@ export default function SunumPage() {
                 return (
                   <div key={d.label} className="flex-1 flex flex-col items-center gap-2">
                     <div className="w-full flex items-end justify-center gap-1.5 h-36">
-                      <div className="w-7 bg-indigo-200 rounded-t-lg transition-all duration-700" style={{ height: `${(d.gelir / max) * 100}%` }} />
+                      <div className="w-7 bg-emerald-200 rounded-t-lg transition-all duration-700" style={{ height: `${(d.gelir / max) * 100}%` }} />
                       <div className="w-7 bg-green-400 rounded-t-lg transition-all duration-700" style={{ height: `${Math.max((d.net / max) * 100, 0)}%` }} />
                     </div>
                     <p className="text-[10px] text-center font-medium leading-tight whitespace-pre-line text-gray-500">{d.label}</p>
@@ -491,7 +491,7 @@ export default function SunumPage() {
               })}
             </div>
             <div className="flex items-center justify-center gap-6 mt-4 text-[11px]">
-              <span className="flex items-center gap-1.5"><span className="h-2.5 w-2.5 rounded bg-indigo-200" /> Gelir</span>
+              <span className="flex items-center gap-1.5"><span className="h-2.5 w-2.5 rounded bg-emerald-200" /> Gelir</span>
               <span className="flex items-center gap-1.5"><span className="h-2.5 w-2.5 rounded bg-green-400" /> Net K{"\u00e2"}r</span>
             </div>
           </div>
@@ -531,7 +531,7 @@ export default function SunumPage() {
           <p className="text-[10px] text-gray-400 mb-6">AI arama maliyeti: m{"\u00fc"}{"\u015f"}teri ba{"\u015f"}{"\u0131"} 10 arama/g{"\u00fc"}n {"\u00d7"} 1dk {"\u00d7"} $0.10 {"\u00d7"} 30 = $30/ay. Kullanmayan m{"\u00fc"}{"\u015f"}terilerde s{"\u0131"}f{"\u0131"}r.</p>
 
           {/* Break-even */}
-          <div className="bg-gradient-to-r from-indigo-600 to-purple-600 rounded-2xl p-5 text-center text-white">
+          <div className="bg-gradient-to-r from-emerald-600 to-purple-600 rounded-2xl p-5 text-center text-white">
             <p className="text-xs text-white/70 mb-1">Break-even Noktas{"\u0131"}</p>
             <p className="text-2xl font-extrabold">~4 m{"\u00fc"}{"\u015f"}teri (Growth) <span className="text-white/60 font-normal mx-2">veya</span> ~7 m{"\u00fc"}{"\u015f"}teri (Starter)</p>
           </div>

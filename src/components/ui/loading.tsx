@@ -20,7 +20,7 @@ const spinnerSizes = {
 export function Spinner({ size = 'md', className }: SpinnerProps) {
   return (
     <Loader2
-      className={cn('animate-spin text-indigo-500', spinnerSizes[size], className)}
+      className={cn('animate-spin text-emerald-500', spinnerSizes[size], className)}
     />
   );
 }

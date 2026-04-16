@@ -95,7 +95,7 @@ export default function HesabimPage() {
 
           {/* Avatar */}
           <div className="flex items-center gap-4 mb-6">
-            <div className="w-14 h-14 bg-indigo-100 rounded-full flex items-center justify-center text-indigo-600 font-bold text-lg">
+            <div className="w-14 h-14 bg-emerald-100 rounded-full flex items-center justify-center text-emerald-600 font-bold text-lg">
               {initials}
             </div>
             <div>
@@ -115,7 +115,7 @@ export default function HesabimPage() {
                 type="text"
                 value={profile.firstName}
                 onChange={e => setProfile({ ...profile, firstName: e.target.value })}
-                className="w-full px-3 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500"
+                className="w-full px-3 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-emerald-200 focus:border-emerald-500"
               />
             </div>
             <div>
@@ -124,7 +124,7 @@ export default function HesabimPage() {
                 type="text"
                 value={profile.lastName}
                 onChange={e => setProfile({ ...profile, lastName: e.target.value })}
-                className="w-full px-3 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500"
+                className="w-full px-3 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-emerald-200 focus:border-emerald-500"
               />
             </div>
           </div>
@@ -136,7 +136,7 @@ export default function HesabimPage() {
               type="email"
               value={profile.email}
               onChange={e => setProfile({ ...profile, email: e.target.value })}
-              className="w-full px-3 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500"
+              className="w-full px-3 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-emerald-200 focus:border-emerald-500"
             />
           </div>
 
@@ -146,7 +146,7 @@ export default function HesabimPage() {
             <button
               onClick={() => setProfile({ ...profile, helpAccessEnabled: !profile.helpAccessEnabled })}
               className={`relative w-10 h-5 rounded-full transition-colors ${
-                profile.helpAccessEnabled ? 'bg-indigo-600' : 'bg-gray-300'
+                profile.helpAccessEnabled ? 'bg-emerald-600' : 'bg-gray-300'
               }`}
             >
               <span
@@ -160,7 +160,7 @@ export default function HesabimPage() {
           {/* Save button */}
           <button
             onClick={handleSaveProfile}
-            className="w-full py-2.5 bg-indigo-600 text-white font-medium rounded-lg hover:bg-indigo-700 transition-colors text-sm"
+            className="w-full py-2.5 bg-emerald-600 text-white font-medium rounded-lg hover:bg-emerald-700 transition-colors text-sm"
           >
             {profileSaved ? t('saved') : t('save')}
           </button>
@@ -178,7 +178,7 @@ export default function HesabimPage() {
                   value={currentPassword}
                   onChange={e => setCurrentPassword(e.target.value)}
                   placeholder={t('currentPassword')}
-                  className="w-full px-3 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500 pr-10"
+                  className="w-full px-3 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-emerald-200 focus:border-emerald-500 pr-10"
                 />
                 <button
                   onClick={() => setShowCurrentPw(!showCurrentPw)}
@@ -198,7 +198,7 @@ export default function HesabimPage() {
                   value={newPassword}
                   onChange={e => setNewPassword(e.target.value)}
                   placeholder={t('newPassword')}
-                  className="w-full px-3 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500 pr-10"
+                  className="w-full px-3 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-emerald-200 focus:border-emerald-500 pr-10"
                 />
                 <button
                   onClick={() => setShowNewPw(!showNewPw)}
@@ -218,7 +218,7 @@ export default function HesabimPage() {
                   value={confirmPassword}
                   onChange={e => setConfirmPassword(e.target.value)}
                   placeholder={t('confirmPassword')}
-                  className="w-full px-3 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500 pr-10"
+                  className="w-full px-3 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-emerald-200 focus:border-emerald-500 pr-10"
                 />
                 <button
                   onClick={() => setShowConfirmPw(!showConfirmPw)}
@@ -233,7 +233,7 @@ export default function HesabimPage() {
 
             <button
               onClick={handleSavePassword}
-              className="w-full py-2.5 bg-indigo-600 text-white font-medium rounded-lg hover:bg-indigo-700 transition-colors text-sm"
+              className="w-full py-2.5 bg-emerald-600 text-white font-medium rounded-lg hover:bg-emerald-700 transition-colors text-sm"
             >
               {pwSaved ? t('passwordSaved') : t('savePassword')}
             </button>
@@ -242,7 +242,7 @@ export default function HesabimPage() {
       </div>
 
       {/* Referral Section */}
-      <div className="bg-gradient-to-r from-indigo-50 to-indigo-100 rounded-2xl border border-indigo-200 p-6">
+      <div className="bg-gradient-to-r from-emerald-50 to-emerald-100 rounded-2xl border border-emerald-200 p-6">
         <h3 className="text-center text-lg font-bold text-gray-900 mb-6">
           {t('referralTitle')}
         </h3>
@@ -267,7 +267,7 @@ export default function HesabimPage() {
                   onClick={() => handleCopy(profile.referralCode, 'code')}
                   className="px-4 py-2.5 text-sm font-medium text-gray-600 border border-gray-300 rounded-lg hover:bg-gray-50 flex items-center gap-1.5 bg-white"
                 >
-                  {codeCopied ? <Check className="w-4 h-4 text-indigo-600" /> : <Copy className="w-4 h-4" />}
+                  {codeCopied ? <Check className="w-4 h-4 text-emerald-600" /> : <Copy className="w-4 h-4" />}
                   {codeCopied ? t('copied') : t('copyCode')}
                 </button>
               </div>
@@ -287,7 +287,7 @@ export default function HesabimPage() {
                   onClick={() => handleCopy(referralLink, 'link')}
                   className="px-4 py-2.5 text-sm font-medium text-gray-600 border border-gray-300 rounded-lg hover:bg-gray-50 flex items-center gap-1.5 bg-white"
                 >
-                  {linkCopied ? <Check className="w-4 h-4 text-indigo-600" /> : <Copy className="w-4 h-4" />}
+                  {linkCopied ? <Check className="w-4 h-4 text-emerald-600" /> : <Copy className="w-4 h-4" />}
                   {linkCopied ? t('copied') : t('copy')}
                 </button>
               </div>

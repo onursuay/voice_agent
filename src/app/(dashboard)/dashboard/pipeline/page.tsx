@@ -55,7 +55,7 @@ function LeadCardContent({ lead, onClick, isDragging }: LeadCardProps) {
       className={cn(
         'group cursor-pointer rounded-lg border border-gray-200 bg-white p-3 shadow-sm transition-all',
         'hover:border-gray-300 hover:shadow-md',
-        isDragging && 'shadow-lg ring-2 ring-indigo-500/20 opacity-90'
+        isDragging && 'shadow-lg ring-2 ring-emerald-500/20 opacity-90'
       )}
     >
       {/* Name & Score */}
@@ -392,8 +392,8 @@ export default function PipelinePage() {
         </div>
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
           <div className="flex items-center gap-3 rounded-lg border border-gray-200 bg-white p-3">
-            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-indigo-50">
-              <Users className="h-4.5 w-4.5 text-indigo-600" />
+            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-emerald-50">
+              <Users className="h-4.5 w-4.5 text-emerald-600" />
             </div>
             <div>
               <p className="text-xs text-gray-500">{t('totalLeads')}</p>

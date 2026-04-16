@@ -166,12 +166,12 @@ export default function DashboardPage() {
         <div className="lg:col-span-2 premium-card">
           <div className="premium-card-header">
             <div className="flex items-center gap-2">
-              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-indigo-50">
-                <Users className="h-4 w-4 text-indigo-600" />
+              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-50">
+                <Users className="h-4 w-4 text-emerald-600" />
               </div>
               <h2 className="text-sm font-semibold text-gray-900">{t('recentLeads')}</h2>
             </div>
-            <Link href="/dashboard/leads" className="flex items-center gap-1 text-xs font-medium text-indigo-600 hover:text-indigo-700 transition-colors">
+            <Link href="/dashboard/leads" className="flex items-center gap-1 text-xs font-medium text-emerald-600 hover:text-emerald-700 transition-colors">
               {t('viewAll')} <ChevronRight className="h-3.5 w-3.5" />
             </Link>
           </div>
@@ -182,7 +182,7 @@ export default function DashboardPage() {
                   <Users className="h-7 w-7 text-gray-300" />
                 </div>
                 <p className="text-sm font-medium text-gray-400">{t('noLeadsYet')}</p>
-                <Link href="/dashboard/import" className="mt-3 inline-flex items-center gap-1 text-sm font-medium text-indigo-600 hover:underline">
+                <Link href="/dashboard/import" className="mt-3 inline-flex items-center gap-1 text-sm font-medium text-emerald-600 hover:underline">
                   <Upload className="h-3.5 w-3.5" /> {t('importLeadsAction')}
                 </Link>
               </div>
@@ -201,7 +201,7 @@ export default function DashboardPage() {
                     <tr key={lead.id} className="border-b border-gray-50/80 cursor-pointer" style={{ animationDelay: `${i * 60}ms` }}>
                       <td className="px-6 py-4">
                         <div className="flex items-center gap-3">
-                          <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-indigo-400 to-purple-500 text-xs font-bold text-white">
+                          <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-emerald-400 to-purple-500 text-xs font-bold text-white">
                             {(lead.full_name || lead.first_name || '?')[0]?.toUpperCase()}
                           </div>
                           <div>

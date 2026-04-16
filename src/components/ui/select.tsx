@@ -37,7 +37,7 @@ const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
             className={cn(
               'block w-full appearance-none rounded-lg border border-gray-300 bg-white px-3.5 py-2 pr-10 text-sm text-gray-900',
               'transition-colors',
-              'focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20',
+              'focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/20',
               'disabled:cursor-not-allowed disabled:bg-gray-50 disabled:text-gray-500',
               error && 'border-red-400 focus:border-red-500 focus:ring-red-500/20',
               !props.value && placeholder && 'text-gray-400',

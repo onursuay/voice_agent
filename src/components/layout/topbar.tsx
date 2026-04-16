@@ -70,7 +70,7 @@ export function Topbar() {
         >
           <Menu className="h-5 w-5" />
         </button>
-        <p className="text-sm font-medium bg-gradient-to-r from-indigo-600 via-purple-500 to-indigo-600 bg-[length:200%_auto] animate-[gradient-shift_3s_ease_infinite] bg-clip-text text-transparent">
+        <p className="text-sm font-medium bg-gradient-to-r from-emerald-600 via-purple-500 to-emerald-600 bg-[length:200%_auto] animate-[gradient-shift_3s_ease_infinite] bg-clip-text text-transparent">
           {tTopbar('tagline')}
         </p>
       </div>
@@ -84,7 +84,7 @@ export function Topbar() {
             placeholder={tTopbar('searchPlaceholder')}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full rounded-lg border border-gray-200 bg-gray-50 py-2 pl-10 pr-4 text-sm text-foreground placeholder:text-gray-400 transition-colors focus:bg-white focus:border-indigo-300"
+            className="w-full rounded-lg border border-gray-200 bg-gray-50 py-2 pl-10 pr-4 text-sm text-foreground placeholder:text-gray-400 transition-colors focus:bg-white focus:border-emerald-300"
           />
         </div>
       </div>
@@ -103,7 +103,7 @@ export function Topbar() {
             onClick={() => setDropdownOpen(!dropdownOpen)}
             className="flex items-center gap-2 rounded-lg px-2 py-1.5 hover:bg-gray-100 transition-colors"
           >
-            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-indigo-600 text-xs font-semibold text-white">
+            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-emerald-600 text-xs font-semibold text-white">
               {session ? getInitials(session.user.full_name || session.user.email) : 'U'}
             </div>
             <ChevronDown className="h-4 w-4 text-gray-400" />

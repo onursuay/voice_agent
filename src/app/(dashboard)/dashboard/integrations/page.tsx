@@ -161,11 +161,11 @@ export default function IntegrationsPage() {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-start">
 
         {/* ── Meta Lead Ads ─────────────────────────────────── */}
-        <div className={`rounded-2xl border-2 bg-white p-5 transition-all duration-300 ${isAccountConnected ? 'border-indigo-500 shadow-md shadow-indigo-100' : 'border-gray-200'}`}>
+        <div className={`rounded-2xl border-2 bg-white p-5 transition-all duration-300 ${isAccountConnected ? 'border-emerald-500 shadow-md shadow-emerald-100' : 'border-gray-200'}`}>
           {/* Header — with account toggle in top-right */}
           <div className="flex items-start justify-between gap-3 mb-3">
             <div className="flex items-center gap-3 min-w-0 flex-1">
-              <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl overflow-hidden bg-gradient-to-br from-blue-600 to-indigo-600">
+              <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl overflow-hidden bg-gradient-to-br from-blue-600 to-emerald-600">
                 <svg className="h-6 w-6 text-white" viewBox="0 0 24 24" fill="currentColor">
                   <path d="M12 2C6.477 2 2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.879V14.89h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.989C18.343 21.129 22 16.99 22 12c0-5.523-4.477-10-10-10z"/>
                 </svg>
@@ -183,8 +183,8 @@ export default function IntegrationsPage() {
                       {t('integrations.metaAccountConnected2')} · {connections.length} sayfa
                     </span>
                   ) : (
-                    <span className="flex items-center gap-1.5 text-xs font-medium text-indigo-600 mt-0.5">
-                      <span className="h-1.5 w-1.5 rounded-full bg-indigo-500" />
+                    <span className="flex items-center gap-1.5 text-xs font-medium text-emerald-600 mt-0.5">
+                      <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
                       {t('integrations.metaAccountConnected2')}
                     </span>
                   )
@@ -272,8 +272,8 @@ export default function IntegrationsPage() {
                 onClick={() => router.push('/dashboard/meta-select')}
                 className={`flex w-full items-center justify-center gap-1.5 rounded-xl py-2.5 text-xs font-medium transition-all ${
                   hasConnections
-                    ? 'border border-dashed border-indigo-300 text-indigo-600 hover:bg-indigo-50 hover:border-indigo-400'
-                    : 'bg-indigo-600 text-white hover:bg-indigo-700 active:scale-[0.98]'
+                    ? 'border border-dashed border-emerald-300 text-emerald-600 hover:bg-emerald-50 hover:border-emerald-400'
+                    : 'bg-emerald-600 text-white hover:bg-emerald-700 active:scale-[0.98]'
                 }`}
               >
                 <Plus className="h-3.5 w-3.5" />

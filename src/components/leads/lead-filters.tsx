@@ -55,7 +55,7 @@ function FilterRow({ onAdd, onCancel }: FilterRowProps) {
       <select
         value={column}
         onChange={(e) => setColumn(e.target.value)}
-        className="rounded-md border border-gray-300 bg-white px-2 py-1.5 text-sm text-gray-700 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+        className="rounded-md border border-gray-300 bg-white px-2 py-1.5 text-sm text-gray-700 focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"
       >
         {filterableColumns.map((col) => (
           <option key={col.key} value={col.key}>
@@ -67,7 +67,7 @@ function FilterRow({ onAdd, onCancel }: FilterRowProps) {
       <select
         value={operator}
         onChange={(e) => setOperator(e.target.value)}
-        className="rounded-md border border-gray-300 bg-white px-2 py-1.5 text-sm text-gray-700 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+        className="rounded-md border border-gray-300 bg-white px-2 py-1.5 text-sm text-gray-700 focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"
       >
         {operators.map((op) => (
           <option key={op} value={op}>
@@ -82,7 +82,7 @@ function FilterRow({ onAdd, onCancel }: FilterRowProps) {
           value={value}
           onChange={(e) => setValue(e.target.value)}
           placeholder={t('filterValue')}
-          className="w-40 rounded-md border border-gray-300 bg-white px-2 py-1.5 text-sm text-gray-700 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+          className="w-40 rounded-md border border-gray-300 bg-white px-2 py-1.5 text-sm text-gray-700 focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"
         />
       )}
 
@@ -142,7 +142,7 @@ export function LeadFilters() {
       >
         {t('filter')}
         {filters.length > 0 && (
-          <span className="ml-1 inline-flex h-5 w-5 items-center justify-center rounded-full bg-indigo-500 text-[10px] font-bold text-white">
+          <span className="ml-1 inline-flex h-5 w-5 items-center justify-center rounded-full bg-emerald-500 text-[10px] font-bold text-white">
             {filters.length}
           </span>
         )}
@@ -187,7 +187,7 @@ export function LeadFilters() {
           ) : (
             <button
               onClick={() => setAdding(true)}
-              className="flex items-center gap-1.5 text-sm font-medium text-indigo-600 hover:text-indigo-700"
+              className="flex items-center gap-1.5 text-sm font-medium text-emerald-600 hover:text-emerald-700"
             >
               <Plus className="h-4 w-4" />
               {t('addFilter')}

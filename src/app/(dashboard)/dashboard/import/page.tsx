@@ -59,8 +59,8 @@ function StepIndicator({ current }: { current: number }) {
                 <span
                   className={cn(
                     'flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-sm font-semibold transition-colors',
-                    isDone && 'bg-indigo-500 text-white',
-                    isActive && 'bg-indigo-500 text-white ring-4 ring-indigo-100',
+                    isDone && 'bg-emerald-500 text-white',
+                    isActive && 'bg-emerald-500 text-white ring-4 ring-emerald-100',
                     !isDone && !isActive && 'bg-gray-200 text-gray-500'
                   )}
                 >
@@ -73,7 +73,7 @@ function StepIndicator({ current }: { current: number }) {
                 <span
                   className={cn(
                     'hidden text-sm font-medium sm:inline',
-                    isActive ? 'text-indigo-700' : isDone ? 'text-gray-700' : 'text-gray-400'
+                    isActive ? 'text-emerald-700' : isDone ? 'text-gray-700' : 'text-gray-400'
                   )}
                 >
                   {step.label}
@@ -83,7 +83,7 @@ function StepIndicator({ current }: { current: number }) {
                 <div
                   className={cn(
                     'mx-3 h-px flex-1',
-                    step.num < current ? 'bg-indigo-400' : 'bg-gray-200'
+                    step.num < current ? 'bg-emerald-400' : 'bg-gray-200'
                   )}
                 />
               )}
@@ -1102,7 +1102,7 @@ export default function ImportPage() {
             className={cn(
               'flex flex-1 items-center justify-center gap-2 rounded-lg py-2.5 text-sm font-medium transition-colors',
               sourceTab === 'file'
-                ? 'bg-white text-indigo-700 shadow-sm'
+                ? 'bg-white text-emerald-700 shadow-sm'
                 : 'text-gray-500 hover:text-gray-700'
             )}
           >
@@ -1114,7 +1114,7 @@ export default function ImportPage() {
             className={cn(
               'flex flex-1 items-center justify-center gap-2 rounded-lg py-2.5 text-sm font-medium transition-colors',
               sourceTab === 'sheets'
-                ? 'bg-white text-indigo-700 shadow-sm'
+                ? 'bg-white text-emerald-700 shadow-sm'
                 : 'text-gray-500 hover:text-gray-700'
             )}
           >
@@ -1134,7 +1134,7 @@ export default function ImportPage() {
           className={cn(
             'relative flex flex-col items-center justify-center rounded-xl border-2 border-dashed p-12 text-center transition-colors',
             dragging
-              ? 'border-indigo-400 bg-indigo-50'
+              ? 'border-emerald-400 bg-emerald-50'
               : 'border-gray-300 bg-gray-50 hover:border-gray-400 hover:bg-gray-100'
           )}
         >
@@ -1148,8 +1148,8 @@ export default function ImportPage() {
 
           {!file ? (
             <>
-              <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-indigo-100">
-                <Upload className="h-6 w-6 text-indigo-500" />
+              <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-emerald-100">
+                <Upload className="h-6 w-6 text-emerald-500" />
               </div>
               <p className="mb-1 text-base font-semibold text-gray-700">
                 {t('dragDrop')}
@@ -1171,8 +1171,8 @@ export default function ImportPage() {
             </>
           ) : (
             <div className="flex items-center gap-4">
-              <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-indigo-100">
-                <FileSpreadsheet className="h-6 w-6 text-indigo-600" />
+              <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-emerald-100">
+                <FileSpreadsheet className="h-6 w-6 text-emerald-600" />
               </div>
               <div className="text-left">
                 <p className="text-sm font-semibold text-gray-800">{file.name}</p>
@@ -1257,7 +1257,7 @@ export default function ImportPage() {
                           if (e.target.checked) setSelectedImportIds(new Set(recentImports.map(i => i.id)));
                           else setSelectedImportIds(new Set());
                         }}
-                        className="h-4 w-4 rounded border-gray-300 text-indigo-500 focus:ring-indigo-500"
+                        className="h-4 w-4 rounded border-gray-300 text-emerald-500 focus:ring-emerald-500"
                       />
                     </th>
                     <th className="px-4 py-2.5 text-left font-medium text-gray-600">{t('fileName')}</th>
@@ -1282,7 +1282,7 @@ export default function ImportPage() {
                             else next.delete(imp.id);
                             setSelectedImportIds(next);
                           }}
-                          className="h-4 w-4 rounded border-gray-300 text-indigo-500 focus:ring-indigo-500"
+                          className="h-4 w-4 rounded border-gray-300 text-emerald-500 focus:ring-emerald-500"
                         />
                       </td>
                       <td className="px-4 py-2.5 font-medium text-gray-800">{imp.file_name}</td>
@@ -1336,7 +1336,7 @@ export default function ImportPage() {
     return (
       <div className="space-y-6">
         {aiLoading && (
-          <div className="flex items-center gap-3 rounded-xl border border-indigo-100 bg-indigo-50 px-4 py-3 text-sm text-indigo-700">
+          <div className="flex items-center gap-3 rounded-xl border border-emerald-100 bg-emerald-50 px-4 py-3 text-sm text-emerald-700">
             <Loader2 className="h-4 w-4 animate-spin" />
             <span>{t('aiMapping')}</span>
           </div>
@@ -1408,7 +1408,7 @@ export default function ImportPage() {
                   <select
                     value={selectedCol}
                     onChange={(e) => setMapping(prev => ({ ...prev, [fieldOpt.value]: e.target.value }))}
-                    className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-700 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
+                    className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-700 focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/20"
                   >
                     {fileColOptions.map(opt => (
                       <option key={opt.value} value={opt.value}>{opt.label}</option>
@@ -1427,7 +1427,7 @@ export default function ImportPage() {
                 <button
                   key={o.value}
                   onClick={() => setMapping(prev => ({ ...prev, [o.value]: '_skip' }))}
-                  className="rounded-full border border-dashed border-gray-300 px-3 py-1 text-xs text-gray-500 hover:border-indigo-400 hover:text-indigo-600 transition-colors"
+                  className="rounded-full border border-dashed border-gray-300 px-3 py-1 text-xs text-gray-500 hover:border-emerald-400 hover:text-emerald-600 transition-colors"
                 >
                   + {o.label}
                 </button>
@@ -1438,7 +1438,7 @@ export default function ImportPage() {
 
         {/* Summary */}
         <div className="flex items-center gap-2 text-sm text-gray-600">
-          <CheckCircle2 className="h-4 w-4 text-indigo-500" />
+          <CheckCircle2 className="h-4 w-4 text-emerald-500" />
           <span>
             {t('fieldsMapped', { mapped: uniqueMappedFields.length, skipped: allVisible.length - uniqueMappedFields.length })}
           </span>
@@ -1529,15 +1529,15 @@ export default function ImportPage() {
     if (importing) {
       return (
         <div className="flex flex-col items-center justify-center py-16">
-          <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-indigo-100">
-            <Loader2 className="h-8 w-8 animate-spin text-indigo-500" />
+          <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-emerald-100">
+            <Loader2 className="h-8 w-8 animate-spin text-emerald-500" />
           </div>
           <h3 className="mb-2 text-lg font-semibold text-gray-800">{t('importing')}</h3>
           <p className="text-sm text-gray-500">
             {t('importingWait', { count: rows.length })}
           </p>
           <div className="mt-6 h-2 w-64 overflow-hidden rounded-full bg-gray-200">
-            <div className="h-full animate-pulse rounded-full bg-indigo-500" style={{ width: '60%' }} />
+            <div className="h-full animate-pulse rounded-full bg-emerald-500" style={{ width: '60%' }} />
           </div>
         </div>
       );

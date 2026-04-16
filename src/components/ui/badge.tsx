@@ -10,7 +10,7 @@ const colorStyles = {
   green: 'bg-green-50 text-green-700',
   red: 'bg-red-50 text-red-700',
   yellow: 'bg-yellow-50 text-yellow-700',
-  indigo: 'bg-indigo-50 text-indigo-700',
+  indigo: 'bg-emerald-50 text-emerald-700',
   purple: 'bg-purple-50 text-purple-700',
   pink: 'bg-pink-50 text-pink-700',
 };

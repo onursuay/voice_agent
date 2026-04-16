@@ -48,20 +48,20 @@ export default function CreditLoadSection() {
               onClick={() => setSelectedId(isSelected ? null : pkg.id)}
               className={`w-full flex items-center justify-between p-3 rounded-xl border-2 transition-colors text-left ${
                 isSelected
-                  ? 'border-indigo-600 bg-indigo-50'
+                  ? 'border-emerald-600 bg-emerald-50'
                   : pkg.popular
-                    ? 'border-indigo-300 bg-indigo-50/50 hover:border-indigo-500'
+                    ? 'border-emerald-300 bg-emerald-50/50 hover:border-emerald-500'
                     : 'border-gray-200 hover:border-gray-300'
               }`}
             >
               <div className="flex items-center gap-3">
                 <div className={`w-9 h-9 rounded-lg flex items-center justify-center ${
-                  isSelected || pkg.popular ? 'bg-indigo-100' : 'bg-gray-100'
+                  isSelected || pkg.popular ? 'bg-emerald-100' : 'bg-gray-100'
                 }`}>
                   {isSelected ? (
-                    <Check className="w-4 h-4 text-indigo-600" />
+                    <Check className="w-4 h-4 text-emerald-600" />
                   ) : (
-                    <Coins className={`w-4 h-4 ${pkg.popular ? 'text-indigo-600' : 'text-gray-500'}`} />
+                    <Coins className={`w-4 h-4 ${pkg.popular ? 'text-emerald-600' : 'text-gray-500'}`} />
                   )}
                 </div>
                 <div>
@@ -69,13 +69,13 @@ export default function CreditLoadSection() {
                   <p className="text-sm text-gray-500">{pkg.credits}</p>
                 </div>
                 {pkg.popular && (
-                  <span className="px-2 py-0.5 text-[10px] font-bold bg-indigo-600 text-white rounded-full">
+                  <span className="px-2 py-0.5 text-[10px] font-bold bg-emerald-600 text-white rounded-full">
                     <Sparkles className="w-3 h-3 inline mr-0.5" />
                     {t('credits.popular')}
                   </span>
                 )}
               </div>
-              <span className={`text-sm font-semibold ${isSelected ? 'text-indigo-600' : 'text-gray-900'}`}>
+              <span className={`text-sm font-semibold ${isSelected ? 'text-emerald-600' : 'text-gray-900'}`}>
                 ₺{pkg.price}
               </span>
             </button>
@@ -89,7 +89,7 @@ export default function CreditLoadSection() {
         disabled={!selectedPkg || purchased}
         className={`w-full py-3 text-sm font-medium rounded-xl transition-colors ${
           selectedPkg && !purchased
-            ? 'bg-indigo-600 text-white hover:bg-indigo-700'
+            ? 'bg-emerald-600 text-white hover:bg-emerald-700'
             : 'bg-gray-200 text-gray-400 cursor-not-allowed'
         }`}
       >
@@ -103,7 +103,7 @@ export default function CreditLoadSection() {
       {/* Info */}
       <div className="space-y-1.5 text-sm text-gray-500 mt-4">
         <p>{t('credits.perGeneration')}</p>
-        <p className="text-indigo-600 font-medium">{t('credits.freeCredits')}</p>
+        <p className="text-emerald-600 font-medium">{t('credits.freeCredits')}</p>
       </div>
     </div>
   )

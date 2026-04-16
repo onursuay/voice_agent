@@ -151,7 +151,7 @@ function QueueTab() {
           {pendingCalls.map(call => (
             <div key={call.id} className="flex items-center justify-between rounded-lg border border-gray-200 bg-white px-4 py-3">
               <div className="flex items-center gap-4">
-                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-indigo-50"><Phone className="h-5 w-5 text-indigo-600" /></div>
+                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-emerald-50"><Phone className="h-5 w-5 text-emerald-600" /></div>
                 <div>
                   <p className="font-medium text-gray-900">{(call.metadata?.lead_name as string) || call.phone_number}</p>
                   <p className="text-sm text-gray-500">{call.phone_number}</p>
@@ -176,7 +176,7 @@ function QueueTab() {
               <div className="mt-2 max-h-48 overflow-y-auto rounded-lg border border-gray-200 bg-white divide-y divide-gray-100">
                 {filteredLeads.slice(0, 20).map(l => (
                   <label key={l.id} className="flex items-center gap-3 px-3 py-2 text-sm hover:bg-gray-50 cursor-pointer">
-                    <input type="checkbox" checked={selectedLeadIds.includes(l.id)} onChange={() => toggleLead(l.id)} className="rounded border-gray-300 text-indigo-600" />
+                    <input type="checkbox" checked={selectedLeadIds.includes(l.id)} onChange={() => toggleLead(l.id)} className="rounded border-gray-300 text-emerald-600" />
                     <span className="font-medium">{l.full_name}</span>
                     <span className="text-gray-500">{l.phone}</span>
                     {l.company && <span className="text-gray-400">· {l.company}</span>}

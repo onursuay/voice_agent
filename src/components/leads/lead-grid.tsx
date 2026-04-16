@@ -217,7 +217,7 @@ function StageDropdown({
           onClick={() => { onSelect(stage.id); onClose(); }}
           className={cn(
             'flex w-full items-center gap-2 px-3 py-1.5 text-sm transition-colors hover:bg-gray-100',
-            currentStageId === stage.id && 'bg-indigo-50 font-medium'
+            currentStageId === stage.id && 'bg-emerald-50 font-medium'
           )}
         >
           <span className="h-2.5 w-2.5 rounded-full" style={{ backgroundColor: stage.color }} />
@@ -294,7 +294,7 @@ function UserDropdown({
     <div ref={ref} className="absolute left-0 top-full z-50 mt-0.5 min-w-[180px] rounded-lg border border-gray-200 bg-white py-1 shadow-xl">
       <button
         onClick={() => { onSelect(null); onClose(); }}
-        className={cn('flex w-full items-center gap-2 px-3 py-1.5 text-sm text-gray-400 hover:bg-gray-100', !currentUserId && 'bg-indigo-50')}
+        className={cn('flex w-full items-center gap-2 px-3 py-1.5 text-sm text-gray-400 hover:bg-gray-100', !currentUserId && 'bg-emerald-50')}
       >
         Atanmamis
       </button>
@@ -304,7 +304,7 @@ function UserDropdown({
           onClick={() => { onSelect(m.user_id); onClose(); }}
           className={cn(
             'flex w-full items-center gap-2 px-3 py-1.5 text-sm text-gray-700 hover:bg-gray-100',
-            currentUserId === m.user_id && 'bg-indigo-50 font-medium'
+            currentUserId === m.user_id && 'bg-emerald-50 font-medium'
           )}
         >
           <Avatar src={m.profile?.avatar_url} name={m.profile?.full_name || ''} size="xs" />
@@ -915,7 +915,7 @@ export function LeadGrid() {
                     checked={allSelected}
                     ref={(el) => { if (el) el.indeterminate = someSelected; }}
                     onChange={handleHeaderCheckbox}
-                    className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+                    className="h-4 w-4 rounded border-gray-300 text-emerald-600 focus:ring-emerald-500"
                   />
                 ) : isRowNum ? (
                   <span className="text-gray-400">#</span>
@@ -926,8 +926,8 @@ export function LeadGrid() {
                       <span className="ml-0.5">
                         {isSorted ? (
                           sort?.direction === 'asc'
-                            ? <ArrowUp className="h-3.5 w-3.5 text-indigo-500" />
-                            : <ArrowDown className="h-3.5 w-3.5 text-indigo-500" />
+                            ? <ArrowUp className="h-3.5 w-3.5 text-emerald-500" />
+                            : <ArrowDown className="h-3.5 w-3.5 text-emerald-500" />
                         ) : (
                           <ArrowUpDown className="h-3 w-3 text-gray-300" />
                         )}
@@ -946,7 +946,7 @@ export function LeadGrid() {
                     }}
                     onClick={(e) => e.stopPropagation()}
                   >
-                    <div className="mx-auto h-full w-0.5 bg-indigo-400" />
+                    <div className="mx-auto h-full w-0.5 bg-emerald-400" />
                   </div>
                 )}
               </div>
@@ -965,7 +965,7 @@ export function LeadGrid() {
               key={lead.id}
               className={cn(
                 'group relative flex border-b border-gray-200 transition-colors',
-                isSelected ? 'bg-indigo-50/60' : isEvenRow ? 'bg-white' : 'bg-gray-50/30',
+                isSelected ? 'bg-emerald-50/60' : isEvenRow ? 'bg-white' : 'bg-gray-50/30',
                 isHovered && !isSelected && 'bg-blue-50/30'
               )}
               onMouseEnter={() => setHoveredRow(rowIndex)}
@@ -990,7 +990,7 @@ export function LeadGrid() {
                     className={cn(
                       'relative flex shrink-0 items-center overflow-hidden border-r border-gray-200 px-2 py-1.5 text-sm',
                       isSticky && 'sticky z-10',
-                      isSticky && (isSelected ? 'bg-indigo-50' : isEvenRow ? 'bg-white' : 'bg-gray-50'),
+                      isSticky && (isSelected ? 'bg-emerald-50' : isEvenRow ? 'bg-white' : 'bg-gray-50'),
                       isSticky && isHovered && !isSelected && 'bg-blue-50',
                       isCheckbox && 'justify-center',
                       isRowNum && 'justify-center',
@@ -1021,7 +1021,7 @@ export function LeadGrid() {
                         checked={selectedLeadIds.has(lead.id)}
                         onChange={(e) => { e.stopPropagation(); toggleLeadSelection(lead.id); }}
                         onClick={(e) => e.stopPropagation()}
-                        className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+                        className="h-4 w-4 rounded border-gray-300 text-emerald-600 focus:ring-emerald-500"
                       />
                     ) : isRowNum ? (
                       <span className="text-xs text-gray-400 select-none">{rowIndex + 1}</span>
@@ -1086,7 +1086,7 @@ export function LeadGrid() {
                 <div className="pointer-events-auto absolute right-2 top-1/2 z-20 flex -translate-y-1/2 items-center gap-1">
                   <button
                     onClick={(e) => { e.stopPropagation(); setActiveLeadId(lead.id); }}
-                    className="flex h-6 w-6 items-center justify-center rounded bg-white text-gray-400 shadow-sm ring-1 ring-gray-200 transition-colors hover:text-indigo-600"
+                    className="flex h-6 w-6 items-center justify-center rounded bg-white text-gray-400 shadow-sm ring-1 ring-gray-200 transition-colors hover:text-emerald-600"
                     title="Ac"
                   >
                     <ExternalLink className="h-3 w-3" />

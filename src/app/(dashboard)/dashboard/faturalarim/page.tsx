@@ -80,7 +80,7 @@ export default function FaturalarimPage() {
                   type="text"
                   value={info.fullName}
                   onChange={e => setInfo({ ...info, fullName: e.target.value })}
-                  className="w-full px-3 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500"
+                  className="w-full px-3 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-emerald-200 focus:border-emerald-500"
                 />
               </div>
               <div>
@@ -89,7 +89,7 @@ export default function FaturalarimPage() {
                   type="text"
                   value={info.phone}
                   onChange={e => setInfo({ ...info, phone: e.target.value })}
-                  className="w-full px-3 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500"
+                  className="w-full px-3 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-emerald-200 focus:border-emerald-500"
                 />
               </div>
             </div>
@@ -107,7 +107,7 @@ export default function FaturalarimPage() {
                   value={info.phone}
                   onChange={e => setInfo({ ...info, phone: e.target.value })}
                   placeholder={t('phonePlaceholder')}
-                  className="flex-1 px-3 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500"
+                  className="flex-1 px-3 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-emerald-200 focus:border-emerald-500"
                 />
               </div>
             </div>
@@ -125,21 +125,21 @@ export default function FaturalarimPage() {
                   value={info.city}
                   onChange={e => setInfo({ ...info, city: e.target.value })}
                   placeholder={t('city')}
-                  className="px-3 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500"
+                  className="px-3 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-emerald-200 focus:border-emerald-500"
                 />
                 <input
                   type="text"
                   value={info.district}
                   onChange={e => setInfo({ ...info, district: e.target.value })}
                   placeholder={t('district')}
-                  className="px-3 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500"
+                  className="px-3 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-emerald-200 focus:border-emerald-500"
                 />
                 <input
                   type="text"
                   value={info.postalCode}
                   onChange={e => setInfo({ ...info, postalCode: e.target.value })}
                   placeholder={t('postalCode')}
-                  className="px-3 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500"
+                  className="px-3 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-emerald-200 focus:border-emerald-500"
                 />
               </div>
               <textarea
@@ -147,7 +147,7 @@ export default function FaturalarimPage() {
                 onChange={e => setInfo({ ...info, address: e.target.value })}
                 placeholder={t('openAddress')}
                 rows={3}
-                className="w-full px-3 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500 resize-none"
+                className="w-full px-3 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-emerald-200 focus:border-emerald-500 resize-none"
               />
             </div>
 
@@ -160,7 +160,7 @@ export default function FaturalarimPage() {
                     type="text"
                     value={info.companyName || ''}
                     onChange={e => setInfo({ ...info, companyName: e.target.value })}
-                    className="w-full px-3 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500"
+                    className="w-full px-3 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-emerald-200 focus:border-emerald-500"
                   />
                 </div>
                 <div className="grid grid-cols-2 gap-4">
@@ -170,7 +170,7 @@ export default function FaturalarimPage() {
                       type="text"
                       value={info.taxOffice || ''}
                       onChange={e => setInfo({ ...info, taxOffice: e.target.value })}
-                      className="w-full px-3 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500"
+                      className="w-full px-3 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-emerald-200 focus:border-emerald-500"
                     />
                   </div>
                   <div>
@@ -179,7 +179,7 @@ export default function FaturalarimPage() {
                       type="text"
                       value={info.taxNumber || ''}
                       onChange={e => setInfo({ ...info, taxNumber: e.target.value })}
-                      className="w-full px-3 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500"
+                      className="w-full px-3 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-emerald-200 focus:border-emerald-500"
                     />
                   </div>
                 </div>
@@ -188,7 +188,7 @@ export default function FaturalarimPage() {
 
             <button
               onClick={handleSave}
-              className="w-full py-2.5 bg-indigo-600 text-white font-medium rounded-lg hover:bg-indigo-700 transition-colors text-sm"
+              className="w-full py-2.5 bg-emerald-600 text-white font-medium rounded-lg hover:bg-emerald-700 transition-colors text-sm"
             >
               {saved ? t('saved') : t('save')}
             </button>

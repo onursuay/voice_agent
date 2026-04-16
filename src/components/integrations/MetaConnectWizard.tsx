@@ -142,7 +142,7 @@ export function MetaConnectWizard({ initialStep = 1 }: { initialStep?: number })
           {/* ── Step 1: Connect OAuth ─────────────────────────── */}
           {step === 1 && (
             <div className="text-center">
-              <div className="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-blue-600 to-indigo-600">
+              <div className="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-blue-500 to-blue-700">
                 <svg className="h-8 w-8 text-white" viewBox="0 0 24 24" fill="currentColor">
                   <path d="M12 2C6.477 2 2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.879V14.89h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.989C18.343 21.129 22 16.99 22 12c0-5.523-4.477-10-10-10z"/>
                 </svg>
@@ -182,7 +182,7 @@ export function MetaConnectWizard({ initialStep = 1 }: { initialStep?: number })
               {/* Loading */}
               {step2Phase === 'loading' && (
                 <div className="flex flex-col items-center gap-3 py-10">
-                  <RefreshCw className="h-9 w-9 animate-spin text-indigo-600" />
+                  <RefreshCw className="h-9 w-9 animate-spin text-emerald-600" />
                   <p className="text-sm text-gray-500">{w('loadingPages')}</p>
                 </div>
               )}
@@ -196,7 +196,7 @@ export function MetaConnectWizard({ initialStep = 1 }: { initialStep?: number })
                   <p className="text-sm font-medium text-red-600">{errorMsg}</p>
                   <button
                     onClick={fetchPendingPages}
-                    className="mt-2 rounded-xl bg-indigo-600 px-6 py-2.5 text-sm font-semibold text-white hover:bg-indigo-700 transition-colors"
+                    className="mt-2 rounded-xl bg-emerald-600 px-6 py-2.5 text-sm font-semibold text-white hover:bg-emerald-700 transition-colors"
                   >
                     {w('retry')}
                   </button>
@@ -212,9 +212,9 @@ export function MetaConnectWizard({ initialStep = 1 }: { initialStep?: number })
                   {/* Select all */}
                   <button
                     onClick={toggleAll}
-                    className="mb-3 flex items-center gap-2 text-xs font-medium text-indigo-600 hover:text-indigo-800"
+                    className="mb-3 flex items-center gap-2 text-xs font-medium text-emerald-600 hover:text-emerald-800"
                   >
-                    <div className={`flex h-4 w-4 items-center justify-center rounded border-2 transition-colors ${selected.size === pages.length ? 'border-indigo-600 bg-indigo-600' : 'border-gray-300 bg-white'}`}>
+                    <div className={`flex h-4 w-4 items-center justify-center rounded border-2 transition-colors ${selected.size === pages.length ? 'border-emerald-600 bg-emerald-600' : 'border-gray-300 bg-white'}`}>
                       {selected.size === pages.length && <Check className="h-2.5 w-2.5 text-white" />}
                     </div>
                     {selected.size === pages.length ? w('deselectAll') : w('selectAll')} ({pages.length})
@@ -228,13 +228,13 @@ export function MetaConnectWizard({ initialStep = 1 }: { initialStep?: number })
                         <button
                           key={page.id}
                           onClick={() => togglePage(page.id)}
-                          className={`flex w-full items-center gap-3 rounded-xl border-2 px-4 py-3 text-left transition-all duration-150 active:scale-[0.98] ${isSelected ? 'border-indigo-500 bg-indigo-50' : 'border-gray-200 bg-white hover:border-indigo-300 hover:bg-indigo-50/30'}`}
+                          className={`flex w-full items-center gap-3 rounded-xl border-2 px-4 py-3 text-left transition-all duration-150 active:scale-[0.98] ${isSelected ? 'border-emerald-500 bg-emerald-50' : 'border-gray-200 bg-white hover:border-emerald-300 hover:bg-emerald-50/30'}`}
                         >
-                          <div className={`relative inline-flex h-6 w-11 shrink-0 items-center rounded-full border-2 border-transparent transition-colors duration-200 ${isSelected ? 'bg-indigo-600' : 'bg-gray-200'}`}>
+                          <div className={`relative inline-flex h-6 w-11 shrink-0 items-center rounded-full border-2 border-transparent transition-colors duration-200 ${isSelected ? 'bg-emerald-600' : 'bg-gray-200'}`}>
                             <span className={`inline-block h-5 w-5 transform rounded-full bg-white shadow transition-transform duration-200 ${isSelected ? 'translate-x-5' : 'translate-x-0'}`} />
                           </div>
                           <div className="min-w-0 flex-1">
-                            <p className={`truncate text-sm font-medium transition-colors ${isSelected ? 'text-indigo-700' : 'text-gray-800'}`}>{page.name}</p>
+                            <p className={`truncate text-sm font-medium transition-colors ${isSelected ? 'text-emerald-700' : 'text-gray-800'}`}>{page.name}</p>
                             <p className="text-xs text-gray-400 font-mono">ID: {page.id}</p>
                           </div>
                         </button>
@@ -252,7 +252,7 @@ export function MetaConnectWizard({ initialStep = 1 }: { initialStep?: number })
                     <button
                       onClick={handleConnect}
                       disabled={selected.size === 0}
-                      className="flex-1 rounded-xl bg-indigo-600 py-3 text-sm font-semibold text-white hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                      className="flex-1 rounded-xl bg-emerald-600 py-3 text-sm font-semibold text-white hover:bg-emerald-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                     >
                       {selected.size === 0 ? w('selectFirst') : w('connectPages').replace('{count}', String(selected.size))}
                     </button>
@@ -264,7 +264,7 @@ export function MetaConnectWizard({ initialStep = 1 }: { initialStep?: number })
               {step2Phase === 'connecting' && (
                 <>
                   <div className="mb-5 text-center">
-                    <RefreshCw className="mx-auto mb-3 h-9 w-9 animate-spin text-indigo-600" />
+                    <RefreshCw className="mx-auto mb-3 h-9 w-9 animate-spin text-emerald-600" />
                     <h2 className="text-lg font-bold text-gray-900">{w('connectingPages')}</h2>
                   </div>
                   <div className="max-h-64 space-y-2 overflow-y-auto">
@@ -272,12 +272,12 @@ export function MetaConnectWizard({ initialStep = 1 }: { initialStep?: number })
                       <div key={page.id} className={`flex items-center gap-3 rounded-xl px-3 py-2.5 ${
                         page.status === 'done' ? 'bg-green-50' :
                         page.status === 'error' ? 'bg-red-50' :
-                        page.status === 'connecting' ? 'bg-indigo-50' : 'bg-gray-50'
+                        page.status === 'connecting' ? 'bg-emerald-50' : 'bg-gray-50'
                       }`}>
                         <div className="shrink-0 w-4">
                           {page.status === 'done' && <Check className="h-4 w-4 text-green-600" />}
                           {page.status === 'error' && <AlertTriangle className="h-4 w-4 text-red-500" />}
-                          {page.status === 'connecting' && <RefreshCw className="h-4 w-4 animate-spin text-indigo-600" />}
+                          {page.status === 'connecting' && <RefreshCw className="h-4 w-4 animate-spin text-emerald-600" />}
                           {page.status === 'pending' && <span className="inline-block h-4 w-4 rounded-full border-2 border-gray-300" />}
                         </div>
                         <span className="flex-1 truncate text-sm font-medium text-gray-700">{page.name}</span>

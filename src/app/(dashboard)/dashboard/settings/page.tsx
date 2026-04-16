@@ -305,7 +305,7 @@ export default function SettingsPage() {
   if (!session) {
     return (
       <div className="flex items-center justify-center py-20">
-        <div className="h-8 w-8 animate-spin rounded-full border-2 border-indigo-500 border-t-transparent" />
+        <div className="h-8 w-8 animate-spin rounded-full border-2 border-emerald-500 border-t-transparent" />
       </div>
     );
   }
@@ -339,8 +339,8 @@ export default function SettingsPage() {
         {activeTab === 'organization' && (
           <div className="p-6 space-y-6">
             <div className="flex items-center gap-3 pb-4 border-b border-gray-100">
-              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-indigo-100">
-                <Building2 className="h-5 w-5 text-indigo-600" />
+              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-emerald-100">
+                <Building2 className="h-5 w-5 text-emerald-600" />
               </div>
               <div>
                 <h2 className="text-base font-semibold text-foreground">{t('org.title')}</h2>
@@ -457,7 +457,7 @@ export default function SettingsPage() {
                     className="flex items-center justify-between px-4 py-3.5 transition-colors hover:bg-gray-50"
                   >
                     <div className="flex items-center gap-3">
-                      <div className="flex h-10 w-10 items-center justify-center rounded-full bg-indigo-100 text-indigo-700 text-sm font-bold">
+                      <div className="flex h-10 w-10 items-center justify-center rounded-full bg-emerald-100 text-emerald-700 text-sm font-bold">
                         {member.profile?.full_name
                           ? member.profile.full_name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2)
                           : 'U'}
@@ -634,7 +634,7 @@ export default function SettingsPage() {
 
             {/* Avatar placeholder */}
             <div className="flex items-center gap-4">
-              <div className="flex h-16 w-16 items-center justify-center rounded-full bg-indigo-100 text-indigo-700 text-xl font-bold">
+              <div className="flex h-16 w-16 items-center justify-center rounded-full bg-emerald-100 text-emerald-700 text-xl font-bold">
                 {profile?.full_name
                   ? profile.full_name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2)
                   : 'U'}

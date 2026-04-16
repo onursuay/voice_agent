@@ -80,7 +80,7 @@ export default function AbonelikPage() {
                 }`}
               >
                 {t('yearly')}
-                <span className="ml-1.5 text-xs text-indigo-400 font-bold">-30%</span>
+                <span className="ml-1.5 text-xs text-emerald-400 font-bold">-30%</span>
               </button>
             </div>
           </div>
@@ -138,7 +138,7 @@ export default function AbonelikPage() {
                   <Calendar className="w-4 h-4" />
                   <span>{t('statusLabel')}</span>
                 </div>
-                <span className={`text-sm font-medium ${trial ? 'text-amber-600' : isPaid ? 'text-indigo-600' : 'text-gray-600'}`}>
+                <span className={`text-sm font-medium ${trial ? 'text-amber-600' : isPaid ? 'text-emerald-600' : 'text-gray-600'}`}>
                   {statusLabel}
                 </span>
               </div>
@@ -157,7 +157,7 @@ export default function AbonelikPage() {
             <div className="flex gap-3">
               <button
                 onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-                className="flex-1 py-3 bg-indigo-600 text-white font-medium rounded-xl hover:bg-indigo-700 transition-colors text-sm"
+                className="flex-1 py-3 bg-emerald-600 text-white font-medium rounded-xl hover:bg-emerald-700 transition-colors text-sm"
               >
                 {t('upgrade')}
               </button>

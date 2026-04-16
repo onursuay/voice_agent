@@ -6,7 +6,7 @@ import { cn } from '@/lib/utils';
 
 const variantStyles = {
   primary:
-    'bg-indigo-500 text-white hover:bg-indigo-600 active:bg-indigo-700 focus-visible:ring-indigo-500',
+    'bg-emerald-500 text-white hover:bg-emerald-600 active:bg-emerald-700 focus-visible:ring-emerald-500',
   secondary:
     'border border-gray-300 bg-white text-gray-700 hover:bg-gray-50 active:bg-gray-100 focus-visible:ring-gray-400',
   danger:
