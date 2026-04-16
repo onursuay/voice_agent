@@ -197,19 +197,20 @@ export default function IntegrationsPage() {
             {/* Account connect/disconnect toggle */}
             {!metaLoading && (
               <button
+                type="button"
                 role="switch"
                 aria-checked={isAccountConnected}
                 aria-label={isAccountConnected ? t('integrations.metaAccountDisconnect') : t('integrations.metaAccountConnect')}
                 title={isAccountConnected ? t('integrations.metaAccountDisconnect') : t('integrations.metaAccountConnect')}
                 disabled={accountBusy}
                 onClick={isAccountConnected ? disconnectAccount : connectAccount}
-                className={`relative inline-flex h-6 w-11 shrink-0 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50 ${
-                  isAccountConnected ? 'bg-indigo-600' : 'bg-gray-200'
+                className={`relative inline-flex h-7 w-12 flex-shrink-0 rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer ${
+                  isAccountConnected ? 'bg-emerald-500' : 'bg-gray-200'
                 }`}
               >
                 <span
-                  className={`inline-block h-5 w-5 transform rounded-full bg-white shadow transition-transform ${
-                    isAccountConnected ? 'translate-x-5' : 'translate-x-0.5'
+                  className={`inline-block h-6 w-6 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${
+                    isAccountConnected ? 'translate-x-5' : 'translate-x-0'
                   }`}
                 />
               </button>
