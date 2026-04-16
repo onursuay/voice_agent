@@ -164,26 +164,44 @@ export async function GET(request: NextRequest) {
     return NextResponse.redirect(`${dashboardUrl}?meta_error=no_pages`);
   }
 
-  // Store pending OAuth session in DB (keyed by org_id) instead of a cookie
+  // Store account-level connection (persistent, not a short-lived pending session).
+  // Pages list is cached here so the user can pick pages later without re-auth.
   const supabase = createAdminSupabaseClient();
-  const pendingConfig = {
+  const accountConfig = {
     organization_id: orgId,
     userToken,
     pages,
+    connected_at: new Date().toISOString(),
+    expires_at: new Date(Date.now() + 59 * 24 * 60 * 60 * 1000).toISOString(),
     ts: Date.now(),
   };
 
-  // Delete existing pending session for THIS org only (not all orgs)
+  // Upsert meta_account for this org (one per org)
+  const { data: existingAccount } = await supabase
+    .from('integration_settings')
+    .select('id')
+    .eq('provider', 'meta_account')
+    .filter('config->>organization_id', 'eq', orgId)
+    .maybeSingle();
+
+  if (existingAccount) {
+    await supabase
+      .from('integration_settings')
+      .update({ config: accountConfig, is_active: true })
+      .eq('id', existingAccount.id);
+  } else {
+    await supabase
+      .from('integration_settings')
+      .insert({ provider: 'meta_account', config: accountConfig, is_active: true });
+  }
+
+  // Clean up any legacy pending session rows for this org
   await supabase
     .from('integration_settings')
     .delete()
     .eq('provider', 'meta_oauth_pending')
     .filter('config->>organization_id', 'eq', orgId);
 
-  await supabase
-    .from('integration_settings')
-    .insert({ provider: 'meta_oauth_pending', config: pendingConfig, is_active: false });
-
-  // Always redirect to wizard page selection UI (even for single page)
-  return NextResponse.redirect(`${request.nextUrl.origin}/dashboard/meta-select`);
+  // Return to integrations page — the account is now connected, user can pick pages from there
+  return NextResponse.redirect(`${request.nextUrl.origin}/dashboard/integrations?meta_account_connected=1`);
 }
