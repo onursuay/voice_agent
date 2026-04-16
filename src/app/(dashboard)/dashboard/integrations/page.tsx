@@ -15,6 +15,14 @@ type MetaConnection = {
   webhook_subscribed: boolean;
 };
 
+type MetaAccountStatus = {
+  connected: boolean;
+  connected_at?: string | null;
+  expires_at?: string | null;
+  is_expired?: boolean;
+  page_count?: number;
+};
+
 type LeadEvent = {
   id: string;
   event_type: string;
@@ -31,23 +39,32 @@ export default function IntegrationsPage() {
   const searchParams = useSearchParams();
 
   const metaConnected = searchParams.get('meta_connected');
+  const metaAccountConnected = searchParams.get('meta_account_connected');
   const metaError = searchParams.get('meta_error');
 
+  const [accountStatus, setAccountStatus] = useState<MetaAccountStatus>({ connected: false });
   const [connections, setConnections] = useState<MetaConnection[]>([]);
   const [metaLoading, setMetaLoading] = useState(true);
+  const [accountBusy, setAccountBusy] = useState(false);
   const [disconnecting, setDisconnecting] = useState<string | null>(null);
   const [resubscribing, setResubscribing] = useState<string | null>(null);
   const [recentEvents, setRecentEvents] = useState<LeadEvent[]>([]);
 
   const hasConnections = connections.length > 0;
+  const isAccountConnected = accountStatus.connected;
 
   const loadMetaStatus = useCallback(async () => {
     setMetaLoading(true);
     try {
-      const [statusRes, eventsRes] = await Promise.all([
+      const [accountRes, statusRes, eventsRes] = await Promise.all([
+        fetch('/api/integrations/meta/account/status'),
         fetch('/api/integrations/meta/status'),
         fetch('/api/integrations/meta/events'),
       ]);
+      if (accountRes.ok) {
+        const data = await accountRes.json() as MetaAccountStatus;
+        setAccountStatus(data);
+      }
       if (statusRes.ok) {
         const data = await statusRes.json() as { connections: MetaConnection[] };
         setConnections(data.connections ?? []);
@@ -62,6 +79,23 @@ export default function IntegrationsPage() {
   }, []);
 
   useEffect(() => { loadMetaStatus(); }, [loadMetaStatus]);
+
+  const connectAccount = () => {
+    setAccountBusy(true);
+    window.location.href = '/api/integrations/meta/connect';
+  };
+
+  const disconnectAccount = async () => {
+    if (!confirm(t('integrations.metaAccountDisconnectConfirm'))) return;
+    setAccountBusy(true);
+    try {
+      await fetch('/api/integrations/meta/account/disconnect', { method: 'DELETE' });
+      setAccountStatus({ connected: false });
+      setConnections([]);
+    } catch { /* ignore */ } finally {
+      setAccountBusy(false);
+    }
+  };
 
   const disconnectPage = async (id: string) => {
     setDisconnecting(id);
@@ -98,6 +132,12 @@ export default function IntegrationsPage() {
           {t('integrations.metaSuccess')}
         </div>
       )}
+      {metaAccountConnected && !metaConnected && (
+        <div className="flex items-center gap-2 rounded-xl border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-700">
+          <Check className="h-4 w-4 shrink-0" />
+          {t('integrations.metaAccountConnected')}
+        </div>
+      )}
       {metaError && (
         <div className="flex items-center gap-3 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
           <AlertCircle className="h-4 w-4 shrink-0" />
@@ -121,99 +161,133 @@ export default function IntegrationsPage() {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-start">
 
         {/* ── Meta Lead Ads ─────────────────────────────────── */}
-        <div className={`rounded-2xl border-2 bg-white p-5 transition-all duration-300 ${hasConnections ? 'border-indigo-500 shadow-md shadow-indigo-100' : 'border-gray-200'}`}>
-          {/* Header */}
-          <div className="flex items-center gap-3 mb-3">
-            <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl overflow-hidden bg-gradient-to-br from-blue-600 to-indigo-600">
-              <svg className="h-6 w-6 text-white" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M12 2C6.477 2 2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.879V14.89h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.989C18.343 21.129 22 16.99 22 12c0-5.523-4.477-10-10-10z"/>
-              </svg>
+        <div className={`rounded-2xl border-2 bg-white p-5 transition-all duration-300 ${isAccountConnected ? 'border-indigo-500 shadow-md shadow-indigo-100' : 'border-gray-200'}`}>
+          {/* Header — with account toggle in top-right */}
+          <div className="flex items-start justify-between gap-3 mb-3">
+            <div className="flex items-center gap-3 min-w-0 flex-1">
+              <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl overflow-hidden bg-gradient-to-br from-blue-600 to-indigo-600">
+                <svg className="h-6 w-6 text-white" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12 2C6.477 2 2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.879V14.89h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.989C18.343 21.129 22 16.99 22 12c0-5.523-4.477-10-10-10z"/>
+                </svg>
+              </div>
+              <div className="min-w-0">
+                <p className="text-sm font-semibold text-gray-900">Meta Lead Ads</p>
+                {metaLoading ? (
+                  <span className="flex items-center gap-1 text-xs text-gray-400 mt-0.5">
+                    <RefreshCw className="h-3 w-3 animate-spin" /> Kontrol ediliyor...
+                  </span>
+                ) : isAccountConnected ? (
+                  hasConnections ? (
+                    <span className="flex items-center gap-1.5 text-xs font-medium text-green-600 mt-0.5">
+                      <span className="h-1.5 w-1.5 rounded-full bg-green-500 animate-pulse" />
+                      {t('integrations.metaAccountConnected2')} · {connections.length} sayfa
+                    </span>
+                  ) : (
+                    <span className="flex items-center gap-1.5 text-xs font-medium text-indigo-600 mt-0.5">
+                      <span className="h-1.5 w-1.5 rounded-full bg-indigo-500" />
+                      {t('integrations.metaAccountConnected2')}
+                    </span>
+                  )
+                ) : (
+                  <span className="text-xs text-gray-400 mt-0.5">{t('integrations.metaAccountNotConnected')}</span>
+                )}
+              </div>
             </div>
-            <div>
-              <p className="text-sm font-semibold text-gray-900">Meta Lead Ads</p>
-              {metaLoading ? (
-                <span className="flex items-center gap-1 text-xs text-gray-400 mt-0.5">
-                  <RefreshCw className="h-3 w-3 animate-spin" /> Kontrol ediliyor...
-                </span>
-              ) : hasConnections ? (
-                <span className="flex items-center gap-1.5 text-xs font-medium text-green-600 mt-0.5">
-                  <span className="h-1.5 w-1.5 rounded-full bg-green-500 animate-pulse" />
-                  Bağlı · {connections.length} sayfa
-                </span>
-              ) : (
-                <span className="text-xs text-gray-400 mt-0.5">Bağlı değil</span>
-              )}
-            </div>
+
+            {/* Account connect/disconnect toggle */}
+            {!metaLoading && (
+              <button
+                role="switch"
+                aria-checked={isAccountConnected}
+                aria-label={isAccountConnected ? t('integrations.metaAccountDisconnect') : t('integrations.metaAccountConnect')}
+                title={isAccountConnected ? t('integrations.metaAccountDisconnect') : t('integrations.metaAccountConnect')}
+                disabled={accountBusy}
+                onClick={isAccountConnected ? disconnectAccount : connectAccount}
+                className={`relative inline-flex h-6 w-11 shrink-0 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50 ${
+                  isAccountConnected ? 'bg-indigo-600' : 'bg-gray-200'
+                }`}
+              >
+                <span
+                  className={`inline-block h-5 w-5 transform rounded-full bg-white shadow transition-transform ${
+                    isAccountConnected ? 'translate-x-5' : 'translate-x-0.5'
+                  }`}
+                />
+              </button>
+            )}
           </div>
 
           <p className="text-xs text-gray-500 mb-4">
             {t('integrations.metaDesc')}
           </p>
 
-          {/* ── Connected state ── */}
-          {!metaLoading && hasConnections && (
+          {/* ── Account connected: show page list + add button ── */}
+          {!metaLoading && isAccountConnected && (
             <>
-              {/* Page list */}
-              <div className="mb-3 space-y-1.5">
-                <p className="text-[10px] font-semibold uppercase tracking-wider text-gray-400 mb-2">
-                  Bağlı Sayfalar ({connections.length})
-                </p>
-                {connections.map((conn) => (
-                  <div
-                    key={conn.id}
-                    className={`flex items-center gap-2 rounded-lg border px-3 py-2 ${conn.webhook_subscribed ? 'border-gray-100 bg-gray-50' : 'border-orange-200 bg-orange-50'}`}
-                  >
-                    <span className={`h-2 w-2 shrink-0 rounded-full transition-colors ${conn.webhook_subscribed ? 'bg-green-500 animate-pulse' : 'bg-orange-400'}`} />
-                    <span className="flex-1 min-w-0 text-xs font-medium text-gray-700 truncate">
-                      {conn.page_name || conn.page_id}
-                    </span>
-                    {!conn.webhook_subscribed && (
-                      <button
-                        onClick={() => resubscribePage(conn.id)}
-                        disabled={resubscribing === conn.id}
-                        title="Webhook'u yeniden bağla"
-                        className="shrink-0 rounded px-1.5 py-0.5 text-[10px] font-medium text-orange-600 hover:bg-orange-100 transition-all disabled:opacity-50"
-                      >
-                        {resubscribing === conn.id ? <RefreshCw className="h-3 w-3 animate-spin" /> : 'Yenile'}
-                      </button>
-                    )}
-                    <button
-                      onClick={() => disconnectPage(conn.id)}
-                      disabled={disconnecting === conn.id}
-                      title="Bağlantıyı kes"
-                      className="shrink-0 rounded p-1 text-gray-400 hover:text-red-500 hover:bg-red-50 transition-all disabled:opacity-50"
+              {hasConnections ? (
+                <div className="mb-3 space-y-1.5">
+                  <p className="text-[10px] font-semibold uppercase tracking-wider text-gray-400 mb-2">
+                    Bağlı Sayfalar ({connections.length})
+                  </p>
+                  {connections.map((conn) => (
+                    <div
+                      key={conn.id}
+                      className={`flex items-center gap-2 rounded-lg border px-3 py-2 ${conn.webhook_subscribed ? 'border-gray-100 bg-gray-50' : 'border-orange-200 bg-orange-50'}`}
                     >
-                      {disconnecting === conn.id
-                        ? <RefreshCw className="h-3 w-3 animate-spin" />
-                        : <Trash2 className="h-3 w-3" />}
-                    </button>
-                  </div>
-                ))}
-              </div>
+                      <span className={`h-2 w-2 shrink-0 rounded-full transition-colors ${conn.webhook_subscribed ? 'bg-green-500 animate-pulse' : 'bg-orange-400'}`} />
+                      <span className="flex-1 min-w-0 text-xs font-medium text-gray-700 truncate">
+                        {conn.page_name || conn.page_id}
+                      </span>
+                      {!conn.webhook_subscribed && (
+                        <button
+                          onClick={() => resubscribePage(conn.id)}
+                          disabled={resubscribing === conn.id}
+                          title="Webhook'u yeniden bağla"
+                          className="shrink-0 rounded px-1.5 py-0.5 text-[10px] font-medium text-orange-600 hover:bg-orange-100 transition-all disabled:opacity-50"
+                        >
+                          {resubscribing === conn.id ? <RefreshCw className="h-3 w-3 animate-spin" /> : 'Yenile'}
+                        </button>
+                      )}
+                      <button
+                        onClick={() => disconnectPage(conn.id)}
+                        disabled={disconnecting === conn.id}
+                        title="Bağlantıyı kes"
+                        className="shrink-0 rounded p-1 text-gray-400 hover:text-red-500 hover:bg-red-50 transition-all disabled:opacity-50"
+                      >
+                        {disconnecting === conn.id
+                          ? <RefreshCw className="h-3 w-3 animate-spin" />
+                          : <Trash2 className="h-3 w-3" />}
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="mb-3 rounded-xl border border-dashed border-gray-200 bg-gray-50 px-4 py-5 text-center">
+                  <p className="text-sm font-medium text-gray-700 mb-1">{t('integrations.metaNoPagesYet')}</p>
+                  <p className="text-xs text-gray-500">{t('integrations.metaNoPagesYetDesc')}</p>
+                </div>
+              )}
 
-              {/* Add page */}
               <button
-                onClick={() => router.push('/dashboard/meta-connect')}
-                className="mb-3 flex w-full items-center justify-center gap-1.5 rounded-xl border border-dashed border-indigo-300 py-2 text-xs font-medium text-indigo-600 hover:bg-indigo-50 hover:border-indigo-400 transition-all"
+                onClick={() => router.push('/dashboard/meta-select')}
+                className={`flex w-full items-center justify-center gap-1.5 rounded-xl py-2.5 text-xs font-medium transition-all ${
+                  hasConnections
+                    ? 'border border-dashed border-indigo-300 text-indigo-600 hover:bg-indigo-50 hover:border-indigo-400'
+                    : 'bg-indigo-600 text-white hover:bg-indigo-700 active:scale-[0.98]'
+                }`}
               >
                 <Plus className="h-3.5 w-3.5" />
-                Sayfa Ekle
+                {hasConnections ? 'Sayfa Ekle' : t('integrations.metaConnectPageButton')}
               </button>
-
             </>
           )}
 
-          {/* ── Not connected state ── */}
-          {!metaLoading && !hasConnections && (
-            <button
-              onClick={() => router.push('/dashboard/meta-connect')}
-              className="flex w-full items-center justify-center gap-2 rounded-xl bg-indigo-600 px-4 py-2.5 text-sm font-medium text-white hover:bg-indigo-700 active:scale-[0.98] transition-all"
-            >
-              <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-              </svg>
-              Hesap Bağla
-            </button>
+          {/* ── Account not connected: prompt via toggle ── */}
+          {!metaLoading && !isAccountConnected && (
+            <div className="rounded-xl border border-dashed border-gray-200 bg-gray-50 px-4 py-5 text-center">
+              <p className="text-xs text-gray-500">
+                {t('integrations.metaAccountNotConnected')}. {t('integrations.metaAccountConnect')} →
+              </p>
+            </div>
           )}
 
           {/* Loading skeleton */}
