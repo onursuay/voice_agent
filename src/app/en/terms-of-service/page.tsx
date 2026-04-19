@@ -159,9 +159,9 @@ export default function TermsOfServiceEnPage() {
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-6">
           <div className="flex flex-col items-center sm:items-start gap-2">
             <Image src="/logo.png" alt="Yo Dijital" width={50} height={18} className="object-contain brightness-0 invert opacity-60" />
-            <span className="text-slate-500 text-xs font-light tracking-wide">© 2025 Yo Dijital. All rights reserved.</span>
+            <span className="text-white text-xs font-light tracking-wide">© 2025 Yo Dijital. All rights reserved.</span>
           </div>
-          <nav className="flex flex-wrap justify-center gap-6 text-xs text-slate-500">
+          <nav className="flex flex-wrap justify-center gap-6 text-xs text-white">
             <a href="/en/privacy-policy" className="hover:text-emerald-300 transition-colors underline underline-offset-4">Privacy Policy</a>
             <a href="/en/cookie-policy" className="hover:text-emerald-300 transition-colors underline underline-offset-4">Cookie Policy</a>
             <a href="/en/terms-of-service" className="hover:text-emerald-300 transition-colors underline underline-offset-4">Terms of Service</a>
