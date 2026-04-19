@@ -13,24 +13,11 @@ export default function TermsOfServicePage() {
     <div className="min-h-screen bg-[#131317] text-[#e5e1e7]">
       <LandingHeader ctaSchedule="Görüşme Planla" ctaTrial="14 Gün Ücretsiz Dene" />
 
-      <div className="min-h-screen pt-14 bg-[#131317]">
+      <div className="min-h-screen pt-[56px] bg-[#131317]">
         <main className="px-6 py-3 md:px-16">
-
-          {/* Back link */}
-          <div className="max-w-4xl mx-auto mb-3">
-            <Link href="/" className="inline-flex items-center gap-2 text-sm text-slate-500 hover:text-emerald-400 transition-colors">
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M10 12L6 8L10 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
-              Ana Sayfaya Dön
-            </Link>
-          </div>
 
           {/* Hero Header */}
           <header className="max-w-4xl mb-4 text-center mx-auto">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-400/10 text-emerald-400 text-[10px] font-bold tracking-widest uppercase mb-6">
-              Yürürlük Tarihi: Nisan 2025
-            </div>
             <h1 className="text-5xl md:text-6xl font-bold tracking-tighter text-[#e5e1e7] mb-6 leading-none">Kullanım Koşulları</h1>
             <p className="text-xl text-[#bbcabf] font-light leading-relaxed max-w-2xl mx-auto">
               Bu koşullar, YO Dijital Medya A.Ş. tarafından sağlanan VoiceAgent platformunun kullanıcıları için geçerlidir. Hizmeti kullanarak bu koşullara bağlı olmayı kabul etmiş olursunuz.
