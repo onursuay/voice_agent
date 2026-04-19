@@ -13,27 +13,15 @@ export default function PrivacyPolicyPage() {
     <div className="min-h-screen bg-[#131317] text-[#e5e1e7]">
       <LandingHeader ctaSchedule="Görüşme Planla" ctaTrial="14 Gün Ücretsiz Dene" />
 
-      <div className="min-h-screen pt-14 bg-[#1b1b1f]">
+      <div className="min-h-screen pt-[56px] bg-[#1b1b1f]">
         <main className="py-3 px-4 md:px-12">
           <div className="max-w-[960px] mx-auto">
-
-            {/* Back link */}
-            <Link href="/" className="inline-flex items-center gap-2 text-sm text-slate-500 hover:text-emerald-400 transition-colors mb-3">
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M10 12L6 8L10 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
-              Ana Sayfaya Dön
-            </Link>
 
             {/* Main card */}
             <div className="bg-[#353438] rounded-xl border border-white/[0.06] shadow-2xl p-8 md:p-16 relative overflow-hidden">
 
               {/* Editorial Header */}
               <header className="mb-4">
-                <div className="flex flex-wrap items-center gap-4 mb-6">
-                  <span className="px-2 py-1 bg-emerald-400/10 text-emerald-400 text-[10px] font-bold tracking-widest uppercase rounded">Gizlilik</span>
-                  <span className="text-slate-500 text-[10px] font-medium tracking-widest uppercase">Son güncelleme: Nisan 2025</span>
-                </div>
                 <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tighter text-[#e5e1e7] mb-8 leading-tight">
                   Gizlilik Politikası.
                 </h1>
