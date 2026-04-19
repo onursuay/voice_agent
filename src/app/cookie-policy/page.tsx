@@ -26,7 +26,7 @@ export default function CookiePolicyPage() {
 
           {/* Hero Header */}
           <header className="mb-4">
-            <div className="inline-block px-3 py-1 rounded-full bg-[#adc6ff]/10 text-[#adc6ff] text-[10px] font-bold tracking-[0.2em] uppercase mb-4">
+            <div className="inline-block px-3 py-1 rounded-full bg-emerald-400/10 text-emerald-400 text-[10px] font-bold tracking-[0.2em] uppercase mb-4">
               Şeffaflık Protokolü
             </div>
             <h1 className="text-5xl md:text-6xl font-extrabold tracking-tighter text-[#e5e1e7] mb-6 leading-[0.9]">
@@ -57,8 +57,8 @@ export default function CookiePolicyPage() {
 
             {/* Analytics */}
             <div className="p-8 rounded-xl bg-[#1b1b1f] flex flex-col gap-4 border border-white/[0.04]">
-              <div className="w-12 h-12 rounded-lg bg-[#adc6ff]/10 flex items-center justify-center">
-                <svg width="22" height="22" viewBox="0 0 22 22" fill="none" className="text-[#adc6ff]">
+              <div className="w-12 h-12 rounded-lg bg-emerald-400/10 flex items-center justify-center">
+                <svg width="22" height="22" viewBox="0 0 22 22" fill="none" className="text-emerald-400">
                   <path d="M3 17L8 12L12 15L19 7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
                   <path d="M15 7H19V11" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
                 </svg>
@@ -66,7 +66,7 @@ export default function CookiePolicyPage() {
               <h3 className="text-lg font-bold tracking-tight text-[#e5e1e7]">Analitik Çerezler</h3>
               <p className="text-sm text-[#bbcabf] leading-relaxed">Platformun nasıl kullanıldığını anlamamıza yardımcı olur. Tüm veriler anonimleştirilmiş ve toplulaştırılmıştır.</p>
               <div className="mt-auto">
-                <span className="text-[10px] font-bold text-[#adc6ff] uppercase tracking-widest">Yapılandırılabilir</span>
+                <span className="text-[10px] font-bold text-emerald-400 uppercase tracking-widest">Yapılandırılabilir</span>
               </div>
             </div>
 
@@ -90,7 +90,7 @@ export default function CookiePolicyPage() {
           <div className="bg-[#1b1b1f] rounded-xl overflow-hidden border border-white/[0.04] mb-4">
             <div className="p-6 border-b border-white/[0.04] flex justify-between items-center">
               <h4 className="text-xs font-bold uppercase tracking-[0.2em] text-[#bbcabf]">Çerez Türleri Detayı</h4>
-              <span className="text-[10px] text-[#adc6ff] font-mono">VoiceAgent · 2025</span>
+              <span className="text-[10px] text-emerald-400 font-mono">VoiceAgent · 2025</span>
             </div>
             <div className="p-6 space-y-4">
               {[
@@ -109,8 +109,8 @@ export default function CookiePolicyPage() {
           {/* Third-party & Managing */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 mb-4">
             <div className="space-y-5">
-              <h4 className="text-xs font-bold uppercase tracking-widest text-[#adc6ff] flex items-center gap-3">
-                <span className="w-6 h-px bg-[#adc6ff]/30"></span>
+              <h4 className="text-xs font-bold uppercase tracking-widest text-emerald-400 flex items-center gap-3">
+                <span className="w-6 h-px bg-emerald-400/30"></span>
                 Üçüncü Taraf Çerezleri
               </h4>
               <p className="text-[#bbcabf] text-sm leading-relaxed">Aşağıdaki üçüncü taraf hizmetleri çerez kullanabilir:</p>
@@ -130,8 +130,8 @@ export default function CookiePolicyPage() {
               </ul>
             </div>
             <div className="bg-[#353438] p-8 rounded-xl border border-white/[0.04]">
-              <h4 className="text-xs font-bold uppercase tracking-widest text-[#adc6ff] mb-6 flex items-center gap-3">
-                <span className="w-6 h-px bg-[#adc6ff]/30"></span>
+              <h4 className="text-xs font-bold uppercase tracking-widest text-emerald-400 mb-6 flex items-center gap-3">
+                <span className="w-6 h-px bg-emerald-400/30"></span>
                 Çerezleri Kontrol Etme
               </h4>
               <p className="text-[#bbcabf] text-sm leading-relaxed mb-4">
@@ -151,8 +151,8 @@ export default function CookiePolicyPage() {
 
           {/* Contact */}
           <div className="p-6 bg-[#1b1b1f] rounded-xl border border-white/[0.04]">
-            <h4 className="text-xs font-bold uppercase tracking-widest text-[#adc6ff] mb-3 flex items-center gap-3">
-              <span className="w-6 h-px bg-[#adc6ff]/30"></span>
+            <h4 className="text-xs font-bold uppercase tracking-widest text-emerald-400 mb-3 flex items-center gap-3">
+              <span className="w-6 h-px bg-emerald-400/30"></span>
               İletişim
             </h4>
             <p className="text-[#bbcabf] text-sm">

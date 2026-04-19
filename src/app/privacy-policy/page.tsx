@@ -37,17 +37,17 @@ export default function PrivacyPolicyPage() {
                 <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tighter text-[#e5e1e7] mb-8 leading-tight">
                   Gizlilik Politikası.
                 </h1>
-                <p className="text-[#bbcabf] text-xl leading-relaxed max-w-2xl">
+                <p className="text-[#bbcabf] text-sm leading-relaxed max-w-2xl">
                   YO Dijital Medya A.Ş. olarak gizliliğinizi korumaya kararlıyız. Bu politika, verilerinizi nasıl topladığımızı, kullandığımızı ve koruduğumuzu açıklamaktadır.
                 </p>
               </header>
 
               {/* Document Body */}
-              <div className="space-y-4 text-[#bbcabf] leading-relaxed text-[15px]">
+              <div className="space-y-4 text-[#bbcabf] leading-relaxed text-sm">
 
                 <section>
-                  <h2 className="text-xs font-bold tracking-widest uppercase text-[#adc6ff] mb-6 flex items-center gap-3">
-                    <span className="w-8 h-px bg-[#adc6ff]/30"></span>
+                  <h2 className="text-xs font-bold tracking-widest uppercase text-emerald-400 mb-6 flex items-center gap-3">
+                    <span className="w-8 h-px bg-emerald-400/30"></span>
                     01. Giriş
                   </h2>
                   <p>
@@ -56,8 +56,8 @@ export default function PrivacyPolicyPage() {
                 </section>
 
                 <section>
-                  <h2 className="text-xs font-bold tracking-widest uppercase text-[#adc6ff] mb-6 flex items-center gap-3">
-                    <span className="w-8 h-px bg-[#adc6ff]/30"></span>
+                  <h2 className="text-xs font-bold tracking-widest uppercase text-emerald-400 mb-6 flex items-center gap-3">
+                    <span className="w-8 h-px bg-emerald-400/30"></span>
                     02. Topladığımız Bilgiler
                   </h2>
                   <p className="mb-4">Aşağıdaki bilgi kategorilerini toplayabiliriz:</p>
@@ -96,8 +96,8 @@ export default function PrivacyPolicyPage() {
                 </section>
 
                 <section>
-                  <h2 className="text-xs font-bold tracking-widest uppercase text-[#adc6ff] mb-6 flex items-center gap-3">
-                    <span className="w-8 h-px bg-[#adc6ff]/30"></span>
+                  <h2 className="text-xs font-bold tracking-widest uppercase text-emerald-400 mb-6 flex items-center gap-3">
+                    <span className="w-8 h-px bg-emerald-400/30"></span>
                     03. Bilgileri Nasıl Kullanıyoruz
                   </h2>
                   <ul className="space-y-3">
@@ -119,8 +119,8 @@ export default function PrivacyPolicyPage() {
                 </section>
 
                 <section>
-                  <h2 className="text-xs font-bold tracking-widest uppercase text-[#adc6ff] mb-6 flex items-center gap-3">
-                    <span className="w-8 h-px bg-[#adc6ff]/30"></span>
+                  <h2 className="text-xs font-bold tracking-widest uppercase text-emerald-400 mb-6 flex items-center gap-3">
+                    <span className="w-8 h-px bg-emerald-400/30"></span>
                     04. Google API Hizmetleri — Sınırlı Kullanım Beyanı
                   </h2>
                   <p className="mb-5">
@@ -143,8 +143,8 @@ export default function PrivacyPolicyPage() {
                 </section>
 
                 <section>
-                  <h2 className="text-xs font-bold tracking-widest uppercase text-[#adc6ff] mb-6 flex items-center gap-3">
-                    <span className="w-8 h-px bg-[#adc6ff]/30"></span>
+                  <h2 className="text-xs font-bold tracking-widest uppercase text-emerald-400 mb-6 flex items-center gap-3">
+                    <span className="w-8 h-px bg-emerald-400/30"></span>
                     05. Meta Platform Entegrasyonu
                   </h2>
                   <p>
@@ -153,8 +153,8 @@ export default function PrivacyPolicyPage() {
                 </section>
 
                 <section>
-                  <h2 className="text-xs font-bold tracking-widest uppercase text-[#adc6ff] mb-6 flex items-center gap-3">
-                    <span className="w-8 h-px bg-[#adc6ff]/30"></span>
+                  <h2 className="text-xs font-bold tracking-widest uppercase text-emerald-400 mb-6 flex items-center gap-3">
+                    <span className="w-8 h-px bg-emerald-400/30"></span>
                     06. Veri Paylaşımı
                   </h2>
                   <p className="mb-4">Kişisel verilerinizi satmıyoruz. Yalnızca aşağıdaki durumlarda paylaşabiliriz:</p>
@@ -165,7 +165,7 @@ export default function PrivacyPolicyPage() {
                       'Birleşme, satın alma veya varlık satışı kapsamında.',
                     ].map((item, i) => (
                       <li key={i} className="flex items-start gap-3">
-                        <span className="text-[#adc6ff] mt-0.5 shrink-0">
+                        <span className="text-emerald-400 mt-0.5 shrink-0">
                           <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2.5 7H11.5M11.5 7L8 3.5M11.5 7L8 10.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
                         </span>
                         <span>{item}</span>
@@ -175,8 +175,8 @@ export default function PrivacyPolicyPage() {
                 </section>
 
                 <section>
-                  <h2 className="text-xs font-bold tracking-widest uppercase text-[#adc6ff] mb-6 flex items-center gap-3">
-                    <span className="w-8 h-px bg-[#adc6ff]/30"></span>
+                  <h2 className="text-xs font-bold tracking-widest uppercase text-emerald-400 mb-6 flex items-center gap-3">
+                    <span className="w-8 h-px bg-emerald-400/30"></span>
                     07. Veri Güvenliği
                   </h2>
                   <p>
@@ -185,8 +185,8 @@ export default function PrivacyPolicyPage() {
                 </section>
 
                 <section>
-                  <h2 className="text-xs font-bold tracking-widest uppercase text-[#adc6ff] mb-6 flex items-center gap-3">
-                    <span className="w-8 h-px bg-[#adc6ff]/30"></span>
+                  <h2 className="text-xs font-bold tracking-widest uppercase text-emerald-400 mb-6 flex items-center gap-3">
+                    <span className="w-8 h-px bg-emerald-400/30"></span>
                     08. Veri Saklama
                   </h2>
                   <p>
@@ -195,8 +195,8 @@ export default function PrivacyPolicyPage() {
                 </section>
 
                 <section>
-                  <h2 className="text-xs font-bold tracking-widest uppercase text-[#adc6ff] mb-6 flex items-center gap-3">
-                    <span className="w-8 h-px bg-[#adc6ff]/30"></span>
+                  <h2 className="text-xs font-bold tracking-widest uppercase text-emerald-400 mb-6 flex items-center gap-3">
+                    <span className="w-8 h-px bg-emerald-400/30"></span>
                     09. Haklarınız
                   </h2>
                   <p>
@@ -207,8 +207,8 @@ export default function PrivacyPolicyPage() {
                 </section>
 
                 <section>
-                  <h2 className="text-xs font-bold tracking-widest uppercase text-[#adc6ff] mb-6 flex items-center gap-3">
-                    <span className="w-8 h-px bg-[#adc6ff]/30"></span>
+                  <h2 className="text-xs font-bold tracking-widest uppercase text-emerald-400 mb-6 flex items-center gap-3">
+                    <span className="w-8 h-px bg-emerald-400/30"></span>
                     10. Politika Güncellemeleri
                   </h2>
                   <p>
@@ -217,8 +217,8 @@ export default function PrivacyPolicyPage() {
                 </section>
 
                 <section>
-                  <h2 className="text-xs font-bold tracking-widest uppercase text-[#adc6ff] mb-6 flex items-center gap-3">
-                    <span className="w-8 h-px bg-[#adc6ff]/30"></span>
+                  <h2 className="text-xs font-bold tracking-widest uppercase text-emerald-400 mb-6 flex items-center gap-3">
+                    <span className="w-8 h-px bg-emerald-400/30"></span>
                     11. İletişim
                   </h2>
                   <div className="p-6 bg-[#1b1b1f] rounded-lg border border-white/[0.04]">

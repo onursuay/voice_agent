@@ -43,7 +43,7 @@ export default function TermsOfServicePage() {
             {/* 01. Taraflar ve Tanımlar */}
             <section className="md:col-span-8 bg-[#1b1b1f] p-8 md:p-10 rounded-xl border border-white/[0.04]">
               <div className="flex items-center gap-4 mb-6">
-                <span className="text-[#adc6ff] font-mono text-sm tracking-widest">01.</span>
+                <span className="text-emerald-400 font-mono text-sm tracking-widest">01.</span>
                 <h2 className="text-xl font-bold tracking-tight text-[#e5e1e7]">Taraflar ve Tanımlar</h2>
               </div>
               <p className="text-[#bbcabf] leading-relaxed">
@@ -52,14 +52,14 @@ export default function TermsOfServicePage() {
             </section>
 
             {/* Highlight card */}
-            <aside className="md:col-span-4 bg-[#adc6ff]/5 p-8 rounded-xl border border-[#adc6ff]/20 flex flex-col justify-center">
-              <div className="text-[#adc6ff] mb-4">
+            <aside className="md:col-span-4 bg-emerald-400/5 p-8 rounded-xl border border-emerald-400/20 flex flex-col justify-center">
+              <div className="text-emerald-400 mb-4">
                 <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path d="M14 3L4 7V14C4 19.55 8.4 24.74 14 26C19.6 24.74 24 19.55 24 14V7L14 3Z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round"/>
                   <path d="M10 14L13 17L18 11" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
                 </svg>
               </div>
-              <h4 className="text-[#adc6ff] font-bold mb-2">Temel İlke</h4>
+              <h4 className="text-emerald-400 font-bold mb-2">Temel İlke</h4>
               <p className="text-[#bbcabf] text-sm leading-relaxed">
                 Verileriniz sizindir. VoiceAgent, kişisel verilerinizi hiçbir koşulda üçüncü taraflara satmaz veya devretmez.
               </p>
@@ -68,7 +68,7 @@ export default function TermsOfServicePage() {
             {/* 02. Hizmetin Kapsamı */}
             <section className="md:col-span-12 space-y-4 mt-4">
               <div className="flex items-center gap-4 mb-6">
-                <span className="text-[#adc6ff] font-mono text-sm tracking-widest">02.</span>
+                <span className="text-emerald-400 font-mono text-sm tracking-widest">02.</span>
                 <h2 className="text-xl font-bold tracking-tight text-[#e5e1e7]">Hizmetin Kapsamı</h2>
               </div>
               <p className="text-[#bbcabf] leading-relaxed">
@@ -79,7 +79,7 @@ export default function TermsOfServicePage() {
             {/* 03. Kullanıcı Yetkisi */}
             <section className="md:col-span-12">
               <div className="flex items-center gap-4 mb-6">
-                <span className="text-[#adc6ff] font-mono text-sm tracking-widest">03.</span>
+                <span className="text-emerald-400 font-mono text-sm tracking-widest">03.</span>
                 <h2 className="text-xl font-bold tracking-tight text-[#e5e1e7]">Kullanıcı Yetkisi</h2>
               </div>
               <p className="text-[#bbcabf] leading-relaxed">
@@ -90,7 +90,7 @@ export default function TermsOfServicePage() {
             {/* 04. Politika ve API Uyumu */}
             <section className="md:col-span-12">
               <div className="flex items-center gap-4 mb-6">
-                <span className="text-[#adc6ff] font-mono text-sm tracking-widest">04.</span>
+                <span className="text-emerald-400 font-mono text-sm tracking-widest">04.</span>
                 <h2 className="text-xl font-bold tracking-tight text-[#e5e1e7]">Politika ve API Uyumu</h2>
               </div>
               <p className="text-[#bbcabf] leading-relaxed">
@@ -101,7 +101,7 @@ export default function TermsOfServicePage() {
             {/* 05. Yasaklı Kullanımlar */}
             <section className="md:col-span-12 bg-[#1b1b1f] p-8 md:p-10 rounded-xl border border-white/[0.04]">
               <div className="flex items-center gap-4 mb-6">
-                <span className="text-[#adc6ff] font-mono text-sm tracking-widest">05.</span>
+                <span className="text-emerald-400 font-mono text-sm tracking-widest">05.</span>
                 <h2 className="text-xl font-bold tracking-tight text-[#e5e1e7]">Yasaklı Kullanımlar</h2>
               </div>
               <p className="text-[#bbcabf] leading-relaxed mb-6">Platformu aşağıdaki amaçlarla kullanamazsınız:</p>
@@ -126,7 +126,7 @@ export default function TermsOfServicePage() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
                 <div>
                   <div className="flex items-center gap-4 mb-4">
-                    <span className="text-[#adc6ff] font-mono text-sm tracking-widest">06.</span>
+                    <span className="text-emerald-400 font-mono text-sm tracking-widest">06.</span>
                     <h2 className="text-lg font-bold tracking-tight text-[#e5e1e7]">Sorumluluk Sınırlaması</h2>
                   </div>
                   <p className="text-[#bbcabf] text-sm leading-relaxed">
@@ -135,7 +135,7 @@ export default function TermsOfServicePage() {
                 </div>
                 <div>
                   <div className="flex items-center gap-4 mb-4">
-                    <span className="text-[#adc6ff] font-mono text-sm tracking-widest">07.</span>
+                    <span className="text-emerald-400 font-mono text-sm tracking-widest">07.</span>
                     <h2 className="text-lg font-bold tracking-tight text-[#e5e1e7]">Hesap Güvenliği</h2>
                   </div>
                   <p className="text-[#bbcabf] text-sm leading-relaxed">
@@ -146,7 +146,7 @@ export default function TermsOfServicePage() {
                 </div>
                 <div>
                   <div className="flex items-center gap-4 mb-4">
-                    <span className="text-[#adc6ff] font-mono text-sm tracking-widest">08.</span>
+                    <span className="text-emerald-400 font-mono text-sm tracking-widest">08.</span>
                     <h2 className="text-lg font-bold tracking-tight text-[#e5e1e7]">Fesih</h2>
                   </div>
                   <p className="text-[#bbcabf] text-sm leading-relaxed">
@@ -155,7 +155,7 @@ export default function TermsOfServicePage() {
                 </div>
                 <div>
                   <div className="flex items-center gap-4 mb-4">
-                    <span className="text-[#adc6ff] font-mono text-sm tracking-widest">09.</span>
+                    <span className="text-emerald-400 font-mono text-sm tracking-widest">09.</span>
                     <h2 className="text-lg font-bold tracking-tight text-[#e5e1e7]">Değişiklikler</h2>
                   </div>
                   <p className="text-[#bbcabf] text-sm leading-relaxed">

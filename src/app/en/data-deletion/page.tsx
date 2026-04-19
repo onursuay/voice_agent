@@ -27,9 +27,9 @@ export default function DataDeletionEnPage() {
 
             {/* Hero Header */}
             <header className="mb-4">
-              <span className="text-xs font-bold uppercase tracking-[0.3em] text-[#adc6ff] mb-4 block">Information Governance</span>
+              <span className="text-xs font-bold uppercase tracking-[0.3em] text-emerald-400 mb-4 block">Information Governance</span>
               <h1 className="text-5xl font-bold tracking-tighter text-[#e5e1e7] mb-6">Data Deletion Request</h1>
-              <p className="text-[#bbcabf] text-lg leading-relaxed max-w-3xl">
+              <p className="text-[#bbcabf] text-sm leading-relaxed max-w-3xl">
                 Under GDPR and KVKK (Turkish Personal Data Protection Law), you have the right to request the deletion of your personal data. This right is also known as the &quot;right to be forgotten&quot; or &quot;right to erasure&quot;.
               </p>
             </header>
@@ -42,7 +42,7 @@ export default function DataDeletionEnPage() {
                   title: 'Submit Request',
                   desc: 'Send your data deletion request via email or through the platform.',
                   icon: (
-                    <svg width="28" height="28" viewBox="0 0 28 28" fill="none" className="text-[#adc6ff]">
+                    <svg width="28" height="28" viewBox="0 0 28 28" fill="none" className="text-emerald-400">
                       <path d="M14 3L4 7V14C4 19.55 8.4 24.74 14 26C19.6 24.74 24 19.55 24 14V7L14 3Z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round"/>
                       <path d="M10 14L13 17L18 11" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
                     </svg>
@@ -53,7 +53,7 @@ export default function DataDeletionEnPage() {
                   title: 'Review',
                   desc: 'Our systems scan and map all stored data fragments across storage nodes.',
                   icon: (
-                    <svg width="28" height="28" viewBox="0 0 28 28" fill="none" className="text-[#adc6ff]">
+                    <svg width="28" height="28" viewBox="0 0 28 28" fill="none" className="text-emerald-400">
                       <circle cx="12" cy="12" r="7" stroke="currentColor" strokeWidth="1.5"/>
                       <path d="M17 17L23 23" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
                     </svg>
@@ -64,7 +64,7 @@ export default function DataDeletionEnPage() {
                   title: 'Permanent Purge',
                   desc: 'Permanent irreversible scrub of all production and backup logs.',
                   icon: (
-                    <svg width="28" height="28" viewBox="0 0 28 28" fill="none" className="text-[#adc6ff]">
+                    <svg width="28" height="28" viewBox="0 0 28 28" fill="none" className="text-emerald-400">
                       <path d="M6 8H22M10 8V6H18V8M20 8L19 22H9L8 8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
                       <path d="M12 12V18M16 12V18" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
                     </svg>
@@ -72,7 +72,7 @@ export default function DataDeletionEnPage() {
                 },
               ].map((item, i) => (
                 <div key={i} className="p-6 rounded-xl bg-[#353438]/30 border border-white/[0.06]">
-                  <div className="text-[#adc6ff] mb-4">{item.icon}</div>
+                  <div className="text-emerald-400 mb-4">{item.icon}</div>
                   <h3 className="font-bold text-[#e5e1e7] mb-2">{item.step}. {item.title}</h3>
                   <p className="text-sm text-[#bbcabf]">{item.desc}</p>
                 </div>
@@ -81,8 +81,8 @@ export default function DataDeletionEnPage() {
 
             {/* How to request */}
             <section className="mb-3">
-              <h2 className="text-xs font-bold tracking-widest uppercase text-[#adc6ff] mb-6 flex items-center gap-3">
-                <span className="w-8 h-px bg-[#adc6ff]/30"></span>
+              <h2 className="text-xs font-bold tracking-widest uppercase text-emerald-400 mb-6 flex items-center gap-3">
+                <span className="w-8 h-px bg-emerald-400/30"></span>
                 How to Submit a Request
               </h2>
 
@@ -113,7 +113,7 @@ export default function DataDeletionEnPage() {
               <ul className="space-y-2 mb-6">
                 {['Your full name', 'The email address registered on the platform', 'The types of data you wish to delete (account, lead data, etc.)'].map((item, i) => (
                   <li key={i} className="flex items-start gap-3 text-sm text-[#bbcabf]">
-                    <span className="text-[#adc6ff] mt-0.5 shrink-0">
+                    <span className="text-emerald-400 mt-0.5 shrink-0">
                       <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2.5 7H11.5M11.5 7L8 3.5M11.5 7L8 10.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
                     </span>
                     {item}
@@ -125,8 +125,8 @@ export default function DataDeletionEnPage() {
             {/* Remaining content sections */}
             <div className="space-y-8">
               <section>
-                <h2 className="text-xs font-bold tracking-widest uppercase text-[#adc6ff] mb-5 flex items-center gap-3">
-                  <span className="w-8 h-px bg-[#adc6ff]/30"></span>
+                <h2 className="text-xs font-bold tracking-widest uppercase text-emerald-400 mb-5 flex items-center gap-3">
+                  <span className="w-8 h-px bg-emerald-400/30"></span>
                   Deleting Your Account (In-Platform)
                 </h2>
                 <p className="text-[#bbcabf] text-sm leading-relaxed">
@@ -135,8 +135,8 @@ export default function DataDeletionEnPage() {
               </section>
 
               <section>
-                <h2 className="text-xs font-bold tracking-widest uppercase text-[#adc6ff] mb-5 flex items-center gap-3">
-                  <span className="w-8 h-px bg-[#adc6ff]/30"></span>
+                <h2 className="text-xs font-bold tracking-widest uppercase text-emerald-400 mb-5 flex items-center gap-3">
+                  <span className="w-8 h-px bg-emerald-400/30"></span>
                   Data That Will Be Deleted
                 </h2>
                 <ul className="space-y-2">
@@ -156,18 +156,18 @@ export default function DataDeletionEnPage() {
                 </ul>
               </section>
 
-              <div className="bg-[#adc6ff]/5 p-5 rounded-lg flex gap-4 items-start border border-[#adc6ff]/20">
-                <span className="text-[#adc6ff] mt-0.5 shrink-0">
+              <div className="bg-emerald-400/5 p-5 rounded-lg flex gap-4 items-start border border-emerald-400/20">
+                <span className="text-emerald-400 mt-0.5 shrink-0">
                   <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M9 2C5.13 2 2 5.13 2 9C2 12.87 5.13 16 9 16C12.87 16 16 12.87 16 9C16 5.13 12.87 2 9 2ZM9.75 13H8.25V8.25H9.75V13ZM9.75 6.75H8.25V5.25H9.75V6.75Z" fill="currentColor"/></svg>
                 </span>
                 <p className="text-xs leading-relaxed text-[#bbcabf]">
-                  <strong className="text-[#adc6ff]">Notice:</strong> Deletion is irreversible. Once data is removed, it cannot be recovered even by VoiceAgent administrators.
+                  <strong className="text-emerald-400">Notice:</strong> Deletion is irreversible. Once data is removed, it cannot be recovered even by VoiceAgent administrators.
                 </p>
               </div>
 
               <section>
-                <h2 className="text-xs font-bold tracking-widest uppercase text-[#adc6ff] mb-5 flex items-center gap-3">
-                  <span className="w-8 h-px bg-[#adc6ff]/30"></span>
+                <h2 className="text-xs font-bold tracking-widest uppercase text-emerald-400 mb-5 flex items-center gap-3">
+                  <span className="w-8 h-px bg-emerald-400/30"></span>
                   Processing Time
                 </h2>
                 <p className="text-[#bbcabf] text-sm leading-relaxed">
@@ -176,8 +176,8 @@ export default function DataDeletionEnPage() {
               </section>
 
               <section>
-                <h2 className="text-xs font-bold tracking-widest uppercase text-[#adc6ff] mb-5 flex items-center gap-3">
-                  <span className="w-8 h-px bg-[#adc6ff]/30"></span>
+                <h2 className="text-xs font-bold tracking-widest uppercase text-emerald-400 mb-5 flex items-center gap-3">
+                  <span className="w-8 h-px bg-emerald-400/30"></span>
                   Legally Retained Data
                 </h2>
                 <p className="text-[#bbcabf] text-sm leading-relaxed">
@@ -186,8 +186,8 @@ export default function DataDeletionEnPage() {
               </section>
 
               <section>
-                <h2 className="text-xs font-bold tracking-widest uppercase text-[#adc6ff] mb-5 flex items-center gap-3">
-                  <span className="w-8 h-px bg-[#adc6ff]/30"></span>
+                <h2 className="text-xs font-bold tracking-widest uppercase text-emerald-400 mb-5 flex items-center gap-3">
+                  <span className="w-8 h-px bg-emerald-400/30"></span>
                   Meta (Facebook) Data Deletion
                 </h2>
                 <p className="text-[#bbcabf] text-sm leading-relaxed">
@@ -196,8 +196,8 @@ export default function DataDeletionEnPage() {
               </section>
 
               <section>
-                <h2 className="text-xs font-bold tracking-widest uppercase text-[#adc6ff] mb-5 flex items-center gap-3">
-                  <span className="w-8 h-px bg-[#adc6ff]/30"></span>
+                <h2 className="text-xs font-bold tracking-widest uppercase text-emerald-400 mb-5 flex items-center gap-3">
+                  <span className="w-8 h-px bg-emerald-400/30"></span>
                   Google Data Deletion
                 </h2>
                 <p className="text-[#bbcabf] text-sm leading-relaxed">
@@ -209,8 +209,8 @@ export default function DataDeletionEnPage() {
               </section>
 
               <section>
-                <h2 className="text-xs font-bold tracking-widest uppercase text-[#adc6ff] mb-5 flex items-center gap-3">
-                  <span className="w-8 h-px bg-[#adc6ff]/30"></span>
+                <h2 className="text-xs font-bold tracking-widest uppercase text-emerald-400 mb-5 flex items-center gap-3">
+                  <span className="w-8 h-px bg-emerald-400/30"></span>
                   Contact
                 </h2>
                 <div className="p-6 bg-[#1f1f23] rounded-lg border border-white/[0.04] flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
@@ -218,7 +218,7 @@ export default function DataDeletionEnPage() {
                     <p className="font-bold text-[#e5e1e7] mb-1">Prefer a direct contact?</p>
                     <p className="text-sm text-[#bbcabf]">For questions about the data deletion process:</p>
                   </div>
-                  <a href="mailto:info@yodijital.com" className="text-[#adc6ff] font-bold text-sm hover:underline underline-offset-8 transition-all whitespace-nowrap">
+                  <a href="mailto:info@yodijital.com" className="text-emerald-400 font-bold text-sm hover:underline underline-offset-8 transition-all whitespace-nowrap">
                     info@yodijital.com
                   </a>
                 </div>
