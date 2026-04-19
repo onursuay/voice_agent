@@ -13,21 +13,12 @@ export default function DataDeletionEnPage() {
     <div className="min-h-screen bg-[#131317] text-[#e5e1e7]">
       <LandingHeader lang="en" ctaSchedule="Book a Call" ctaTrial="14-Day Free Trial" />
 
-      <div className="min-h-screen pt-14 bg-[#1b1b1f]">
+      <div className="min-h-screen pt-[56px] bg-[#1b1b1f]">
         <main className="px-6 py-3 md:px-16">
           <div className="max-w-4xl mx-auto">
 
-            {/* Back link */}
-            <Link href="/" className="inline-flex items-center gap-2 text-sm text-slate-500 hover:text-emerald-400 transition-colors mb-3">
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M10 12L6 8L10 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
-              Back to Home
-            </Link>
-
             {/* Hero Header */}
             <header className="mb-4">
-              <span className="text-xs font-bold uppercase tracking-[0.3em] text-emerald-400 mb-4 block">Information Governance</span>
               <h1 className="text-5xl font-bold tracking-tighter text-[#e5e1e7] mb-6">Data Deletion Request</h1>
               <p className="text-[#bbcabf] text-sm leading-relaxed max-w-3xl">
                 Under GDPR and KVKK (Turkish Personal Data Protection Law), you have the right to request the deletion of your personal data. This right is also known as the &quot;right to be forgotten&quot; or &quot;right to erasure&quot;.
