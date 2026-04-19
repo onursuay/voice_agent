@@ -178,7 +178,7 @@ export default function RegisterPage() {
                 className="mt-0.5 w-4 h-4 rounded border-white/20 bg-white/[0.04] text-emerald-500 focus:ring-emerald-500/30 accent-emerald-500" />
               <span className="text-sm text-gray-400 leading-relaxed">
                 {t('agreeText')}{' '}
-                <Link href="/privacy-policy" target="_blank" className="text-emerald-400 hover:text-emerald-300 underline">{t('privacyPolicy')}</Link>
+                <Link href="/en/privacy-policy" target="_blank" className="text-emerald-400 hover:text-emerald-300 underline">{t('privacyPolicy')}</Link>
                 {', '}
                 <Link href="/terms-of-service" target="_blank" className="text-emerald-400 hover:text-emerald-300 underline">{t('terms')}</Link>
                 {' '}{t('cookiePolicy') && 've'}{' '}
