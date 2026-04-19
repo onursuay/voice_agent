@@ -13,7 +13,7 @@ export default function DataDeletionPage() {
     <div className="min-h-screen bg-[#131317] text-[#e5e1e7]">
       <LandingHeader ctaSchedule="Görüşme Planla" ctaTrial="14 Gün Ücretsiz Dene" />
 
-      <div className="min-h-screen pt-20 bg-[#1b1b1f]">
+      <div className="min-h-screen pt-14 bg-[#1b1b1f]">
         <main className="px-6 py-3 md:px-16">
           <div className="max-w-4xl mx-auto">
 
