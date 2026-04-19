@@ -77,7 +77,7 @@ export default function DataDeletionEnPage() {
               </h2>
 
               {/* Email CTA */}
-              <div className="relative bg-[#1f1f23] p-8 md:p-10 rounded-2xl border border-emerald-900/20 shadow-2xl overflow-hidden mb-8">
+              <div className="relative bg-[#1f1f23] p-8 md:p-10 rounded-2xl border border-emerald-900/20 shadow-2xl mb-8">
                 <div className="absolute top-0 left-0 w-full h-0.5 bg-gradient-to-r from-transparent via-emerald-400/50 to-transparent"></div>
                 <div className="flex flex-col md:flex-row justify-between items-start gap-6">
                   <div>
