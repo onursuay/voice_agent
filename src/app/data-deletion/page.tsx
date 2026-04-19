@@ -14,11 +14,11 @@ export default function DataDeletionPage() {
       <LandingHeader ctaSchedule="Görüşme Planla" ctaTrial="14 Gün Ücretsiz Dene" />
 
       <div className="min-h-screen pt-20 bg-[#1b1b1f]">
-        <main className="px-6 py-14 md:px-16">
+        <main className="px-6 py-3 md:px-16">
           <div className="max-w-4xl mx-auto">
 
             {/* Back link */}
-            <Link href="/" className="inline-flex items-center gap-2 text-sm text-slate-500 hover:text-emerald-400 transition-colors mb-10">
+            <Link href="/" className="inline-flex items-center gap-2 text-sm text-slate-500 hover:text-emerald-400 transition-colors mb-3">
               <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M10 12L6 8L10 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
               </svg>
@@ -26,7 +26,7 @@ export default function DataDeletionPage() {
             </Link>
 
             {/* Hero Header */}
-            <header className="mb-14">
+            <header className="mb-4">
               <span className="text-xs font-bold uppercase tracking-[0.3em] text-[#adc6ff] mb-4 block">Bilgi Yönetimi</span>
               <h1 className="text-5xl font-bold tracking-tighter text-[#e5e1e7] mb-6">Veri Silme Talebi</h1>
               <p className="text-[#bbcabf] text-lg leading-relaxed max-w-3xl">
@@ -35,7 +35,7 @@ export default function DataDeletionPage() {
             </header>
 
             {/* Process Steps */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-14">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-4">
               {[
                 {
                   step: '1',
@@ -80,7 +80,7 @@ export default function DataDeletionPage() {
             </div>
 
             {/* How to request */}
-            <section className="mb-10">
+            <section className="mb-3">
               <h2 className="text-xs font-bold tracking-widest uppercase text-[#adc6ff] mb-6 flex items-center gap-3">
                 <span className="w-8 h-px bg-[#adc6ff]/30"></span>
                 Nasıl Talepte Bulunabilirsiniz?

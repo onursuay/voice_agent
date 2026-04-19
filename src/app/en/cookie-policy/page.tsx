@@ -14,10 +14,10 @@ export default function CookiePolicyEnPage() {
       <LandingHeader lang="en" ctaSchedule="Book a Call" ctaTrial="14-Day Free Trial" />
 
       <main className="pt-20 min-h-screen bg-[#131317]">
-        <section className="flex-1 px-6 py-12 max-w-5xl mx-auto">
+        <section className="flex-1 px-6 py-3 max-w-5xl mx-auto">
 
           {/* Back link */}
-          <Link href="/" className="inline-flex items-center gap-2 text-sm text-slate-500 hover:text-emerald-400 transition-colors mb-10">
+          <Link href="/" className="inline-flex items-center gap-2 text-sm text-slate-500 hover:text-emerald-400 transition-colors mb-3">
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M10 12L6 8L10 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>
@@ -25,7 +25,7 @@ export default function CookiePolicyEnPage() {
           </Link>
 
           {/* Hero Header */}
-          <header className="mb-14">
+          <header className="mb-4">
             <div className="inline-block px-3 py-1 rounded-full bg-[#adc6ff]/10 text-[#adc6ff] text-[10px] font-bold tracking-[0.2em] uppercase mb-4">
               Transparency Protocol
             </div>
@@ -38,7 +38,7 @@ export default function CookiePolicyEnPage() {
           </header>
 
           {/* Cookie Categories — Bento Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-14">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-4">
             {/* Essential */}
             <div className="p-8 rounded-xl bg-[#1b1b1f] flex flex-col gap-4 border border-white/[0.04]">
               <div className="w-12 h-12 rounded-lg bg-emerald-400/10 flex items-center justify-center">
@@ -87,7 +87,7 @@ export default function CookiePolicyEnPage() {
           </div>
 
           {/* Cookie Types Detail */}
-          <div className="bg-[#1b1b1f] rounded-xl overflow-hidden border border-white/[0.04] mb-14">
+          <div className="bg-[#1b1b1f] rounded-xl overflow-hidden border border-white/[0.04] mb-4">
             <div className="p-6 border-b border-white/[0.04] flex justify-between items-center">
               <h4 className="text-xs font-bold uppercase tracking-[0.2em] text-[#bbcabf]">Cookie Types Detail</h4>
               <span className="text-[10px] text-[#adc6ff] font-mono">VoiceAgent · 2025</span>
@@ -107,7 +107,7 @@ export default function CookiePolicyEnPage() {
           </div>
 
           {/* Third-party & Managing */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 mb-14">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 mb-4">
             <div className="space-y-5">
               <h4 className="text-xs font-bold uppercase tracking-widest text-[#adc6ff] flex items-center gap-3">
                 <span className="w-6 h-px bg-[#adc6ff]/30"></span>

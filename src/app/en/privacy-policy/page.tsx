@@ -15,11 +15,11 @@ export default function PrivacyPolicyEnPage() {
       <LandingHeader lang="en" ctaSchedule="Book a Call" ctaTrial="14-Day Free Trial" />
 
       <div className="min-h-screen pt-20 bg-[#1b1b1f]">
-        <main className="py-16 px-4 md:px-12 lg:py-24">
+        <main className="py-3 px-4 md:px-12">
           <div className="max-w-[960px] mx-auto">
 
             {/* Back link */}
-            <Link href="/" className="inline-flex items-center gap-2 text-sm text-slate-500 hover:text-emerald-400 transition-colors mb-10">
+            <Link href="/" className="inline-flex items-center gap-2 text-sm text-slate-500 hover:text-emerald-400 transition-colors mb-3">
               <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M10 12L6 8L10 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
               </svg>
@@ -30,7 +30,7 @@ export default function PrivacyPolicyEnPage() {
             <div className="bg-[#353438] rounded-xl border border-white/[0.06] shadow-2xl p-8 md:p-16 relative overflow-hidden">
 
               {/* Editorial Header */}
-              <header className="mb-16">
+              <header className="mb-4">
                 <div className="flex flex-wrap items-center gap-4 mb-6">
                   <span className="px-2 py-1 bg-emerald-400/10 text-emerald-400 text-[10px] font-bold tracking-widest uppercase rounded">Privacy</span>
                   <span className="text-slate-500 text-[10px] font-medium tracking-widest uppercase">Last updated: April 2025</span>
@@ -44,7 +44,7 @@ export default function PrivacyPolicyEnPage() {
               </header>
 
               {/* Document Body */}
-              <div className="space-y-14 text-[#bbcabf] leading-relaxed text-[15px]">
+              <div className="space-y-4 text-[#bbcabf] leading-relaxed text-[15px]">
 
                 <section>
                   <h2 className="text-xs font-bold tracking-widest uppercase text-[#adc6ff] mb-6 flex items-center gap-3">
