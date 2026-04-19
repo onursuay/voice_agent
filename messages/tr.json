@@ -783,6 +783,7 @@
       "errorPasswordMatch": "Şifreler eşleşmiyor.",
       "errorPhone": "Geçerli bir telefon numarası girin.",
       "errorTerms": "Devam etmek için politikaları kabul etmelisiniz.",
+      "errorTurnstile": "Lütfen robot olmadığınızı doğrulayın.",
       "errorCreate": "Hesabınız oluşturulamadı",
       "errorGeneral": "Hesap oluşturulamadı"
     }
