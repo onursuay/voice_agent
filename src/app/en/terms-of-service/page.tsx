@@ -12,7 +12,7 @@ export default function TermsOfServiceEnPage() {
     <div className="min-h-screen bg-[#131317] text-[#e5e1e7]">
       <LandingHeader lang="en" ctaSchedule="Book a Call" ctaTrial="14-Day Free Trial" />
 
-      <div className="min-h-screen pt-[50px] bg-[#131317]">
+      <div className="min-h-screen pt-[44px] bg-[#131317]">
         <main className="px-6 py-3 md:px-16">
 
           {/* Hero Header */}

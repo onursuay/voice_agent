@@ -13,7 +13,7 @@ export default function PrivacyPolicyEnPage() {
     <div className="min-h-screen bg-[#131317] text-[#e5e1e7]">
       <LandingHeader lang="en" ctaSchedule="Book a Call" ctaTrial="14-Day Free Trial" />
 
-      <div className="min-h-screen pt-[50px] bg-[#1b1b1f]">
+      <div className="min-h-screen pt-[44px] bg-[#1b1b1f]">
         <main className="py-3 px-4 md:px-12">
           <div className="max-w-[960px] mx-auto">
 

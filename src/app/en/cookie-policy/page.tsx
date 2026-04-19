@@ -12,7 +12,7 @@ export default function CookiePolicyEnPage() {
     <div className="min-h-screen bg-[#131317] text-[#e5e1e7]">
       <LandingHeader lang="en" ctaSchedule="Book a Call" ctaTrial="14-Day Free Trial" />
 
-      <main className="pt-[50px] min-h-screen bg-[#131317]">
+      <main className="pt-[44px] min-h-screen bg-[#131317]">
         <section className="flex-1 px-6 py-3 max-w-5xl mx-auto">
 
           {/* Hero Header */}
