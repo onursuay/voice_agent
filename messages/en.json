@@ -785,6 +785,7 @@
       "errorPasswordMatch": "Passwords do not match.",
       "errorPhone": "Enter a valid phone number.",
       "errorTerms": "You must accept the policies to continue.",
+      "errorTurnstile": "Please verify that you are not a robot.",
       "errorCreate": "Could not create your account",
       "errorGeneral": "Account creation failed"
     }
