@@ -88,7 +88,7 @@ export default function CookiePolicyPage() {
             <span>© 2025 Yo Dijital. Tüm hakları saklıdır.</span>
           </div>
           <nav className="flex flex-wrap gap-5 text-gray-500">
-            <a href="/privacy-policy" className="hover:text-gray-300 transition-colors">Gizlilik Politikası</a>
+            <a href="/en/privacy-policy" className="hover:text-gray-300 transition-colors">Gizlilik Politikası</a>
             <a href="/cookie-policy" className="hover:text-gray-300 transition-colors">Çerez Politikası</a>
             <a href="/terms-of-service" className="hover:text-gray-300 transition-colors">Kullanım Koşulları</a>
             <a href="/data-deletion" className="hover:text-gray-300 transition-colors">Veri Silme</a>
