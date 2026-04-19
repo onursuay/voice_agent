@@ -6,6 +6,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import { useTranslations } from 'next-intl'
+import { Turnstile } from '@marsidev/react-turnstile'
 
 export default function RegisterPage() {
   const router = useRouter()
