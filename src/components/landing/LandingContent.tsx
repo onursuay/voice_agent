@@ -62,7 +62,7 @@ const content = {
     panelPlatforms: '4 kanal senkron',
     footer: '2025 Yo Dijital. Tüm hakları saklıdır.',
     legalLinks: [
-      { label: 'Gizlilik Politikası', href: '/en/privacy-policy' },
+      { label: 'Gizlilik Politikası', href: '/privacy-policy' },
       { label: 'Kullanım Koşulları', href: '/terms-of-service' },
       { label: 'Çerez Politikası', href: '/cookie-policy' },
       { label: 'Veri Silme', href: '/data-deletion' },
