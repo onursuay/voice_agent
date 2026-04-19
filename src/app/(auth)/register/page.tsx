@@ -97,7 +97,18 @@ export default function RegisterPage() {
     if (password !== passwordConfirm) { setError(t('errorPasswordMatch')); return }
     if (phone.trim() && !/^[+]?[0-9\s()-]{7,20}$/.test(phone.trim())) { setError(t('errorPhone')); return }
     if (!acceptedTerms) { setError(t('errorTerms')); return }
+    if (!turnstileToken) { setError(t('errorTurnstile')); return }
     setLoading(true)
+    try {
+      const verifyRes = await fetch('/api/auth/verify-turnstile', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ token: turnstileToken }),
+      })
+      if (!verifyRes.ok) { setError(t('errorTurnstile')); setLoading(false); return }
+    } catch {
+      setError(t('errorTurnstile')); setLoading(false); return
+    }
     try {
       const supabase = createClient()
       const { data, error: authError } = await supabase.auth.signUp({ email, password })
