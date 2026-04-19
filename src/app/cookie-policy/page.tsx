@@ -96,7 +96,7 @@ export default function CookiePolicyPage() {
 
           {/* Third-party & Managing */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 mb-4">
-            <div className="space-y-5">
+            <div className="bg-[#353438] p-8 rounded-xl border border-white/[0.04] space-y-5">
               <h4 className="text-xs font-bold uppercase tracking-widest text-emerald-400 flex items-center gap-3">
                 <span className="w-6 h-px bg-emerald-400/30"></span>
                 Üçüncü Taraf Çerezleri
