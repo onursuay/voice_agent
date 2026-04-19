@@ -10,102 +10,177 @@ export const metadata: Metadata = {
 
 export default function TermsOfServicePage() {
   return (
-    <div className="min-h-screen bg-[#060609] text-white">
+    <div className="min-h-screen bg-[#131317] text-[#e5e1e7]">
       <LandingHeader ctaSchedule="Görüşme Planla" ctaTrial="14 Gün Ücretsiz Dene" />
 
-      <div className="max-w-5xl mx-auto px-6 py-16">
-        <Link href="/" className="text-emerald-400 hover:text-emerald-300 transition-colors mb-6 inline-block text-sm">
-          &larr; Ana Sayfaya Dön
-        </Link>
+      <div className="min-h-screen pt-20 bg-[#131317]">
+        <main className="px-6 py-12 md:px-16 lg:px-32 xl:px-48">
 
-        <div className="relative rounded-2xl border border-emerald-400/10 bg-white/[0.02] px-8 py-10 shadow-[0_0_60px_rgba(16,185,129,0.07),inset_0_0_40px_rgba(16,185,129,0.03)]">
-          <p className="text-sm text-gray-500 mb-2">Son güncelleme: Nisan 2025</p>
-          <h1 className="text-3xl font-bold mb-2 text-white">Kullanım Koşulları</h1>
-          <p className="text-gray-500 mb-10">YO Dijital Medya A.Ş. · voiceagent.yodijital.com</p>
+          {/* Back link */}
+          <div className="max-w-4xl mx-auto mb-10">
+            <Link href="/" className="inline-flex items-center gap-2 text-sm text-slate-500 hover:text-emerald-400 transition-colors">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M10 12L6 8L10 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+              Ana Sayfaya Dön
+            </Link>
+          </div>
 
-          <div className="space-y-8">
-            <section>
-              <h2 className="text-xl font-semibold mb-3 text-white">1) Taraflar ve Tanımlar</h2>
-              <p className="text-[14px] text-[#8a8f98] leading-relaxed">
+          {/* Hero Header */}
+          <header className="max-w-4xl mb-16 text-center mx-auto">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-400/10 text-emerald-400 text-[10px] font-bold tracking-widest uppercase mb-6">
+              Yürürlük Tarihi: Nisan 2025
+            </div>
+            <h1 className="text-5xl md:text-6xl font-bold tracking-tighter text-[#e5e1e7] mb-6 leading-none">Kullanım Koşulları</h1>
+            <p className="text-xl text-[#bbcabf] font-light leading-relaxed max-w-2xl mx-auto">
+              Bu koşullar, YO Dijital Medya A.Ş. tarafından sağlanan VoiceAgent platformunun kullanıcıları için geçerlidir. Hizmeti kullanarak bu koşullara bağlı olmayı kabul etmiş olursunuz.
+            </p>
+          </header>
+
+          {/* Content */}
+          <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-8">
+
+            {/* 01. Taraflar ve Tanımlar */}
+            <section className="md:col-span-8 bg-[#1b1b1f] p-8 md:p-10 rounded-xl border border-white/[0.04]">
+              <div className="flex items-center gap-4 mb-6">
+                <span className="text-[#adc6ff] font-mono text-sm tracking-widest">01.</span>
+                <h2 className="text-xl font-bold tracking-tight text-[#e5e1e7]">Taraflar ve Tanımlar</h2>
+              </div>
+              <p className="text-[#bbcabf] leading-relaxed">
                 Bu koşullar, YO Dijital Medya A.Ş. tarafından sağlanan VoiceAgent platformunun kullanıcıları için geçerlidir. Hizmeti kullanarak bu Kullanım Koşullarına bağlı olmayı kabul etmiş olursunuz. Kabul etmiyorsanız lütfen platformu kullanmayın.
               </p>
             </section>
 
-            <section>
-              <h2 className="text-xl font-semibold mb-3 text-white">2) Hizmetin Kapsamı</h2>
-              <p className="text-[14px] text-[#8a8f98] leading-relaxed">
+            {/* Highlight card */}
+            <aside className="md:col-span-4 bg-[#adc6ff]/5 p-8 rounded-xl border border-[#adc6ff]/20 flex flex-col justify-center">
+              <div className="text-[#adc6ff] mb-4">
+                <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M14 3L4 7V14C4 19.55 8.4 24.74 14 26C19.6 24.74 24 19.55 24 14V7L14 3Z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round"/>
+                  <path d="M10 14L13 17L18 11" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </div>
+              <h4 className="text-[#adc6ff] font-bold mb-2">Temel İlke</h4>
+              <p className="text-[#bbcabf] text-sm leading-relaxed">
+                Verileriniz sizindir. VoiceAgent, kişisel verilerinizi hiçbir koşulda üçüncü taraflara satmaz veya devretmez.
+              </p>
+            </aside>
+
+            {/* 02. Hizmetin Kapsamı */}
+            <section className="md:col-span-12 space-y-4 mt-4">
+              <div className="flex items-center gap-4 mb-6">
+                <span className="text-[#adc6ff] font-mono text-sm tracking-widest">02.</span>
+                <h2 className="text-xl font-bold tracking-tight text-[#e5e1e7]">Hizmetin Kapsamı</h2>
+              </div>
+              <p className="text-[#bbcabf] leading-relaxed">
                 VoiceAgent, işletmelerin müşteri adaylarını toplamasına, yönetmesine ve satışa dönüştürmesine yardımcı olan bir CRM ve lead yönetim platformudur. Hizmetler; çok kanallı lead toplama (Meta Ads, WhatsApp, Instagram, Google Sheets), CRM pipeline yönetimi, AI destekli arama, e-posta kampanya yönetimi ve analitik araçları kapsamaktadır.
               </p>
             </section>
 
-            <section>
-              <h2 className="text-xl font-semibold mb-3 text-white">3) Kullanıcı Yetkisi</h2>
-              <p className="text-[14px] text-[#8a8f98] leading-relaxed">
+            {/* 03. Kullanıcı Yetkisi */}
+            <section className="md:col-span-12">
+              <div className="flex items-center gap-4 mb-6">
+                <span className="text-[#adc6ff] font-mono text-sm tracking-widest">03.</span>
+                <h2 className="text-xl font-bold tracking-tight text-[#e5e1e7]">Kullanıcı Yetkisi</h2>
+              </div>
+              <p className="text-[#bbcabf] leading-relaxed">
                 Kullanıcılar yalnızca kullanmaya yetkili oldukları hesapları ve veri kaynaklarını bağlayabilir. Üçüncü taraf hesaplara yetkisiz erişim sağlanamaz veya uygun yetki olmadan veri kaynakları entegre edilemez.
               </p>
             </section>
 
-            <section>
-              <h2 className="text-xl font-semibold mb-3 text-white">4) Politika ve API Uyumu</h2>
-              <p className="text-[14px] text-[#8a8f98] leading-relaxed">
+            {/* 04. Politika ve API Uyumu */}
+            <section className="md:col-span-12">
+              <div className="flex items-center gap-4 mb-6">
+                <span className="text-[#adc6ff] font-mono text-sm tracking-widest">04.</span>
+                <h2 className="text-xl font-bold tracking-tight text-[#e5e1e7]">Politika ve API Uyumu</h2>
+              </div>
+              <p className="text-[#bbcabf] leading-relaxed">
                 VoiceAgent aracılığıyla gerçekleştirilen işlemler, ilgili platformların (Google, Meta vb.) politikaları ve koşullarına tabidir. Kullanıcılar hizmeti yetkisiz veri toplama, kötüye kullanım veya yanıltıcı içerik gibi platform politikalarını ihlal eden şekillerde kullanamazlar. Google API verilerinin kullanımı, Sınırlı Kullanım gereksinimleri dahil Google API Hizmetleri Kullanıcı Verisi Politikası&apos;na tabidir.
               </p>
             </section>
 
-            <section>
-              <h2 className="text-xl font-semibold mb-3 text-white">5) Yasaklı Kullanımlar</h2>
-              <p className="text-[14px] text-[#8a8f98] leading-relaxed mb-3">Platformu aşağıdaki amaçlarla kullanamazsınız:</p>
-              <ul className="list-disc pl-6 space-y-2 text-[14px] text-[#8a8f98] leading-relaxed">
-                <li>Yasadışı faaliyetler veya dolandırıcılık</li>
-                <li>Spam veya istenmeyen ticari iletişim gönderme</li>
-                <li>Platform güvenliğini tehlikeye atma girişimleri</li>
-                <li>Başkalarının gizlilik haklarını ihlal etme</li>
-                <li>Fikri mülkiyet haklarının ihlali</li>
-              </ul>
+            {/* 05. Yasaklı Kullanımlar */}
+            <section className="md:col-span-12 bg-[#1b1b1f] p-8 md:p-10 rounded-xl border border-white/[0.04]">
+              <div className="flex items-center gap-4 mb-6">
+                <span className="text-[#adc6ff] font-mono text-sm tracking-widest">05.</span>
+                <h2 className="text-xl font-bold tracking-tight text-[#e5e1e7]">Yasaklı Kullanımlar</h2>
+              </div>
+              <p className="text-[#bbcabf] leading-relaxed mb-6">Platformu aşağıdaki amaçlarla kullanamazsınız:</p>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                {[
+                  { label: 'Yasadışı faaliyetler', desc: 'Yasadışı faaliyetler veya dolandırıcılık' },
+                  { label: 'Spam gönderimi', desc: 'Spam veya istenmeyen ticari iletişim gönderme' },
+                  { label: 'Güvenlik ihlali', desc: 'Platform güvenliğini tehlikeye atma girişimleri' },
+                  { label: 'Gizlilik ihlali', desc: 'Başkalarının gizlilik haklarını ihlal etme' },
+                  { label: 'Fikri mülkiyet', desc: 'Fikri mülkiyet haklarının ihlali' },
+                ].map((item, i) => (
+                  <div key={i} className="p-4 bg-[#353438]/30 rounded-lg border border-white/[0.04]">
+                    <p className="text-[#e5e1e7] font-bold text-sm mb-1">{item.label}</p>
+                    <p className="text-[#bbcabf] text-xs leading-relaxed">{item.desc}</p>
+                  </div>
+                ))}
+              </div>
             </section>
 
-            <section>
-              <h2 className="text-xl font-semibold mb-3 text-white">6) Sorumluluk Sınırlaması</h2>
-              <p className="text-[14px] text-[#8a8f98] leading-relaxed">
-                VoiceAgent&apos;ta görüntülenen veriler, bağlı platformlar (Google, Meta) tarafından sağlanan verilere dayanmaktadır; gecikmeler, kotalar, kesintiler veya platform değişiklikleri nedeniyle tutarsızlıklar oluşabilir. VoiceAgent, üçüncü taraf platform kesintilerinden, API sınırlarından veya politika değişikliklerinden kaynaklanan zararlar için yalnızca sınırlı ölçüde sorumludur. Yasaların izin verdiği azami ölçüde dolaylı, tesadüfi veya sonuçsal zararlardan sorumlu değiliz.
-              </p>
+            {/* 06-09 remaining sections */}
+            <section className="md:col-span-12 bg-[#0e0e12] p-8 md:p-10 rounded-xl border border-emerald-900/10">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+                <div>
+                  <div className="flex items-center gap-4 mb-4">
+                    <span className="text-[#adc6ff] font-mono text-sm tracking-widest">06.</span>
+                    <h2 className="text-lg font-bold tracking-tight text-[#e5e1e7]">Sorumluluk Sınırlaması</h2>
+                  </div>
+                  <p className="text-[#bbcabf] text-sm leading-relaxed">
+                    VoiceAgent&apos;ta görüntülenen veriler, bağlı platformlar tarafından sağlanan verilere dayanmaktadır; gecikmeler, kotalar veya kesintiler nedeniyle tutarsızlıklar oluşabilir. Yasaların izin verdiği azami ölçüde dolaylı, tesadüfi veya sonuçsal zararlardan sorumlu değiliz.
+                  </p>
+                </div>
+                <div>
+                  <div className="flex items-center gap-4 mb-4">
+                    <span className="text-[#adc6ff] font-mono text-sm tracking-widest">07.</span>
+                    <h2 className="text-lg font-bold tracking-tight text-[#e5e1e7]">Hesap Güvenliği</h2>
+                  </div>
+                  <p className="text-[#bbcabf] text-sm leading-relaxed">
+                    Kullanıcı, hesabının güvenliğinden ve erişim kimlik bilgilerinin korunmasından sorumludur. Yetkisiz herhangi bir kullanım durumunda lütfen derhal{' '}
+                    <a href="mailto:info@yodijital.com" className="text-emerald-400 hover:text-emerald-300 underline underline-offset-4">info@yodijital.com</a>{' '}
+                    adresinden bize bildirin.
+                  </p>
+                </div>
+                <div>
+                  <div className="flex items-center gap-4 mb-4">
+                    <span className="text-[#adc6ff] font-mono text-sm tracking-widest">08.</span>
+                    <h2 className="text-lg font-bold tracking-tight text-[#e5e1e7]">Fesih</h2>
+                  </div>
+                  <p className="text-[#bbcabf] text-sm leading-relaxed">
+                    VoiceAgent, kötüye kullanım veya bu koşulların ihlali durumunda erişimi askıya alabilir veya sonlandırabilir. Ücretli planlar için abonelik ücretleri önceden belirtilir; dilediğiniz zaman iptal edebilirsiniz.
+                  </p>
+                </div>
+                <div>
+                  <div className="flex items-center gap-4 mb-4">
+                    <span className="text-[#adc6ff] font-mono text-sm tracking-widest">09.</span>
+                    <h2 className="text-lg font-bold tracking-tight text-[#e5e1e7]">Değişiklikler</h2>
+                  </div>
+                  <p className="text-[#bbcabf] text-sm leading-relaxed">
+                    Bu koşullar önceden bildirimde bulunularak güncellenebilir. Güncel sürüm her zaman bu sayfada yayınlanır. Değişikliklerden sonra Hizmeti kullanmaya devam etmeniz, koşulları kabul ettiğiniz anlamına gelir.
+                  </p>
+                </div>
+              </div>
             </section>
 
-            <section>
-              <h2 className="text-xl font-semibold mb-3 text-white">7) Hesap Güvenliği</h2>
-              <p className="text-[14px] text-[#8a8f98] leading-relaxed">
-                Kullanıcı, hesabının güvenliğinden ve erişim kimlik bilgilerinin korunmasından sorumludur. Yetkisiz herhangi bir kullanım durumunda lütfen derhal <a href="mailto:info@yodijital.com" className="text-emerald-400 hover:text-emerald-300">info@yodijital.com</a> adresinden bize bildirin.
-              </p>
-            </section>
-
-            <section>
-              <h2 className="text-xl font-semibold mb-3 text-white">8) Fesih</h2>
-              <p className="text-[14px] text-[#8a8f98] leading-relaxed">
-                VoiceAgent, kötüye kullanım veya bu koşulların ihlali durumunda erişimi askıya alabilir veya sonlandırabilir. Ücretli planlar için abonelik ücretleri önceden belirtilir; dilediğiniz zaman iptal edebilirsiniz ve mevcut fatura dönemi sonuna kadar erişiminiz devam eder.
-              </p>
-            </section>
-
-            <section>
-              <h2 className="text-xl font-semibold mb-3 text-white">9) Değişiklikler</h2>
-              <p className="text-[14px] text-[#8a8f98] leading-relaxed">
-                Bu koşullar önceden bildirimde bulunularak güncellenebilir. Güncel sürüm her zaman bu sayfada yayınlanır. Değişikliklerden sonra Hizmeti kullanmaya devam etmeniz, koşulları kabul ettiğiniz anlamına gelir.
-              </p>
-            </section>
           </div>
-        </div>
+        </main>
       </div>
 
-      <footer className="w-full border-t border-white/[0.05] py-6 px-6 bg-[#060609]">
-        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3 text-sm">
-          <div className="flex items-center gap-3 text-gray-500">
-            <Image src="/logo.png" alt="Yo Dijital" width={50} height={18} className="object-contain brightness-0 invert opacity-40" />
-            <span>© 2025 Yo Dijital. Tüm hakları saklıdır.</span>
+      {/* Footer */}
+      <footer className="bg-[#131317] border-t border-emerald-900/20 w-full py-12 px-6">
+        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-6">
+          <div className="flex flex-col items-center sm:items-start gap-2">
+            <Image src="/logo.png" alt="Yo Dijital" width={50} height={18} className="object-contain brightness-0 invert opacity-60" />
+            <span className="text-slate-500 text-xs font-light tracking-wide">© 2025 Yo Dijital. Tüm hakları saklıdır.</span>
           </div>
-          <nav className="flex flex-wrap gap-5 text-gray-500">
-            <a href="/en/privacy-policy" className="hover:text-gray-300 transition-colors">Gizlilik Politikası</a>
-            <a href="/cookie-policy" className="hover:text-gray-300 transition-colors">Çerez Politikası</a>
-            <a href="/terms-of-service" className="hover:text-gray-300 transition-colors">Kullanım Koşulları</a>
-            <a href="/data-deletion" className="hover:text-gray-300 transition-colors">Veri Silme</a>
+          <nav className="flex flex-wrap justify-center gap-6 text-xs text-slate-500">
+            <a href="/privacy-policy" className="hover:text-emerald-300 transition-colors underline underline-offset-4">Gizlilik Politikası</a>
+            <a href="/cookie-policy" className="hover:text-emerald-300 transition-colors underline underline-offset-4">Çerez Politikası</a>
+            <a href="/terms-of-service" className="hover:text-emerald-300 transition-colors underline underline-offset-4">Kullanım Koşulları</a>
+            <a href="/data-deletion" className="hover:text-emerald-300 transition-colors underline underline-offset-4">Veri Silme</a>
           </nav>
         </div>
       </footer>
