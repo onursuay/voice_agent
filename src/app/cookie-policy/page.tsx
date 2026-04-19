@@ -13,22 +13,11 @@ export default function CookiePolicyPage() {
     <div className="min-h-screen bg-[#131317] text-[#e5e1e7]">
       <LandingHeader ctaSchedule="Görüşme Planla" ctaTrial="14 Gün Ücretsiz Dene" />
 
-      <main className="pt-14 min-h-screen bg-[#131317]">
+      <main className="pt-[56px] min-h-screen bg-[#131317]">
         <section className="flex-1 px-6 py-3 max-w-5xl mx-auto">
-
-          {/* Back link */}
-          <Link href="/" className="inline-flex items-center gap-2 text-sm text-slate-500 hover:text-emerald-400 transition-colors mb-3">
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M10 12L6 8L10 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-            </svg>
-            Ana Sayfaya Dön
-          </Link>
 
           {/* Hero Header */}
           <header className="mb-4">
-            <div className="inline-block px-3 py-1 rounded-full bg-emerald-400/10 text-emerald-400 text-[10px] font-bold tracking-[0.2em] uppercase mb-4">
-              Şeffaflık Protokolü
-            </div>
             <h1 className="text-5xl md:text-6xl font-extrabold tracking-tighter text-[#e5e1e7] mb-6 leading-[0.9]">
               Çerez Politikası
             </h1>
