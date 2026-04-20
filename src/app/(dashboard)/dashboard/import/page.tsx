@@ -1035,7 +1035,6 @@ export default function ImportPage() {
             onClick={async () => {
               await fetch('/api/integrations/google/disconnect', { method: 'DELETE' });
               setGoogleConnected(false);
-              setSheetsFiles([]);
               setSelectedSpreadsheet(null);
               setSpreadsheetTabs([]);
               setSelectedTab('');
