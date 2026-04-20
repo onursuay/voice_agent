@@ -457,7 +457,6 @@ export default function ImportPage() {
   const [defaultSource, setDefaultSource] = useState<string>('import');
 
   // Google Sheets dropdown UI state
-  const [sheetsDropdownOpen, setSheetsDropdownOpen] = useState(false);
   const [tabDropdownOpen, setTabDropdownOpen] = useState(false);
 
   // Step 4 - Processing & result
