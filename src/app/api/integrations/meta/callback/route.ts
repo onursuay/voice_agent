@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { createHmac } from 'crypto';
 import { createAdminSupabaseClient } from '@/lib/supabase/admin';
 
-const META_GRAPH_BASE = 'https://graph.facebook.com/v19.0';
+const META_GRAPH_BASE = 'https://graph.facebook.com/v23.0';
 
 function verifyState(state: string): string | null {
   try {
