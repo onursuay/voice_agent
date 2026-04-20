@@ -939,10 +939,6 @@ export default function ImportPage() {
               ? <CheckCircle2 className="h-4 w-4 shrink-0 text-green-500" />
               : <ExternalLink className="h-4 w-4 shrink-0 text-gray-400" />}
           </button>
-          {false && (
-              </div>
-            </div>
-          )}
         </div>
 
         {/* Sheet tab dropdown */}
