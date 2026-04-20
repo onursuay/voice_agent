@@ -916,85 +916,30 @@ export default function ImportPage() {
           </div>
         )}
 
-        {/* Spreadsheet dropdown */}
-        <div className="relative">
+        {/* Google Picker button */}
+        <div>
           <button
-            onClick={() => setSheetsDropdownOpen(prev => !prev)}
-            className={cn(
-              'flex w-full items-center justify-between gap-3 rounded-xl border bg-white px-4 py-3 text-sm transition-all shadow-sm',
-              sheetsDropdownOpen ? 'border-green-400 ring-2 ring-green-100' : 'border-gray-200 hover:border-green-300'
-            )}
+            onClick={openGooglePicker}
+            disabled={pickerLoading}
+            className="flex w-full items-center justify-between gap-3 rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm transition-all shadow-sm hover:border-green-300 disabled:opacity-60"
           >
             <div className="flex items-center gap-3 min-w-0">
               <div className={cn('flex h-8 w-8 shrink-0 items-center justify-center rounded-lg', selectedSpreadsheet ? 'bg-green-100' : 'bg-gray-100')}>
-                <FileSpreadsheet className={cn('h-4 w-4', selectedSpreadsheet ? 'text-green-600' : 'text-gray-400')} />
+                {pickerLoading ? <Loader2 className="h-4 w-4 animate-spin text-gray-400" /> : <FileSpreadsheet className={cn('h-4 w-4', selectedSpreadsheet ? 'text-green-600' : 'text-gray-400')} />}
               </div>
               <div className="min-w-0 text-left">
                 {selectedSpreadsheet ? (
-                  <>
-                    <p className="font-semibold text-gray-800 truncate">{selectedSpreadsheet.name}</p>
-                    <p className="text-xs text-gray-400">{new Date(selectedSpreadsheet.modifiedTime).toLocaleDateString('tr-TR')}</p>
-                  </>
+                  <p className="font-semibold text-gray-800 truncate">{selectedSpreadsheet.name}</p>
                 ) : (
                   <p className="text-gray-400">{t('sheetsSearchPlaceholder')}</p>
                 )}
               </div>
             </div>
-            <ChevronDown className={cn('h-4 w-4 shrink-0 text-gray-400 transition-transform duration-200', sheetsDropdownOpen && 'rotate-180')} />
+            {selectedSpreadsheet
+              ? <CheckCircle2 className="h-4 w-4 shrink-0 text-green-500" />
+              : <ExternalLink className="h-4 w-4 shrink-0 text-gray-400" />}
           </button>
-
-          {sheetsDropdownOpen && (
-            <div className="absolute left-0 right-0 top-full z-50 mt-1.5 overflow-hidden rounded-xl border border-gray-200 bg-white shadow-lg">
-              {/* Search inside dropdown */}
-              <div className="border-b border-gray-100 p-2">
-                <div className="relative">
-                  <Search className="absolute left-3 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-gray-400" />
-                  <input
-                    type="text"
-                    placeholder={t('sheetsSearchPlaceholder')}
-                    value={sheetsSearch}
-                    onChange={(e) => setSheetsSearch(e.target.value)}
-                    className="w-full rounded-lg border border-gray-200 bg-gray-50 py-2 pl-9 pr-3 text-sm focus:border-green-400 focus:outline-none focus:ring-1 focus:ring-green-100"
-                    autoFocus
-                  />
-                </div>
-              </div>
-
-              <div className="max-h-52 overflow-y-auto">
-                {loadingSheets ? (
-                  <div className="flex items-center justify-center py-6">
-                    <Loader2 className="h-4 w-4 animate-spin text-gray-400" />
-                    <span className="ml-2 text-sm text-gray-400">{t('sheetsLoading')}</span>
-                  </div>
-                ) : sheetsFiles.length === 0 ? (
-                  <div className="py-6 text-center text-sm text-gray-400">{t('sheetsNotFound')}</div>
-                ) : (
-                  sheetsFiles.map((sf) => (
-                    <button
-                      key={sf.id}
-                      onClick={() => {
-                        setSelectedSpreadsheet(sf);
-                        setHeaders([]);
-                        setRows([]);
-                        setSelectedTab('');
-                        setSheetsDropdownOpen(false);
-                      }}
-                      className={cn(
-                        'flex w-full items-center gap-3 px-4 py-2.5 text-left text-sm transition-colors',
-                        selectedSpreadsheet?.id === sf.id
-                          ? 'bg-green-50 text-green-700'
-                          : 'hover:bg-gray-50 text-gray-700'
-                      )}
-                    >
-                      <FileSpreadsheet className={cn('h-4 w-4 shrink-0', selectedSpreadsheet?.id === sf.id ? 'text-green-500' : 'text-gray-400')} />
-                      <div className="min-w-0 flex-1">
-                        <p className="font-medium truncate">{sf.name}</p>
-                        <p className="text-xs text-gray-400">{new Date(sf.modifiedTime).toLocaleDateString('tr-TR')}</p>
-                      </div>
-                      {selectedSpreadsheet?.id === sf.id && <CheckCircle2 className="h-4 w-4 shrink-0 text-green-500" />}
-                    </button>
-                  ))
-                )}
+          {false && (
               </div>
             </div>
           )}
