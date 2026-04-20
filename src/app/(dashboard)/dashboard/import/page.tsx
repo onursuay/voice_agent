@@ -431,9 +431,6 @@ export default function ImportPage() {
 
   // Step 1 - Google Sheets
   const [googleConnected, setGoogleConnected] = useState(false);
-  const [sheetsFiles, setSheetsFiles] = useState<SheetFile[]>([]);
-  const [sheetsSearch, setSheetsSearch] = useState('');
-  const [loadingSheets, setLoadingSheets] = useState(false);
   const [sheetsError, setSheetsError] = useState('');
   const [selectedSpreadsheet, setSelectedSpreadsheet] = useState<SheetFile | null>(null);
   const [spreadsheetTabs, setSpreadsheetTabs] = useState<SheetTab[]>([]);
@@ -441,6 +438,7 @@ export default function ImportPage() {
   const [loadingSheetData, setLoadingSheetData] = useState(false);
   const [sheetDataError, setSheetDataError] = useState('');
   const [sourceFileName, setSourceFileName] = useState('');
+  const [pickerLoading, setPickerLoading] = useState(false);
 
   // Recent imports
   const [recentImports, setRecentImports] = useState<ImportJob[]>([]);
