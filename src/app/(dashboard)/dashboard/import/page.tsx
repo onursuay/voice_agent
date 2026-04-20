@@ -498,27 +498,48 @@ export default function ImportPage() {
   }, []);
 
 
-  // ---- Search Google Sheets files ----
-  useEffect(() => {
-    if (!googleConnected) return;
-    setLoadingSheets(true);
+  // ---- Open Google Picker ----
+  async function openGooglePicker() {
+    setPickerLoading(true);
     setSheetsError('');
-    const url = sheetsSearch
-      ? `/api/integrations/google/sheets?q=${encodeURIComponent(sheetsSearch)}`
-      : '/api/integrations/google/sheets';
-    fetch(url)
-      .then((r) => r.json())
-      .then((data) => {
-        if (data.error === 'google_not_connected' || data.error === 'google_token_expired') {
-          setGoogleConnected(false);
-          setSheetsFiles([]);
-        } else {
-          setSheetsFiles(data.files || []);
-        }
-      })
-      .catch(() => setSheetsError(t('sheetsLoadError')))
-      .finally(() => setLoadingSheets(false));
-  }, [googleConnected, sheetsSearch]);
+    try {
+      const res = await fetch('/api/integrations/google/picker-token');
+      if (!res.ok) { setGoogleConnected(false); return; }
+      const { token } = await res.json();
+
+      await new Promise<void>((resolve) => {
+        if ((window as any).gapi?.picker) { resolve(); return; }
+        const script = document.createElement('script');
+        script.src = 'https://apis.google.com/js/api.js';
+        script.onload = () => (window as any).gapi.load('picker', resolve);
+        document.body.appendChild(script);
+      });
+
+      const apiKey = process.env.NEXT_PUBLIC_GOOGLE_API_KEY!;
+      const view = new (window as any).google.picker.DocsView((window as any).google.picker.ViewId.SPREADSHEETS)
+        .setIncludeFolders(false);
+
+      new (window as any).google.picker.PickerBuilder()
+        .addView(view)
+        .setOAuthToken(token)
+        .setDeveloperKey(apiKey)
+        .setCallback((data: any) => {
+          if (data.action === (window as any).google.picker.Action.PICKED) {
+            const doc = data.docs[0];
+            setSelectedSpreadsheet({ id: doc.id, name: doc.name, modifiedTime: new Date().toISOString() });
+            setHeaders([]);
+            setRows([]);
+            setSelectedTab('');
+          }
+        })
+        .build()
+        .setVisible(true);
+    } catch {
+      setSheetsError(t('sheetsLoadError'));
+    } finally {
+      setPickerLoading(false);
+    }
+  }
 
   // ---- Fetch sheet tabs when spreadsheet selected ----
   useEffect(() => {
