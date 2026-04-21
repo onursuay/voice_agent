@@ -44,7 +44,7 @@ export async function GET(_request: NextRequest) {
   const session = account.config as {
     organization_id: string;
     userToken: string;
-    pages: { id: string; name: string }[];
+    pages: { id: string; name: string; source?: string }[];
     expires_at?: string;
   };
 
