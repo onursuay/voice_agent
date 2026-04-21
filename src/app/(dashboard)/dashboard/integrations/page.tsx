@@ -165,7 +165,7 @@ export default function IntegrationsPage() {
                   hasConnections ? (
                     <span className="flex items-center gap-1.5 text-xs font-medium text-green-600 mt-0.5">
                       <span className="h-1.5 w-1.5 rounded-full bg-green-500 animate-pulse" />
-                      {t('integrations.metaAccountConnected2')} · {connections.length} sayfa
+                      {t('integrations.metaAccountConnected2')} · {connections.length} {t('integrations.metaPagesLabel')}
                     </span>
                   ) : (
                     <span className="flex items-center gap-1.5 text-xs font-medium text-emerald-600 mt-0.5">
