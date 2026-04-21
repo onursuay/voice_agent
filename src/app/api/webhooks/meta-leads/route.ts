@@ -194,7 +194,7 @@ export async function POST(request: NextRequest) {
       try {
         const tGraph = Date.now();
         console.log(`[meta_leads][${reqId}][${changeId}] FETCHING from Meta Graph API...`);
-        const metaLead = await fetchMetaLeadDetails(leadgenId, organizationId);
+        const metaLead = await fetchMetaLeadDetails(leadgenId, organizationId, pageId);
         console.log(`[meta_leads][${reqId}][${changeId}] GRAPH FETCHED OK (${Date.now() - tGraph}ms): name=${metaLead.fullName} email=${metaLead.email} phone=${metaLead.phone} form_id=${metaLead.metaFormId} ad_id=${metaLead.metaAdId}`);
 
         const tIngest = Date.now();
