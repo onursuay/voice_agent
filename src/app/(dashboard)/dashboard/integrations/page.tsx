@@ -227,10 +227,10 @@ export default function IntegrationsPage() {
                         <button
                           onClick={() => resubscribePage(conn.id)}
                           disabled={resubscribing === conn.id}
-                          title="Webhook'u yeniden bağla"
+                          title={t('integrations.metaResubscribeTitle')}
                           className="shrink-0 rounded px-1.5 py-0.5 text-[10px] font-medium text-orange-600 hover:bg-orange-100 transition-all disabled:opacity-50"
                         >
-                          {resubscribing === conn.id ? <RefreshCw className="h-3 w-3 animate-spin" /> : 'Yenile'}
+                          {resubscribing === conn.id ? <RefreshCw className="h-3 w-3 animate-spin" /> : t('integrations.metaRefresh')}
                         </button>
                       )}
                       <button
