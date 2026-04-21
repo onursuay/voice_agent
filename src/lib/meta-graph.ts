@@ -53,8 +53,8 @@ export function isSampleLeadgenId(leadgenId: string): boolean {
   return false;
 }
 
-export async function fetchMetaLeadDetails(leadgenId: string, organizationId: string) {
-  const config = await getIntegrationConfig('meta_leads', organizationId);
+export async function fetchMetaLeadDetails(leadgenId: string, organizationId: string, pageId?: string | null) {
+  const config = await getIntegrationConfig('meta_leads', organizationId, pageId);
   const accessToken = getMetaAccessToken(config);
 
   if (!accessToken) {
