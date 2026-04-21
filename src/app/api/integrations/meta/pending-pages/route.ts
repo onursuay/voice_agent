@@ -53,13 +53,9 @@ export async function GET(_request: NextRequest) {
     return NextResponse.json({ error: 'account_expired', reason: 'token_expired' }, { status: 401 });
   }
 
-  // Only show OAuth-selected pages (source=direct) in the wizard.
-  // business_manager pages are stored for token resolution but not shown to user.
-  const directPages = session.pages.filter((p) => !p.source || p.source === 'direct');
-  const wizardPages = directPages.length > 0 ? directPages : session.pages;
-
+  // Return only id + name, never expose tokens to frontend
   return NextResponse.json({
     orgId: session.organization_id,
-    pages: wizardPages.map((p) => ({ id: p.id, name: p.name })),
+    pages: session.pages.map((p) => ({ id: p.id, name: p.name })),
   });
 }
