@@ -55,10 +55,9 @@ export default function IntegrationsPage() {
   const loadMetaStatus = useCallback(async () => {
     setMetaLoading(true);
     try {
-      const [accountRes, statusRes, eventsRes] = await Promise.all([
+      const [accountRes, statusRes] = await Promise.all([
         fetch('/api/integrations/meta/account/status'),
         fetch('/api/integrations/meta/status'),
-        fetch('/api/integrations/meta/events'),
       ]);
       if (accountRes.ok) {
         const data = await accountRes.json() as MetaAccountStatus;
@@ -67,10 +66,6 @@ export default function IntegrationsPage() {
       if (statusRes.ok) {
         const data = await statusRes.json() as { connections: MetaConnection[] };
         setConnections(data.connections ?? []);
-      }
-      if (eventsRes.ok) {
-        const data = await eventsRes.json() as { events: LeadEvent[] };
-        setRecentEvents(data.events);
       }
     } catch { /* ignore */ } finally {
       setMetaLoading(false);
