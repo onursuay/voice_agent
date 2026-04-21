@@ -48,7 +48,6 @@ export default function IntegrationsPage() {
   const [accountBusy, setAccountBusy] = useState(false);
   const [disconnecting, setDisconnecting] = useState<string | null>(null);
   const [resubscribing, setResubscribing] = useState<string | null>(null);
-  const [recentEvents, setRecentEvents] = useState<LeadEvent[]>([]);
 
   const hasConnections = connections.length > 0;
   const isAccountConnected = accountStatus.connected;
