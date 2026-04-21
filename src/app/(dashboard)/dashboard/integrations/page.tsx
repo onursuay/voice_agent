@@ -262,7 +262,7 @@ export default function IntegrationsPage() {
                 }`}
               >
                 <Plus className="h-3.5 w-3.5" />
-                {hasConnections ? 'Sayfa Ekle' : t('integrations.metaConnectPageButton')}
+                {hasConnections ? t('integrations.metaAddPage') : t('integrations.metaConnectPageButton')}
               </button>
             </>
           )}
