@@ -264,18 +264,19 @@ function PlatformDropdown({
     return () => document.removeEventListener('mousedown', handler);
   }, [onClose]);
 
-  const platforms = Object.entries(SOURCE_PLATFORM_LABELS) as [LeadSourcePlatform, string][];
+  const platforms = Object.keys(SOURCE_PLATFORM_LABELS) as LeadSourcePlatform[];
+  const sourceLabel = useSourceLabel();
 
   return (
     <div ref={ref} className="absolute left-0 top-full z-50 mt-0.5 min-w-[160px] rounded-lg border border-gray-200 bg-white py-1 shadow-xl">
-      {platforms.map(([value, label]) => (
+      {platforms.map((value) => (
         <button
           key={value}
           onClick={() => { onSelect(value); onClose(); }}
           className="flex w-full items-center gap-2 px-3 py-1.5 text-sm text-gray-700 transition-colors hover:bg-gray-100"
         >
           <span className="h-2 w-2 rounded-full" style={{ backgroundColor: getSourceColor(value) }} />
-          {label}
+          {sourceLabel(value)}
         </button>
       ))}
     </div>
