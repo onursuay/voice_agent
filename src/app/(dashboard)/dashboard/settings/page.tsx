@@ -164,10 +164,24 @@ export default function SettingsPage() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [session]);
 
+  const loadLogs = useCallback(async () => {
+    setLogsLoading(true);
+    try {
+      const res = await fetch('/api/integrations/meta/events');
+      if (res.ok) {
+        const data = await res.json() as { events: LeadEvent[] };
+        setLogEvents(data.events ?? []);
+      }
+    } catch { /* ignore */ } finally {
+      setLogsLoading(false);
+    }
+  }, []);
+
   useEffect(() => {
     if (activeTab === 'members') loadMembers();
     if (activeTab === 'pipeline') loadStageLeadCounts();
-  }, [activeTab, loadMembers, loadStageLeadCounts]);
+    if (activeTab === 'logs') loadLogs();
+  }, [activeTab, loadMembers, loadStageLeadCounts, loadLogs]);
 
   // Clear feedback messages after delay
   useEffect(() => {
