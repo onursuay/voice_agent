@@ -88,7 +88,7 @@ async function getPages(userToken: string): Promise<FacebookPage[]> {
   directUrl.searchParams.set('fields', 'id,name,access_token');
   directUrl.searchParams.set('limit', '100');
   const directPages = await fetchPaginatedPages(directUrl.toString());
-  for (const p of directPages) pageMap.set(p.id, p);
+  for (const p of directPages) pageMap.set(p.id, { ...p, source: 'direct' });
   console.log(`[Meta getPages] direct pages: ${directPages.length}`);
 
   // 2. Business Manager pages
