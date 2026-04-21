@@ -159,7 +159,7 @@ export default function IntegrationsPage() {
                 <p className="text-sm font-semibold text-gray-900">Meta Lead Ads</p>
                 {metaLoading ? (
                   <span className="flex items-center gap-1 text-xs text-gray-400 mt-0.5">
-                    <RefreshCw className="h-3 w-3 animate-spin" /> Kontrol ediliyor...
+                    <RefreshCw className="h-3 w-3 animate-spin" /> {t('integrations.metaChecking')}
                   </span>
                 ) : isAccountConnected ? (
                   hasConnections ? (
