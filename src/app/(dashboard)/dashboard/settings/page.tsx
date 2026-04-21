@@ -28,7 +28,16 @@ import {
   ScrollText,
 } from 'lucide-react';
 
-type SettingsTab = 'organization' | 'members' | 'pipeline' | 'profile';
+type SettingsTab = 'organization' | 'members' | 'pipeline' | 'profile' | 'logs';
+
+type LeadEvent = {
+  id: string;
+  event_type: string;
+  external_id: string | null;
+  status: string;
+  error_message: string | null;
+  created_at: string;
+};
 
 const ROLE_COLORS: Record<UserRole, 'indigo' | 'purple' | 'blue' | 'green' | 'yellow' | 'gray'> = {
   owner: 'indigo',
