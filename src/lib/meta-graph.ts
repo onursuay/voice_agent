@@ -105,7 +105,7 @@ export async function fetchMetaLeadDetails(leadgenId: string, organizationId: st
   }
 
   const lead = JSON.parse(responseBody) as MetaLeadResponse;
-  console.log(`[meta-graph] Lead fetched OK: leadgen_id=${lead.id} form_id=${lead.form_id} ad_id=${lead.ad_id}`);
+  console.log(`[meta-graph] Lead fetched OK: leadgen_id=${lead.id} form_id=${lead.form_id} ad_id=${lead.ad_id} field_data_count=${lead.field_data?.length ?? 0} raw_fields=${JSON.stringify(lead.field_data?.slice(0, 5))}`);
 
   const parsed = parseMetaLeadFields(
     (lead.field_data || []).map((field) => ({
