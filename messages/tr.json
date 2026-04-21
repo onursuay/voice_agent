@@ -1,4 +1,24 @@
 {
+  "sourcePlatforms": {
+    "meta_lead_form": "Lead",
+    "zapier": "Zapier",
+    "whatsapp": "WhatsApp",
+    "instagram_dm": "Instagram",
+    "messenger": "Messenger",
+    "website": "Website",
+    "manual": "Manuel",
+    "import": "İçe Aktar",
+    "other": "Diğer"
+  },
+  "stages": {
+    "new": "Yeni",
+    "contacted": "İletişime Geçildi",
+    "qualified": "Nitelikli",
+    "meeting": "Toplantı",
+    "offer": "Teklif",
+    "won": "Kazanıldı",
+    "lost": "Kaybedildi"
+  },
   "common": {
     "save": "Kaydet",
     "saved": "Kaydedildi ✓",
