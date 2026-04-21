@@ -212,7 +212,7 @@ export default function IntegrationsPage() {
               {hasConnections ? (
                 <div className="mb-3 space-y-1.5">
                   <p className="text-[10px] font-semibold uppercase tracking-wider text-gray-400 mb-2">
-                    Bağlı Sayfalar ({connections.length})
+                    {t('integrations.metaConnectedPages')} ({connections.length})
                   </p>
                   {connections.map((conn) => (
                     <div
