@@ -25,6 +25,7 @@ import {
   UserPlus,
   AlertCircle,
   Check,
+  ScrollText,
 } from 'lucide-react';
 
 type SettingsTab = 'organization' | 'members' | 'pipeline' | 'profile';
