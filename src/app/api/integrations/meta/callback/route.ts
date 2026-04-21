@@ -56,6 +56,7 @@ export interface FacebookPage {
   id: string;
   name: string;
   access_token: string;
+  source?: 'direct' | 'business_manager';
 }
 
 async function fetchPaginatedPages(startUrl: string): Promise<FacebookPage[]> {
