@@ -10,6 +10,20 @@ import type { Lead, ColumnDef, SortConfig, CrmStage, LeadSourcePlatform } from '
 import { SOURCE_PLATFORM_LABELS } from '@/lib/types';
 import { useTranslations } from 'next-intl';
 
+// Default stage slugs that have translations; others fall back to stored name
+const DEFAULT_STAGE_SLUGS = new Set(['new', 'contacted', 'qualified', 'meeting', 'offer', 'won', 'lost']);
+
+function useStageLabel() {
+  const t = useTranslations('stages');
+  return (stage: { slug?: string | null; name: string }) =>
+    stage.slug && DEFAULT_STAGE_SLUGS.has(stage.slug) ? t(stage.slug) : stage.name;
+}
+
+function useSourceLabel() {
+  const t = useTranslations('sourcePlatforms');
+  return (platform: LeadSourcePlatform) => t(platform);
+}
+
 // ── Column Definitions ──────────────────────────────────
 // Labels are intentionally hardcoded as column keys; translated dynamically in LeadGrid via useColumnLabels()
 
