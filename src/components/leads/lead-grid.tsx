@@ -214,6 +214,7 @@ function StageDropdown({
   onClose: () => void;
 }) {
   const ref = useRef<HTMLDivElement>(null);
+  const stageLabel = useStageLabel();
 
   useEffect(() => {
     const handler = (e: MouseEvent) => {
@@ -235,7 +236,7 @@ function StageDropdown({
           )}
         >
           <span className="h-2.5 w-2.5 rounded-full" style={{ backgroundColor: stage.color }} />
-          {stage.name}
+          {stageLabel(stage)}
         </button>
       ))}
     </div>
