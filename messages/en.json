@@ -247,7 +247,17 @@
       "members": "Members",
       "pipeline": "Pipeline Stages",
       "profile": "Profile",
-      "integrations": "Integrations"
+      "integrations": "Integrations",
+      "logs": "Log Records"
+    },
+    "logs": {
+      "title": "Log Records",
+      "desc": "Track lead events received via webhook.",
+      "refresh": "Refresh",
+      "empty": "No log records yet.",
+      "statusProcessed": "Processed",
+      "statusFailed": "Error",
+      "statusSample": "Test"
     },
     "org": {
       "title": "Organization Info",
