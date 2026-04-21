@@ -23,15 +23,6 @@ type MetaAccountStatus = {
   page_count?: number;
 };
 
-type LeadEvent = {
-  id: string;
-  event_type: string;
-  external_id: string | null;
-  status: string;
-  error_message: string | null;
-  created_at: string;
-};
-
 /* ── Main Page ───────────────────────────────────────────── */
 export default function IntegrationsPage() {
   const t = useTranslations('settings');
