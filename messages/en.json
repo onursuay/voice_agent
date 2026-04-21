@@ -1,4 +1,24 @@
 {
+  "sourcePlatforms": {
+    "meta_lead_form": "Lead",
+    "zapier": "Zapier",
+    "whatsapp": "WhatsApp",
+    "instagram_dm": "Instagram",
+    "messenger": "Messenger",
+    "website": "Website",
+    "manual": "Manual",
+    "import": "Import",
+    "other": "Other"
+  },
+  "stages": {
+    "new": "New",
+    "contacted": "Contacted",
+    "qualified": "Qualified",
+    "meeting": "Meeting",
+    "offer": "Offer",
+    "won": "Won",
+    "lost": "Lost"
+  },
   "common": {
     "save": "Save",
     "saved": "Saved ✓",
