@@ -776,7 +776,7 @@ export function LeadGrid() {
       case 'stage': {
         const stage = lead.stage || stages.find((s) => s.id === lead.stage_id);
         if (!stage) return <span className="text-gray-400">-</span>;
-        return <Badge color={getStageBadgeColor(stage.color)} size="sm">{stage.name}</Badge>;
+        return <Badge color={getStageBadgeColor(stage.color)} size="sm">{stageLabel(stage)}</Badge>;
       }
       case 'score': {
         const colorCls = getScoreColor(lead.score);
