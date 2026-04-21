@@ -217,16 +217,22 @@ export async function resolveLeadIngestionOrganization(
 
 export async function getIntegrationConfig(
   provider: string,
-  organizationId: string
+  organizationId: string,
+  pageId?: string | null
 ): Promise<Record<string, unknown> | null> {
   const supabase = createAdminSupabaseClient();
-  const { data } = await supabase
+  let query = supabase
     .from('integration_settings')
     .select('config, is_active')
     .eq('provider', provider)
     .eq('is_active', true)
-    .filter('config->>organization_id', 'eq', organizationId)
-    .maybeSingle();
+    .filter('config->>organization_id', 'eq', organizationId);
+
+  if (pageId) {
+    query = query.filter('config->>page_id', 'eq', pageId);
+  }
+
+  const { data } = await query.maybeSingle();
 
   if (!data?.is_active) return null;
   return (data.config as Record<string, unknown>) || null;
