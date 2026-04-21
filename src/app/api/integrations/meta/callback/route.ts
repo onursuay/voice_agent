@@ -109,7 +109,9 @@ async function getPages(userToken: string): Promise<FacebookPage[]> {
       ownedUrl.searchParams.set('fields', 'id,name,access_token');
       ownedUrl.searchParams.set('limit', '100');
       const owned = await fetchPaginatedPages(ownedUrl.toString());
-      for (const p of owned) pageMap.set(p.id, p);
+      for (const p of owned) {
+        if (!pageMap.has(p.id)) pageMap.set(p.id, { ...p, source: 'business_manager' });
+      }
 
       // client pages
       const clientUrl = new URL(`${META_GRAPH_BASE}/${biz.id}/client_pages`);
@@ -117,7 +119,9 @@ async function getPages(userToken: string): Promise<FacebookPage[]> {
       clientUrl.searchParams.set('fields', 'id,name,access_token');
       clientUrl.searchParams.set('limit', '100');
       const clients = await fetchPaginatedPages(clientUrl.toString());
-      for (const p of clients) pageMap.set(p.id, p);
+      for (const p of clients) {
+        if (!pageMap.has(p.id)) pageMap.set(p.id, { ...p, source: 'business_manager' });
+      }
 
       console.log(`[Meta getPages] biz=${biz.name} owned=${owned.length} clients=${clients.length}`);
     }
