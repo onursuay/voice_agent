@@ -245,7 +245,17 @@
       "members": "Üyeler",
       "pipeline": "Pipeline Aşamaları",
       "profile": "Profil",
-      "integrations": "Entegrasyonlar"
+      "integrations": "Entegrasyonlar",
+      "logs": "Log Kayıtları"
+    },
+    "logs": {
+      "title": "Log Kayıtları",
+      "desc": "Webhook üzerinden gelen lead olaylarını buradan takip edebilirsiniz.",
+      "refresh": "Yenile",
+      "empty": "Henüz log kaydı yok.",
+      "statusProcessed": "İşlendi",
+      "statusFailed": "Hata",
+      "statusSample": "Test"
     },
     "org": {
       "title": "Organizasyon Bilgileri",
