@@ -749,6 +749,9 @@ export function LeadGrid() {
     document.body.style.userSelect = 'none';
   }, [columnWidths]);
 
+  const stageLabel = useStageLabel();
+  const sourceLabel = useSourceLabel();
+
   // ── Render cell content (read-only mode) ──────────────
   const renderCellContent = useCallback((lead: Lead, col: ColumnDef) => {
     const key = col.key;
@@ -762,7 +765,7 @@ export function LeadGrid() {
         return <span className="truncate text-gray-700">{lead.email || ''}</span>;
       case 'source_platform': {
         const color = getSourceColor(lead.source_platform);
-        const label = SOURCE_PLATFORM_LABELS[lead.source_platform] || lead.source_platform;
+        const label = sourceLabel(lead.source_platform);
         return (
           <span className="inline-flex items-center gap-1.5 rounded-full px-2 py-0.5 text-xs font-medium" style={{ backgroundColor: `${color}15`, color }}>
             <span className="h-1.5 w-1.5 rounded-full" style={{ backgroundColor: color }} />
