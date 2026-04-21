@@ -94,6 +94,10 @@ export default function SettingsPage() {
   const [profileSaving, setProfileSaving] = useState(false);
   const [profileSuccess, setProfileSuccess] = useState(false);
 
+  // Logs state
+  const [logEvents, setLogEvents] = useState<LeadEvent[]>([]);
+  const [logsLoading, setLogsLoading] = useState(false);
+
   // Feedback messages
   const [error, setError] = useState('');
 
