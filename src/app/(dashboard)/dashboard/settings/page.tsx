@@ -719,6 +719,84 @@ export default function SettingsPage() {
             </div>
           </div>
         )}
+
+        {/* ============================== */}
+        {/* LOG KAYITLARI */}
+        {/* ============================== */}
+        {activeTab === 'logs' && (
+          <div className="p-6 space-y-6">
+            <div className="flex items-center justify-between pb-4 border-b border-gray-100">
+              <div className="flex items-center gap-3">
+                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-slate-100">
+                  <ScrollText className="h-5 w-5 text-slate-600" />
+                </div>
+                <div>
+                  <h2 className="text-base font-semibold text-foreground">{t('logs.title')}</h2>
+                  <p className="text-sm text-muted">{t('logs.desc')}</p>
+                </div>
+              </div>
+              <button
+                onClick={loadLogs}
+                disabled={logsLoading}
+                className="flex items-center gap-1.5 rounded-lg border border-gray-200 bg-white px-3 py-1.5 text-xs font-medium text-gray-600 hover:bg-gray-50 disabled:opacity-50 transition-colors"
+              >
+                <ScrollText className={`h-3.5 w-3.5 ${logsLoading ? 'animate-spin' : ''}`} />
+                {t('logs.refresh')}
+              </button>
+            </div>
+
+            {logsLoading ? (
+              <div className="space-y-2">
+                {[1, 2, 3, 4, 5].map((i) => (
+                  <div key={i} className="h-12 rounded-lg bg-gray-100 animate-pulse" />
+                ))}
+              </div>
+            ) : logEvents.length === 0 ? (
+              <div className="flex flex-col items-center justify-center py-12 text-center">
+                <ScrollText className="h-10 w-10 text-gray-300 mb-3" />
+                <p className="text-sm text-muted">{t('logs.empty')}</p>
+              </div>
+            ) : (
+              <div className="space-y-2">
+                {logEvents.map((event) => (
+                  <div key={event.id} className="rounded-xl border border-gray-100 bg-gray-50 px-4 py-3">
+                    <div className="flex items-center justify-between gap-3">
+                      <div className="flex items-center gap-2.5 min-w-0">
+                        <span className={`inline-block h-2 w-2 shrink-0 rounded-full ${
+                          event.status === 'processed' ? 'bg-green-500' :
+                          event.status === 'failed' ? 'bg-red-500' :
+                          event.status === 'ignored_sample_payload' ? 'bg-gray-400' :
+                          'bg-yellow-400'
+                        }`} />
+                        <span className="text-xs font-medium text-gray-700">leadgen</span>
+                        {event.external_id && (
+                          <span className="text-xs font-mono text-gray-400 truncate max-w-[140px]">{event.external_id}</span>
+                        )}
+                      </div>
+                      <div className="flex items-center gap-3 shrink-0">
+                        <span className={`text-xs font-medium ${
+                          event.status === 'processed' ? 'text-green-600' :
+                          event.status === 'failed' ? 'text-red-500' :
+                          event.status === 'ignored_sample_payload' ? 'text-gray-400' :
+                          'text-yellow-600'
+                        }`}>
+                          {event.status === 'processed' ? t('logs.statusProcessed') :
+                           event.status === 'failed' ? t('logs.statusFailed') :
+                           event.status === 'ignored_sample_payload' ? t('logs.statusSample') :
+                           event.status}
+                        </span>
+                        <span className="text-xs text-gray-400">{new Date(event.created_at).toLocaleString('tr-TR')}</span>
+                      </div>
+                    </div>
+                    {event.error_message && (
+                      <p className="mt-1.5 text-xs text-red-500 pl-4.5">{event.error_message}</p>
+                    )}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );
