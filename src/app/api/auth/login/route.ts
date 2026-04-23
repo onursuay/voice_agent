@@ -15,7 +15,7 @@ export async function POST(request: NextRequest) {
     const user = findUserByEmail(email);
     if (!user) {
       return NextResponse.json(
-        { error: "E-posta veya şifre hatalı" },
+        { error: "Invalid email or password" },
         { status: 401 }
       );
     }
@@ -23,7 +23,7 @@ export async function POST(request: NextRequest) {
     const isValid = await verifyPassword(password, user.password);
     if (!isValid) {
       return NextResponse.json(
-        { error: "E-posta veya şifre hatalı" },
+        { error: "Invalid email or password" },
         { status: 401 }
       );
     }
