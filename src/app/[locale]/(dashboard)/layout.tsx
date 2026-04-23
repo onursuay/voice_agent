@@ -14,7 +14,6 @@ import { CreditProvider } from '@/components/providers/CreditProvider';
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   const router = useRouter();
-  const locale = useLocale();
   const tCommon = useTranslations('common');
   const [loading, setLoading] = useState(true);
   const { session, setSession, setStages, setMembers } = useAppStore();
