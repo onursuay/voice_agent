@@ -286,7 +286,7 @@ export default function SettingsPage() {
 
   const deleteStage = async (stageId: string) => {
     if (stageLeadCounts[stageId] > 0) {
-      setError('Bu aşamada lead bulunuyor. Once leadleri baska aşamaya tasiyiniz.');
+      setError(t('errors.stageHasLeads'));
       return;
     }
     setError('');
