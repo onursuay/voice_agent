@@ -9,7 +9,7 @@ const DEFAULT_INVOICE_INFO: InvoiceInfo = {
   type: 'individual',
   fullName: '',
   phone: '',
-  country: 'Türkiye',
+  country: 'Turkey',
   city: '',
   district: '',
   postalCode: '',
