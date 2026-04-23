@@ -219,7 +219,7 @@ export default function SettingsPage() {
       if (updateErr) throw new Error(updateErr.message);
       setOrgSuccess(true);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Organizasyon guncellenemedi');
+      setError(err instanceof Error ? err.message : t('errors.organizationUpdateFailed'));
     } finally {
       setOrgSaving(false);
     }
