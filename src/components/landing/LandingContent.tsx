@@ -408,7 +408,11 @@ export default function LandingContent() {
           <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6">
             <nav className="flex flex-wrap justify-center sm:justify-end gap-x-5 gap-y-2 text-gray-500">
               {c.legalLinks.map((l) => (
-                <a key={l.href} href={l.href} className="hover:text-gray-300 transition-colors">{l.label}</a>
+                l.href === '/data-deletion' ? (
+                  <a key={l.href} href={l.href} className="hover:text-gray-300 transition-colors">{l.label}</a>
+                ) : (
+                  <Link key={l.href} href={l.href} className="hover:text-gray-300 transition-colors">{l.label}</Link>
+                )
               ))}
             </nav>
 
