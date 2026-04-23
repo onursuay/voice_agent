@@ -21,7 +21,7 @@ export async function GET(request: NextRequest) {
 
   if (!appId || !appSecret) {
     return NextResponse.json(
-      { error: 'META_APP_ID veya META_APP_SECRET env ayarlanmamış' },
+      { error: 'META_APP_ID or META_APP_SECRET env not set' },
       { status: 500 }
     );
   }
