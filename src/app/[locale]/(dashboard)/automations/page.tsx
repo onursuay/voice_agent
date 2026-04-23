@@ -63,13 +63,12 @@ export default function AutomationsPage() {
   });
 
   // Mock rules for local mode
-  const mockRules: AutomationRule[] = [
-    { id: 'auto-1', name: 'Yeni lead → Satış ekibine ata', trigger_type: 'lead_created', trigger_config: {}, action_type: 'assign', action_config: { round_robin: true }, is_active: true, created_at: '2026-03-20T10:00:00Z' },
-    { id: 'auto-2', name: '3 gün hareketsiz → Hatırlatıcı', trigger_type: 'inactivity', trigger_config: { days: 3 }, action_type: 'create_reminder', action_config: { message: 'Lead ile iletişime geç' }, is_active: true, created_at: '2026-03-18T10:00:00Z' },
-    { id: 'auto-3', name: 'Kazanıldı aşaması → Tebrik maili', trigger_type: 'stage_changed', trigger_config: { to_stage: 'won' }, action_type: 'send_email', action_config: { template: 'congratulations' }, is_active: false, created_at: '2026-03-15T10:00:00Z' },
-  ];
-
   const fetchRules = useCallback(async () => {
+    const mockRules: AutomationRule[] = [
+      { id: 'auto-1', name: t('mockRule1Name'), trigger_type: 'lead_created', trigger_config: {}, action_type: 'assign', action_config: { round_robin: true }, is_active: true, created_at: '2026-03-20T10:00:00Z' },
+      { id: 'auto-2', name: t('mockRule2Name'), trigger_type: 'inactivity', trigger_config: { days: 3 }, action_type: 'create_reminder', action_config: { message: t('mockRule2Message') }, is_active: true, created_at: '2026-03-18T10:00:00Z' },
+      { id: 'auto-3', name: t('mockRule3Name'), trigger_type: 'stage_changed', trigger_config: { to_stage: 'won' }, action_type: 'send_email', action_config: { template: 'congratulations' }, is_active: false, created_at: '2026-03-15T10:00:00Z' },
+    ];
     try {
       const res = await fetch('/api/automations');
       if (!res.ok) throw new Error();
@@ -80,7 +79,7 @@ export default function AutomationsPage() {
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [t]);
 
   useEffect(() => { fetchRules(); }, [fetchRules]);
 
