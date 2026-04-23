@@ -654,7 +654,11 @@
     "actionAddTag": "Add tag",
     "actionReminder": "Create reminder",
     "actionAddNote": "Add note",
-    "actionChangeScore": "Change score"
+    "actionChangeScore": "Change score",
+    "mockRule1Name": "New lead → Assign to sales team",
+    "mockRule2Name": "3 days inactive → Reminder",
+    "mockRule3Name": "Won stage → Congratulations email",
+    "mockRule2Message": "Contact the lead"
   },
   "import": {
     "pageTitle": "Lead Import",
