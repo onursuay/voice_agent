@@ -271,7 +271,7 @@ export function Sidebar() {
                 <FileText className="w-4 h-4 text-gray-500" />
                 <span>{tSidebar('faturalarim')}</span>
               </Link>
-              <Link href="/dashboard/abonelik" onClick={() => setDropdownOpen(false)}
+              <Link href="/abonelik" onClick={() => setDropdownOpen(false)}
                 className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
                 <CreditCard className="w-4 h-4 text-gray-500" />
                 <span>{tSidebar('abonelik')}</span>
