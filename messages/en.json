@@ -537,6 +537,7 @@
     "voiceFemaleCasual": "Female - Casual",
     "callScript": "Call Script",
     "callScriptPlaceholder": "Script for AI to say...",
+    "defaultScript": "Hello {{full_name}}, I'm calling from Yo Dijital. I'd like to briefly tell you about our digital marketing services. Is now a good time?",
     "aiSummary": "AI Summary",
     "transcript": "Transcript",
     "serviceStatus": "Service Status",
