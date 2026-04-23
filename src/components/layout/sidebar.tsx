@@ -135,14 +135,12 @@ export function Sidebar() {
     ? subscription.planId.charAt(0).toUpperCase() + subscription.planId.slice(1)
     : tSidebar('free');
 
-  const handleLanguageChange = (locale: string) => {
-    document.cookie = `NEXT_LOCALE=${locale};path=/;max-age=${365 * 24 * 60 * 60}`;
-    window.location.reload();
-  };
+  const currentLocale = useLocale();
 
-  const currentLocale = typeof document !== 'undefined'
-    ? (document.cookie.match(/NEXT_LOCALE=([^;]+)/)?.[1] || 'tr')
-    : 'tr';
+  const handleLanguageChange = (locale: string) => {
+    if (locale === currentLocale) return;
+    router.replace(pathname, { locale: locale as 'tr' | 'en' });
+  };
 
   // SSR placeholder
   if (!ready) {
