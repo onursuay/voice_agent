@@ -302,7 +302,7 @@ export default function SettingsPage() {
       setLocalStages(updated);
       setStages(updated);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Aşama silinemedi');
+      setError(err instanceof Error ? err.message : t('errors.stageDeleteFailed'));
     }
   };
 
