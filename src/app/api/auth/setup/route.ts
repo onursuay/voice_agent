@@ -28,7 +28,7 @@ export async function POST(request: NextRequest) {
     const { user_id, email, full_name, organization_name } = await request.json();
 
     if (!user_id || !email || !full_name || !organization_name) {
-      return NextResponse.json({ error: "Tüm alanlar zorunludur" }, { status: 400 });
+      return NextResponse.json({ error: "All fields are required" }, { status: 400 });
     }
 
     const supabase = createServiceClient();
