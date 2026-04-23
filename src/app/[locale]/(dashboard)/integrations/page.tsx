@@ -322,12 +322,12 @@ export default function IntegrationsPage() {
             </div>
             <div>
               <p className="text-sm font-semibold text-gray-900">TikTok Ads</p>
-              <span className="text-xs text-gray-400">Yakında</span>
+              <span className="text-xs text-gray-400">{tCommon('comingSoon')}</span>
             </div>
           </div>
-          <p className="text-xs text-gray-500 mb-4">TikTok reklam formlarından gelen lead'leri otomatik olarak sisteme aktar.</p>
+          <p className="text-xs text-gray-500 mb-4">{t('integrations.tiktokAdsDesc')}</p>
           <div className="flex w-full items-center justify-center gap-2 rounded-xl border border-gray-200 py-2.5 text-xs font-medium text-gray-400 cursor-not-allowed">
-            Yakında
+            {tCommon('comingSoon')}
           </div>
         </div>
 
