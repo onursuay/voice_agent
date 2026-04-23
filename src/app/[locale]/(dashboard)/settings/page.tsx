@@ -493,7 +493,7 @@ export default function SettingsPage() {
                       </div>
                       <div>
                         <p className="text-sm font-medium text-foreground">
-                          {member.profile?.full_name || 'Bilinmeyen Kullanıcı'}
+                          {member.profile?.full_name || tCommon('unknownUser')}
                         </p>
                         <p className="text-xs text-muted">{member.profile?.email || '-'}</p>
                       </div>
