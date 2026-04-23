@@ -187,10 +187,10 @@ function QueueTab() {
             </div>
 
             <Select label={t('voiceProfile')} value={voiceProfile} onChange={e => setVoiceProfile(e.target.value)} options={[
-              { value: 'erkek-formal', label: t('voiceMaleFormal') },
-              { value: 'erkek-casual', label: t('voiceMaleCasual') },
-              { value: 'kadın-formal', label: t('voiceFemaleFormal') },
-              { value: 'kadın-casual', label: t('voiceFemaleCasual') },
+              { value: 'male-formal', label: t('voiceMaleFormal') },
+              { value: 'male-casual', label: t('voiceMaleCasual') },
+              { value: 'female-formal', label: t('voiceFemaleFormal') },
+              { value: 'female-casual', label: t('voiceFemaleCasual') },
             ]} />
 
             <div>
