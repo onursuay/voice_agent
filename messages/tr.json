@@ -44,7 +44,9 @@
     "disconnect": "Bağlantıyı Kes",
     "connected": "Bağlı",
     "notConnected": "Bağlı değil",
-    "checking": "Kontrol ediliyor..."
+    "checking": "Kontrol ediliyor...",
+    "comingSoon": "Yakında",
+    "unknownUser": "Bilinmeyen Kullanıcı"
   },
   "nav": {
     "dashboard": "Dashboard",
