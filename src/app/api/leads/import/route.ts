@@ -154,8 +154,8 @@ export async function POST(request: NextRequest) {
             organization_id: orgId,
             user_id: user.id,
             activity_type: 'imported',
-            title: 'Import ile güncellendi',
-            description: `Dosya: ${file_name || 'unknown'}`,
+            title: 'Updated via import',
+            description: `File: ${file_name || 'unknown'}`,
             metadata: { import_job_id: importJob.id, row_index: i },
           });
 
