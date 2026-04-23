@@ -1600,7 +1600,7 @@ export default function ImportPage() {
           {/* Action */}
           <div className="flex justify-center pt-2">
             <Button
-              onClick={() => router.push('/dashboard/leads')}
+              onClick={() => router.push('/leads')}
               icon={<ExternalLink className="h-4 w-4" />}
             >
               {t('viewLeads')}
