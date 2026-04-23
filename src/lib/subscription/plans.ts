@@ -141,7 +141,7 @@ export const SUBSCRIPTION_PLANS: SubscriptionPlan[] = [
 ]
 
 export const CREDIT_PACKAGES: CreditPackage[] = [
-  { id: 'pkg-100', credits: 100, price: 49, label: '100 Kredi' },
-  { id: 'pkg-500', credits: 500, price: 199, label: '500 Kredi', popular: true },
-  { id: 'pkg-1000', credits: 1000, price: 349, label: '1.000 Kredi' },
+  { id: 'pkg-100', credits: 100, price: 49, label: '100 Credits' },
+  { id: 'pkg-500', credits: 500, price: 199, label: '500 Credits', popular: true },
+  { id: 'pkg-1000', credits: 1000, price: 349, label: '1,000 Credits' },
 ]
