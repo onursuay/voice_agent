@@ -89,8 +89,8 @@ function QueueTab() {
   const [loading, setLoading] = useState(true);
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedLeadIds, setSelectedLeadIds] = useState<string[]>([]);
-  const [script, setScript] = useState('Merhaba {{full_name}}, Yo Dijital\'den arıyorum. Dijital pazarlama hizmetlerimiz hakkında kısa bilgi vermek istiyorum. Uygun musunuz?');
-  const [voiceProfile, setVoiceProfile] = useState('erkek-formal');
+  const [script, setScript] = useState(t('defaultScript'));
+  const [voiceProfile, setVoiceProfile] = useState('male-formal');
   const [searchQuery, setSearchQuery] = useState('');
 
   useEffect(() => {
