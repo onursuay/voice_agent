@@ -135,7 +135,8 @@ async function hardSubscribePageToWebhook(
  * Reads pending session from DB, saves chosen page to integration_settings.
  */
 export async function GET(request: NextRequest) {
-  const dashboardUrl = `${request.nextUrl.origin}/dashboard/integrations`;
+  const locale = request.cookies.get('NEXT_LOCALE')?.value === 'en' ? 'en' : 'tr';
+  const dashboardUrl = `${request.nextUrl.origin}/${locale}/integrations`;
   const admin = createAdminSupabaseClient();
 
   // Get authenticated user's org to verify ownership
