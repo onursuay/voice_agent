@@ -7,7 +7,7 @@ import { useAppStore } from '@/lib/store';
 import { Sidebar } from '@/components/layout/sidebar';
 import { Topbar } from '@/components/layout/topbar';
 import { Loader2 } from 'lucide-react';
-import { useLocale, useTranslations } from 'next-intl';
+import { useTranslations } from 'next-intl';
 import type { Profile, Organization, OrganizationMember, CrmStage } from '@/lib/types';
 import { SubscriptionProvider } from '@/components/providers/SubscriptionProvider';
 import { CreditProvider } from '@/components/providers/CreditProvider';
