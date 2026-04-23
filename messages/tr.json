@@ -262,6 +262,14 @@
   "settings": {
     "title": "Ayarlar",
     "subtitle": "Organizasyon, üyelik, pipeline ve profil ayarlarınızı yönetin.",
+    "errors": {
+      "organizationUpdateFailed": "Organizasyon güncellenemedi",
+      "profileUpdateFailed": "Profil güncellenemedi",
+      "stageAddFailed": "Aşama eklenemedi",
+      "stageHasLeads": "Bu aşamada lead bulunuyor. Önce leadleri başka aşamaya taşıyınız.",
+      "stageDeleteFailed": "Aşama silinemedi",
+      "stageOrderSaveFailed": "Sıralama kaydedilemedi"
+    },
     "tabs": {
       "organization": "Organizasyon",
       "members": "Üyeler",
