@@ -750,7 +750,7 @@ export function LeadDetailDrawer({ onDelete, onEdit }: LeadDetailDrawerProps) {
             />
             <div className="min-w-0">
               <h2 className="text-base font-semibold text-gray-900 truncate">
-                {lead.full_name || 'İsimsiz Lead'}
+                {lead.full_name || t('namelessLead')}
               </h2>
               {lead.company && (
                 <p className="text-xs text-gray-500 truncate">{lead.company}</p>
