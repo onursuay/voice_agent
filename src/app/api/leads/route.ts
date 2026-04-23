@@ -225,7 +225,7 @@ export async function POST(request: NextRequest) {
       organization_id: orgId,
       user_id: user.id,
       activity_type: 'created',
-      title: 'Lead oluşturuldu',
+      title: 'Lead created',
       description: null,
       metadata: { source_platform: newLead.source_platform },
     });
