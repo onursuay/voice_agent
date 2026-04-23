@@ -49,7 +49,8 @@ export async function GET(request: NextRequest) {
   const state = params.get('state');
   const error = params.get('error');
 
-  const importUrl = `${request.nextUrl.origin}/dashboard/import`;
+  const locale = request.cookies.get('NEXT_LOCALE')?.value === 'en' ? 'en' : 'tr';
+  const importUrl = `${request.nextUrl.origin}/${locale}/import`;
 
   if (error || !code || !state) {
     return NextResponse.redirect(`${importUrl}?google_error=${encodeURIComponent(error || 'cancelled')}`);
