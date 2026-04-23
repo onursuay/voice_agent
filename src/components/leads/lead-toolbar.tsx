@@ -294,7 +294,7 @@ export function BulkActionBar() {
       setModal(null);
       triggerLeadsRefresh();
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Hata oluştu');
+      setError(err instanceof Error ? err.message : 'An error occurred');
     } finally {
       setLoading(false);
     }
