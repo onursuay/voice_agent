@@ -319,13 +319,13 @@ export default function SettingsPage() {
       });
       if (!res.ok) {
         const data = await res.json();
-        throw new Error(data.error || 'Sıralama kaydedilemedi');
+        throw new Error(data.error || t('errors.stageOrderSaveFailed'));
       }
       const updatedStages = await res.json();
       setStages(updatedStages);
       setPipelineSuccess(true);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Sıralama kaydedilemedi');
+      setError(err instanceof Error ? err.message : t('errors.stageOrderSaveFailed'));
     } finally {
       setPipelineSaving(false);
     }
