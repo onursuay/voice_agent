@@ -91,12 +91,12 @@ export default function PlanCard({
           <>
             <div className="flex items-baseline gap-1">
               <span className="text-3xl font-bold text-white">${displayPrice.toFixed(2)}</span>
-              <span className="text-sm text-gray-400">/ {billingCycle === 'yearly' ? 'ay' : 'ay'}</span>
+              <span className="text-sm text-gray-400">/ {t('perMonth')}</span>
             </div>
             {billingCycle === 'yearly' && (
               <p className="text-sm text-gray-500 mt-1">
                 <span className="line-through">${originalMonthlyTotal.toFixed(2)}</span>
-                {' '}${yearlyTotal.toFixed(2)}/yıl
+                {' '}${yearlyTotal.toFixed(2)}/{t('perYear')}
               </p>
             )}
           </>
