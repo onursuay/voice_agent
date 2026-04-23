@@ -121,10 +121,10 @@ const content = {
     panelPlatforms: '4 channels synced',
     footer: '2025 Yo Dijital. All rights reserved.',
     legalLinks: [
-      { label: 'Privacy Policy', href: '/en/privacy-policy' },
-      { label: 'Terms of Service', href: '/en/terms-of-service' },
-      { label: 'Cookie Policy', href: '/en/cookie-policy' },
-      { label: 'Data Deletion', href: '/en/data-deletion' },
+      { label: 'Privacy Policy', href: '/privacy-policy' },
+      { label: 'Terms of Service', href: '/terms-of-service' },
+      { label: 'Cookie Policy', href: '/cookie-policy' },
+      { label: 'Data Deletion', href: '/data-deletion' },
     ],
   },
 }
