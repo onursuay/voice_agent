@@ -27,6 +27,7 @@ type MetaAccountStatus = {
 /* ── Main Page ───────────────────────────────────────────── */
 export default function IntegrationsPage() {
   const t = useTranslations('settings');
+  const tCommon = useTranslations('common');
   const router = useRouter();
   const searchParams = useSearchParams();
 
