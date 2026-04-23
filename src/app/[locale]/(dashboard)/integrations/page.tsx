@@ -135,7 +135,7 @@ export default function IntegrationsPage() {
             {!['access_denied', 'cancelled', 'no_pages', 'token_exchange_failed'].includes(metaError) && `Hata: ${metaError}`}
           </span>
           <button
-            onClick={() => router.push('/dashboard/meta-connect')}
+            onClick={() => router.push('/meta-connect')}
             className="shrink-0 rounded-lg bg-red-100 px-3 py-1 text-xs font-medium text-red-700 hover:bg-red-200 transition-colors"
           >
             Tekrar Dene
