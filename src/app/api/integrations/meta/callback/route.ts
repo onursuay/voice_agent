@@ -209,5 +209,5 @@ export async function GET(request: NextRequest) {
     .filter('config->>organization_id', 'eq', orgId);
 
   // Return to integrations page — the account is now connected, user can pick pages from there
-  return NextResponse.redirect(`${request.nextUrl.origin}/dashboard/integrations?meta_account_connected=1`);
+  return NextResponse.redirect(`${dashboardUrl}?meta_account_connected=1`);
 }
