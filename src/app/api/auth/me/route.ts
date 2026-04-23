@@ -11,7 +11,7 @@ export async function GET(request: NextRequest) {
 
     const decoded = verifyToken(token);
     if (!decoded) {
-      return NextResponse.json({ error: "Geçersiz token" }, { status: 401 });
+      return NextResponse.json({ error: "Invalid token" }, { status: 401 });
     }
 
     const user = findUserById(decoded.userId);
