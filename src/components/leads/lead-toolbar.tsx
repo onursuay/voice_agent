@@ -288,7 +288,7 @@ export function BulkActionBar() {
       });
       if (!res.ok) {
         const body = await res.json().catch(() => ({}));
-        throw new Error(body.error || 'Hata oluştu');
+        throw new Error(body.error || t('error'));
       }
       clearSelection();
       setModal(null);
