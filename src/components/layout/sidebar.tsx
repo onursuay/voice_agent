@@ -42,13 +42,13 @@ interface NavItem {
 
 const NAV_ITEMS_BASE = [
   { id: 'dashboard', labelKey: 'dashboard', href: '/dashboard', icon: LayoutDashboard },
-  { id: 'leads', labelKey: 'leads', href: '/dashboard/leads', icon: Users },
-  { id: 'pipeline', labelKey: 'pipeline', href: '/dashboard/pipeline', icon: GitBranch },
-  { id: 'import', labelKey: 'import', href: '/dashboard/import', icon: Upload },
-  { id: 'email', labelKey: 'email', href: '/dashboard/email', icon: Mail },
-  { id: 'automations', labelKey: 'automations', href: '/dashboard/automations', icon: Zap },
-  { id: 'calls', labelKey: 'calls', href: '/dashboard/calls', icon: Phone },
-  { id: 'integrations', labelKey: 'integrations', href: '/dashboard/integrations', icon: Plug },
+  { id: 'leads', labelKey: 'leads', href: '/leads', icon: Users },
+  { id: 'pipeline', labelKey: 'pipeline', href: '/pipeline', icon: GitBranch },
+  { id: 'import', labelKey: 'import', href: '/import', icon: Upload },
+  { id: 'email', labelKey: 'email', href: '/email', icon: Mail },
+  { id: 'automations', labelKey: 'automations', href: '/automations', icon: Zap },
+  { id: 'calls', labelKey: 'calls', href: '/calls', icon: Phone },
+  { id: 'integrations', labelKey: 'integrations', href: '/integrations', icon: Plug },
 ] as const;
 
 export function Sidebar() {
