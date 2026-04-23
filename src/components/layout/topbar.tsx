@@ -54,10 +54,11 @@ export function Topbar() {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
+  const locale = useLocale();
   const handleLogout = async () => {
     const supabase = createClient();
     await supabase.auth.signOut();
-    window.location.href = '/login';
+    window.location.href = `/${locale}/login`;
   };
 
   return (
