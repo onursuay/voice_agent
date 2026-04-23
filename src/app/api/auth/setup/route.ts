@@ -87,7 +87,7 @@ export async function POST(request: NextRequest) {
 
     if (memberError) {
       console.error("Membership error:", memberError);
-      return NextResponse.json({ error: "Üyelik oluşturulamadı: " + memberError.message }, { status: 500 });
+      return NextResponse.json({ error: "Could not create membership: " + memberError.message }, { status: 500 });
     }
 
     // CRM stages auto-created by database trigger
