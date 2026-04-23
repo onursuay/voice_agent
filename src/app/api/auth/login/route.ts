@@ -7,7 +7,7 @@ export async function POST(request: NextRequest) {
 
     if (!email || !password) {
       return NextResponse.json(
-        { error: "E-posta ve şifre zorunludur" },
+        { error: "Email and password are required" },
         { status: 400 }
       );
     }
