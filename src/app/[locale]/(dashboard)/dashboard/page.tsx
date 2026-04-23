@@ -75,10 +75,10 @@ export default function DashboardPage() {
   ];
 
   const quickActions = [
-    { label: t('importLeads'), icon: Upload, href: '/dashboard/import', color: '#10b981', bg: '#d1fae5' },
-    { label: t('aiCall'), icon: Phone, href: '/dashboard/calls', color: '#059669', bg: '#ecfdf5' },
-    { label: t('sendEmail'), icon: Mail, href: '/dashboard/email', color: '#d97706', bg: '#fffbeb' },
-    { label: t('setupAutomation'), icon: Zap, href: '/dashboard/automations', color: '#7c3aed', bg: '#f5f3ff' },
+    { label: t('importLeads'), icon: Upload, href: '/import', color: '#10b981', bg: '#d1fae5' },
+    { label: t('aiCall'), icon: Phone, href: '/calls', color: '#059669', bg: '#ecfdf5' },
+    { label: t('sendEmail'), icon: Mail, href: '/email', color: '#d97706', bg: '#fffbeb' },
+    { label: t('setupAutomation'), icon: Zap, href: '/automations', color: '#7c3aed', bg: '#f5f3ff' },
   ];
 
   const firstName = session?.user?.full_name?.split(' ')[0] || '';
@@ -171,7 +171,7 @@ export default function DashboardPage() {
               </div>
               <h2 className="text-sm font-semibold text-gray-900">{t('recentLeads')}</h2>
             </div>
-            <Link href="/dashboard/leads" className="flex items-center gap-1 text-xs font-medium text-emerald-600 hover:text-emerald-700 transition-colors">
+            <Link href="/leads" className="flex items-center gap-1 text-xs font-medium text-emerald-600 hover:text-emerald-700 transition-colors">
               {t('viewAll')} <ChevronRight className="h-3.5 w-3.5" />
             </Link>
           </div>
@@ -182,7 +182,7 @@ export default function DashboardPage() {
                   <Users className="h-7 w-7 text-gray-300" />
                 </div>
                 <p className="text-sm font-medium text-gray-400">{t('noLeadsYet')}</p>
-                <Link href="/dashboard/import" className="mt-3 inline-flex items-center gap-1 text-sm font-medium text-emerald-600 hover:underline">
+                <Link href="/import" className="mt-3 inline-flex items-center gap-1 text-sm font-medium text-emerald-600 hover:underline">
                   <Upload className="h-3.5 w-3.5" /> {t('importLeadsAction')}
                 </Link>
               </div>
@@ -281,7 +281,7 @@ export default function DashboardPage() {
           </div>
           {stageCounts.length > 0 && (
             <div className="border-t border-gray-100 px-5 py-3">
-              <Link href="/dashboard/pipeline" className="flex items-center justify-center gap-1 text-xs font-medium text-violet-600 hover:text-violet-700 transition-colors">
+              <Link href="/pipeline" className="flex items-center justify-center gap-1 text-xs font-medium text-violet-600 hover:text-violet-700 transition-colors">
                 {t('viewPipeline')} <ChevronRight className="h-3.5 w-3.5" />
               </Link>
             </div>
