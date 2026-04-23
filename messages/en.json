@@ -304,7 +304,8 @@
       "title": "Organization Members",
       "desc": "Manage and invite team members.",
       "invite": "Invite Member",
-      "noMembers": "No members yet."
+      "noMembers": "No members yet.",
+      "inactive": "Inactive"
     },
     "pipeline": {
       "title": "Pipeline Stages",
