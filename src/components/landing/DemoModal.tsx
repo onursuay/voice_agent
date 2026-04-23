@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { createPortal } from 'react-dom'
+import { Link } from '@/i18n/navigation'
 
 const DEMO_VIDEO_URL: string | null = null
 
