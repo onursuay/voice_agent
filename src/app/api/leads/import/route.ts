@@ -208,8 +208,8 @@ export async function POST(request: NextRequest) {
             organization_id: orgId,
             user_id: user.id,
             activity_type: 'imported',
-            title: 'Import ile oluşturuldu',
-            description: `Dosya: ${file_name || 'unknown'}`,
+            title: 'Created via import',
+            description: `File: ${file_name || 'unknown'}`,
             metadata: { import_job_id: importJob.id, row_index: i },
           });
 
