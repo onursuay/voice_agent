@@ -95,6 +95,6 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ success: true, organization: orgData });
   } catch (err) {
     console.error("Setup error:", err);
-    return NextResponse.json({ error: "Sunucu hatası oluştu" }, { status: 500 });
+    return NextResponse.json({ error: "A server error occurred" }, { status: 500 });
   }
 }
