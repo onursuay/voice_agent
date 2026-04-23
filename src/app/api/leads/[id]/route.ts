@@ -144,7 +144,7 @@ export async function DELETE(request: NextRequest, context: RouteContext) {
       .single();
 
     if (error) return NextResponse.json({ error: error.message }, { status: 500 });
-    if (!deleted) return NextResponse.json({ error: 'Lead bulunamadı veya silinemedi' }, { status: 404 });
+    if (!deleted) return NextResponse.json({ error: 'Lead not found or could not be deleted' }, { status: 404 });
 
     return NextResponse.json({ success: true });
   } catch (err) {
