@@ -77,7 +77,7 @@ export async function POST(request: NextRequest) {
 
     if (orgError) {
       console.error("Organization error:", orgError);
-      return NextResponse.json({ error: "Organizasyon oluşturulamadı: " + orgError.message }, { status: 500 });
+      return NextResponse.json({ error: "Could not create organization: " + orgError.message }, { status: 500 });
     }
 
     // 4) Create membership (owner)
