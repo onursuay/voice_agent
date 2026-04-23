@@ -493,6 +493,8 @@
     "contactUs": "Bize Ulaşın",
     "popular": "En Popüler",
     "trialDays": "{days} Gün Ücretsiz",
+    "perMonth": "ay",
+    "perYear": "yıl",
     "credits": {
       "title": "Kredi Yükle",
       "balance": "Mevcut Krediniz",
