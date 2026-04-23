@@ -8,7 +8,7 @@ import {
   Users, UserPlus, TrendingUp, GitBranch, ArrowUpRight, ArrowDownRight,
   Upload, Phone, Mail, Zap, ChevronRight, Sparkles, BarChart3
 } from 'lucide-react';
-import Link from 'next/link';
+import { Link } from '@/i18n/navigation';
 import type { Lead } from '@/lib/types';
 import { useTranslations } from 'next-intl';
 
