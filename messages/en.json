@@ -495,6 +495,8 @@
     "contactUs": "Contact Us",
     "popular": "Most Popular",
     "trialDays": "{days} Days Free",
+    "perMonth": "month",
+    "perYear": "year",
     "credits": {
       "title": "Load Credits",
       "balance": "Your Current Balance",
