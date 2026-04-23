@@ -844,7 +844,7 @@ export function LeadToolbar() {
           variant="secondary"
           size="sm"
           icon={<Upload className="h-4 w-4" />}
-          onClick={() => (window.location.href = '/dashboard/import')}
+          onClick={() => router.push('/import')}
         >
           {tNav('import')}
         </Button>
