@@ -336,6 +336,11 @@
     "integrations": {
       "title": "Entegrasyonlar",
       "desc": "Dış platformlardan lead toplamak için bağlantıları yönetin.",
+      "metaAccessDenied": "Meta hesabına erişim reddedildi. İzinleri onaylayarak tekrar deneyin.",
+      "errorPrefix": "Hata: {error}",
+      "retry": "Tekrar Dene",
+      "googleAdsDesc": "Google Ads lead formlarından gelen verileri otomatik olarak sisteme aktar.",
+      "tiktokAdsDesc": "TikTok reklam formlarından gelen lead'leri otomatik olarak sisteme aktar.",
       "metaTitle": "Meta Lead Ads",
       "metaDesc": "Facebook ve Instagram reklam formlarından gelen lead'leri otomatik olarak sisteme aktar.",
       "metaSuccess": "Meta sayfanız başarıyla bağlandı! Artık reklam formlarından gelen lead'ler otomatik olarak buraya düşecek.",
