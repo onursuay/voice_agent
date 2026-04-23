@@ -1,7 +1,8 @@
 'use client'
 
 import { useState } from 'react'
-import { Link } from '@/i18n/navigation'
+import { Link, useRouter, usePathname } from '@/i18n/navigation'
+import { useLocale } from 'next-intl'
 import Image from 'next/image'
 import ScheduleModal from './ScheduleModal'
 import DemoModal from './DemoModal'
