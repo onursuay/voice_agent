@@ -652,7 +652,11 @@
     "actionAddTag": "Etiket ekle",
     "actionReminder": "Hatırlatıcı oluştur",
     "actionAddNote": "Not ekle",
-    "actionChangeScore": "Skoru değiştir"
+    "actionChangeScore": "Skoru değiştir",
+    "mockRule1Name": "Yeni lead → Satış ekibine ata",
+    "mockRule2Name": "3 gün hareketsiz → Hatırlatıcı",
+    "mockRule3Name": "Kazanıldı aşaması → Tebrik maili",
+    "mockRule2Message": "Lead ile iletişime geç"
   },
   "import": {
     "pageTitle": "Lead İçe Aktarma",
