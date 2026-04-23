@@ -771,13 +771,13 @@ export function LeadDetailDrawer({ onDelete, onEdit }: LeadDetailDrawerProps) {
               items={[
                 {
                   key: 'edit',
-                  label: 'Düzenle',
+                  label: t('gridActions.edit'),
                   icon: <Edit3 className="h-4 w-4" />,
                   onClick: () => onEdit?.(lead.id),
                 },
                 {
                   key: 'delete',
-                  label: 'Sil',
+                  label: t('delete'),
                   icon: <Trash2 className="h-4 w-4" />,
                   danger: true,
                   onClick: () => onDelete?.(lead.id),
