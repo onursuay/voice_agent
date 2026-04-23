@@ -272,7 +272,7 @@ export default function SettingsPage() {
       });
       if (!res.ok) {
         const data = await res.json();
-        throw new Error(data.error || 'Aşama eklenemedi');
+        throw new Error(data.error || t('errors.stageAddFailed'));
       }
       const newStage = await res.json();
       setLocalStages([...localStages, newStage]);
@@ -280,7 +280,7 @@ export default function SettingsPage() {
       setNewStageName('');
       setNewStageColor('#10b981');
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Aşama eklenemedi');
+      setError(err instanceof Error ? err.message : t('errors.stageAddFailed'));
     }
   };
 
