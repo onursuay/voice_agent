@@ -22,7 +22,7 @@ export async function GET(request: NextRequest) {
 
   if (!clientId || !clientSecret) {
     return NextResponse.json(
-      { error: 'GOOGLE_CLIENT_ID veya GOOGLE_CLIENT_SECRET env ayarlanmamış' },
+      { error: 'GOOGLE_CLIENT_ID or GOOGLE_CLIENT_SECRET env not set' },
       { status: 500 }
     );
   }
