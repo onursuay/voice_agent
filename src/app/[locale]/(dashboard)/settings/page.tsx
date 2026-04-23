@@ -503,7 +503,7 @@ export default function SettingsPage() {
                         {ROLE_LABELS[member.role as UserRole] || member.role}
                       </Badge>
                       {!member.is_active && (
-                        <Badge color="red" size="sm">Pasif</Badge>
+                        <Badge color="red" size="sm">{t('members.inactive')}</Badge>
                       )}
                     </div>
                   </div>
