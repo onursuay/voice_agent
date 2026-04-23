@@ -103,7 +103,7 @@ export async function PATCH(request: NextRequest, context: RouteContext) {
         organization_id: orgId,
         user_id: user.id,
         activity_type: 'assigned',
-        title: 'Lead atandı',
+        title: 'Lead assigned',
         description: null,
         metadata: {
           from_user: currentLead.assigned_to,
