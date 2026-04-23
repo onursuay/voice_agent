@@ -218,29 +218,31 @@ export interface AppSession {
 }
 
 // Lead form fields for import mapping
+// Display strings — UI callers should prefer t() from useTranslations
 export const LEAD_FIELD_OPTIONS: { value: string; label: string }[] = [
-  { value: 'first_name', label: 'Ad' },
-  { value: 'last_name', label: 'Soyad' },
-  { value: 'full_name', label: 'Ad Soyad' },
-  { value: 'email', label: 'E-posta' },
-  { value: 'phone', label: 'Telefon' },
-  { value: 'company', label: 'Şirket' },
-  { value: 'job_title', label: 'Ünvan' },
-  { value: 'city', label: 'Şehir' },
-  { value: 'country', label: 'Ülke' },
-  { value: 'source_platform', label: 'Kaynak Platform' },
-  { value: 'campaign_name', label: 'Kampanya' },
-  { value: 'ad_set_name', label: 'Reklam Seti' },
-  { value: 'ad_name', label: 'Reklam' },
-  { value: 'form_name', label: 'Form Adı' },
+  { value: 'first_name', label: 'First Name' },
+  { value: 'last_name', label: 'Last Name' },
+  { value: 'full_name', label: 'Full Name' },
+  { value: 'email', label: 'Email' },
+  { value: 'phone', label: 'Phone' },
+  { value: 'company', label: 'Company' },
+  { value: 'job_title', label: 'Job Title' },
+  { value: 'city', label: 'City' },
+  { value: 'country', label: 'Country' },
+  { value: 'source_platform', label: 'Source Platform' },
+  { value: 'campaign_name', label: 'Campaign' },
+  { value: 'ad_set_name', label: 'Ad Set' },
+  { value: 'ad_name', label: 'Ad' },
+  { value: 'form_name', label: 'Form Name' },
   { value: 'utm_source', label: 'UTM Source' },
   { value: 'utm_medium', label: 'UTM Medium' },
   { value: 'utm_campaign', label: 'UTM Campaign' },
-  { value: 'tags', label: 'Etiketler' },
-  { value: 'score', label: 'Skor' },
-  { value: '_skip', label: '— Atla —' },
+  { value: 'tags', label: 'Tags' },
+  { value: 'score', label: 'Score' },
+  { value: '_skip', label: '— Skip —' },
 ];
 
+// Display strings — UI callers should prefer t() from useTranslations
 export const SOURCE_PLATFORM_LABELS: Record<LeadSourcePlatform, string> = {
   meta_lead_form: 'Lead',
   zapier: 'Zapier',
@@ -248,28 +250,30 @@ export const SOURCE_PLATFORM_LABELS: Record<LeadSourcePlatform, string> = {
   instagram_dm: 'Instagram',
   messenger: 'Messenger',
   website: 'Website',
-  manual: 'Manuel',
+  manual: 'Manual',
   import: 'Import',
-  other: 'Diğer',
+  other: 'Other',
 };
 
+// Display strings — UI callers should prefer t() from useTranslations
 export const STAGE_LABELS: Record<LeadStage, string> = {
-  new: 'Yeni',
-  contacted: 'İletişime Geçildi',
-  qualified: 'Nitelikli',
-  meeting: 'Toplantı',
-  offer: 'Teklif',
-  won: 'Kazanıldı',
-  lost: 'Kaybedildi',
+  new: 'New',
+  contacted: 'Contacted',
+  qualified: 'Qualified',
+  meeting: 'Meeting',
+  offer: 'Offer',
+  won: 'Won',
+  lost: 'Lost',
 };
 
+// Display strings — UI callers should prefer t() from useTranslations
 export const ROLE_LABELS: Record<UserRole, string> = {
-  owner: 'Sahip',
-  admin: 'Yönetici',
-  sales_manager: 'Satış Müdürü',
-  sales_rep: 'Satış Temsilcisi',
-  analyst: 'Analist',
-  readonly: 'Salt Okunur',
+  owner: 'Owner',
+  admin: 'Admin',
+  sales_manager: 'Sales Manager',
+  sales_rep: 'Sales Rep',
+  analyst: 'Analyst',
+  readonly: 'Read Only',
 };
 
 export const ROLE_PERMISSIONS: Record<UserRole, string[]> = {
