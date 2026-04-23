@@ -170,7 +170,14 @@ const langMeta: Record<Lang, { flag: string; label: string }> = {
 /* ─────────────────────────── Component ─────────────────────────── */
 
 export default function LandingContent() {
-  const [lang, setLang] = useState<Lang>('tr')
+  const routeLocale = useLocale() as Lang
+  const router = useRouter()
+  const pathname = usePathname()
+  const lang: Lang = routeLocale === 'en' ? 'en' : 'tr'
+  const setLang = (l: Lang) => {
+    if (l === lang) return
+    router.replace(pathname, { locale: l })
+  }
   const [dropOpen, setDropOpen] = useState(false)
 
   const c = content[lang]
