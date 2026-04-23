@@ -1,26 +1,26 @@
 'use client';
 
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from '@/i18n/navigation';
+import { useLocale } from 'next-intl';
 import { useAppStore } from '@/lib/store';
 import { getInitials } from '@/lib/utils';
 import { Menu, Search, Bell, ChevronDown } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useState, useRef, useEffect } from 'react';
 import { createClient } from '@/lib/supabase/client';
-import { useRouter } from 'next/navigation';
 
 const PAGE_TITLE_KEYS: Record<string, string> = {
   '/dashboard': 'dashboard',
-  '/dashboard/leads': 'leads',
-  '/dashboard/pipeline': 'pipeline',
-  '/dashboard/import': 'import',
-  '/dashboard/settings': 'settings',
-  '/dashboard/hesabim': 'hesabim',
-  '/dashboard/faturalarim': 'faturalarim',
-  '/dashboard/abonelik': 'abonelik',
-  '/dashboard/email': 'email',
-  '/dashboard/automations': 'automations',
-  '/dashboard/calls': 'calls',
+  '/leads': 'leads',
+  '/pipeline': 'pipeline',
+  '/import': 'import',
+  '/settings': 'settings',
+  '/hesabim': 'hesabim',
+  '/faturalarim': 'faturalarim',
+  '/abonelik': 'abonelik',
+  '/email': 'email',
+  '/automations': 'automations',
+  '/calls': 'calls',
 };
 
 function getPageTitleKey(pathname: string): string {
