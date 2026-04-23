@@ -264,6 +264,14 @@
   "settings": {
     "title": "Settings",
     "subtitle": "Manage your organization, membership, pipeline and profile settings.",
+    "errors": {
+      "organizationUpdateFailed": "Could not update organization",
+      "profileUpdateFailed": "Could not update profile",
+      "stageAddFailed": "Could not add stage",
+      "stageHasLeads": "This stage has leads. Move them to another stage first.",
+      "stageDeleteFailed": "Could not delete stage",
+      "stageOrderSaveFailed": "Could not save order"
+    },
     "tabs": {
       "organization": "Organization",
       "members": "Members",
