@@ -255,7 +255,7 @@ export default function IntegrationsPage() {
               )}
 
               <button
-                onClick={() => router.push('/dashboard/meta-select')}
+                onClick={() => router.push('/meta-select')}
                 className={`flex w-full items-center justify-center gap-1.5 rounded-xl py-2.5 text-xs font-medium transition-all ${
                   hasConnections
                     ? 'border border-dashed border-emerald-300 text-emerald-600 hover:bg-emerald-50 hover:border-emerald-400'
