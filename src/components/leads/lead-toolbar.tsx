@@ -787,6 +787,7 @@ function PerPageDropdown() {
 // ── Main Toolbar ────────────────────────────────────────
 
 export function LeadToolbar() {
+  const router = useRouter();
   const t = useTranslations('leads');
   const tNav = useTranslations('nav');
   const searchQuery = useAppStore((s) => s.searchQuery);
