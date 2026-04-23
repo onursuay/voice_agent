@@ -45,7 +45,7 @@ export async function POST(request: NextRequest) {
           organization_id: orgId,
           user_id: user.id,
           activity_type: 'assigned' as const,
-          title: 'Lead toplu atandı',
+          title: 'Leads bulk-assigned',
           description: null,
           metadata: { assigned_to: data.assigned_to, bulk: true },
         }));
