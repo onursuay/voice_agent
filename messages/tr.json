@@ -302,7 +302,8 @@
       "title": "Organizasyon Üyeleri",
       "desc": "Ekip üyelerini yönetin ve davet edin.",
       "invite": "Üye Davet Et",
-      "noMembers": "Henüz üye bulunmuyor."
+      "noMembers": "Henüz üye bulunmuyor.",
+      "inactive": "Pasif"
     },
     "pipeline": {
       "title": "Pipeline Aşamaları",
