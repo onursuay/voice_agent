@@ -23,6 +23,6 @@ export async function GET(request: NextRequest) {
       user: { id: user.id, name: user.name, email: user.email },
     });
   } catch {
-    return NextResponse.json({ error: "Sunucu hatası" }, { status: 500 });
+    return NextResponse.json({ error: "Server error" }, { status: 500 });
   }
 }
