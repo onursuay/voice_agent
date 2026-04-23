@@ -337,7 +337,7 @@ export function BulkActionBar() {
               onChange={(e) => setSelectedStageId(e.target.value)}
               className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-emerald-500 focus:outline-none"
             >
-              <option value="">Seçim Yapın</option>
+              <option value="">Select...</option>
               {stages.map((s) => <option key={s.id} value={s.id}>{s.name}</option>)}
             </select>
             {error && <p className="mt-2 text-sm text-red-600">{error}</p>}
@@ -364,7 +364,7 @@ export function BulkActionBar() {
               onChange={(e) => setSelectedUserId(e.target.value)}
               className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-emerald-500 focus:outline-none"
             >
-              <option value="">Seçim Yapın</option>
+              <option value="">Select...</option>
               {members.map((m) => (
                 <option key={m.user_id} value={m.user_id}>
                   {m.profile?.full_name || m.profile?.email || m.user_id}
