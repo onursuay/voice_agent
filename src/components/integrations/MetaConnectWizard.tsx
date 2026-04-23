@@ -308,7 +308,7 @@ export function MetaConnectWizard({ initialStep = 1 }: { initialStep?: number })
                 </p>
               )}
               <button
-                onClick={() => router.push('/dashboard/integrations?meta_connected=1')}
+                onClick={() => router.push('/integrations?meta_connected=1')}
                 className="w-full rounded-xl bg-green-600 py-3 font-semibold text-white hover:bg-green-700 transition-colors"
               >
                 {w('goToIntegrations')}
