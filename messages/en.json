@@ -46,7 +46,9 @@
     "disconnect": "Disconnect",
     "connected": "Connected",
     "notConnected": "Not connected",
-    "checking": "Checking..."
+    "checking": "Checking...",
+    "comingSoon": "Coming soon",
+    "unknownUser": "Unknown User"
   },
   "nav": {
     "dashboard": "Dashboard",
