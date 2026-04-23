@@ -5,12 +5,11 @@ import { cookies } from "next/headers";
 export async function GET(request: NextRequest) {
   const { searchParams, origin } = new URL(request.url);
   const code = searchParams.get("code");
-  const cookieLocaleStore = await cookies();
-  const locale = cookieLocaleStore.get("NEXT_LOCALE")?.value === "en" ? "en" : "tr";
+  const cookieStore = await cookies();
+  const locale = cookieStore.get("NEXT_LOCALE")?.value === "en" ? "en" : "tr";
   const next = searchParams.get("next") ?? `/${locale}/dashboard`;
 
   if (code) {
-    const cookieStore = await cookies();
 
     const supabase = createServerClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL!,
