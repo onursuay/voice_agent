@@ -23,6 +23,7 @@ import { LeadFilters } from './lead-filters';
 import { LeadCreateModal } from './lead-create-modal';
 import { LEAD_COLUMNS } from './lead-grid';
 import { useTranslations } from 'next-intl';
+import { useRouter } from '@/i18n/navigation';
 
 // ── Sort Dropdown ───────────────────────────────────────
 
