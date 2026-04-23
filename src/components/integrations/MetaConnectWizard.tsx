@@ -168,7 +168,7 @@ export function MetaConnectWizard({ initialStep = 1 }: { initialStep?: number })
                 {w('connectButton')}
               </button>
               <button
-                onClick={() => router.push('/dashboard/integrations')}
+                onClick={() => router.push('/integrations')}
                 className="mt-3 w-full rounded-xl border border-gray-200 py-3 text-sm font-medium text-gray-600 hover:bg-gray-50 transition-colors"
               >
                 {w('cancelButton')}
@@ -244,7 +244,7 @@ export function MetaConnectWizard({ initialStep = 1 }: { initialStep?: number })
 
                   <div className="mt-5 flex gap-3">
                     <button
-                      onClick={() => router.push('/dashboard/integrations')}
+                      onClick={() => router.push('/integrations')}
                       className="flex-1 rounded-xl border border-gray-200 py-3 text-sm font-medium text-gray-600 hover:bg-gray-50 transition-colors"
                     >
                       {w('cancelButton')}
