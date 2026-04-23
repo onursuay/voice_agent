@@ -89,7 +89,7 @@ export async function POST(request: NextRequest) {
             organization_id: orgId,
             user_id: user.id,
             activity_type: 'stage_change' as const,
-            title: 'Aşama toplu değiştirildi',
+            title: 'Stages bulk-updated',
             description: null,
             metadata: { from_stage_id: lead.stage_id, to_stage_id: data.stage_id, bulk: true },
           }));
