@@ -171,8 +171,8 @@ export async function POST(request: NextRequest) {
         organization_id: orgId,
         user_id: user.id,
         activity_type: 'merged',
-        title: 'Lead verileri birleştirildi',
-        description: `Duplicate tespit edildi ve mevcut lead ile birleştirildi.`,
+        title: 'Lead data merged',
+        description: `Duplicate detected and merged with existing lead.`,
         metadata: { merged_fields: Object.keys(mergeFields) },
       });
 
