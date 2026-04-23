@@ -1,8 +1,8 @@
 'use client';
 
-import Link from 'next/link';
 import Image from 'next/image';
-import { usePathname, useRouter } from 'next/navigation';
+import { Link, usePathname, useRouter } from '@/i18n/navigation';
+import { useLocale } from 'next-intl';
 import { createClient } from '@/lib/supabase/client';
 import { useAppStore } from '@/lib/store';
 import { getInitials } from '@/lib/utils';
