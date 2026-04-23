@@ -7,7 +7,7 @@ export async function POST(request: NextRequest) {
 
     if (!name || !email || !password) {
       return NextResponse.json(
-        { error: "Tüm alanlar zorunludur" },
+        { error: "All fields are required" },
         { status: 400 }
       );
     }
