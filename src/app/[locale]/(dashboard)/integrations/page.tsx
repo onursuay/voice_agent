@@ -128,17 +128,17 @@ export default function IntegrationsPage() {
         <div className="flex items-center gap-3 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
           <AlertCircle className="h-4 w-4 shrink-0" />
           <span className="flex-1">
-            {metaError === 'access_denied' && 'Meta hesabına erişim reddedildi. İzinleri onaylayarak tekrar deneyin.'}
+            {metaError === 'access_denied' && t('integrations.metaAccessDenied')}
             {metaError === 'cancelled' && t('integrations.metaCancelled')}
             {metaError === 'no_pages' && t('integrations.metaNoPage')}
             {metaError === 'token_exchange_failed' && t('integrations.metaTokenError')}
-            {!['access_denied', 'cancelled', 'no_pages', 'token_exchange_failed'].includes(metaError) && `Hata: ${metaError}`}
+            {!['access_denied', 'cancelled', 'no_pages', 'token_exchange_failed'].includes(metaError) && t('integrations.errorPrefix', { error: metaError })}
           </span>
           <button
             onClick={() => router.push('/meta-connect')}
             className="shrink-0 rounded-lg bg-red-100 px-3 py-1 text-xs font-medium text-red-700 hover:bg-red-200 transition-colors"
           >
-            Tekrar Dene
+            {t('integrations.retry')}
           </button>
         </div>
       )}
