@@ -87,7 +87,7 @@ export async function PATCH(request: NextRequest, context: RouteContext) {
         organization_id: orgId,
         user_id: user.id,
         activity_type: 'stage_change',
-        title: 'Aşama değiştirildi',
+        title: 'Stage changed',
         description: null,
         metadata: {
           from_stage_id: currentLead.stage_id,
