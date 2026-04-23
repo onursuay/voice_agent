@@ -261,7 +261,7 @@ export function Sidebar() {
                 <Settings className="w-4 h-4 text-gray-500" />
                 <span>{tNav('settings')}</span>
               </Link>
-              <Link href="/dashboard/hesabim" onClick={() => setDropdownOpen(false)}
+              <Link href="/hesabim" onClick={() => setDropdownOpen(false)}
                 className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
                 <User className="w-4 h-4 text-gray-500" />
                 <span>{tSidebar('hesabim')}</span>
