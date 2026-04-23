@@ -338,6 +338,11 @@
     "integrations": {
       "title": "Integrations",
       "desc": "Manage connections to collect leads from external platforms.",
+      "metaAccessDenied": "Access to Meta account was denied. Approve the permissions and try again.",
+      "errorPrefix": "Error: {error}",
+      "retry": "Try Again",
+      "googleAdsDesc": "Automatically import leads from Google Ads lead forms into the system.",
+      "tiktokAdsDesc": "Automatically import leads from TikTok ad forms into the system.",
       "metaTitle": "Meta Lead Ads",
       "metaDesc": "Automatically import leads from Facebook and Instagram ad forms into the system.",
       "metaSuccess": "Your Meta page was connected successfully! Leads from ad forms will now automatically appear here.",
