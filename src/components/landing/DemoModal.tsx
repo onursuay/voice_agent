@@ -52,9 +52,9 @@ export default function DemoModal({ label, variant = 'nav' }: Props) {
             <p className="text-base text-gray-300 mb-1">{t.comingSoon}</p>
             <p className="text-base text-gray-500 mb-8">{t.comingSoonSub}</p>
             <div className="flex justify-center gap-3">
-              <a href="/register" className="text-sm font-semibold bg-emerald-500 hover:bg-emerald-400 text-black px-6 py-3 rounded-xl transition-colors">
+              <Link href="/register" className="text-sm font-semibold bg-emerald-500 hover:bg-emerald-400 text-black px-6 py-3 rounded-xl transition-colors">
                 {t.tryNow}
-              </a>
+              </Link>
               <button onClick={() => setOpen(false)} className="text-sm font-medium text-gray-400 hover:text-white px-5 py-3 rounded-xl border border-white/10 hover:border-white/20 transition-colors">
                 {t.close}
               </button>
