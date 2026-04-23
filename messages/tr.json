@@ -535,6 +535,7 @@
     "voiceFemaleCasual": "Kadın - Samimi",
     "callScript": "Arama Senaryosu",
     "callScriptPlaceholder": "AI'ın söyleyeceği senaryo...",
+    "defaultScript": "Merhaba {{full_name}}, Yo Dijital'den arıyorum. Dijital pazarlama hizmetlerimiz hakkında kısa bilgi vermek istiyorum. Uygun musunuz?",
     "aiSummary": "AI Özet",
     "transcript": "Transkript",
     "serviceStatus": "Servis Durumu",
