@@ -299,7 +299,7 @@ function ConfigTab() {
     work_hours_start: '09:00',
     work_hours_end: '18:00',
     max_retries: 2,
-    system_prompt: 'Sen Yo Dijital adına arayan profesyonel bir satış asistanısın. Nazik, kısa ve öz konuş. Amacın müşterinin ilgisini ölçmek ve uygunsa toplantı planlamak.',
+    system_prompt: 'You are a professional sales assistant calling on behalf of Yo Dijital. Be polite, brief and concise. Your goal is to gauge the customer\'s interest and, if appropriate, schedule a meeting.',
   });
 
   const services = [
