@@ -42,7 +42,7 @@ export async function POST(request: NextRequest) {
 
     if (profileError) {
       console.error("Profile error:", profileError);
-      return NextResponse.json({ error: "Profil oluşturulamadı: " + profileError.message }, { status: 500 });
+      return NextResponse.json({ error: "Could not create profile: " + profileError.message }, { status: 500 });
     }
 
     // 2) Check if user already has an org
