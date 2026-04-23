@@ -22,7 +22,7 @@ export async function POST(request: NextRequest) {
     const existingUser = findUserByEmail(email);
     if (existingUser) {
       return NextResponse.json(
-        { error: "Bu e-posta adresi zaten kayıtlı" },
+        { error: "This email is already registered" },
         { status: 409 }
       );
     }
