@@ -35,56 +35,58 @@ export function getYearlyMonthlyPrice(planId: string, adAccounts: number): numbe
 }
 
 const BASIC_FEATURES = [
-  'Google Raporları',
-  'Meta Raporları',
-  'Google Reklamları',
-  'Meta Hedef Kitle (AI)',
-  'Meta Reklamları',
-  '20 Tasarım Kredisi',
+  'Google Reports',
+  'Meta Reports',
+  'Google Ads',
+  'Meta Audience (AI)',
+  'Meta Ads',
+  '20 Design Credits',
 ]
 
 const STARTER_FEATURES = [
-  'Optimizasyon',
-  'Google Raporları',
-  'Meta Raporları',
-  'Google Reklamları',
-  'Meta Hedef Kitle (AI)',
-  'Meta Reklamları',
-  '60 Tasarım Kredisi',
+  'Optimization',
+  'Google Reports',
+  'Meta Reports',
+  'Google Ads',
+  'Meta Audience (AI)',
+  'Meta Ads',
+  '60 Design Credits',
 ]
 
 const PREMIUM_FEATURES = [
-  'AI Strateji (AI)',
-  'Optimizasyon',
-  'Google Raporları',
-  'Meta Raporları',
-  'Google Reklamları',
-  'Meta Reklamları',
-  '100 Tasarım Kredisi',
+  'AI Strategy (AI)',
+  'Optimization',
+  'Google Reports',
+  'Meta Reports',
+  'Google Ads',
+  'Meta Ads',
+  '100 Design Credits',
 ]
 
 const ENTERPRISE_FEATURES = [
-  'AI Strateji (Sınırsız)',
-  'Optimizasyon',
-  'Meta Reklamları',
-  'Google Reklamları',
-  'Meta Raporları',
-  'Google Raporları',
-  'Tasarım',
+  'AI Strategy (Unlimited)',
+  'Optimization',
+  'Meta Ads',
+  'Google Ads',
+  'Meta Reports',
+  'Google Reports',
+  'Design',
 ]
 
+// Display strings — UI callers should prefer t() from useTranslations
 export const PLAN_SECTION_TITLES: Record<string, string> = {
-  basic: 'Tek Panelden Yönetin',
-  starter: 'Profesyonel Reklam Yönetimi',
-  premium: 'Tek Tıkla Reklamcılık',
-  enterprise: 'Sınırsız Reklam Gücü',
+  basic: 'Manage from One Panel',
+  starter: 'Professional Ad Management',
+  premium: 'One-Click Advertising',
+  enterprise: 'Unlimited Ad Power',
 }
 
+// Display strings — UI callers should prefer t() from useTranslations
 export const PLAN_DESCRIPTIONS: Record<string, string> = {
-  basic: 'Tek panelden reklam yönetimi',
-  starter: 'Profesyonel reklam yönetimi',
-  premium: 'Tam otomatik reklamcılık',
-  enterprise: 'Kurumsal çözümler',
+  basic: 'Ad management from a single panel',
+  starter: 'Professional ad management',
+  premium: 'Fully automated advertising',
+  enterprise: 'Enterprise solutions',
 }
 
 export const SUBSCRIPTION_PLANS: SubscriptionPlan[] = [
