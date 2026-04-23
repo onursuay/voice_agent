@@ -241,7 +241,7 @@ export default function SettingsPage() {
       if (updateErr) throw new Error(updateErr.message);
       setProfileSuccess(true);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Profil guncellenemedi');
+      setError(err instanceof Error ? err.message : t('errors.profileUpdateFailed'));
     } finally {
       setProfileSaving(false);
     }
