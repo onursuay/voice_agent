@@ -143,7 +143,8 @@ export async function GET(request: NextRequest) {
   const state = params.get('state');
   const error = params.get('error');
 
-  const dashboardUrl = `${request.nextUrl.origin}/dashboard/integrations`;
+  const locale = request.cookies.get('NEXT_LOCALE')?.value === 'en' ? 'en' : 'tr';
+  const dashboardUrl = `${request.nextUrl.origin}/${locale}/integrations`;
 
   if (error || !code || !state) {
     return NextResponse.redirect(`${dashboardUrl}?meta_error=${encodeURIComponent(error || 'cancelled')}`);
