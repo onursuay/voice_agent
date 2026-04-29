@@ -117,7 +117,9 @@ function FancySelect({
   onChange: (value: string) => void;
 }) {
   const [open, setOpen] = useState(false);
+  const [pulseValue, setPulseValue] = useState<string | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const pulseTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
     function handleOutsideClick(event: MouseEvent) {
@@ -133,6 +135,7 @@ function FancySelect({
     document.addEventListener('mousedown', handleOutsideClick);
     document.addEventListener('keydown', handleEscape);
     return () => {
+      if (pulseTimeoutRef.current) clearTimeout(pulseTimeoutRef.current);
       document.removeEventListener('mousedown', handleOutsideClick);
       document.removeEventListener('keydown', handleEscape);
     };
@@ -205,11 +208,15 @@ function FancySelect({
             ) : (
               options.map((option) => {
                 const isSelected = option.value === value;
+                const isPulsing = pulseValue === option.value;
                 return (
                   <button
                     key={option.value}
                     type="button"
                     onClick={() => {
+                      if (pulseTimeoutRef.current) clearTimeout(pulseTimeoutRef.current);
+                      setPulseValue(option.value);
+                      pulseTimeoutRef.current = setTimeout(() => setPulseValue(null), 520);
                       onChange(option.value);
                       setOpen(false);
                     }}
@@ -219,16 +226,24 @@ function FancySelect({
                         ? 'bg-emerald-50 text-emerald-900 shadow-sm ring-1 ring-emerald-100'
                         : 'text-gray-700 hover:bg-gradient-to-r hover:from-emerald-50 hover:to-transparent hover:text-gray-900'
                     )}
-                  >
+                    >
                     <div
                       className={cn(
-                        'flex h-7 w-7 shrink-0 items-center justify-center rounded-full border transition-all duration-200',
+                        'relative flex h-7 w-7 shrink-0 items-center justify-center rounded-full border transition-all duration-200',
                         isSelected
                           ? 'scale-105 border-emerald-600 bg-emerald-600 text-white shadow-[0_0_0_6px_rgba(16,185,129,0.22),0_14px_30px_rgba(16,185,129,0.34)]'
-                          : 'border-gray-200 bg-gray-50 text-transparent'
+                          : isPulsing
+                            ? 'scale-105 border-emerald-300 bg-emerald-100 text-emerald-500'
+                            : 'border-gray-200 bg-gray-50 text-transparent'
                       )}
                     >
-                      <Check className={cn('h-3.5 w-3.5 transition-opacity duration-150', isSelected ? 'opacity-100' : 'opacity-0')} />
+                      {isPulsing && (
+                        <>
+                          <span className="pointer-events-none absolute inset-[-4px] rounded-full bg-emerald-400/25 animate-ping" />
+                          <span className="pointer-events-none absolute inset-[-8px] rounded-full border border-emerald-300/60 animate-pulse" />
+                        </>
+                      )}
+                      <Check className={cn('h-3.5 w-3.5 transition-opacity duration-150', isSelected || isPulsing ? 'opacity-100' : 'opacity-0')} />
                     </div>
                     <span className={cn('truncate', isSelected && 'font-semibold')}>{option.label}</span>
                   </button>
