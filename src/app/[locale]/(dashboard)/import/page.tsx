@@ -154,7 +154,7 @@ function FancySelect({
           disabled={disabled}
           onClick={() => setOpen((prev) => !prev)}
           className={cn(
-            'group flex w-full items-center justify-between gap-3 rounded-2xl border px-4 py-2.5 text-left shadow-[0_8px_30px_rgba(16,24,40,0.06)] transition-all duration-200',
+            'group flex w-full items-center justify-between gap-3 rounded-2xl border px-3.5 py-2 text-left shadow-[0_8px_30px_rgba(16,24,40,0.06)] transition-all duration-200',
             'bg-[linear-gradient(180deg,rgba(255,255,255,0.98),rgba(248,250,252,0.94))]',
             'focus:outline-none focus:ring-4 focus:ring-emerald-100',
             disabled
@@ -214,21 +214,21 @@ function FancySelect({
                       setOpen(false);
                     }}
                     className={cn(
-                      'flex w-full items-center gap-3 rounded-xl px-2.5 py-1.5 text-left text-sm transition-all duration-150',
+                      'flex w-full items-center gap-2.5 rounded-xl px-2.5 py-1 text-left text-sm transition-all duration-150',
                       isSelected
-                        ? 'bg-emerald-50 text-emerald-900 shadow-sm'
+                        ? 'bg-emerald-50 text-emerald-900 shadow-sm ring-1 ring-emerald-100'
                         : 'text-gray-700 hover:bg-gradient-to-r hover:from-emerald-50 hover:to-transparent hover:text-gray-900'
                     )}
                   >
                     <div
                       className={cn(
-                        'flex h-8 w-8 shrink-0 items-center justify-center rounded-full border transition-all duration-200',
+                        'flex h-7 w-7 shrink-0 items-center justify-center rounded-full border transition-all duration-200',
                         isSelected
-                          ? 'border-emerald-500 bg-emerald-500 text-white shadow-[0_0_0_5px_rgba(16,185,129,0.22),0_14px_30px_rgba(16,185,129,0.34)]'
+                          ? 'scale-105 border-emerald-600 bg-emerald-600 text-white shadow-[0_0_0_6px_rgba(16,185,129,0.22),0_14px_30px_rgba(16,185,129,0.34)]'
                           : 'border-gray-200 bg-gray-50 text-transparent'
                       )}
                     >
-                      <Check className={cn('h-4 w-4 transition-opacity duration-150', isSelected ? 'opacity-100' : 'opacity-0')} />
+                      <Check className={cn('h-3.5 w-3.5 transition-opacity duration-150', isSelected ? 'opacity-100' : 'opacity-0')} />
                     </div>
                     <span className={cn('truncate', isSelected && 'font-semibold')}>{option.label}</span>
                   </button>
@@ -1123,8 +1123,8 @@ export default function ImportPage() {
           </div>
         )}
 
-        <div className="rounded-xl border border-gray-200 bg-white p-3 shadow-sm">
-          <div className="flex flex-col gap-2 sm:flex-row sm:items-end">
+        <div className="rounded-xl border border-gray-200 bg-white px-3 py-2 shadow-sm">
+          <div className="flex flex-col gap-1.5 sm:flex-row sm:items-end">
             <div className="min-w-0 flex-1">
               <FancySelect
                 value={spreadsheetToAddId}
@@ -1155,7 +1155,7 @@ export default function ImportPage() {
             </div>
           </div>
 
-          <div className="mt-2 flex items-center gap-2 text-xs text-gray-500">
+          <div className="mt-1 flex items-center gap-2 text-xs text-gray-500">
             <div className="h-2 w-2 rounded-full bg-green-400" />
             <span>
               {availableSpreadsheets.length > 0
@@ -1186,7 +1186,7 @@ export default function ImportPage() {
                     key={file.id}
                     className={cn(
                       'flex items-center gap-3 rounded-lg border px-3 py-2 transition-colors',
-                      isActive ? 'border-emerald-300 bg-emerald-50' : 'border-gray-200 bg-white hover:border-gray-300'
+                      isActive ? 'border-emerald-300 bg-emerald-50 ring-1 ring-emerald-100' : 'border-gray-200 bg-white hover:border-gray-300'
                     )}
                   >
                     <button
@@ -1198,7 +1198,7 @@ export default function ImportPage() {
                         className={cn(
                           'flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border transition-all duration-200',
                           isActive
-                            ? 'border-emerald-400 bg-emerald-500 shadow-[0_0_0_4px_rgba(16,185,129,0.16),0_10px_24px_rgba(16,185,129,0.28)]'
+                            ? 'scale-105 border-emerald-500 bg-emerald-500 shadow-[0_0_0_5px_rgba(16,185,129,0.18),0_12px_28px_rgba(16,185,129,0.30)]'
                             : 'border-gray-200 bg-gray-100'
                         )}
                       >
