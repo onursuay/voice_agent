@@ -381,7 +381,7 @@ const SOURCE_OPTIONS = [
 
 type SheetFile = { id: string; name: string; modifiedTime: string };
 type SheetTab = { id: number; title: string; index: number };
-const GOOGLE_SHEETS_STORAGE_KEY = 'voiceagent_google_spreadsheets';
+const GOOGLE_SHEETS_STORAGE_KEY = 'voiceagent_connected_google_spreadsheets';
 
 function mergeSheetFiles(existing: SheetFile[], incoming: SheetFile[]) {
   const map = new Map<string, SheetFile>();
@@ -447,6 +447,8 @@ export default function ImportPage() {
   const [googleConnected, setGoogleConnected] = useState(false);
   const [sheetsError, setSheetsError] = useState('');
   const [availableSpreadsheets, setAvailableSpreadsheets] = useState<SheetFile[]>([]);
+  const [connectedSpreadsheets, setConnectedSpreadsheets] = useState<SheetFile[]>([]);
+  const [spreadsheetToAddId, setSpreadsheetToAddId] = useState('');
   const [selectedSpreadsheet, setSelectedSpreadsheet] = useState<SheetFile | null>(null);
   const [spreadsheetTabs, setSpreadsheetTabs] = useState<SheetTab[]>([]);
   const [selectedTab, setSelectedTab] = useState<string>('');
@@ -454,7 +456,6 @@ export default function ImportPage() {
   const [loadingSheetData, setLoadingSheetData] = useState(false);
   const [sheetDataError, setSheetDataError] = useState('');
   const [sourceFileName, setSourceFileName] = useState('');
-  const [pickerLoading, setPickerLoading] = useState(false);
 
   // Recent imports
   const [recentImports, setRecentImports] = useState<ImportJob[]>([]);
@@ -519,12 +520,12 @@ export default function ImportPage() {
     setSourceFileName('');
   }, []);
 
-  const persistAvailableSpreadsheets = useCallback((files: SheetFile[]) => {
+  const persistConnectedSpreadsheets = useCallback((files: SheetFile[]) => {
     if (typeof window === 'undefined') return;
     window.localStorage.setItem(GOOGLE_SHEETS_STORAGE_KEY, JSON.stringify(files));
   }, []);
 
-  const hydrateStoredSpreadsheets = useCallback(() => {
+  const hydrateConnectedSpreadsheets = useCallback(() => {
     if (typeof window === 'undefined') return [];
     try {
       const raw = window.localStorage.getItem(GOOGLE_SHEETS_STORAGE_KEY);
@@ -549,82 +550,58 @@ export default function ImportPage() {
 
       const data = await res.json() as { files?: SheetFile[] };
       const files = data.files || [];
-      setAvailableSpreadsheets((prev) => {
-        const merged = mergeSheetFiles(prev, files);
-        persistAvailableSpreadsheets(merged);
-        return merged;
-      });
-      setSelectedSpreadsheet((prev) => {
-        if (!prev) return files.length === 1 ? files[0] : null;
-        return files.find((file) => file.id === prev.id) || prev;
-      });
+      setAvailableSpreadsheets(files);
+      setSelectedSpreadsheet((prev) => prev ? files.find((file) => file.id === prev.id) || prev : prev);
     } catch {
       setSheetsError(t('sheetsLoadError'));
     } finally {
       setLoadingSpreadsheets(false);
     }
-  }, [persistAvailableSpreadsheets, t]);
+  }, [t]);
 
   const handleSpreadsheetSelect = useCallback((spreadsheet: SheetFile | null) => {
     setSelectedSpreadsheet(spreadsheet);
     resetLoadedSheetData();
   }, [resetLoadedSheetData]);
 
+  const removeConnectedSpreadsheet = useCallback((spreadsheetId: string) => {
+    setConnectedSpreadsheets((prev) => {
+      const next = prev.filter((file) => file.id !== spreadsheetId);
+      persistConnectedSpreadsheets(next);
+      return next;
+    });
+
+    if (selectedSpreadsheet?.id === spreadsheetId) {
+      const remaining = connectedSpreadsheets.filter((file) => file.id !== spreadsheetId);
+      handleSpreadsheetSelect(remaining[0] || null);
+    }
+  }, [connectedSpreadsheets, handleSpreadsheetSelect, persistConnectedSpreadsheets, selectedSpreadsheet]);
+
+  const addConnectedSpreadsheet = useCallback((spreadsheetId: string) => {
+    const spreadsheet = availableSpreadsheets.find((file) => file.id === spreadsheetId);
+    if (!spreadsheet) return;
+
+    setConnectedSpreadsheets((prev) => {
+      const next = mergeSheetFiles(prev, [spreadsheet]);
+      persistConnectedSpreadsheets(next);
+      return next;
+    });
+
+    setSpreadsheetToAddId('');
+    handleSpreadsheetSelect(spreadsheet);
+  }, [availableSpreadsheets, handleSpreadsheetSelect, persistConnectedSpreadsheets]);
+
   useEffect(() => {
     if (!googleConnected) return;
-    const stored = hydrateStoredSpreadsheets();
+    const stored = hydrateConnectedSpreadsheets();
     if (stored.length > 0) {
-      setAvailableSpreadsheets(stored);
+      setConnectedSpreadsheets(stored);
+      if (!selectedSpreadsheet) {
+        setSelectedSpreadsheet(stored[0]);
+      }
     }
     loadAccessibleSpreadsheets();
-  }, [googleConnected, hydrateStoredSpreadsheets, loadAccessibleSpreadsheets]);
-
-
-  // ---- Open Google Picker ----
-  async function openGooglePicker() {
-    setPickerLoading(true);
-    setSheetsError('');
-    try {
-      const res = await fetch('/api/integrations/google/picker-token');
-      if (!res.ok) { setGoogleConnected(false); return; }
-      const { token } = await res.json();
-
-      await new Promise<void>((resolve) => {
-        if ((window as any).gapi?.picker) { resolve(); return; }
-        const script = document.createElement('script');
-        script.src = 'https://apis.google.com/js/api.js';
-        script.onload = () => (window as any).gapi.load('picker', resolve);
-        document.body.appendChild(script);
-      });
-
-      const apiKey = process.env.NEXT_PUBLIC_GOOGLE_API_KEY!;
-      const view = new (window as any).google.picker.DocsView((window as any).google.picker.ViewId.SPREADSHEETS)
-        .setIncludeFolders(false);
-
-      new (window as any).google.picker.PickerBuilder()
-        .addView(view)
-        .setOAuthToken(token)
-        .setDeveloperKey(apiKey)
-        .setCallback((data: any) => {
-          if (data.action === (window as any).google.picker.Action.PICKED) {
-            const doc = data.docs[0];
-            const pickedFile = { id: doc.id, name: doc.name, modifiedTime: new Date().toISOString() };
-            setAvailableSpreadsheets((prev) => {
-              const merged = mergeSheetFiles(prev, [pickedFile]);
-              persistAvailableSpreadsheets(merged);
-              return merged;
-            });
-            handleSpreadsheetSelect(pickedFile);
-          }
-        })
-        .build()
-        .setVisible(true);
-    } catch {
-      setSheetsError(t('sheetsLoadError'));
-    } finally {
-      setPickerLoading(false);
-    }
-  }
+  }, [googleConnected, hydrateConnectedSpreadsheets, loadAccessibleSpreadsheets, selectedSpreadsheet]);
 
   // ---- Fetch sheet tabs when spreadsheet selected ----
   useEffect(() => {
@@ -1005,13 +982,14 @@ export default function ImportPage() {
           <div className="flex flex-col gap-3 sm:flex-row sm:items-end">
             <div className="min-w-0 flex-1">
               <Select
-                value={selectedSpreadsheet?.id || ''}
+                value={spreadsheetToAddId}
                 onChange={(e) => {
-                  const spreadsheet = availableSpreadsheets.find((file) => file.id === e.target.value) || null;
-                  handleSpreadsheetSelect(spreadsheet);
+                  const value = e.target.value;
+                  setSpreadsheetToAddId(value);
+                  addConnectedSpreadsheet(value);
                 }}
                 disabled={loadingSpreadsheets || availableSpreadsheets.length === 0}
-                label={t('googleSheets')}
+                label={t('sheetsAddFile')}
                 placeholder={t('sheetsSelectFile')}
                 options={availableSpreadsheets.map((file) => ({
                   value: file.id,
@@ -1030,15 +1008,6 @@ export default function ImportPage() {
                 <RefreshCw className={cn('h-4 w-4', loadingSpreadsheets && 'animate-spin')} />
                 {t('sheetsRefresh')}
               </button>
-              <button
-                type="button"
-                onClick={openGooglePicker}
-                disabled={pickerLoading}
-                className="inline-flex items-center justify-center gap-2 rounded-lg border border-green-200 bg-green-50 px-3 py-2.5 text-sm font-medium text-green-700 transition-colors hover:bg-green-100 disabled:cursor-not-allowed disabled:opacity-60"
-              >
-                {pickerLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Link2 className="h-4 w-4" />}
-                {t('sheetsBrowseDrive')}
-              </button>
             </div>
           </div>
 
@@ -1047,9 +1016,60 @@ export default function ImportPage() {
             <span>
               {availableSpreadsheets.length > 0
                 ? t('sheetsFoundCount', { count: availableSpreadsheets.length })
-                : t('sheetsPickerHint')}
+                : t('sheetsNotFound')}
             </span>
           </div>
+        </div>
+
+        <div className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
+          <div className="mb-3 flex items-center justify-between gap-3">
+            <div>
+              <p className="text-sm font-semibold text-gray-800">{t('sheetsConnectedList')}</p>
+              <p className="text-xs text-gray-500">{t('sheetsConnectedListDesc')}</p>
+            </div>
+          </div>
+
+          {connectedSpreadsheets.length === 0 ? (
+            <div className="rounded-lg border border-dashed border-gray-200 bg-gray-50 px-4 py-5 text-sm text-gray-500">
+              {t('sheetsNoConnectedFiles')}
+            </div>
+          ) : (
+            <div className="space-y-2">
+              {connectedSpreadsheets.map((file) => {
+                const isActive = selectedSpreadsheet?.id === file.id;
+                return (
+                  <div
+                    key={file.id}
+                    className={cn(
+                      'flex items-center gap-3 rounded-lg border px-3 py-2 transition-colors',
+                      isActive ? 'border-emerald-300 bg-emerald-50' : 'border-gray-200 bg-white hover:border-gray-300'
+                    )}
+                  >
+                    <button
+                      type="button"
+                      onClick={() => handleSpreadsheetSelect(file)}
+                      className="flex min-w-0 flex-1 items-center gap-3 text-left"
+                    >
+                      <div className={cn('flex h-8 w-8 shrink-0 items-center justify-center rounded-lg', isActive ? 'bg-emerald-100' : 'bg-gray-100')}>
+                        <FileSpreadsheet className={cn('h-4 w-4', isActive ? 'text-emerald-600' : 'text-gray-500')} />
+                      </div>
+                      <div className="min-w-0">
+                        <p className={cn('truncate text-sm font-medium', isActive ? 'text-emerald-800' : 'text-gray-700')}>{file.name}</p>
+                      </div>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => removeConnectedSpreadsheet(file.id)}
+                      className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-md text-gray-400 transition-colors hover:bg-red-50 hover:text-red-500"
+                      aria-label={t('sheetsRemoveFile')}
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </button>
+                  </div>
+                );
+              })}
+            </div>
+          )}
         </div>
 
         {selectedSpreadsheet && spreadsheetTabs.length > 0 && (
@@ -1115,9 +1135,9 @@ export default function ImportPage() {
               await fetch('/api/integrations/google/disconnect', { method: 'DELETE' });
               setGoogleConnected(false);
               setAvailableSpreadsheets([]);
-              if (typeof window !== 'undefined') {
-                window.localStorage.removeItem(GOOGLE_SHEETS_STORAGE_KEY);
-              }
+              setConnectedSpreadsheets([]);
+              setSpreadsheetToAddId('');
+              if (typeof window !== 'undefined') window.localStorage.removeItem(GOOGLE_SHEETS_STORAGE_KEY);
               setSelectedSpreadsheet(null);
               resetLoadedSheetData();
             }}

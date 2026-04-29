@@ -3,10 +3,7 @@ import { createServerSupabaseClient } from '@/lib/supabase/server';
 
 /**
  * GET /api/integrations/google/spreadsheets
- * Returns Google Sheets files accessible with the current Google token.
- *
- * Note: with the drive.file scope, Google only returns spreadsheets that the
- * app has been granted access to, typically via Google Picker.
+ * Returns spreadsheet files visible to the connected Google account.
  */
 export async function GET(request: NextRequest) {
   const supabase = await createServerSupabaseClient();
