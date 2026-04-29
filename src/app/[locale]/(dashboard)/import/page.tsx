@@ -381,6 +381,20 @@ const SOURCE_OPTIONS = [
 
 type SheetFile = { id: string; name: string; modifiedTime: string };
 type SheetTab = { id: number; title: string; index: number };
+const GOOGLE_SHEETS_STORAGE_KEY = 'voiceagent_google_spreadsheets';
+
+function mergeSheetFiles(existing: SheetFile[], incoming: SheetFile[]) {
+  const map = new Map<string, SheetFile>();
+  [...incoming, ...existing].forEach((file) => {
+    map.set(file.id, file);
+  });
+
+  return Array.from(map.values()).sort((a, b) => {
+    const aTime = a.modifiedTime ? Date.parse(a.modifiedTime) : 0;
+    const bTime = b.modifiedTime ? Date.parse(b.modifiedTime) : 0;
+    return bTime - aTime;
+  });
+}
 
 export default function ImportPage() {
   const t = useTranslations('import');
@@ -505,6 +519,23 @@ export default function ImportPage() {
     setSourceFileName('');
   }, []);
 
+  const persistAvailableSpreadsheets = useCallback((files: SheetFile[]) => {
+    if (typeof window === 'undefined') return;
+    window.localStorage.setItem(GOOGLE_SHEETS_STORAGE_KEY, JSON.stringify(files));
+  }, []);
+
+  const hydrateStoredSpreadsheets = useCallback(() => {
+    if (typeof window === 'undefined') return [];
+    try {
+      const raw = window.localStorage.getItem(GOOGLE_SHEETS_STORAGE_KEY);
+      if (!raw) return [];
+      const parsed = JSON.parse(raw) as SheetFile[];
+      return Array.isArray(parsed) ? parsed : [];
+    } catch {
+      return [];
+    }
+  }, []);
+
   const loadAccessibleSpreadsheets = useCallback(async () => {
     setLoadingSpreadsheets(true);
     setSheetsError('');
@@ -518,7 +549,11 @@ export default function ImportPage() {
 
       const data = await res.json() as { files?: SheetFile[] };
       const files = data.files || [];
-      setAvailableSpreadsheets(files);
+      setAvailableSpreadsheets((prev) => {
+        const merged = mergeSheetFiles(prev, files);
+        persistAvailableSpreadsheets(merged);
+        return merged;
+      });
       setSelectedSpreadsheet((prev) => {
         if (!prev) return files.length === 1 ? files[0] : null;
         return files.find((file) => file.id === prev.id) || prev;
@@ -528,7 +563,7 @@ export default function ImportPage() {
     } finally {
       setLoadingSpreadsheets(false);
     }
-  }, [t]);
+  }, [persistAvailableSpreadsheets, t]);
 
   const handleSpreadsheetSelect = useCallback((spreadsheet: SheetFile | null) => {
     setSelectedSpreadsheet(spreadsheet);
@@ -537,8 +572,12 @@ export default function ImportPage() {
 
   useEffect(() => {
     if (!googleConnected) return;
+    const stored = hydrateStoredSpreadsheets();
+    if (stored.length > 0) {
+      setAvailableSpreadsheets(stored);
+    }
     loadAccessibleSpreadsheets();
-  }, [googleConnected, loadAccessibleSpreadsheets]);
+  }, [googleConnected, hydrateStoredSpreadsheets, loadAccessibleSpreadsheets]);
 
 
   // ---- Open Google Picker ----
@@ -571,8 +610,9 @@ export default function ImportPage() {
             const doc = data.docs[0];
             const pickedFile = { id: doc.id, name: doc.name, modifiedTime: new Date().toISOString() };
             setAvailableSpreadsheets((prev) => {
-              const next = prev.filter((file) => file.id !== pickedFile.id);
-              return [pickedFile, ...next];
+              const merged = mergeSheetFiles(prev, [pickedFile]);
+              persistAvailableSpreadsheets(merged);
+              return merged;
             });
             handleSpreadsheetSelect(pickedFile);
           }
@@ -1075,6 +1115,9 @@ export default function ImportPage() {
               await fetch('/api/integrations/google/disconnect', { method: 'DELETE' });
               setGoogleConnected(false);
               setAvailableSpreadsheets([]);
+              if (typeof window !== 'undefined') {
+                window.localStorage.removeItem(GOOGLE_SHEETS_STORAGE_KEY);
+              }
               setSelectedSpreadsheet(null);
               resetLoadedSheetData();
             }}
