@@ -197,7 +197,7 @@ function FancySelect({
               : 'pointer-events-none -translate-y-2 scale-[0.98] opacity-0'
           )}
         >
-          <div className="max-h-72 overflow-y-auto p-2">
+          <div className="max-h-72 overflow-y-auto p-1.5">
             {options.length === 0 ? (
               <div className="px-3 py-8 text-center text-sm text-gray-400">
                 {placeholder}
@@ -214,21 +214,21 @@ function FancySelect({
                       setOpen(false);
                     }}
                     className={cn(
-                      'flex w-full items-center gap-3 rounded-xl px-3 py-3 text-left text-sm transition-all duration-150',
+                      'flex w-full items-center gap-3 rounded-xl px-3 py-2 text-left text-sm transition-all duration-150',
                       isSelected
-                        ? 'bg-emerald-50 text-emerald-700 shadow-sm'
+                        ? 'bg-emerald-50 text-emerald-800 shadow-sm'
                         : 'text-gray-700 hover:bg-gradient-to-r hover:from-emerald-50 hover:to-transparent hover:text-gray-900'
                     )}
                   >
                     <div
                       className={cn(
-                        'flex h-8 w-8 shrink-0 items-center justify-center rounded-full border transition-colors',
+                        'flex h-8 w-8 shrink-0 items-center justify-center rounded-full border transition-all duration-200',
                         isSelected
-                          ? 'border-emerald-200 bg-emerald-100 text-emerald-600'
-                          : 'border-gray-200 bg-gray-50 text-gray-300'
+                          ? 'border-emerald-400 bg-emerald-500 text-white shadow-[0_0_0_4px_rgba(16,185,129,0.16),0_10px_24px_rgba(16,185,129,0.28)]'
+                          : 'border-gray-200 bg-gray-50 text-transparent'
                       )}
                     >
-                      <Check className="h-4 w-4" />
+                      <Check className={cn('h-4 w-4 transition-opacity duration-150', isSelected ? 'opacity-100' : 'opacity-0')} />
                     </div>
                     <span className="truncate">{option.label}</span>
                   </button>
