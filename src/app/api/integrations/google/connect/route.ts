@@ -39,10 +39,7 @@ export async function GET(request: NextRequest) {
   oauthUrl.searchParams.set('client_id', clientId);
   oauthUrl.searchParams.set('redirect_uri', redirectUri);
   oauthUrl.searchParams.set('response_type', 'code');
-  oauthUrl.searchParams.set('scope', [
-    'https://www.googleapis.com/auth/spreadsheets.readonly',
-    'https://www.googleapis.com/auth/drive.file',
-  ].join(' '));
+  oauthUrl.searchParams.set('scope', 'https://www.googleapis.com/auth/drive.file');
   oauthUrl.searchParams.set('access_type', 'offline');
   oauthUrl.searchParams.set('prompt', 'consent select_account');
   oauthUrl.searchParams.set('state', state);
