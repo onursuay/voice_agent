@@ -22,9 +22,10 @@ import {
   Table2,
   Link2,
   RefreshCw,
+  ChevronDown,
+  Check,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Select } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
 import { Spinner } from '@/components/ui/loading';
 import { cn, formatRelativeTime } from '@/lib/utils';
@@ -92,6 +93,152 @@ function StepIndicator({ current }: { current: number }) {
         })}
       </ol>
     </nav>
+  );
+}
+
+type FancySelectOption = {
+  value: string;
+  label: string;
+};
+
+function FancySelect({
+  label,
+  placeholder,
+  value,
+  options,
+  disabled,
+  onChange,
+}: {
+  label?: string;
+  placeholder: string;
+  value: string;
+  options: FancySelectOption[];
+  disabled?: boolean;
+  onChange: (value: string) => void;
+}) {
+  const [open, setOpen] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    function handleOutsideClick(event: MouseEvent) {
+      if (!containerRef.current?.contains(event.target as Node)) {
+        setOpen(false);
+      }
+    }
+
+    function handleEscape(event: KeyboardEvent) {
+      if (event.key === 'Escape') setOpen(false);
+    }
+
+    document.addEventListener('mousedown', handleOutsideClick);
+    document.addEventListener('keydown', handleEscape);
+    return () => {
+      document.removeEventListener('mousedown', handleOutsideClick);
+      document.removeEventListener('keydown', handleEscape);
+    };
+  }, []);
+
+  const selectedOption = options.find((option) => option.value === value);
+
+  return (
+    <div ref={containerRef} className="w-full">
+      {label && (
+        <label className="mb-1.5 block text-sm font-medium text-gray-700">
+          {label}
+        </label>
+      )}
+
+      <div className="relative">
+        <button
+          type="button"
+          disabled={disabled}
+          onClick={() => setOpen((prev) => !prev)}
+          className={cn(
+            'group flex w-full items-center justify-between gap-3 rounded-2xl border px-4 py-3 text-left shadow-[0_8px_30px_rgba(16,24,40,0.06)] transition-all duration-200',
+            'bg-[linear-gradient(180deg,rgba(255,255,255,0.98),rgba(248,250,252,0.94))]',
+            'focus:outline-none focus:ring-4 focus:ring-emerald-100',
+            disabled
+              ? 'cursor-not-allowed border-gray-200 bg-gray-50 text-gray-400 opacity-70 shadow-none'
+              : open
+                ? 'border-emerald-300 ring-4 ring-emerald-100'
+                : 'border-gray-200 hover:-translate-y-0.5 hover:border-emerald-200 hover:shadow-[0_16px_40px_rgba(16,24,40,0.12)]'
+          )}
+        >
+          <div className="min-w-0">
+            <div
+              className={cn(
+                'truncate text-sm transition-colors',
+                selectedOption ? 'font-medium text-gray-800' : 'text-gray-400'
+              )}
+            >
+              {selectedOption?.label || placeholder}
+            </div>
+          </div>
+
+          <div
+            className={cn(
+              'flex h-8 w-8 shrink-0 items-center justify-center rounded-full border transition-all duration-200',
+              disabled
+                ? 'border-gray-200 bg-gray-100 text-gray-300'
+                : open
+                  ? 'border-emerald-200 bg-emerald-50 text-emerald-600'
+                  : 'border-gray-200 bg-white text-gray-400 group-hover:border-emerald-200 group-hover:text-emerald-500'
+            )}
+          >
+            <ChevronDown className={cn('h-4 w-4 transition-transform duration-200', open && 'rotate-180')} />
+          </div>
+        </button>
+
+        <div
+          className={cn(
+            'absolute left-0 right-0 top-[calc(100%+10px)] z-50 origin-top overflow-hidden rounded-2xl border border-emerald-100/80 bg-white/95 backdrop-blur-xl shadow-[0_24px_80px_rgba(16,24,40,0.18)] transition-all duration-200',
+            open && !disabled
+              ? 'pointer-events-auto translate-y-0 scale-100 opacity-100'
+              : 'pointer-events-none -translate-y-2 scale-[0.98] opacity-0'
+          )}
+        >
+          <div className="max-h-72 overflow-y-auto p-2">
+            {options.length === 0 ? (
+              <div className="px-3 py-8 text-center text-sm text-gray-400">
+                {placeholder}
+              </div>
+            ) : (
+              options.map((option) => {
+                const isSelected = option.value === value;
+                return (
+                  <button
+                    key={option.value}
+                    type="button"
+                    onClick={() => {
+                      onChange(option.value);
+                      setOpen(false);
+                    }}
+                    className={cn(
+                      'flex w-full items-center gap-3 rounded-xl px-3 py-3 text-left text-sm transition-all duration-150',
+                      isSelected
+                        ? 'bg-emerald-50 text-emerald-700 shadow-sm'
+                        : 'text-gray-700 hover:bg-gradient-to-r hover:from-emerald-50 hover:to-transparent hover:text-gray-900'
+                    )}
+                  >
+                    <div
+                      className={cn(
+                        'flex h-8 w-8 shrink-0 items-center justify-center rounded-full border transition-colors',
+                        isSelected
+                          ? 'border-emerald-200 bg-emerald-100 text-emerald-600'
+                          : 'border-gray-200 bg-gray-50 text-gray-300'
+                      )}
+                    >
+                      <Check className="h-4 w-4" />
+                    </div>
+                    <span className="truncate">{option.label}</span>
+                  </button>
+                );
+              })
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
   );
 }
 
@@ -979,10 +1126,9 @@ export default function ImportPage() {
         <div className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
           <div className="flex flex-col gap-3 sm:flex-row sm:items-end">
             <div className="min-w-0 flex-1">
-              <Select
+              <FancySelect
                 value={spreadsheetToAddId}
-                onChange={(e) => {
-                  const value = e.target.value;
+                onChange={(value) => {
                   setSpreadsheetToAddId(value);
                   addConnectedSpreadsheet(value);
                 }}
@@ -1071,9 +1217,9 @@ export default function ImportPage() {
         </div>
 
         {selectedSpreadsheet && spreadsheetTabs.length > 0 && (
-          <Select
+          <FancySelect
             value={selectedTab}
-            onChange={(e) => setSelectedTab(e.target.value)}
+            onChange={setSelectedTab}
             placeholder={t('sheetsSelectTab')}
             options={spreadsheetTabs.map((tab) => ({
               value: tab.title,
