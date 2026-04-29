@@ -596,12 +596,10 @@ export default function ImportPage() {
     const stored = hydrateConnectedSpreadsheets();
     if (stored.length > 0) {
       setConnectedSpreadsheets(stored);
-      if (!selectedSpreadsheet) {
-        setSelectedSpreadsheet(stored[0]);
-      }
+      setSelectedSpreadsheet((prev) => prev || stored[0]);
     }
     loadAccessibleSpreadsheets();
-  }, [googleConnected, hydrateConnectedSpreadsheets, loadAccessibleSpreadsheets, selectedSpreadsheet]);
+  }, [googleConnected, hydrateConnectedSpreadsheets, loadAccessibleSpreadsheets]);
 
   // ---- Fetch sheet tabs when spreadsheet selected ----
   useEffect(() => {
