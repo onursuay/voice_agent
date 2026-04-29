@@ -154,7 +154,7 @@ function FancySelect({
           disabled={disabled}
           onClick={() => setOpen((prev) => !prev)}
           className={cn(
-            'group flex w-full items-center justify-between gap-3 rounded-2xl border px-4 py-3 text-left shadow-[0_8px_30px_rgba(16,24,40,0.06)] transition-all duration-200',
+            'group flex w-full items-center justify-between gap-3 rounded-2xl border px-4 py-2.5 text-left shadow-[0_8px_30px_rgba(16,24,40,0.06)] transition-all duration-200',
             'bg-[linear-gradient(180deg,rgba(255,255,255,0.98),rgba(248,250,252,0.94))]',
             'focus:outline-none focus:ring-4 focus:ring-emerald-100',
             disabled
@@ -191,13 +191,13 @@ function FancySelect({
 
         <div
           className={cn(
-            'absolute left-0 right-0 top-[calc(100%+10px)] z-50 origin-top overflow-hidden rounded-2xl border border-emerald-100/80 bg-white/95 backdrop-blur-xl shadow-[0_24px_80px_rgba(16,24,40,0.18)] transition-all duration-200',
+            'absolute left-0 right-0 top-[calc(100%+8px)] z-50 origin-top overflow-hidden rounded-2xl border border-emerald-100/80 bg-white/95 backdrop-blur-xl shadow-[0_24px_80px_rgba(16,24,40,0.18)] transition-all duration-200',
             open && !disabled
               ? 'pointer-events-auto translate-y-0 scale-100 opacity-100'
               : 'pointer-events-none -translate-y-2 scale-[0.98] opacity-0'
           )}
         >
-          <div className="max-h-72 overflow-y-auto p-1.5">
+          <div className="max-h-72 overflow-y-auto p-1">
             {options.length === 0 ? (
               <div className="px-3 py-8 text-center text-sm text-gray-400">
                 {placeholder}
@@ -214,9 +214,9 @@ function FancySelect({
                       setOpen(false);
                     }}
                     className={cn(
-                      'flex w-full items-center gap-3 rounded-xl px-3 py-2 text-left text-sm transition-all duration-150',
+                      'flex w-full items-center gap-3 rounded-xl px-2.5 py-1.5 text-left text-sm transition-all duration-150',
                       isSelected
-                        ? 'bg-emerald-50 text-emerald-800 shadow-sm'
+                        ? 'bg-emerald-50 text-emerald-900 shadow-sm'
                         : 'text-gray-700 hover:bg-gradient-to-r hover:from-emerald-50 hover:to-transparent hover:text-gray-900'
                     )}
                   >
@@ -224,13 +224,13 @@ function FancySelect({
                       className={cn(
                         'flex h-8 w-8 shrink-0 items-center justify-center rounded-full border transition-all duration-200',
                         isSelected
-                          ? 'border-emerald-400 bg-emerald-500 text-white shadow-[0_0_0_4px_rgba(16,185,129,0.16),0_10px_24px_rgba(16,185,129,0.28)]'
+                          ? 'border-emerald-500 bg-emerald-500 text-white shadow-[0_0_0_5px_rgba(16,185,129,0.22),0_14px_30px_rgba(16,185,129,0.34)]'
                           : 'border-gray-200 bg-gray-50 text-transparent'
                       )}
                     >
                       <Check className={cn('h-4 w-4 transition-opacity duration-150', isSelected ? 'opacity-100' : 'opacity-0')} />
                     </div>
-                    <span className="truncate">{option.label}</span>
+                    <span className={cn('truncate', isSelected && 'font-semibold')}>{option.label}</span>
                   </button>
                 );
               })
@@ -1123,8 +1123,8 @@ export default function ImportPage() {
           </div>
         )}
 
-        <div className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
-          <div className="flex flex-col gap-3 sm:flex-row sm:items-end">
+        <div className="rounded-xl border border-gray-200 bg-white p-3 shadow-sm">
+          <div className="flex flex-col gap-2 sm:flex-row sm:items-end">
             <div className="min-w-0 flex-1">
               <FancySelect
                 value={spreadsheetToAddId}
@@ -1155,7 +1155,7 @@ export default function ImportPage() {
             </div>
           </div>
 
-          <div className="mt-3 flex items-center gap-2 text-xs text-gray-500">
+          <div className="mt-2 flex items-center gap-2 text-xs text-gray-500">
             <div className="h-2 w-2 rounded-full bg-green-400" />
             <span>
               {availableSpreadsheets.length > 0
@@ -1194,8 +1194,15 @@ export default function ImportPage() {
                       onClick={() => handleSpreadsheetSelect(file)}
                       className="flex min-w-0 flex-1 items-center gap-3 text-left"
                     >
-                      <div className={cn('flex h-8 w-8 shrink-0 items-center justify-center rounded-lg', isActive ? 'bg-emerald-100' : 'bg-gray-100')}>
-                        <FileSpreadsheet className={cn('h-4 w-4', isActive ? 'text-emerald-600' : 'text-gray-500')} />
+                      <div
+                        className={cn(
+                          'flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border transition-all duration-200',
+                          isActive
+                            ? 'border-emerald-400 bg-emerald-500 shadow-[0_0_0_4px_rgba(16,185,129,0.16),0_10px_24px_rgba(16,185,129,0.28)]'
+                            : 'border-gray-200 bg-gray-100'
+                        )}
+                      >
+                        <FileSpreadsheet className={cn('h-4 w-4', isActive ? 'text-white' : 'text-gray-500')} />
                       </div>
                       <div className="min-w-0">
                         <p className={cn('truncate text-sm font-medium', isActive ? 'text-emerald-800' : 'text-gray-700')}>{file.name}</p>
