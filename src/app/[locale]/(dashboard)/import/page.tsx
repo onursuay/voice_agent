@@ -20,9 +20,8 @@ import {
   FileUp,
   ExternalLink,
   Table2,
-  ChevronDown,
-  Search,
   Link2,
+  RefreshCw,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Select } from '@/components/ui/select';
@@ -433,9 +432,11 @@ export default function ImportPage() {
   // Step 1 - Google Sheets
   const [googleConnected, setGoogleConnected] = useState(false);
   const [sheetsError, setSheetsError] = useState('');
+  const [availableSpreadsheets, setAvailableSpreadsheets] = useState<SheetFile[]>([]);
   const [selectedSpreadsheet, setSelectedSpreadsheet] = useState<SheetFile | null>(null);
   const [spreadsheetTabs, setSpreadsheetTabs] = useState<SheetTab[]>([]);
   const [selectedTab, setSelectedTab] = useState<string>('');
+  const [loadingSpreadsheets, setLoadingSpreadsheets] = useState(false);
   const [loadingSheetData, setLoadingSheetData] = useState(false);
   const [sheetDataError, setSheetDataError] = useState('');
   const [sourceFileName, setSourceFileName] = useState('');
@@ -456,9 +457,6 @@ export default function ImportPage() {
   const [dedupeUpdate, setDedupeUpdate] = useState(true);
   const [defaultStageId, setDefaultStageId] = useState('');
   const [defaultSource, setDefaultSource] = useState<string>('import');
-
-  // Google Sheets dropdown UI state
-  const [tabDropdownOpen, setTabDropdownOpen] = useState(false);
 
   // Step 4 - Processing & result
   const [importing, setImporting] = useState(false);
@@ -498,6 +496,50 @@ export default function ImportPage() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const resetLoadedSheetData = useCallback(() => {
+    setHeaders([]);
+    setRows([]);
+    setSelectedTab('');
+    setSpreadsheetTabs([]);
+    setSheetDataError('');
+    setSourceFileName('');
+  }, []);
+
+  const loadAccessibleSpreadsheets = useCallback(async () => {
+    setLoadingSpreadsheets(true);
+    setSheetsError('');
+    try {
+      const res = await fetch('/api/integrations/google/spreadsheets');
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        setSheetsError(data.error || t('sheetsLoadError'));
+        return;
+      }
+
+      const data = await res.json() as { files?: SheetFile[] };
+      const files = data.files || [];
+      setAvailableSpreadsheets(files);
+      setSelectedSpreadsheet((prev) => {
+        if (!prev) return files.length === 1 ? files[0] : null;
+        return files.find((file) => file.id === prev.id) || prev;
+      });
+    } catch {
+      setSheetsError(t('sheetsLoadError'));
+    } finally {
+      setLoadingSpreadsheets(false);
+    }
+  }, [t]);
+
+  const handleSpreadsheetSelect = useCallback((spreadsheet: SheetFile | null) => {
+    setSelectedSpreadsheet(spreadsheet);
+    resetLoadedSheetData();
+  }, [resetLoadedSheetData]);
+
+  useEffect(() => {
+    if (!googleConnected) return;
+    loadAccessibleSpreadsheets();
+  }, [googleConnected, loadAccessibleSpreadsheets]);
+
 
   // ---- Open Google Picker ----
   async function openGooglePicker() {
@@ -527,10 +569,12 @@ export default function ImportPage() {
         .setCallback((data: any) => {
           if (data.action === (window as any).google.picker.Action.PICKED) {
             const doc = data.docs[0];
-            setSelectedSpreadsheet({ id: doc.id, name: doc.name, modifiedTime: new Date().toISOString() });
-            setHeaders([]);
-            setRows([]);
-            setSelectedTab('');
+            const pickedFile = { id: doc.id, name: doc.name, modifiedTime: new Date().toISOString() };
+            setAvailableSpreadsheets((prev) => {
+              const next = prev.filter((file) => file.id !== pickedFile.id);
+              return [pickedFile, ...next];
+            });
+            handleSpreadsheetSelect(pickedFile);
           }
         })
         .build()
@@ -917,73 +961,67 @@ export default function ImportPage() {
           </div>
         )}
 
-        {/* Google Picker button */}
-        <div>
-          <button
-            onClick={openGooglePicker}
-            disabled={pickerLoading}
-            className="flex w-full items-center justify-between gap-3 rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm transition-all shadow-sm hover:border-green-300 disabled:opacity-60"
-          >
-            <div className="flex items-center gap-3 min-w-0">
-              <div className={cn('flex h-8 w-8 shrink-0 items-center justify-center rounded-lg', selectedSpreadsheet ? 'bg-green-100' : 'bg-gray-100')}>
-                {pickerLoading ? <Loader2 className="h-4 w-4 animate-spin text-gray-400" /> : <FileSpreadsheet className={cn('h-4 w-4', selectedSpreadsheet ? 'text-green-600' : 'text-gray-400')} />}
-              </div>
-              <div className="min-w-0 text-left">
-                {selectedSpreadsheet ? (
-                  <p className="font-semibold text-gray-800 truncate">{selectedSpreadsheet.name}</p>
-                ) : (
-                  <p className="text-gray-400">{t('sheetsSearchPlaceholder')}</p>
-                )}
-              </div>
+        <div className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-end">
+            <div className="min-w-0 flex-1">
+              <Select
+                value={selectedSpreadsheet?.id || ''}
+                onChange={(e) => {
+                  const spreadsheet = availableSpreadsheets.find((file) => file.id === e.target.value) || null;
+                  handleSpreadsheetSelect(spreadsheet);
+                }}
+                disabled={loadingSpreadsheets || availableSpreadsheets.length === 0}
+                label={t('googleSheets')}
+                placeholder={t('sheetsSelectFile')}
+                options={availableSpreadsheets.map((file) => ({
+                  value: file.id,
+                  label: file.name,
+                }))}
+              />
             </div>
-            {selectedSpreadsheet
-              ? <CheckCircle2 className="h-4 w-4 shrink-0 text-green-500" />
-              : <ExternalLink className="h-4 w-4 shrink-0 text-gray-400" />}
-          </button>
+
+            <div className="flex gap-2 sm:shrink-0">
+              <button
+                type="button"
+                onClick={loadAccessibleSpreadsheets}
+                disabled={loadingSpreadsheets}
+                className="inline-flex items-center justify-center gap-2 rounded-lg border border-gray-200 bg-white px-3 py-2.5 text-sm font-medium text-gray-600 transition-colors hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-60"
+              >
+                <RefreshCw className={cn('h-4 w-4', loadingSpreadsheets && 'animate-spin')} />
+                {t('sheetsRefresh')}
+              </button>
+              <button
+                type="button"
+                onClick={openGooglePicker}
+                disabled={pickerLoading}
+                className="inline-flex items-center justify-center gap-2 rounded-lg border border-green-200 bg-green-50 px-3 py-2.5 text-sm font-medium text-green-700 transition-colors hover:bg-green-100 disabled:cursor-not-allowed disabled:opacity-60"
+              >
+                {pickerLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Link2 className="h-4 w-4" />}
+                {t('sheetsBrowseDrive')}
+              </button>
+            </div>
+          </div>
+
+          <div className="mt-3 flex items-center gap-2 text-xs text-gray-500">
+            <div className="h-2 w-2 rounded-full bg-green-400" />
+            <span>
+              {availableSpreadsheets.length > 0
+                ? t('sheetsFoundCount', { count: availableSpreadsheets.length })
+                : t('sheetsPickerHint')}
+            </span>
+          </div>
         </div>
 
-        {/* Sheet tab dropdown */}
         {selectedSpreadsheet && spreadsheetTabs.length > 0 && (
-          <div className="relative">
-            <button
-              onClick={() => setTabDropdownOpen(prev => !prev)}
-              className={cn(
-                'flex w-full items-center justify-between gap-3 rounded-xl border bg-white px-4 py-3 text-sm transition-all shadow-sm',
-                tabDropdownOpen ? 'border-green-400 ring-2 ring-green-100' : 'border-gray-200 hover:border-green-300'
-              )}
-            >
-              <div className="flex items-center gap-3 min-w-0">
-                <div className={cn('flex h-8 w-8 shrink-0 items-center justify-center rounded-lg', selectedTab ? 'bg-green-100' : 'bg-gray-100')}>
-                  <Table2 className={cn('h-4 w-4', selectedTab ? 'text-green-600' : 'text-gray-400')} />
-                </div>
-                <span className={selectedTab ? 'font-semibold text-gray-800' : 'text-gray-400'}>
-                  {selectedTab || t('sheetsSelectTab')}
-                </span>
-              </div>
-              <ChevronDown className={cn('h-4 w-4 shrink-0 text-gray-400 transition-transform duration-200', tabDropdownOpen && 'rotate-180')} />
-            </button>
-
-            {tabDropdownOpen && (
-              <div className="absolute left-0 right-0 top-full z-50 mt-1.5 overflow-hidden rounded-xl border border-gray-200 bg-white shadow-lg">
-                {spreadsheetTabs.map((tab) => (
-                  <button
-                    key={tab.id}
-                    onClick={() => { setSelectedTab(tab.title); setTabDropdownOpen(false); }}
-                    className={cn(
-                      'flex w-full items-center gap-3 px-4 py-2.5 text-left text-sm transition-colors',
-                      selectedTab === tab.title
-                        ? 'bg-green-50 text-green-700 font-medium'
-                        : 'hover:bg-gray-50 text-gray-700'
-                    )}
-                  >
-                    <Table2 className={cn('h-4 w-4 shrink-0', selectedTab === tab.title ? 'text-green-500' : 'text-gray-400')} />
-                    {tab.title}
-                    {selectedTab === tab.title && <CheckCircle2 className="ml-auto h-4 w-4 text-green-500" />}
-                  </button>
-                ))}
-              </div>
-            )}
-          </div>
+          <Select
+            value={selectedTab}
+            onChange={(e) => setSelectedTab(e.target.value)}
+            placeholder={t('sheetsSelectTab')}
+            options={spreadsheetTabs.map((tab) => ({
+              value: tab.title,
+              label: tab.title,
+            }))}
+          />
         )}
 
         {/* Load Data / result */}
@@ -1036,11 +1074,9 @@ export default function ImportPage() {
             onClick={async () => {
               await fetch('/api/integrations/google/disconnect', { method: 'DELETE' });
               setGoogleConnected(false);
+              setAvailableSpreadsheets([]);
               setSelectedSpreadsheet(null);
-              setSpreadsheetTabs([]);
-              setSelectedTab('');
-              setHeaders([]);
-              setRows([]);
+              resetLoadedSheetData();
             }}
             className="rounded-lg border border-red-200 bg-white px-3 py-1.5 text-xs font-medium text-red-500 hover:bg-red-50 transition-colors"
           >
