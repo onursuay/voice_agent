@@ -30,13 +30,44 @@ interface SubscribedApp {
 
 /**
  * Resolve the ad account id tied to a page so we can build a per-page
- * Custom Audience Terms URL. A page belongs to a business that owns/uses
- * ad accounts; in typical SMB setups it maps to a single ad account.
- * Returns the numeric account_id (no `act_` prefix) or null if none found.
+ * Custom Audience Terms URL. Returns the numeric account_id (no `act_`
+ * prefix) or null if none found.
+ *
+ * The TOS link MUST target the same ad account the audience sync writes to
+ * (metaAudienceSync derives it from the lead's meta_ad_id). So we resolve it
+ * the same way: from this page's actual imported leads. Falling back to the
+ * page's business → first ad account is unreliable for agency Business
+ * Managers (one BM owns many unrelated client ad accounts), which would point
+ * the user at the wrong account's terms.
  */
-async function resolveAdAccountId(pageId: string, userToken: string): Promise<string | null> {
+async function resolveAdAccountId(
+  pageId: string,
+  userToken: string,
+  admin: SupabaseClient,
+  organizationId: string,
+): Promise<string | null> {
   const base = `https://graph.facebook.com/${META_GRAPH_VERSION}`;
-  // 1) Page's owning business → its ad accounts
+
+  // 0) Preferred: the ad account behind this page's real leads — exactly the
+  //    account the sync will hit, so the accepted terms actually apply.
+  try {
+    const { data: leadRows } = await admin
+      .from('leads')
+      .select('meta_ad_id')
+      .eq('organization_id', organizationId)
+      .eq('meta_page_id', pageId)
+      .not('meta_ad_id', 'is', null)
+      .order('created_at', { ascending: false })
+      .limit(5);
+    for (const lr of leadRows ?? []) {
+      const adId = (lr as { meta_ad_id?: string | null }).meta_ad_id;
+      if (!adId) continue;
+      const acc = await accountIdFromAdId(adId, userToken);
+      if (acc) return acc;
+    }
+  } catch { /* ignore, fall through to business heuristic */ }
+
+  // 1) Page's owning business → its ad accounts (heuristic fallback)
   try {
     const r = await fetch(`${base}/${pageId}?fields=business&access_token=${encodeURIComponent(userToken)}`, { cache: 'no-store' });
     if (r.ok) {
