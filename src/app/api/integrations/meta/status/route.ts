@@ -186,26 +186,28 @@ export async function GET() {
       const pageToken = config.access_token as string | null;
       const userToken = config.user_access_token as string | null;
 
-      // Resolve ad account once and cache it on the config. `undefined` means
-      // "not yet resolved"; `null` means "resolved, none found" (don't retry).
-      let adAccountId = config.ad_account_id as string | null | undefined;
-      const needsResolve = adAccountId === undefined && !!pageId && !!userToken && !isExpired;
+      // Ad account is cached on the config and re-validated against the page's
+      // latest lead each load, so a stale/wrong cache self-heals. `srcAdId`
+      // records which lead ad it was derived from to keep that check cheap.
+      const cachedAccountId = config.ad_account_id as string | null | undefined;
+      const cachedSrcAdId = config.ad_account_src_ad_id as string | null | undefined;
+      const canResolve = !!pageId && !!userToken && !isExpired;
 
-      const [webhookSubscribed, resolvedAdAccount] = await Promise.all([
+      const [webhookSubscribed, resolved] = await Promise.all([
         pageId && pageToken && !isExpired
           ? checkLiveWebhookSubscription(pageId, pageToken)
           : Promise.resolve(false),
-        needsResolve
-          ? resolveAdAccountId(pageId as string, userToken as string, admin, membership.organization_id as string)
-          : Promise.resolve(adAccountId ?? null),
+        canResolve
+          ? resolveAdAccountId(pageId as string, userToken as string, admin, membership.organization_id as string, cachedAccountId, cachedSrcAdId)
+          : Promise.resolve({ accountId: cachedAccountId ?? null, srcAdId: cachedSrcAdId ?? null, changed: false } as ResolvedAccount),
       ]);
 
-      if (needsResolve) {
-        adAccountId = resolvedAdAccount;
-        // Best-effort write-back so future loads skip the Graph calls.
+      const adAccountId = resolved.accountId;
+      if (resolved.changed) {
+        // Best-effort write-back so future loads stay cheap.
         admin
           .from('integration_settings')
-          .update({ config: { ...config, ad_account_id: adAccountId } })
+          .update({ config: { ...config, ad_account_id: adAccountId, ad_account_src_ad_id: resolved.srcAdId } })
           .eq('id', row.id as string)
           .then(() => {}, () => {});
       }
