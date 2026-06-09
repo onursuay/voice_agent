@@ -237,6 +237,24 @@ export default function IntegrationsPage() {
                           {resubscribing === conn.id ? <RefreshCw className="h-3 w-3 animate-spin" /> : t('integrations.metaRefresh')}
                         </button>
                       )}
+
+                      {/* Per-page Custom Audience Terms — opens this page's ad account TOS */}
+                      <div className="relative shrink-0 group/tos">
+                        <a
+                          href={conn.tos_url || 'https://business.facebook.com/ads/manage/customaudiences/'}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex items-center gap-1 rounded-full border border-amber-200 bg-amber-50 px-2 py-0.5 text-[10px] font-medium text-amber-700 whitespace-nowrap transition-colors hover:bg-amber-100 hover:border-amber-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-300 active:scale-[0.97]"
+                        >
+                          <ShieldCheck className="h-3 w-3 shrink-0" />
+                          {t('integrations.metaTosPill')}
+                        </a>
+                        {/* Hover tooltip with the automation explanation */}
+                        <div className="pointer-events-none absolute right-0 top-full z-20 mt-2 w-64 rounded-lg border border-gray-200 bg-white p-3 text-[11px] leading-relaxed text-gray-600 opacity-0 shadow-lg shadow-gray-200/60 transition-opacity duration-150 group-hover/tos:opacity-100">
+                          {t('integrations.metaTosTooltip')}
+                        </div>
+                      </div>
+
                       <button
                         onClick={() => disconnectPage(conn.id)}
                         disabled={disconnecting === conn.id}
