@@ -35,13 +35,6 @@ async function getLongLivedToken(shortToken: string): Promise<string | null> {
   return data.access_token || null;
 }
 
-export interface FacebookPage {
-  id: string;
-  name: string;
-  access_token: string;
-  source?: 'direct' | 'business_manager';
-}
-
 async function fetchPaginatedPages(startUrl: string): Promise<FacebookPage[]> {
   const results: FacebookPage[] = [];
   let nextUrl: string | null = startUrl;
