@@ -372,6 +372,7 @@
       "metaCrmSyncTos": "Accept Custom Audience Terms",
       "metaTosPill": "Custom Audience Terms",
       "metaTosTooltip": "Customer info from your Meta ads flows into the \"Lead\" stages in the system. Based on the user's \"Stage\" choice, each lead is added to Meta custom audiences (positive/negative). This whole process runs automatically and, for it to work, you must accept the Custom Audience Terms on your ad account.",
+      "metaTosPerPageHint": "Use the \"Custom Audience Terms\" badge next to each page to accept the terms for its ad account.",
       "metaConnectAccountPrompt": "Connect Your Meta Account",
       "metaConnectError": "Connection error: ",
       "tokenExpired": "Token expired",
