@@ -1,30 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createHmac } from 'crypto';
 import { createAdminSupabaseClient } from '@/lib/supabase/admin';
+import { verifyMetaState } from '@/lib/meta/oauth-state';
 
 const META_GRAPH_BASE = 'https://graph.facebook.com/v23.0';
-
-function verifyState(state: string): string | null {
-  try {
-    const decoded = Buffer.from(state, 'base64url').toString('utf-8');
-    const parts = decoded.split(':');
-    if (parts.length !== 3) return null;
-    const [orgId, timestamp, receivedSig] = parts;
-
-    if (Date.now() - parseInt(timestamp, 10) > 10 * 60 * 1000) return null;
-
-    const payload = `${orgId}:${timestamp}`;
-    const expectedSig = createHmac('sha256', process.env.META_APP_SECRET || '')
-      .update(payload)
-      .digest('hex')
-      .slice(0, 16);
-
-    if (expectedSig !== receivedSig) return null;
-    return orgId;
-  } catch {
-    return null;
-  }
-}
 
 async function exchangeCodeForToken(code: string, redirectUri: string): Promise<string | null> {
   const url = new URL(`${META_GRAPH_BASE}/oauth/access_token`);
