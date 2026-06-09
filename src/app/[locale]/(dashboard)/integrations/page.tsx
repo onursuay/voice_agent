@@ -293,15 +293,11 @@ export default function IntegrationsPage() {
                 <div className="min-w-0">
                   <p className="text-xs font-semibold text-amber-800">{t('integrations.metaCrmSyncTitle')}</p>
                   <p className="mt-0.5 text-[11px] leading-relaxed text-amber-700/90">{t('integrations.metaCrmSyncDesc')}</p>
-                  <a
-                    href="https://business.facebook.com/ads/manage/customaudiences/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="mt-1.5 inline-flex items-center gap-1 text-[11px] font-semibold text-amber-700 hover:text-amber-900 transition-colors"
-                  >
-                    {t('integrations.metaCrmSyncTos')}
-                    <ExternalLink className="h-3 w-3" />
-                  </a>
+                  {hasConnections && (
+                    <p className="mt-1.5 text-[11px] font-medium text-amber-700/80">
+                      {t('integrations.metaTosPerPageHint')}
+                    </p>
+                  )}
                 </div>
               </div>
             </>
