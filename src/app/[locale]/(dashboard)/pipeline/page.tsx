@@ -250,6 +250,37 @@ export default function PipelinePage() {
     return () => { cancelled = true; };
   }, [setLeads, setStages]);
 
+  // Load connected Meta pages for the account dropdown; restore saved selection.
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      try {
+        const res = await fetch('/api/integrations/meta/pages');
+        if (!res.ok) return;
+        const data = await res.json() as { pages?: { page_id: string; page_name: string | null }[] };
+        const pages = data.pages || [];
+        if (cancelled) return;
+        setConnectedPages(pages);
+        const stored = typeof window !== 'undefined' ? window.localStorage.getItem('leads.pageFilter') : null;
+        if (stored && pages.some((p) => p.page_id === stored)) setPageFilter(stored);
+      } catch { /* ignore */ }
+    })();
+    return () => { cancelled = true; };
+  }, [setConnectedPages, setPageFilter]);
+
+  // Persist the active page selection across reloads (shared with /leads).
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    if (pageFilter) window.localStorage.setItem('leads.pageFilter', pageFilter);
+    else window.localStorage.removeItem('leads.pageFilter');
+  }, [pageFilter]);
+
+  // Visible leads scoped to the selected account/page (null = all).
+  const visibleLeads = useMemo(
+    () => (pageFilter ? leads.filter((l) => l.meta_page_id === pageFilter) : leads),
+    [leads, pageFilter]
+  );
+
   // Sorted stages
   const sortedStages = useMemo(
     () => [...stages].sort((a, b) => a.position - b.position),
@@ -264,7 +295,7 @@ export default function PipelinePage() {
     }
     // Also create an "unassigned" bucket
     map['__no_stage__'] = [];
-    for (const lead of leads) {
+    for (const lead of visibleLeads) {
       const key = lead.stage_id || '__no_stage__';
       if (map[key]) {
         map[key].push(lead);
@@ -273,19 +304,19 @@ export default function PipelinePage() {
       }
     }
     return map;
-  }, [leads, sortedStages]);
+  }, [visibleLeads, sortedStages]);
 
   // Stats
   const stats = useMemo(() => {
-    const total = leads.length;
-    const wonCount = leads.filter((l) => {
+    const total = visibleLeads.length;
+    const wonCount = visibleLeads.filter((l) => {
       const stage = stages.find((s) => s.id === l.stage_id);
       return stage?.is_won;
     }).length;
     const conversionRate = total > 0 ? ((wonCount / total) * 100).toFixed(1) : '0';
-    const avgScore = total > 0 ? Math.round(leads.reduce((sum, l) => sum + l.score, 0) / total) : 0;
+    const avgScore = total > 0 ? Math.round(visibleLeads.reduce((sum, l) => sum + l.score, 0) / total) : 0;
     return { total, wonCount, conversionRate, avgScore };
-  }, [leads, stages]);
+  }, [visibleLeads, stages]);
 
   // DnD sensors
   const sensors = useSensors(
