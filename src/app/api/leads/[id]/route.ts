@@ -73,7 +73,8 @@ export async function PATCH(request: NextRequest, context: RouteContext) {
       .single();
     if (error) return NextResponse.json({ error: error.message }, { status: 500 });
 
-    // If stage changed, create stage_history and activity
+    // If stage changed, create stage_history + activity, then sync to Meta.
+    let metaSync: AudienceSyncResult | undefined;
     if (body.stage_id && body.stage_id !== currentLead.stage_id) {
       await supabase.from('stage_history').insert({
         lead_id: id,
@@ -95,6 +96,30 @@ export async function PATCH(request: NextRequest, context: RouteContext) {
           to_stage_id: body.stage_id,
         },
       });
+
+      // Meta Custom Audience sync (best-effort, time-bounded, never blocks the save).
+      try {
+        const { data: allStages } = await supabase
+          .from('crm_stages')
+          .select('id, name, position, is_won, is_lost')
+          .eq('organization_id', orgId);
+        const newStage = (updated as { stage?: SyncStage }).stage;
+        if (allStages && newStage) {
+          metaSync = await Promise.race<AudienceSyncResult>([
+            syncLeadStageToMeta({
+              organizationId: orgId,
+              lead: updated as unknown as SyncLead,
+              stage: newStage,
+              allStages: allStages as SyncStage[],
+            }).catch((e) => ({ ok: false, reason: 'sync_failed', error: e instanceof Error ? e.message : String(e) })),
+            new Promise<AudienceSyncResult>((resolve) =>
+              setTimeout(() => resolve({ ok: false, reason: 'sync_failed', error: 'sync_timeout' }), 9000)
+            ),
+          ]);
+        }
+      } catch (e) {
+        console.error('[meta audience sync] PATCH error:', e);
+      }
     }
 
     // If assigned_to changed, create activity
