@@ -815,9 +815,9 @@ export function LeadToolbar() {
 
   return (
     <>
-      <div className="flex flex-wrap items-center gap-3">
-        {/* Search */}
-        <div className="relative min-w-[240px] flex-1 max-w-md">
+      <div className="flex flex-nowrap items-center gap-2 [&>*]:shrink-0">
+        {/* Search — the only item allowed to shrink so the row stays on one line */}
+        <div className="relative min-w-[150px] max-w-md flex-1 !shrink">
           <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
           <input
             type="text"
