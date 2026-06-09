@@ -138,7 +138,7 @@ export async function PATCH(request: NextRequest, context: RouteContext) {
       });
     }
 
-    return NextResponse.json(updated);
+    return NextResponse.json({ ...updated, meta_sync: metaSync });
   } catch (err) {
     console.error('PATCH /api/leads/[id] error:', err);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
