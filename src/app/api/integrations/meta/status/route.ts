@@ -1,9 +1,26 @@
 import { NextResponse } from 'next/server';
+import type { SupabaseClient } from '@supabase/supabase-js';
 import { createServerSupabaseClient } from '@/lib/supabase/server';
 import { createAdminSupabaseClient } from '@/lib/supabase/admin';
 
 const META_APP_ID = process.env.META_APP_ID;
 const META_GRAPH_VERSION = 'v23.0';
+
+/** Resolve account_id from a Meta ad id (numeric-only guarded). */
+async function accountIdFromAdId(adId: string, userToken: string): Promise<string | null> {
+  if (!/^\d+$/.test(adId)) return null;
+  try {
+    const r = await fetch(
+      `https://graph.facebook.com/${META_GRAPH_VERSION}/${adId}?fields=account_id&access_token=${encodeURIComponent(userToken)}`,
+      { cache: 'no-store' }
+    );
+    if (!r.ok) return null;
+    const body = await r.json() as { account_id?: string };
+    return body?.account_id ?? null;
+  } catch {
+    return null;
+  }
+}
 
 interface SubscribedApp {
   id: string;
