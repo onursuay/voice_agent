@@ -370,6 +370,7 @@
       "metaCrmSyncTos": "Özel Hedef Kitle Koşullarını Kabul Et",
       "metaTosPill": "Özel Hedef Kitle Koşulları",
       "metaTosTooltip": "Meta reklamlarınızdan gelen müşteri bilgileri, sistem içindeki \"Lead\" aşamalara taşınır. Kullanıcının \"Aşama\" tercihine göre de Meta özel hedef kitlelerine (olumlu/olumsuz) eklenir. Tüm bu süreç otomasyon halinde ilerler ve çalışması için reklam hesabınızda Özel Hedef Kitle Koşulları'nı kabul etmeniz gerekir.",
+      "metaTosPerPageHint": "Her sayfanın yanındaki \"Özel Hedef Kitle Koşulları\" rozetinden ilgili reklam hesabının koşullarını kabul edebilirsiniz.",
       "metaConnectAccountPrompt": "Meta Hesabınızı Bağlayın",
       "metaConnectError": "Bağlantı hatası: ",
       "tokenExpired": "Token süresi dolmuş",
