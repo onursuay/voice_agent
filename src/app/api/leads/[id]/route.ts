@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createServerSupabaseClient } from '@/lib/supabase/server';
+import { syncLeadStageToMeta, type SyncLead, type SyncStage, type AudienceSyncResult } from '@/lib/crm/metaAudienceSync';
 
 type RouteContext = { params: Promise<{ id: string }> };
 
