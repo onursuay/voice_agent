@@ -51,6 +51,12 @@ interface AppStore {
   importJobFilter: { id: string; name: string; columns: string[] } | null;
   setImportJobFilter: (job: { id: string; name: string; columns: string[] } | null) => void;
 
+  // Connected Meta accounts/pages + active page filter (lead source dropdown)
+  connectedPages: { page_id: string; page_name: string | null }[];
+  setConnectedPages: (pages: { page_id: string; page_name: string | null }[]) => void;
+  pageFilter: string | null; // active meta_page_id; null = all accounts
+  setPageFilter: (pageId: string | null) => void;
+
   // Per-page
   perPage: number;
   setPerPage: (n: number) => void;
