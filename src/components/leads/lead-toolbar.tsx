@@ -840,7 +840,7 @@ export function LeadToolbar() {
         <ColumnVisibilityDropdown />
         <PerPageDropdown />
 
-        <div className="flex-1" />
+        <div className="flex-1 !shrink" />
 
         <Button
           variant="secondary"
