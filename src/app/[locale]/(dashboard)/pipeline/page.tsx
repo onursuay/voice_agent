@@ -220,21 +220,27 @@ export default function PipelinePage() {
 
   const [loading, setLoading] = useState(true);
   const [activeDragLead, setActiveDragLead] = useState<Lead | null>(null);
+  // Only persist pageFilter after the saved value has been restored.
+  const hydratedRef = useRef(false);
 
-  // Fetch leads and stages
+  // Fetch leads (scoped to the selected account/page) and stages.
+  // per_page is raised well above the default so the board never silently
+  // truncates a busy pipeline to the first 25 cards.
   useEffect(() => {
     let cancelled = false;
     async function fetchData() {
       setLoading(true);
       try {
+        const leadsParams = new URLSearchParams({ per_page: '500' });
+        if (pageFilter) leadsParams.set('meta_page_id', pageFilter);
         const [leadsRes, stagesRes] = await Promise.all([
-          fetch('/api/leads'),
+          fetch(`/api/leads?${leadsParams.toString()}`),
           fetch('/api/stages'),
         ]);
 
         if (leadsRes.ok) {
           const leadsData = await leadsRes.json();
-          if (!cancelled) setLeads(Array.isArray(leadsData) ? leadsData : leadsData.data || []);
+          if (!cancelled) setLeads(Array.isArray(leadsData) ? leadsData : leadsData.leads || leadsData.data || []);
         }
         if (stagesRes.ok) {
           const stagesData = await stagesRes.json();
@@ -248,7 +254,7 @@ export default function PipelinePage() {
     }
     fetchData();
     return () => { cancelled = true; };
-  }, [setLeads, setStages]);
+  }, [setLeads, setStages, pageFilter]);
 
   // Load connected Meta pages for the account dropdown; restore saved selection.
   useEffect(() => {
