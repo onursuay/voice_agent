@@ -213,6 +213,9 @@ export default function PipelinePage() {
     stages,
     setStages,
     setActiveLeadId,
+    pageFilter,
+    setPageFilter,
+    setConnectedPages,
   } = useAppStore();
 
   const [loading, setLoading] = useState(true);
