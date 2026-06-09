@@ -348,6 +348,8 @@
       "metaTitle": "Meta Lead Ads",
       "metaDesc": "Automatically import leads from Facebook and Instagram ad forms into the system.",
       "metaSuccess": "Your Meta page was connected successfully! Leads from ad forms will now automatically appear here.",
+      "metaSuccessCount": "{count} page(s) connected successfully! Leads from ad forms will now automatically appear here.",
+      "metaPartial": "{ok} page(s) connected, {fail} could not be connected. Retry the failed ones from the list below using \"Resubscribe webhook\".",
       "metaAccountConnected": "Meta account connected. Now select a page to start receiving leads.",
       "metaNoPage": "No page found where you are an admin on your Meta account.",
       "metaCancelled": "Connection process cancelled.",
