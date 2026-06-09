@@ -368,7 +368,7 @@
       "metaNoPagesYet": "No pages connected yet",
       "metaNoPagesYetDesc": "Connect your pages to start receiving leads.",
       "metaCrmSyncTitle": "CRM stage → Meta Audience sync",
-      "metaCrmSyncDesc": "When you move leads between stages, each lead is automatically added to Meta custom audiences (positive/negative). For this to work: the connection must have the ads management (ads_management) permission and you must accept the Custom Audience Terms on your ad account.",
+      "metaCrmSyncDesc": "When you move leads between stages, each lead is automatically added to Meta custom audiences (positive/negative). To enable it, just accept the Custom Audience Terms on your ad account.",
       "metaCrmSyncTos": "Accept Custom Audience Terms",
       "metaTosPill": "Custom Audience Terms",
       "metaTosTooltip": "Customer info from your Meta ads flows into the \"Lead\" stages in the system. Based on the user's \"Stage\" choice, each lead is added to Meta custom audiences (positive/negative). This whole process runs automatically and, for it to work, you must accept the Custom Audience Terms on your ad account.",
