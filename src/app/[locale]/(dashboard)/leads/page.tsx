@@ -32,6 +32,10 @@ export default function LeadsPage() {
   // Only persist pageFilter after the saved value has been restored, so the
   // initial null state doesn't wipe localStorage before restore reads it.
   const hydratedRef = useRef(false);
+  // Gate the first fetch until the saved account selection is restored, so a
+  // refresh never flashes the previous (or all-accounts) data before swapping
+  // to the actually-selected account.
+  const [pagesReady, setPagesReady] = useState(false);
 
   const fetchLeads = useCallback(async () => {
     try {
