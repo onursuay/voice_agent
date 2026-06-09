@@ -1,19 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createHmac } from 'crypto';
 import { createServerSupabaseClient } from '@/lib/supabase/server';
-
-function buildState(orgId: string): string {
-  const payload = `${orgId}:${Date.now()}`;
-  const sig = createHmac('sha256', process.env.META_APP_SECRET || '')
-    .update(payload)
-    .digest('hex')
-    .slice(0, 16);
-  return Buffer.from(`${payload}:${sig}`).toString('base64url');
-}
+import { buildMetaState } from '@/lib/meta/oauth-state';
 
 /**
  * GET /api/integrations/meta/connect
- * Redirects the org owner to Meta OAuth. Returns after callback.
+ * Account-level OAuth: requests ONLY business/BM + ads scopes so Meta's consent
+ * screen does NOT show the page chooser. Pages are added later from the dashboard
+ * ("Sayfa Bağla" → /api/integrations/meta/connect-pages). Returns after callback.
  */
 export async function GET(request: NextRequest) {
   const appId = process.env.META_APP_ID;
