@@ -66,28 +66,36 @@ export default function LeadsPage() {
     }
   }, [searchQuery, filters, sort, setLeads, t, perPage, sourceFilter, importJobFilter, pageFilter]);
 
-  useEffect(() => { fetchLeads(); }, [fetchLeads]);
+  useEffect(() => { if (pagesReady) fetchLeads(); }, [fetchLeads, pagesReady]);
 
   // Load connected Meta pages for the account dropdown; restore saved selection.
   // Resets the filter (and clears storage) when the saved page no longer exists,
   // so a disconnected page never silently filters the list down to zero leads.
+  // Flips `pagesReady` last (always), which releases the gated first fetch with
+  // the correct account already applied.
   useEffect(() => {
     let cancelled = false;
     (async () => {
       try {
         const res = await fetch('/api/integrations/meta/pages');
-        if (!res.ok) return;
-        const data = await res.json() as { pages?: { page_id: string; page_name: string | null }[] };
-        const pages = data.pages || [];
-        if (cancelled) return;
-        setConnectedPages(pages);
-        let stored: string | null = null;
-        try { stored = window.localStorage.getItem('leads.pageFilter'); } catch { /* unavailable */ }
-        const validId = stored && pages.some((p) => p.page_id === stored) ? stored : null;
-        hydratedRef.current = true;
-        setPageFilter(validId);
-        if (!validId) { try { window.localStorage.removeItem('leads.pageFilter'); } catch { /* unavailable */ } }
+        if (res.ok) {
+          const data = await res.json() as { pages?: { page_id: string; page_name: string | null }[] };
+          const pages = data.pages || [];
+          if (cancelled) return;
+          setConnectedPages(pages);
+          let stored: string | null = null;
+          try { stored = window.localStorage.getItem('leads.pageFilter'); } catch { /* unavailable */ }
+          const validId = stored && pages.some((p) => p.page_id === stored) ? stored : null;
+          setPageFilter(validId);
+          if (!validId) { try { window.localStorage.removeItem('leads.pageFilter'); } catch { /* unavailable */ } }
+        }
       } catch { /* ignore */ }
+      finally {
+        if (!cancelled) {
+          hydratedRef.current = true;
+          setPagesReady(true);
+        }
+      }
     })();
     return () => { cancelled = true; };
   }, [setConnectedPages, setPageFilter]);
