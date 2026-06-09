@@ -141,6 +141,8 @@
     "source": "Kaynak",
     "clearFilter": "Filtreyi Temizle",
     "table": "Tablo",
+    "account": "Hesap",
+    "allAccounts": "Tüm hesaplar",
     "recentImports": "Son İçe Aktarmalar",
     "noImports": "Henüz içe aktarma yok",
     "filterTitle": "Filtreler",
