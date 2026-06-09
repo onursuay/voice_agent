@@ -45,7 +45,7 @@ export async function GET(request: NextRequest) {
   const pageId = request.nextUrl.searchParams.get('page_id');
 
   // Verify the org_id matches the authenticated user
-  if (orgId !== membership.organization_id) {
+  if (!orgId || orgId !== membership.organization_id) {
     return NextResponse.redirect(`${dashboardUrl}?meta_error=invalid_session`);
   }
 
