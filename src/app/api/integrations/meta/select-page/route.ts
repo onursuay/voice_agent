@@ -1,10 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createAdminSupabaseClient } from '@/lib/supabase/admin';
 import { createServerSupabaseClient } from '@/lib/supabase/server';
-import type { FacebookPage } from '@/app/api/integrations/meta/callback/route';
-
-const META_APP_ID = process.env.META_APP_ID;
-const META_GRAPH_VERSION = 'v23.0';
+import { connectPageForLeads, type FacebookPage } from '@/lib/meta/connect-page';
 
 interface AccountConfig {
   organization_id: string;
@@ -15,124 +12,11 @@ interface AccountConfig {
   ts?: number;
 }
 
-interface SubscribedApp {
-  id: string;
-  subscribed_fields?: string[];
-  [key: string]: unknown;
-}
-
-interface LeadgenForm {
-  id: string;
-  name?: string;
-  status?: string;
-  created_time?: string;
-}
-
-/**
- * Fetch Lead Forms for the given page. Requires pages_manage_ads permission.
- * Non-fatal: returns [] on failure so the connection flow continues.
- */
-async function fetchLeadgenForms(
-  pageId: string,
-  pageToken: string
-): Promise<LeadgenForm[]> {
-  const url = new URL(
-    `https://graph.facebook.com/${META_GRAPH_VERSION}/${pageId}/leadgen_forms`
-  );
-  url.searchParams.set('fields', 'id,name,status,created_time');
-  url.searchParams.set('limit', '100');
-  url.searchParams.set('access_token', pageToken);
-
-  try {
-    const res = await fetch(url.toString());
-    const body = await res.text();
-    console.log(`[Meta leadgen_forms] page=${pageId} status=${res.status} body=${body.slice(0, 500)}`);
-    if (!res.ok) return [];
-    const parsed = JSON.parse(body) as { data?: LeadgenForm[] };
-    return parsed.data ?? [];
-  } catch (err) {
-    console.warn(`[Meta leadgen_forms] fetch failed page=${pageId}: ${err}`);
-    return [];
-  }
-}
-
-/**
- * DELETE existing subscription, POST new one, then GET verify.
- * Returns { success, subscribed_fields, error? }
- */
-async function hardSubscribePageToWebhook(
-  pageId: string,
-  pageToken: string
-): Promise<{ success: boolean; subscribed_fields?: string[]; error?: string }> {
-  const headers = {
-    Authorization: `Bearer ${pageToken}`,
-    'Content-Type': 'application/x-www-form-urlencoded',
-  };
-
-  // Step 1: DELETE old subscription (best-effort — ignore failure)
-  try {
-    const delRes = await fetch(
-      `https://graph.facebook.com/${META_GRAPH_VERSION}/${pageId}/subscribed_apps`,
-      { method: 'DELETE', headers }
-    );
-    const delBody = await delRes.text();
-    console.log(`[Meta subscribe] DELETE page=${pageId} status=${delRes.status} body=${delBody}`);
-  } catch (err) {
-    console.warn(`[Meta subscribe] DELETE failed (ignoring): ${err}`);
-  }
-
-  // Step 2: POST new subscription
-  const postBody = new URLSearchParams({ subscribed_fields: 'leadgen' });
-  const postRes = await fetch(
-    `https://graph.facebook.com/${META_GRAPH_VERSION}/${pageId}/subscribed_apps`,
-    { method: 'POST', headers, body: postBody.toString() }
-  );
-  const postText = await postRes.text();
-  console.log(`[Meta subscribe] POST page=${pageId} status=${postRes.status} body=${postText}`);
-
-  if (!postRes.ok) {
-    return { success: false, error: `POST subscribed_apps failed (${postRes.status}): ${postText}` };
-  }
-
-  // Step 3: GET verify — confirm app appears in subscribed_apps list
-  try {
-    const getRes = await fetch(
-      `https://graph.facebook.com/${META_GRAPH_VERSION}/${pageId}/subscribed_apps`,
-      { method: 'GET', headers }
-    );
-    const getBody = await getRes.text();
-    console.log(`[Meta subscribe] GET verify page=${pageId} status=${getRes.status} body=${getBody}`);
-
-    if (getRes.ok) {
-      const parsed = JSON.parse(getBody) as { data?: SubscribedApp[] };
-      const apps: SubscribedApp[] = parsed.data || [];
-
-      // Find our app — match by META_APP_ID if set, otherwise accept any app with leadgen
-      const ourApp = META_APP_ID
-        ? apps.find((a) => String(a.id) === String(META_APP_ID))
-        : apps.find((a) => (a.subscribed_fields || []).includes('leadgen'));
-
-      if (ourApp) {
-        console.log(`[Meta subscribe] Verified: app=${ourApp.id} fields=${JSON.stringify(ourApp.subscribed_fields)}`);
-        return { success: true, subscribed_fields: ourApp.subscribed_fields || ['leadgen'] };
-      } else {
-        console.warn(`[Meta subscribe] POST ok but app not found in subscribed list: ${getBody}`);
-        // POST was ok, so treat as success even if verification is inconclusive
-        return { success: true, subscribed_fields: ['leadgen'] };
-      }
-    }
-  } catch (err) {
-    console.warn(`[Meta subscribe] GET verify failed (ignoring): ${err}`);
-  }
-
-  // POST succeeded — accept it
-  return { success: true, subscribed_fields: ['leadgen'] };
-}
-
 /**
  * GET /api/integrations/meta/select-page?org_id=xxx&page_id=xxx
- * Called after page selection (or auto-select for single page).
- * Reads pending session from DB, saves chosen page to integration_settings.
+ * Connects a single page (subscribe leadgen webhook + save) and redirects.
+ * The primary flow now auto-connects granted pages in the OAuth callback; this
+ * stays as a direct single-page connect link.
  */
 export async function GET(request: NextRequest) {
   const locale = request.cookies.get('NEXT_LOCALE')?.value === 'en' ? 'en' : 'tr';
@@ -189,73 +73,12 @@ export async function GET(request: NextRequest) {
     return NextResponse.redirect(`${dashboardUrl}?meta_error=invalid_page`);
   }
 
-  // Validate token exists before proceeding
-  if (!page.access_token) {
-    console.error(`[Meta select-page] Missing page access token for page=${pageId}`);
-    return NextResponse.redirect(`${dashboardUrl}?meta_error=missing_token`);
-  }
-
-  // Subscribe the selected page to leadgen webhook (hardened: DELETE → POST → GET verify)
-  const subscribeResult = await hardSubscribePageToWebhook(page.id, page.access_token);
-
-  if (!subscribeResult.success) {
-    console.error(`[Meta select-page] Webhook subscription failed for page=${pageId}: ${subscribeResult.error}`);
+  const result = await connectPageForLeads(admin, orgId, page, session.userToken);
+  if (!result.success) {
     return NextResponse.redirect(
-      `${dashboardUrl}?meta_error=subscription_failed&reason=${encodeURIComponent(subscribeResult.error || 'unknown')}`
+      `${dashboardUrl}?meta_error=subscription_failed&reason=${encodeURIComponent(result.error || 'unknown')}`
     );
   }
-
-  console.log(`[Meta select-page] Webhook subscribed OK: page=${pageId} fields=${subscribeResult.subscribed_fields?.join(',')}`);
-
-  // Save to integration_settings (final) — upsert by (org, page_id) to allow multiple pages per org
-  const { data: existing } = await admin
-    .from('integration_settings')
-    .select('id')
-    .eq('provider', 'meta_leads')
-    .filter('config->>organization_id', 'eq', orgId)
-    .filter('config->>page_id', 'eq', page.id)
-    .maybeSingle();
-
-  // Fetch Lead Forms for this page (exercises pages_manage_ads permission)
-  const leadgenForms = await fetchLeadgenForms(page.id, page.access_token);
-  console.log(`[Meta select-page] Fetched ${leadgenForms.length} lead forms for page=${page.id}`);
-
-  const config = {
-    organization_id: orgId,
-    page_id: page.id,
-    page_name: page.name,
-    access_token: page.access_token,
-    user_access_token: session.userToken,
-    connected_at: new Date().toISOString(),
-    expires_at: new Date(Date.now() + 59 * 24 * 60 * 60 * 1000).toISOString(),
-    webhook_subscribed: true,
-    webhook_subscribed_fields: subscribeResult.subscribed_fields || ['leadgen'],
-    webhook_subscribed_at: new Date().toISOString(),
-    leadgen_forms: leadgenForms,
-    leadgen_forms_fetched_at: new Date().toISOString(),
-  };
-
-  if (existing) {
-    const { error: updateErr } = await admin
-      .from('integration_settings')
-      .update({ config, is_active: true })
-      .eq('id', existing.id);
-    if (updateErr) {
-      console.error(`[Meta select-page GET] Update failed page=${pageId}: ${updateErr.message}`);
-      return NextResponse.redirect(`${dashboardUrl}?meta_error=${encodeURIComponent(updateErr.message)}`);
-    }
-  } else {
-    const { error: insertErr } = await admin
-      .from('integration_settings')
-      .insert({ provider: 'meta_leads', config, is_active: true });
-    if (insertErr) {
-      console.error(`[Meta select-page GET] Insert failed page=${pageId}: ${insertErr.message}`);
-      return NextResponse.redirect(`${dashboardUrl}?meta_error=${encodeURIComponent(insertErr.message)}`);
-    }
-  }
-
-  // Keep pending session alive so more pages can be connected from same OAuth flow.
-  // It will expire in 10 min naturally.
 
   return NextResponse.redirect(`${dashboardUrl}?meta_connected=1`);
 }
@@ -263,8 +86,7 @@ export async function GET(request: NextRequest) {
 /**
  * POST /api/integrations/meta/select-page
  * Body: { org_id, page_id }
- * Same logic as GET but returns JSON — used by multi-page selection UI.
- * Does NOT delete the pending session so multiple pages can be connected.
+ * Same logic as GET but returns JSON.
  */
 export async function POST(request: NextRequest) {
   const admin = createAdminSupabaseClient();
@@ -308,55 +130,11 @@ export async function POST(request: NextRequest) {
 
   const page = session.pages.find((p) => p.id === pageId);
   if (!page) return NextResponse.json({ success: false, error: 'invalid_page' }, { status: 400 });
-  if (!page.access_token) return NextResponse.json({ success: false, error: 'missing_token' }, { status: 400 });
 
-  const subscribeResult = await hardSubscribePageToWebhook(page.id, page.access_token);
-  if (!subscribeResult.success) {
-    console.error(`[Meta select-page POST] Subscribe failed page=${pageId}: ${subscribeResult.error}`);
-    return NextResponse.json({ success: false, error: subscribeResult.error }, { status: 502 });
+  const result = await connectPageForLeads(admin, orgId, page, session.userToken);
+  if (!result.success) {
+    return NextResponse.json({ success: false, error: result.error }, { status: 502 });
   }
 
-  const { data: existing } = await admin
-    .from('integration_settings')
-    .select('id')
-    .eq('provider', 'meta_leads')
-    .filter('config->>organization_id', 'eq', orgId)
-    .filter('config->>page_id', 'eq', page.id)
-    .maybeSingle();
-
-  // Fetch Lead Forms for this page (exercises pages_manage_ads permission)
-  const leadgenForms = await fetchLeadgenForms(page.id, page.access_token);
-  console.log(`[Meta select-page] Fetched ${leadgenForms.length} lead forms for page=${page.id}`);
-
-  const config = {
-    organization_id: orgId,
-    page_id: page.id,
-    page_name: page.name,
-    access_token: page.access_token,
-    user_access_token: session.userToken,
-    connected_at: new Date().toISOString(),
-    expires_at: new Date(Date.now() + 59 * 24 * 60 * 60 * 1000).toISOString(),
-    webhook_subscribed: true,
-    webhook_subscribed_fields: subscribeResult.subscribed_fields || ['leadgen'],
-    webhook_subscribed_at: new Date().toISOString(),
-    leadgen_forms: leadgenForms,
-    leadgen_forms_fetched_at: new Date().toISOString(),
-  };
-
-  if (existing) {
-    const { error: updateErr } = await admin.from('integration_settings').update({ config, is_active: true }).eq('id', existing.id);
-    if (updateErr) {
-      console.error(`[Meta select-page POST] Update failed page=${pageId}: ${updateErr.message}`);
-      return NextResponse.json({ success: false, error: updateErr.message }, { status: 500 });
-    }
-  } else {
-    const { error: insertErr } = await admin.from('integration_settings').insert({ provider: 'meta_leads', config, is_active: true });
-    if (insertErr) {
-      console.error(`[Meta select-page POST] Insert failed page=${pageId}: ${insertErr.message}`);
-      return NextResponse.json({ success: false, error: insertErr.message }, { status: 500 });
-    }
-  }
-
-  console.log(`[Meta select-page POST] Connected page=${page.name} (${page.id}) for org=${orgId}`);
   return NextResponse.json({ success: true, page_id: page.id, page_name: page.name });
 }
