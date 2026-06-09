@@ -46,7 +46,9 @@ export async function GET(request: NextRequest) {
   const oauthUrl = new URL('https://www.facebook.com/dialog/oauth');
   oauthUrl.searchParams.set('client_id', appId);
   oauthUrl.searchParams.set('redirect_uri', redirectUri);
-  oauthUrl.searchParams.set('scope', 'pages_show_list,leads_retrieval,pages_manage_metadata,pages_read_engagement,pages_manage_ads,business_management');
+  // ads_management is required for CRM stage → Custom Audience sync (creating /
+  // updating CUSTOMER_LIST audiences + reading the originating ad account).
+  oauthUrl.searchParams.set('scope', 'pages_show_list,leads_retrieval,pages_manage_metadata,pages_read_engagement,pages_manage_ads,business_management,ads_management');
   oauthUrl.searchParams.set('response_type', 'code');
   oauthUrl.searchParams.set('state', state);
 
