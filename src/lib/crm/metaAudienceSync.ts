@@ -235,7 +235,11 @@ export async function syncLeadStageToMeta(opts: {
   const client = new MetaGraphClient({ accessToken: userToken, timeout: 8000 });
 
   // 3) Resolve the originating ad account from the lead's ad id.
+  //    Validate numeric-only before interpolating into the Graph API path.
   if (!lead.meta_ad_id) return { ok: false, reason: 'no_ad_account' };
+  if (!/^\d+$/.test(lead.meta_ad_id)) {
+    return { ok: false, reason: 'no_ad_account', error: 'invalid_meta_ad_id' };
+  }
   const adRes = await client.get<{ account_id?: string }>(`/${lead.meta_ad_id}`, { fields: 'account_id' });
   if (!adRes.ok || !adRes.data?.account_id) {
     return { ok: false, reason: 'no_ad_account', error: adRes.error?.message };
