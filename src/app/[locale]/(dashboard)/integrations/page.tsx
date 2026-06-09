@@ -286,20 +286,6 @@ export default function IntegrationsPage() {
                 <Plus className="h-3.5 w-3.5" />
                 {hasConnections ? t('integrations.metaAddPage') : t('integrations.metaConnectPageButton')}
               </button>
-
-              {/* CRM stage → Meta Custom Audience sync prerequisite (setup-time notice) */}
-              <div className="mt-3 flex items-start gap-2 rounded-xl border border-amber-200 bg-amber-50/70 px-3 py-2.5">
-                <Info className="mt-0.5 h-3.5 w-3.5 shrink-0 text-amber-500" />
-                <div className="min-w-0">
-                  <p className="text-xs font-semibold text-amber-800">{t('integrations.metaCrmSyncTitle')}</p>
-                  <p className="mt-0.5 text-[11px] leading-relaxed text-amber-700/90">{t('integrations.metaCrmSyncDesc')}</p>
-                  {hasConnections && (
-                    <p className="mt-1.5 text-[11px] font-medium text-amber-700/80">
-                      {t('integrations.metaTosPerPageHint')}
-                    </p>
-                  )}
-                </div>
-              </div>
             </>
           )}
 
