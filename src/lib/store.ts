@@ -140,6 +140,11 @@ export const useAppStore = create<AppStore>((set, get) => ({
   importJobFilter: null,
   setImportJobFilter: (importJobFilter) => set({ importJobFilter }),
 
+  connectedPages: [],
+  setConnectedPages: (connectedPages) => set({ connectedPages }),
+  pageFilter: null,
+  setPageFilter: (pageFilter) => set({ pageFilter }),
+
   perPage: 25,
   setPerPage: (perPage) => set({ perPage }),
 
