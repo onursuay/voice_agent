@@ -832,6 +832,7 @@ export function LeadToolbar() {
           />
         </div>
 
+        <AccountFilter />
         <LeadFilters />
         <SourceFilterDropdown />
         <TableFilterDropdown />
