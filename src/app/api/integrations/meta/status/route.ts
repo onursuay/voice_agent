@@ -169,7 +169,7 @@ export async function GET() {
           ? checkLiveWebhookSubscription(pageId, pageToken)
           : Promise.resolve(false),
         needsResolve
-          ? resolveAdAccountId(pageId as string, userToken as string)
+          ? resolveAdAccountId(pageId as string, userToken as string, admin, membership.organization_id as string)
           : Promise.resolve(adAccountId ?? null),
       ]);
 
