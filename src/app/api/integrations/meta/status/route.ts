@@ -109,11 +109,35 @@ export async function GET() {
       const isExpired = expiresAt ? new Date(expiresAt) < new Date() : false;
       const pageId = config.page_id as string | null;
       const pageToken = config.access_token as string | null;
+      const userToken = config.user_access_token as string | null;
 
-      let webhookSubscribed = false;
-      if (pageId && pageToken && !isExpired) {
-        webhookSubscribed = await checkLiveWebhookSubscription(pageId, pageToken);
+      // Resolve ad account once and cache it on the config. `undefined` means
+      // "not yet resolved"; `null` means "resolved, none found" (don't retry).
+      let adAccountId = config.ad_account_id as string | null | undefined;
+      const needsResolve = adAccountId === undefined && !!pageId && !!userToken && !isExpired;
+
+      const [webhookSubscribed, resolvedAdAccount] = await Promise.all([
+        pageId && pageToken && !isExpired
+          ? checkLiveWebhookSubscription(pageId, pageToken)
+          : Promise.resolve(false),
+        needsResolve
+          ? resolveAdAccountId(pageId as string, userToken as string)
+          : Promise.resolve(adAccountId ?? null),
+      ]);
+
+      if (needsResolve) {
+        adAccountId = resolvedAdAccount;
+        // Best-effort write-back so future loads skip the Graph calls.
+        admin
+          .from('integration_settings')
+          .update({ config: { ...config, ad_account_id: adAccountId } })
+          .eq('id', row.id as string)
+          .then(() => {}, () => {});
       }
+
+      const tosUrl = adAccountId
+        ? `https://business.facebook.com/ads/manage/customaudiences/tos/?act=${adAccountId}`
+        : null;
 
       return {
         id: row.id as string,
@@ -123,6 +147,8 @@ export async function GET() {
         expires_at: expiresAt,
         is_expired: isExpired,
         webhook_subscribed: webhookSubscribed,
+        ad_account_id: adAccountId ?? null,
+        tos_url: tosUrl,
       };
     })
   );
