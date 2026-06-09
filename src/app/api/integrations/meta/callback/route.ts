@@ -128,10 +128,11 @@ export async function GET(request: NextRequest) {
     return NextResponse.redirect(`${dashboardUrl}?meta_error=${encodeURIComponent(error || 'cancelled')}`);
   }
 
-  const orgId = verifyState(state);
-  if (!orgId) {
+  const verified = verifyMetaState(state);
+  if (!verified) {
     return NextResponse.redirect(`${dashboardUrl}?meta_error=invalid_state`);
   }
+  const { orgId, mode } = verified;
 
   const redirectUri = `${request.nextUrl.origin}/api/integrations/meta/callback`;
 
@@ -143,30 +144,65 @@ export async function GET(request: NextRequest) {
   const longToken = await getLongLivedToken(shortToken);
   const userToken = longToken || shortToken;
 
-  const pages = await getPages(userToken);
-  if (!pages.length) {
-    return NextResponse.redirect(`${dashboardUrl}?meta_error=no_pages`);
-  }
-
-  // Store account-level connection (persistent, not a short-lived pending session).
-  // Pages list is cached here so the user can pick pages later without re-auth.
   const supabase = createAdminSupabaseClient();
-  const accountConfig = {
-    organization_id: orgId,
-    userToken,
-    pages,
-    connected_at: new Date().toISOString(),
-    expires_at: new Date(Date.now() + 59 * 24 * 60 * 60 * 1000).toISOString(),
-    ts: Date.now(),
-  };
 
-  // Upsert meta_account for this org (one per org)
+  // Existing account row for this org (one per org), if any.
   const { data: existingAccount } = await supabase
     .from('integration_settings')
-    .select('id')
+    .select('id, config')
     .eq('provider', 'meta_account')
     .filter('config->>organization_id', 'eq', orgId)
     .maybeSingle();
+
+  const prevConfig = (existingAccount?.config ?? {}) as {
+    pages?: FacebookPage[];
+    connected_at?: string;
+  };
+
+  if (mode === 'pages') {
+    // ── Page-level OAuth (from "Sayfa Bağla") ──
+    // This token carries the page scopes; fetch the page list (with per-page tokens)
+    // and refresh the stored token (Meta returns the union of all granted scopes).
+    const pages = await getPages(userToken);
+    if (!pages.length) {
+      return NextResponse.redirect(`${dashboardUrl}?meta_error=no_pages`);
+    }
+
+    const accountConfig = {
+      organization_id: orgId,
+      userToken,
+      pages,
+      connected_at: prevConfig.connected_at ?? new Date().toISOString(),
+      expires_at: new Date(Date.now() + 59 * 24 * 60 * 60 * 1000).toISOString(),
+      ts: Date.now(),
+    };
+
+    if (existingAccount) {
+      await supabase
+        .from('integration_settings')
+        .update({ config: accountConfig, is_active: true })
+        .eq('id', existingAccount.id);
+    } else {
+      await supabase
+        .from('integration_settings')
+        .insert({ provider: 'meta_account', config: accountConfig, is_active: true });
+    }
+
+    // Hand off to the in-app page selection wizard.
+    return NextResponse.redirect(`${dashboardUrl.replace(/\/integrations$/, '/meta-select')}`);
+  }
+
+  // ── Account-level OAuth (default) ──
+  // No page scopes here, so don't fetch pages. Preserve any pages already connected
+  // (e.g. on re-auth) and just refresh the account token + expiry.
+  const accountConfig = {
+    organization_id: orgId,
+    userToken,
+    pages: prevConfig.pages ?? [],
+    connected_at: prevConfig.connected_at ?? new Date().toISOString(),
+    expires_at: new Date(Date.now() + 59 * 24 * 60 * 60 * 1000).toISOString(),
+    ts: Date.now(),
+  };
 
   if (existingAccount) {
     await supabase
