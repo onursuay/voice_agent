@@ -1,6 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createAdminSupabaseClient } from '@/lib/supabase/admin';
 import { verifyMetaState } from '@/lib/meta/oauth-state';
+import {
+  connectPageForLeads,
+  fetchGrantedLeadPageIds,
+  type FacebookPage,
+} from '@/lib/meta/connect-page';
 
 const META_GRAPH_BASE = 'https://graph.facebook.com/v23.0';
 
