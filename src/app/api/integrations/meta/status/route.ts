@@ -40,16 +40,30 @@ interface SubscribedApp {
  * Managers (one BM owns many unrelated client ad accounts), which would point
  * the user at the wrong account's terms.
  */
+interface ResolvedAccount {
+  /** Numeric account_id (no `act_` prefix), or null if none found. */
+  accountId: string | null;
+  /** The lead meta_ad_id this was derived from; null = heuristic/none. */
+  srcAdId: string | null;
+  /** True when the config should be written back (value or source changed). */
+  changed: boolean;
+}
+
 async function resolveAdAccountId(
   pageId: string,
   userToken: string,
   admin: SupabaseClient,
   organizationId: string,
-): Promise<string | null> {
+  cachedAccountId: string | null | undefined,
+  cachedSrcAdId: string | null | undefined,
+): Promise<ResolvedAccount> {
   const base = `https://graph.facebook.com/${META_GRAPH_VERSION}`;
 
   // 0) Preferred: the ad account behind this page's real leads — exactly the
-  //    account the sync will hit, so the accepted terms actually apply.
+  //    account the sync will hit, so the accepted terms actually apply. We
+  //    re-validate the cache against the most recent lead's ad id, so a stale
+  //    or wrong cache (e.g. from the old business heuristic) self-heals as
+  //    soon as leads exist.
   try {
     const { data: leadRows } = await admin
       .from('leads')
@@ -59,13 +73,26 @@ async function resolveAdAccountId(
       .not('meta_ad_id', 'is', null)
       .order('created_at', { ascending: false })
       .limit(5);
-    for (const lr of leadRows ?? []) {
-      const adId = (lr as { meta_ad_id?: string | null }).meta_ad_id;
-      if (!adId) continue;
+    const ids = (leadRows ?? [])
+      .map((lr) => (lr as { meta_ad_id?: string | null }).meta_ad_id)
+      .filter((x): x is string => !!x);
+    const latestAdId = ids[0] ?? null;
+    // Cache derived from the same latest lead ad → trust it, skip Graph calls.
+    if (latestAdId && cachedSrcAdId === latestAdId && cachedAccountId != null) {
+      return { accountId: cachedAccountId, srcAdId: cachedSrcAdId, changed: false };
+    }
+    // Otherwise (re)resolve from leads; first ad id that resolves wins.
+    for (const adId of ids) {
       const acc = await accountIdFromAdId(adId, userToken);
-      if (acc) return acc;
+      if (acc) return { accountId: acc, srcAdId: adId, changed: cachedAccountId !== acc || cachedSrcAdId !== adId };
     }
   } catch { /* ignore, fall through to business heuristic */ }
+
+  // No usable leads. Keep any existing cache rather than re-running the
+  // unreliable heuristic on every load.
+  if (cachedAccountId !== undefined) {
+    return { accountId: cachedAccountId, srcAdId: cachedSrcAdId ?? null, changed: false };
+  }
 
   // 1) Page's owning business → its ad accounts (heuristic fallback)
   try {
@@ -79,7 +106,7 @@ async function resolveAdAccountId(
           if (ar.ok) {
             const ad = await ar.json() as { data?: { account_id?: string }[] };
             const acc = ad?.data?.[0]?.account_id;
-            if (acc) return acc;
+            if (acc) return { accountId: acc, srcAdId: null, changed: true };
           }
         }
       }
@@ -91,10 +118,10 @@ async function resolveAdAccountId(
     if (r.ok) {
       const d = await r.json() as { data?: { account_id?: string }[] };
       const acc = d?.data?.[0]?.account_id;
-      if (acc) return acc;
+      if (acc) return { accountId: acc, srcAdId: null, changed: true };
     }
   } catch { /* ignore */ }
-  return null;
+  return { accountId: null, srcAdId: null, changed: true };
 }
 
 async function checkLiveWebhookSubscription(pageId: string, pageToken: string): Promise<boolean> {
