@@ -20,6 +20,7 @@ import { cn } from '@/lib/utils';
 import { useAppStore } from '@/lib/store';
 import { Button } from '@/components/ui/button';
 import { LeadFilters } from './lead-filters';
+import { AccountFilter } from './account-filter';
 import { LeadCreateModal } from './lead-create-modal';
 import { LEAD_COLUMNS } from './lead-grid';
 import { useTranslations } from 'next-intl';
