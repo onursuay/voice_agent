@@ -143,6 +143,8 @@
     "source": "Source",
     "clearFilter": "Clear Filter",
     "table": "Table",
+    "account": "Account",
+    "allAccounts": "All accounts",
     "recentImports": "Recent Imports",
     "noImports": "No imports yet",
     "filterTitle": "Filters",
