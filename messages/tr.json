@@ -346,6 +346,8 @@
       "metaTitle": "Meta Lead Ads",
       "metaDesc": "Facebook ve Instagram reklam formlarından gelen lead'leri otomatik olarak sisteme aktar.",
       "metaSuccess": "Meta sayfanız başarıyla bağlandı! Artık reklam formlarından gelen lead'ler otomatik olarak buraya düşecek.",
+      "metaSuccessCount": "{count} sayfa başarıyla bağlandı! Artık reklam formlarından gelen lead'ler otomatik olarak buraya düşecek.",
+      "metaPartial": "{ok} sayfa bağlandı, {fail} sayfa bağlanamadı. Başarısız sayfaları aşağıdaki listeden \"Webhook'u yeniden bağla\" ile tekrar deneyebilirsiniz.",
       "metaAccountConnected": "Meta hesabınız bağlandı. Şimdi sayfa seçerek lead akışını başlatabilirsiniz.",
       "metaNoPage": "Meta hesabınızda yönetici olduğunuz bir sayfa bulunamadı.",
       "metaCancelled": "Bağlantı işlemi iptal edildi.",
