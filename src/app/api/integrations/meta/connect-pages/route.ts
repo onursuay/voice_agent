@@ -6,8 +6,8 @@ import { buildMetaState } from '@/lib/meta/oauth-state';
  * GET /api/integrations/meta/connect-pages
  * Page-level OAuth, triggered from "Sayfa Bağla" on the dashboard AFTER the account
  * is connected. Meta shows its page chooser here (this is the only place pages are
- * granted). On callback the page list is fetched + stored, then the in-app page
- * selection wizard (/meta-select) lets the user wire up leadgen webhooks.
+ * granted). On callback the granted pages are auto-subscribed to the leadgen webhook
+ * — there is no second in-app page selection step.
  */
 export async function GET(request: NextRequest) {
   const appId = process.env.META_APP_ID;
