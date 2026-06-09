@@ -186,8 +186,32 @@ export async function GET(request: NextRequest) {
         .insert({ provider: 'meta_account', config: accountConfig, is_active: true });
     }
 
-    // Hand off to the in-app page selection wizard.
-    return NextResponse.redirect(`${dashboardUrl.replace(/\/integrations$/, '/meta-select')}`);
+    // Auto-connect exactly the pages the user authorized in Meta's page chooser.
+    // granular_scopes (via /debug_token) tells us which pages were granted; we then
+    // subscribe only those — no second in-app selection step. The webhook subscription
+    // itself is a permission gate, so any non-granted page is skipped, not saved.
+    const granted = await fetchGrantedLeadPageIds(userToken);
+    const toConnect = granted.unrestricted
+      ? pages
+      : pages.filter((p) => granted.ids.has(p.id));
+
+    if (!toConnect.length) {
+      return NextResponse.redirect(`${dashboardUrl}?meta_error=no_pages`);
+    }
+
+    const results = await Promise.allSettled(
+      toConnect.map((p) => connectPageForLeads(supabase, orgId, p, userToken))
+    );
+    const okCount = results.filter((r) => r.status === 'fulfilled' && r.value.success).length;
+    const failCount = toConnect.length - okCount;
+
+    if (okCount === 0) {
+      return NextResponse.redirect(`${dashboardUrl}?meta_error=subscription_failed`);
+    }
+
+    const successParams = new URLSearchParams({ meta_connected: String(okCount) });
+    if (failCount > 0) successParams.set('meta_partial', String(failCount));
+    return NextResponse.redirect(`${dashboardUrl}?${successParams.toString()}`);
   }
 
   // ── Account-level OAuth (default) ──
