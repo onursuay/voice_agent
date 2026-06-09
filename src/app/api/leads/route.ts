@@ -23,6 +23,7 @@ export async function GET(request: NextRequest) {
     const assignedTo = params.get('assigned_to');
     const tags = params.get('tags'); // comma-separated
     const importJobId = params.get('import_job_id');
+    const metaPageId = params.get('meta_page_id'); // filter by connected Meta page/account
     const sortBy = params.get('sort_by') || 'created_at';
     const sortDir = params.get('sort_dir') === 'asc' ? true : false;
     const page = Math.max(1, parseInt(params.get('page') || '1', 10));
