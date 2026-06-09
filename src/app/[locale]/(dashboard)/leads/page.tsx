@@ -29,6 +29,9 @@ export default function LeadsPage() {
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  // Only persist pageFilter after the saved value has been restored, so the
+  // initial null state doesn't wipe localStorage before restore reads it.
+  const hydratedRef = useRef(false);
 
   const fetchLeads = useCallback(async () => {
     try {
