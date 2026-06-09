@@ -44,6 +44,7 @@ export default function LeadsPage() {
       if (filters.length > 0) params.set('filters', JSON.stringify(filters));
       if (sourceFilter) params.set('source_platform', sourceFilter);
       if (importJobFilter) params.set('import_job_id', importJobFilter.id);
+      if (pageFilter) params.set('meta_page_id', pageFilter);
       params.set('per_page', String(perPage));
 
       const res = await fetch(`/api/leads?${params.toString()}`);
@@ -56,9 +57,36 @@ export default function LeadsPage() {
     } finally {
       setLoading(false);
     }
-  }, [searchQuery, filters, sort, setLeads, t, perPage, sourceFilter, importJobFilter]);
+  }, [searchQuery, filters, sort, setLeads, t, perPage, sourceFilter, importJobFilter, pageFilter]);
 
   useEffect(() => { fetchLeads(); }, [fetchLeads]);
+
+  // Load connected Meta pages for the account dropdown; restore saved selection.
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      try {
+        const res = await fetch('/api/integrations/meta/pages');
+        if (!res.ok) return;
+        const data = await res.json() as { pages?: { page_id: string; page_name: string | null }[] };
+        const pages = data.pages || [];
+        if (cancelled) return;
+        setConnectedPages(pages);
+        const stored = typeof window !== 'undefined' ? window.localStorage.getItem('leads.pageFilter') : null;
+        if (stored && pages.some((p) => p.page_id === stored)) {
+          setPageFilter(stored);
+        }
+      } catch { /* ignore */ }
+    })();
+    return () => { cancelled = true; };
+  }, [setConnectedPages, setPageFilter]);
+
+  // Persist the active page selection across reloads.
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    if (pageFilter) window.localStorage.setItem('leads.pageFilter', pageFilter);
+    else window.localStorage.removeItem('leads.pageFilter');
+  }, [pageFilter]);
 
   useEffect(() => {
     if (leadsNeedRefresh > 0) fetchLeads();
