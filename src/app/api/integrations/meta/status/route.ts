@@ -11,6 +11,44 @@ interface SubscribedApp {
   [key: string]: unknown;
 }
 
+/**
+ * Resolve the ad account id tied to a page so we can build a per-page
+ * Custom Audience Terms URL. A page belongs to a business that owns/uses
+ * ad accounts; in typical SMB setups it maps to a single ad account.
+ * Returns the numeric account_id (no `act_` prefix) or null if none found.
+ */
+async function resolveAdAccountId(pageId: string, userToken: string): Promise<string | null> {
+  const base = `https://graph.facebook.com/${META_GRAPH_VERSION}`;
+  // 1) Page's owning business → its ad accounts
+  try {
+    const r = await fetch(`${base}/${pageId}?fields=business&access_token=${encodeURIComponent(userToken)}`, { cache: 'no-store' });
+    if (r.ok) {
+      const body = await r.json() as { business?: { id?: string } };
+      const bizId = body?.business?.id;
+      if (bizId) {
+        for (const edge of ['owned_ad_accounts', 'client_ad_accounts']) {
+          const ar = await fetch(`${base}/${bizId}/${edge}?fields=account_id&limit=1&access_token=${encodeURIComponent(userToken)}`, { cache: 'no-store' });
+          if (ar.ok) {
+            const ad = await ar.json() as { data?: { account_id?: string }[] };
+            const acc = ad?.data?.[0]?.account_id;
+            if (acc) return acc;
+          }
+        }
+      }
+    }
+  } catch { /* ignore */ }
+  // 2) Fallback: the user's accessible ad accounts
+  try {
+    const r = await fetch(`${base}/me/adaccounts?fields=account_id&limit=1&access_token=${encodeURIComponent(userToken)}`, { cache: 'no-store' });
+    if (r.ok) {
+      const d = await r.json() as { data?: { account_id?: string }[] };
+      const acc = d?.data?.[0]?.account_id;
+      if (acc) return acc;
+    }
+  } catch { /* ignore */ }
+  return null;
+}
+
 async function checkLiveWebhookSubscription(pageId: string, pageToken: string): Promise<boolean> {
   try {
     const res = await fetch(
