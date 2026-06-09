@@ -34,6 +34,7 @@ export default function IntegrationsPage() {
   const searchParams = useSearchParams();
 
   const metaConnected = searchParams.get('meta_connected');
+  const metaPartial = searchParams.get('meta_partial');
   const metaAccountConnected = searchParams.get('meta_account_connected');
   const metaError = searchParams.get('meta_error');
 
