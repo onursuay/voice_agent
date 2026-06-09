@@ -96,6 +96,37 @@ export async function POST(request: NextRequest) {
           }));
           await supabase.from('lead_activities').insert(activities);
         }
+
+        // Meta Custom Audience sync for each affected lead (best-effort, time-bounded).
+        try {
+          const { data: syncLeads } = await supabase
+            .from('leads')
+            .select('id, email, phone, full_name, meta_ad_id, meta_capi_sent')
+            .eq('organization_id', orgId)
+            .in('id', lead_ids);
+          const { data: allStages } = await supabase
+            .from('crm_stages')
+            .select('id, name, position, is_won, is_lost')
+            .eq('organization_id', orgId);
+          const newStage = (allStages || []).find((s) => s.id === data.stage_id);
+          if (syncLeads && newStage) {
+            await Promise.race([
+              Promise.allSettled(
+                syncLeads.map((l) =>
+                  syncLeadStageToMeta({
+                    organizationId: orgId,
+                    lead: l as unknown as SyncLead,
+                    stage: newStage as SyncStage,
+                    allStages: (allStages || []) as SyncStage[],
+                  })
+                )
+              ),
+              new Promise((resolve) => setTimeout(resolve, 12000)),
+            ]);
+          }
+        } catch (e) {
+          console.error('[meta audience sync] bulk error:', e);
+        }
         break;
       }
 
