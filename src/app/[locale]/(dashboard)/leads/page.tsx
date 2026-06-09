@@ -65,6 +65,8 @@ export default function LeadsPage() {
   useEffect(() => { fetchLeads(); }, [fetchLeads]);
 
   // Load connected Meta pages for the account dropdown; restore saved selection.
+  // Resets the filter (and clears storage) when the saved page no longer exists,
+  // so a disconnected page never silently filters the list down to zero leads.
   useEffect(() => {
     let cancelled = false;
     (async () => {
@@ -75,20 +77,24 @@ export default function LeadsPage() {
         const pages = data.pages || [];
         if (cancelled) return;
         setConnectedPages(pages);
-        const stored = typeof window !== 'undefined' ? window.localStorage.getItem('leads.pageFilter') : null;
-        if (stored && pages.some((p) => p.page_id === stored)) {
-          setPageFilter(stored);
-        }
+        let stored: string | null = null;
+        try { stored = window.localStorage.getItem('leads.pageFilter'); } catch { /* unavailable */ }
+        const validId = stored && pages.some((p) => p.page_id === stored) ? stored : null;
+        hydratedRef.current = true;
+        setPageFilter(validId);
+        if (!validId) { try { window.localStorage.removeItem('leads.pageFilter'); } catch { /* unavailable */ } }
       } catch { /* ignore */ }
     })();
     return () => { cancelled = true; };
   }, [setConnectedPages, setPageFilter]);
 
-  // Persist the active page selection across reloads.
+  // Persist the active page selection across reloads (only after restore ran).
   useEffect(() => {
-    if (typeof window === 'undefined') return;
-    if (pageFilter) window.localStorage.setItem('leads.pageFilter', pageFilter);
-    else window.localStorage.removeItem('leads.pageFilter');
+    if (typeof window === 'undefined' || !hydratedRef.current) return;
+    try {
+      if (pageFilter) window.localStorage.setItem('leads.pageFilter', pageFilter);
+      else window.localStorage.removeItem('leads.pageFilter');
+    } catch { /* localStorage unavailable */ }
   }, [pageFilter]);
 
   useEffect(() => {
