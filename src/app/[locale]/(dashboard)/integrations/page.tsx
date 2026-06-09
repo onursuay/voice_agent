@@ -117,9 +117,11 @@ export default function IntegrationsPage() {
 
       {/* Feedback banners */}
       {metaConnected && (
-        <div className="flex items-center gap-2 rounded-xl border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-700">
-          <Check className="h-4 w-4 shrink-0" />
-          {t('integrations.metaSuccess')}
+        <div className={`flex items-center gap-2 rounded-xl border px-4 py-3 text-sm ${metaPartial ? 'border-amber-200 bg-amber-50 text-amber-700' : 'border-green-200 bg-green-50 text-green-700'}`}>
+          {metaPartial ? <AlertCircle className="h-4 w-4 shrink-0" /> : <Check className="h-4 w-4 shrink-0" />}
+          {metaPartial
+            ? t('integrations.metaPartial', { ok: metaConnected, fail: metaPartial })
+            : t('integrations.metaSuccessCount', { count: metaConnected })}
         </div>
       )}
       {metaAccountConnected && !metaConnected && (
