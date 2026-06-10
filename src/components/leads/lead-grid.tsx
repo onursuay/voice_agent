@@ -97,9 +97,25 @@ function SavedToast({ show, label }: { show: boolean; label: string }) {
 
 // ── Meta sync status toast ──────────────────────────────
 
-type SyncVariant = 'ok' | 'warn' | 'info';
+export type SyncVariant = 'ok' | 'warn' | 'info';
 
-function SyncToast({ toast }: { toast: { message: string; variant: SyncVariant } | null }) {
+/**
+ * Bottom-right status toast for the stage→Meta audience sync result. Driven by
+ * the store's `syncNotice` so both the inline grid stage change and the bulk
+ * action bar can surface a result; auto-hides ~3.8s after each new notice.
+ */
+export function SyncToast() {
+  const notice = useAppStore((s) => s.syncNotice);
+  const setSyncNotice = useAppStore((s) => s.setSyncNotice);
+  const timerRef = useRef<ReturnType<typeof setTimeout>>(undefined);
+
+  useEffect(() => {
+    if (!notice) return;
+    if (timerRef.current) clearTimeout(timerRef.current);
+    timerRef.current = setTimeout(() => setSyncNotice(null), 3800);
+    return () => { if (timerRef.current) clearTimeout(timerRef.current); };
+  }, [notice, setSyncNotice]);
+
   const styles: Record<SyncVariant, string> = {
     ok: 'bg-emerald-600',
     warn: 'bg-amber-500',
@@ -109,20 +125,36 @@ function SyncToast({ toast }: { toast: { message: string; variant: SyncVariant }
     <div
       className={cn(
         'pointer-events-none fixed bottom-16 right-6 z-50 flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium text-white shadow-lg transition-all duration-300',
-        toast ? `${styles[toast.variant]} translate-y-0 opacity-100` : 'translate-y-4 opacity-0'
+        notice ? `${styles[notice.variant]} translate-y-0 opacity-100` : 'translate-y-4 opacity-0'
       )}
     >
       <svg className="h-4 w-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
         <path strokeLinecap="round" strokeLinejoin="round" d="M2 12a10 10 0 1 0 20 0 10 10 0 0 0-20 0Z" />
         <path strokeLinecap="round" strokeLinejoin="round" d="M8 12.5 11 15.5 16 9" />
       </svg>
-      <span>{toast?.message}</span>
+      <span>{notice?.message}</span>
     </div>
   );
 }
 
 /** Stage→Meta sync result returned by the PATCH /api/leads/[id] endpoint. */
 type LeadMetaSync = { ok: boolean; reason?: string } | null | undefined;
+
+/** Maps a stage→Meta sync result to a toast message key + variant (null = stay silent). */
+export function syncNoticeFromMeta(
+  meta: LeadMetaSync,
+  t: (key: string, values?: Record<string, string | number>) => string,
+): { message: string; variant: SyncVariant } | null {
+  if (meta === undefined || meta === null) return null; // sync didn't run
+  if (meta.ok) return { message: t('sync.ok'), variant: 'ok' };
+  switch (meta.reason) {
+    case 'meta_not_connected': return { message: t('sync.notConnected'), variant: 'info' };
+    case 'no_ad_account': return { message: t('sync.noAd'), variant: 'info' };
+    case 'no_pii': return { message: t('sync.noPii'), variant: 'info' };
+    case 'tos_required': return { message: t('sync.tos'), variant: 'warn' };
+    default: return { message: t('sync.failed'), variant: 'warn' };
+  }
+}
 
 // ── Context Menu ────────────────────────────────────────
 
