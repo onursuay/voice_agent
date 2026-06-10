@@ -1130,11 +1130,7 @@ export function LeadGrid() {
                         <StageDropdown
                           stages={stages}
                           currentStageId={lead.stage_id}
-                          onSelect={(stageId) => {
-                            const stage = stages.find((s) => s.id === stageId);
-                            handleInlineSave(lead.id, 'stage_id', stageId);
-                            if (stage) updateLead(lead.id, { stage });
-                          }}
+                          onSelect={(stageId) => handleStageChange(lead.id, stageId)}
                           onClose={() => setDropdownCell(null)}
                         />
                       </div>
