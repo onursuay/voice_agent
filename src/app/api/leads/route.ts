@@ -46,6 +46,7 @@ export async function GET(request: NextRequest) {
     }
     if (stageId) query = query.eq('stage_id', stageId);
     if (metaPageId) query = query.eq('meta_page_id', metaPageId);
+    if (metaFormId) query = query.eq('meta_form_id', metaFormId);
     if (sourcePlatform) query = query.eq('source_platform', sourcePlatform);
     if (assignedTo) query = query.eq('assigned_to', assignedTo);
     if (tags) {
