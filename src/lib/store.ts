@@ -91,6 +91,10 @@ interface AppStore {
   // Bulk action trigger (e.g. from context menu)
   bulkActionModal: 'stage' | 'assign' | 'tag' | null;
   setBulkActionModal: (modal: 'stage' | 'assign' | 'tag' | null) => void;
+
+  // Transient status toast (e.g. stage→Meta audience sync result)
+  syncNotice: { message: string; variant: 'ok' | 'warn' | 'info' } | null;
+  setSyncNotice: (notice: { message: string; variant: 'ok' | 'warn' | 'info' } | null) => void;
 }
 
 export const useAppStore = create<AppStore>((set, get) => ({
