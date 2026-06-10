@@ -261,7 +261,21 @@
       "first_seen_at": "First Seen",
       "last_activity_at": "Last Activity"
     },
-    "saved": "Saved"
+    "saved": "Saved",
+    "sync": {
+      "ok": "Synced to Meta audience",
+      "notConnected": "Meta not connected — sync skipped",
+      "noAd": "Lead didn't come from an ad — Meta sync skipped",
+      "noPii": "No email/phone — Meta sync skipped",
+      "tos": "Custom Audience Terms must be accepted",
+      "failed": "Meta sync failed",
+      "pending": "Meta sync running in the background…",
+      "bulkOk": "{count} leads synced to Meta",
+      "bulkMixed": "Meta: {synced} synced · {skipped} skipped · {failed} failed"
+    },
+    "formFilter": "Form",
+    "noForms": "No forms found",
+    "forms": "Lead Forms"
   },
   "settings": {
     "title": "Settings",
