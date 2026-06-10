@@ -271,11 +271,6 @@ export default function IntegrationsPage() {
                     </div>
                   ))}
                 </div>
-              ) : (
-                <div className="mb-3 rounded-xl border border-dashed border-gray-200 bg-gray-50 px-4 py-5 text-center">
-                  <p className="text-sm font-medium text-gray-700 mb-1">{t('integrations.metaNoPagesYet')}</p>
-                  <p className="text-xs text-gray-500">{t('integrations.metaNoPagesYetDesc')}</p>
-                </div>
               )}
 
               <button
