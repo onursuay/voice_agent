@@ -66,7 +66,7 @@ export default function LeadsPage() {
     } finally {
       setLoading(false);
     }
-  }, [searchQuery, filters, sort, setLeads, t, perPage, sourceFilter, importJobFilter, pageFilter]);
+  }, [searchQuery, filters, sort, setLeads, t, perPage, sourceFilter, importJobFilter, formFilter, pageFilter]);
 
   useEffect(() => { if (pagesReady) fetchLeads(); }, [fetchLeads, pagesReady]);
 
