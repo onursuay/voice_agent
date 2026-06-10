@@ -756,6 +756,169 @@ function TableFilterDropdown() {
   );
 }
 
+// ── Meta Lead Form Filter (dynamic columns) ─────────────
+
+// Columns always shown in form mode (identity + CRM-system columns). The
+// form's collected fields (email/phone/city/company…) are added on top.
+const FORM_CORE_VISIBLE = ['full_name', 'stage', 'source_platform', 'assigned_to', 'first_seen_at', 'last_activity_at'];
+const ALL_DATA_COLUMNS = ['full_name', 'phone', 'email', 'source_platform', 'stage', 'score', 'assigned_to', 'campaign_name', 'city', 'company', 'tags', 'first_seen_at', 'last_activity_at'];
+
+type FormItem = { id: string; name: string; pageId: string; pageName: string | null };
+
+function FormFilterDropdown() {
+  const t = useTranslations('leads');
+  const connectedPages = useAppStore((s) => s.connectedPages);
+  const formFilter = useAppStore((s) => s.formFilter);
+  const setFormFilter = useAppStore((s) => s.setFormFilter);
+  const setImportJobFilter = useAppStore((s) => s.setImportJobFilter);
+  const setHiddenColumns = useAppStore((s) => s.setHiddenColumns);
+  const setColumnLabelOverrides = useAppStore((s) => s.setColumnLabelOverrides);
+  const [open, setOpen] = useState(false);
+  const [forms, setForms] = useState<FormItem[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [loaded, setLoaded] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    function handleClickOutside(e: MouseEvent) {
+      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
+    }
+    if (open) document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [open]);
+
+  const loadForms = async () => {
+    if (loaded || connectedPages.length === 0) return;
+    setLoading(true);
+    try {
+      const results = await Promise.all(
+        connectedPages.map(async (p) => {
+          try {
+            const res = await fetch(`/api/integrations/meta/forms?page_id=${encodeURIComponent(p.page_id)}`);
+            if (!res.ok) return [] as FormItem[];
+            const data = await res.json();
+            return ((data.forms || []) as { id: string; name?: string }[]).map((f) => ({
+              id: f.id,
+              name: f.name || f.id,
+              pageId: p.page_id,
+              pageName: p.page_name,
+            }));
+          } catch {
+            return [] as FormItem[];
+          }
+        })
+      );
+      setForms(results.flat());
+      setLoaded(true);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleOpen = () => {
+    setOpen((o) => !o);
+    if (!open) loadForms();
+  };
+
+  const selectForm = async (form: FormItem) => {
+    // Resolve which grid columns this form actually collects.
+    let columns: string[] = ['full_name', 'phone', 'email']; // safe fallback
+    try {
+      const res = await fetch(
+        `/api/integrations/meta/forms?page_id=${encodeURIComponent(form.pageId)}&form_id=${encodeURIComponent(form.id)}`
+      );
+      if (res.ok) {
+        const data = await res.json();
+        if (Array.isArray(data.columns) && data.columns.length > 0) columns = data.columns;
+      }
+    } catch { /* keep fallback */ }
+
+    const visible = new Set<string>([...FORM_CORE_VISIBLE, ...columns]);
+    const newHidden = new Set<string>();
+    ALL_DATA_COLUMNS.forEach((k) => { if (!visible.has(k)) newHidden.add(k); });
+
+    setImportJobFilter(null); // mutually exclusive with the import filter
+    setFormFilter({ id: form.id, name: form.name, pageId: form.pageId });
+    setHiddenColumns(newHidden);
+    setColumnLabelOverrides({});
+    setOpen(false);
+  };
+
+  const clearFilter = () => {
+    setFormFilter(null);
+    setHiddenColumns(new Set(DEFAULT_HIDDEN_COLUMNS));
+    setColumnLabelOverrides({});
+    setOpen(false);
+  };
+
+  // Hide entirely when no Meta pages are connected (nothing to pick from).
+  if (connectedPages.length === 0) return null;
+
+  return (
+    <div ref={ref} className="relative">
+      <button
+        onClick={handleOpen}
+        className={cn(
+          'flex items-center gap-1.5 rounded-lg border px-3 py-2 text-sm transition-colors',
+          formFilter
+            ? 'border-emerald-300 bg-emerald-50 text-emerald-700'
+            : 'border-gray-300 bg-white text-gray-700 hover:bg-gray-50'
+        )}
+      >
+        <span className="max-w-[120px] truncate">{formFilter ? formFilter.name : t('formFilter')}</span>
+        {formFilter ? (
+          <X
+            className="h-3.5 w-3.5 text-emerald-400 hover:text-emerald-700"
+            onClick={(e) => { e.stopPropagation(); clearFilter(); }}
+          />
+        ) : (
+          <ChevronDown className={`h-3.5 w-3.5 text-gray-400 transition-transform duration-150 ${open ? 'rotate-180' : ''}`} />
+        )}
+      </button>
+
+      {open && (
+        <div className="absolute left-0 top-full z-50 mt-1.5 w-72 overflow-hidden rounded-xl border border-gray-200 bg-white shadow-lg">
+          <div className="border-b border-gray-100 px-3 py-2">
+            <p className="text-xs font-semibold uppercase tracking-wider text-gray-400">{t('forms')}</p>
+          </div>
+          {loading && (
+            <div className="flex items-center justify-center py-4">
+              <Loader2 className="h-4 w-4 animate-spin text-gray-400" />
+            </div>
+          )}
+          {!loading && forms.length === 0 && (
+            <p className="px-3 py-3 text-sm text-gray-400">{t('noForms')}</p>
+          )}
+          {!loading && formFilter && (
+            <button
+              onClick={clearFilter}
+              className="flex w-full items-center gap-2 px-3 py-2 text-sm text-red-500 hover:bg-red-50"
+            >
+              <X className="h-3.5 w-3.5" />
+              {t('clearFilter')}
+            </button>
+          )}
+          {!loading && forms.map((form) => (
+            <button
+              key={`${form.pageId}:${form.id}`}
+              onClick={() => selectForm(form)}
+              className={cn(
+                'flex w-full flex-col items-start px-3 py-2.5 text-left transition-colors hover:bg-gray-50',
+                formFilter?.id === form.id ? 'bg-emerald-50' : ''
+              )}
+            >
+              <span className={cn('truncate text-sm font-medium', formFilter?.id === form.id ? 'text-emerald-700' : 'text-gray-800')}>
+                {form.name}
+              </span>
+              {form.pageName && <span className="truncate text-xs text-gray-400">{form.pageName}</span>}
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
 // ── Per-page Dropdown ────────────────────────────────────
 
 const PER_PAGE_OPTIONS = [25, 50, 100, 150, 200, 250, 300, 350, 400, 450, 500];
