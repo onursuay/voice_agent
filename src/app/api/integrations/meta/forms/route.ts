@@ -33,6 +33,56 @@ async function fetchLeadgenForms(
   return parsed.data ?? [];
 }
 
+interface FormQuestion {
+  key?: string;
+  type?: string;
+  label?: string;
+}
+
+/**
+ * Maps a single Lead Form's questions to the lead-grid column keys it collects,
+ * so the table can hide columns the form never asks for (e.g. no email field →
+ * hide the E-POSTA column). Only standard fields map to columns; custom
+ * questions land in custom_fields and have no dedicated column.
+ */
+async function fetchFormColumns(
+  formId: string,
+  pageToken: string
+): Promise<{ name: string | null; columns: string[]; questionCount: number }> {
+  const url = new URL(
+    `https://graph.facebook.com/${META_GRAPH_VERSION}/${formId}`
+  );
+  url.searchParams.set('fields', 'name,questions{key,type,label}');
+  url.searchParams.set('access_token', pageToken);
+
+  const res = await fetch(url.toString(), { cache: 'no-store' });
+  const body = await res.text();
+  console.log(`[Meta form fields GET] form=${formId} status=${res.status} body=${body.slice(0, 500)}`);
+  if (!res.ok) {
+    throw new Error(`form fields fetch failed (${res.status}): ${body.slice(0, 200)}`);
+  }
+
+  const parsed = JSON.parse(body) as {
+    name?: string;
+    questions?: { data?: FormQuestion[] } | FormQuestion[];
+  };
+  const questions: FormQuestion[] = Array.isArray(parsed.questions)
+    ? parsed.questions
+    : parsed.questions?.data ?? [];
+
+  const columns = new Set<string>();
+  for (const q of questions) {
+    const token = String(q.type || q.key || '').toUpperCase();
+    if (token.includes('EMAIL')) columns.add('email');
+    else if (token.includes('PHONE')) columns.add('phone');
+    else if (token.includes('NAME')) columns.add('full_name');
+    else if (token.includes('CITY')) columns.add('city');
+    else if (token.includes('COMPANY')) columns.add('company');
+  }
+
+  return { name: parsed.name ?? null, columns: [...columns], questionCount: questions.length };
+}
+
 /**
  * GET /api/integrations/meta/forms?page_id=xxx
  * Returns Lead Forms for the given connected page.
