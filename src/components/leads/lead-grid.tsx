@@ -923,6 +923,7 @@ export function LeadGrid() {
   return (
     <div ref={gridRef} className="h-full w-full overflow-auto rounded-lg border border-gray-200 bg-white">
       <SavedToast show={showSaved} label={t('saved')} />
+      <SyncToast toast={syncToast} />
 
       {contextMenu && (() => {
         const lead = leads.find((l) => l.id === contextMenu.leadId);
