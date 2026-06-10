@@ -571,12 +571,14 @@ const FIELD_TO_COLUMN: Record<string, string> = {
   assigned_to: 'assigned_to',
 };
 
-// Columns that are always visible regardless of import mapping
-// Always visible: core identity columns + CRM system columns (stage, score, assigned, tags etc.)
+// Columns that are always visible regardless of import mapping.
+// Core identity + CRM system columns. score/campaign_name/tags are intentionally
+// left out so they stay hidden-by-default (see DEFAULT_HIDDEN_COLUMNS); the user
+// can still re-enable them from the "Kolonlar" menu.
 const ALWAYS_VISIBLE = new Set([
   '_select', '_row_num',
   'full_name', 'phone', 'email',
-  'stage', 'score', 'assigned_to', 'tags', 'first_seen_at', 'last_activity_at',
+  'stage', 'assigned_to', 'first_seen_at', 'last_activity_at',
 ]);
 
 type ImportJobSummary = {
