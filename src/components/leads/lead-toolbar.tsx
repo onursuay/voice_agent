@@ -1017,6 +1017,7 @@ export function LeadToolbar() {
         <AccountFilter />
         <LeadFilters />
         <SourceFilterDropdown />
+        <FormFilterDropdown />
         <TableFilterDropdown />
         <SortDropdown />
         <ColumnVisibilityDropdown />
