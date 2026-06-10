@@ -118,7 +118,8 @@ export async function POST(request: NextRequest) {
             .eq('organization_id', orgId);
           const newStage = (allStages || []).find((s) => s.id === data.stage_id);
           if (syncLeads && newStage) {
-            await Promise.race([
+            const TIMEOUT = Symbol('timeout');
+            const raceResult = await Promise.race([
               Promise.allSettled(
                 syncLeads.map((l) =>
                   syncLeadStageToMeta({
@@ -129,8 +130,28 @@ export async function POST(request: NextRequest) {
                   })
                 )
               ),
-              new Promise((resolve) => setTimeout(resolve, 12000)),
+              new Promise<typeof TIMEOUT>((resolve) => setTimeout(() => resolve(TIMEOUT), 12000)),
             ]);
+
+            if (raceResult === TIMEOUT) {
+              metaSync = { pending: true, total: syncLeads.length };
+            } else {
+              const settled = raceResult as PromiseSettledResult<AudienceSyncResult>[];
+              let synced = 0, skipped = 0, failed = 0;
+              let reason: string | undefined;
+              for (const r of settled) {
+                if (r.status === 'fulfilled' && r.value.ok) {
+                  synced++;
+                } else if (r.status === 'fulfilled' && SKIP_REASONS.has(r.value.reason || '')) {
+                  skipped++;
+                  if (!reason) reason = r.value.reason;
+                } else {
+                  failed++;
+                  if (!reason) reason = r.status === 'fulfilled' ? r.value.reason : 'sync_failed';
+                }
+              }
+              metaSync = { total: settled.length, synced, skipped, failed, reason };
+            }
           }
         } catch (e) {
           console.error('[meta audience sync] bulk error:', e);
