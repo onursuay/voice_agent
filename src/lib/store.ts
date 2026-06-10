@@ -186,4 +186,7 @@ export const useAppStore = create<AppStore>((set, get) => ({
 
   bulkActionModal: null,
   setBulkActionModal: (modal) => set({ bulkActionModal: modal }),
+
+  syncNotice: null,
+  setSyncNotice: (syncNotice) => set({ syncNotice }),
 }));
