@@ -157,7 +157,7 @@ export const useAppStore = create<AppStore>((set, get) => ({
   leadsNeedRefresh: 0,
   triggerLeadsRefresh: () => set((s) => ({ leadsNeedRefresh: s.leadsNeedRefresh + 1 })),
 
-  hiddenColumns: new Set(),
+  hiddenColumns: new Set(DEFAULT_HIDDEN_COLUMNS),
   toggleColumn: (col) => {
     const current = new Set(get().hiddenColumns);
     if (current.has(col)) current.delete(col);
