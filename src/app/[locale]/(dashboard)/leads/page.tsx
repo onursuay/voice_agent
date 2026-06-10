@@ -140,6 +140,7 @@ export default function LeadsPage() {
 
       {activeLeadId && <LeadDetailDrawer />}
       <BulkActionBar />
+      <SyncToast />
     </div>
   );
 }
