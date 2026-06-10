@@ -24,6 +24,7 @@ export async function GET(request: NextRequest) {
     const tags = params.get('tags'); // comma-separated
     const importJobId = params.get('import_job_id');
     const metaPageId = params.get('meta_page_id'); // filter by connected Meta page/account
+    const metaFormId = params.get('meta_form_id'); // filter by Meta Lead Form
     const sortBy = params.get('sort_by') || 'created_at';
     // Default (no explicit sort) = ascending on created_at, so the oldest leads
     // stay on top and newly-arriving leads append BELOW the filled rows instead
