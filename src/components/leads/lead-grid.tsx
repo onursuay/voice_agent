@@ -447,10 +447,12 @@ export function LeadGrid() {
   const [columnWidths, setColumnWidths] = useState<Record<string, number>>({});
   const [newRowData, setNewRowData] = useState<Record<string, string>>({});
   const [hoveredRow, setHoveredRow] = useState<number | null>(null);
+  const [syncToast, setSyncToast] = useState<{ message: string; variant: SyncVariant } | null>(null);
 
   const gridRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const savedTimerRef = useRef<ReturnType<typeof setTimeout>>(undefined);
+  const syncTimerRef = useRef<ReturnType<typeof setTimeout>>(undefined);
 
   const visibleColumns = useMemo(() =>
     translatedColumns.filter((col) => col.key === '_select' || col.key === '_row_num' || !hiddenColumns.has(col.key)),
