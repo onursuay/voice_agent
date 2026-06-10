@@ -52,6 +52,7 @@ export default function LeadsPage() {
       if (filters.length > 0) params.set('filters', JSON.stringify(filters));
       if (sourceFilter) params.set('source_platform', sourceFilter);
       if (importJobFilter) params.set('import_job_id', importJobFilter.id);
+      if (formFilter) params.set('meta_form_id', formFilter.id);
       if (pageFilter) params.set('meta_page_id', pageFilter);
       params.set('per_page', String(perPage));
 
