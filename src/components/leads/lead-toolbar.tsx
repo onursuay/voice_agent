@@ -667,7 +667,7 @@ function TableFilterDropdown() {
 
   const clearFilter = () => {
     setImportJobFilter(null);
-    setHiddenColumns(new Set());
+    setHiddenColumns(new Set(DEFAULT_HIDDEN_COLUMNS));
     setColumnLabelOverrides({});
     setOpen(false);
   };
