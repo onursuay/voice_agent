@@ -4,7 +4,7 @@ import { useEffect, useState, useCallback } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { useRouter } from '@/i18n/navigation';
 import { useTranslations } from 'next-intl';
-import { AlertCircle, Check, RefreshCw, Trash2, Plus, Link2, ShieldCheck } from 'lucide-react';
+import { AlertCircle, Check, RefreshCw, Trash2, Plus, ShieldCheck } from 'lucide-react';
 
 type MetaConnection = {
   id: string;
