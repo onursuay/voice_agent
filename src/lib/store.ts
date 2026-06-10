@@ -150,6 +150,9 @@ export const useAppStore = create<AppStore>((set, get) => ({
   importJobFilter: null,
   setImportJobFilter: (importJobFilter) => set({ importJobFilter }),
 
+  formFilter: null,
+  setFormFilter: (formFilter) => set({ formFilter }),
+
   connectedPages: [],
   setConnectedPages: (connectedPages) => set({ connectedPages }),
   pageFilter: null,
