@@ -524,28 +524,6 @@ export function LeadGrid() {
     else selectAllLeads();
   }, [allSelected, someSelected, clearSelection, selectAllLeads]);
 
-  // ── Meta sync status toast ────────────────────────────
-  const showSyncToast = useCallback((meta: LeadMetaSync) => {
-    if (meta === undefined || meta === null) return; // sync didn't run → stay silent
-    let variant: SyncVariant = 'info';
-    let key = 'sync.failed';
-    if (meta.ok) {
-      variant = 'ok';
-      key = 'sync.ok';
-    } else {
-      switch (meta.reason) {
-        case 'meta_not_connected': key = 'sync.notConnected'; break;
-        case 'no_ad_account': key = 'sync.noAd'; break;
-        case 'no_pii': key = 'sync.noPii'; break;
-        case 'tos_required': variant = 'warn'; key = 'sync.tos'; break;
-        default: variant = 'warn'; key = 'sync.failed';
-      }
-    }
-    setSyncToast({ message: t(key as Parameters<typeof t>[0]), variant });
-    if (syncTimerRef.current) clearTimeout(syncTimerRef.current);
-    syncTimerRef.current = setTimeout(() => setSyncToast(null), 3800);
-  }, [t]);
-
   // ── Stage change (special-cased: surfaces the Meta audience sync result) ──
   const handleStageChange = useCallback((leadId: string, stageId: string) => {
     const stage = stages.find((s) => s.id === stageId);
@@ -557,9 +535,14 @@ export function LeadGrid() {
       body: JSON.stringify({ stage_id: stageId }),
     })
       .then((r) => (r.ok ? r.json() : null))
-      .then((data) => { if (data && 'meta_sync' in data) showSyncToast(data.meta_sync as LeadMetaSync); })
+      .then((data) => {
+        if (data && 'meta_sync' in data) {
+          const notice = syncNoticeFromMeta(data.meta_sync as LeadMetaSync, t as (k: string, v?: Record<string, string | number>) => string);
+          if (notice) setSyncNotice(notice);
+        }
+      })
       .catch(console.error);
-  }, [stages, updateLead, flashSaved, showSyncToast]);
+  }, [stages, updateLead, flashSaved, setSyncNotice, t]);
 
   // ── Save existing lead cell ───────────────────────────
   const handleInlineSave = useCallback((leadId: string, field: string, value: string | number | string[] | null) => {
