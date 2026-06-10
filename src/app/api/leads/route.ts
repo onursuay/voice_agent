@@ -25,7 +25,10 @@ export async function GET(request: NextRequest) {
     const importJobId = params.get('import_job_id');
     const metaPageId = params.get('meta_page_id'); // filter by connected Meta page/account
     const sortBy = params.get('sort_by') || 'created_at';
-    const sortDir = params.get('sort_dir') === 'asc' ? true : false;
+    // Default (no explicit sort) = ascending on created_at, so the oldest leads
+    // stay on top and newly-arriving leads append BELOW the filled rows instead
+    // of jumping to the top. Explicit UI sorting still honours asc/desc.
+    const sortDir = params.get('sort_dir') === 'desc' ? false : true;
     const page = Math.max(1, parseInt(params.get('page') || '1', 10));
     const perPage = Math.min(500, Math.max(1, parseInt(params.get('per_page') || '25', 10)));
 
