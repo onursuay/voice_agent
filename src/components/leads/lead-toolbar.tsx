@@ -292,9 +292,25 @@ export function BulkActionBar() {
         const body = await res.json().catch(() => ({}));
         throw new Error(body.error || 'An error occurred');
       }
+      const data = await res.json().catch(() => ({}));
       clearSelection();
       setModal(null);
       triggerLeadsRefresh();
+
+      // Surface the stage→Meta audience sync summary (best-effort, never blocks).
+      const m = action === 'stage' ? data?.meta_sync : null;
+      if (m) {
+        if (m.pending) {
+          setSyncNotice({ message: t('sync.pending'), variant: 'info' });
+        } else if (m.synced > 0 && m.failed === 0 && m.skipped === 0) {
+          setSyncNotice({ message: t('sync.bulkOk', { count: m.synced }), variant: 'ok' });
+        } else if (m.synced > 0 || m.skipped > 0 || m.failed > 0) {
+          setSyncNotice({
+            message: t('sync.bulkMixed', { synced: m.synced, skipped: m.skipped, failed: m.failed }),
+            variant: m.failed > 0 ? 'warn' : 'info',
+          });
+        }
+      }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
     } finally {
