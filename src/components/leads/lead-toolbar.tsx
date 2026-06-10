@@ -17,7 +17,7 @@ import {
   Loader2,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { useAppStore } from '@/lib/store';
+import { useAppStore, DEFAULT_HIDDEN_COLUMNS } from '@/lib/store';
 import { Button } from '@/components/ui/button';
 import { LeadFilters } from './lead-filters';
 import { AccountFilter } from './account-filter';
