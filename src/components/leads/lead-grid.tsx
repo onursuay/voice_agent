@@ -95,6 +95,35 @@ function SavedToast({ show, label }: { show: boolean; label: string }) {
   );
 }
 
+// ── Meta sync status toast ──────────────────────────────
+
+type SyncVariant = 'ok' | 'warn' | 'info';
+
+function SyncToast({ toast }: { toast: { message: string; variant: SyncVariant } | null }) {
+  const styles: Record<SyncVariant, string> = {
+    ok: 'bg-emerald-600',
+    warn: 'bg-amber-500',
+    info: 'bg-gray-700',
+  };
+  return (
+    <div
+      className={cn(
+        'pointer-events-none fixed bottom-16 right-6 z-50 flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium text-white shadow-lg transition-all duration-300',
+        toast ? `${styles[toast.variant]} translate-y-0 opacity-100` : 'translate-y-4 opacity-0'
+      )}
+    >
+      <svg className="h-4 w-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M2 12a10 10 0 1 0 20 0 10 10 0 0 0-20 0Z" />
+        <path strokeLinecap="round" strokeLinejoin="round" d="M8 12.5 11 15.5 16 9" />
+      </svg>
+      <span>{toast?.message}</span>
+    </div>
+  );
+}
+
+/** Stage→Meta sync result returned by the PATCH /api/leads/[id] endpoint. */
+type LeadMetaSync = { ok: boolean; reason?: string } | null | undefined;
+
 // ── Context Menu ────────────────────────────────────────
 
 interface ContextMenuLabels {
