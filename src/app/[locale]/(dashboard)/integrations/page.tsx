@@ -216,7 +216,7 @@ export default function IntegrationsPage() {
           {/* ── Account connected: show page list + add button ── */}
           {!metaLoading && isAccountConnected && (
             <>
-              {hasConnections ? (
+              {hasConnections && (
                 <div className="mb-3 space-y-1.5">
                   <p className="text-[10px] font-semibold uppercase tracking-wider text-gray-400 mb-2">
                     {t('integrations.metaConnectedPages')} ({connections.length})
