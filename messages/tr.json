@@ -259,7 +259,21 @@
       "first_seen_at": "İlk Görülme",
       "last_activity_at": "Son Aktivite"
     },
-    "saved": "Kaydedildi"
+    "saved": "Kaydedildi",
+    "sync": {
+      "ok": "Meta hedef kitlesine senkronlandı",
+      "notConnected": "Meta bağlı değil — senkron atlandı",
+      "noAd": "Lead bir reklamdan gelmediği için Meta senkronu atlandı",
+      "noPii": "E-posta/telefon yok — Meta senkronu atlandı",
+      "tos": "Özel Hedef Kitle Koşulları kabul edilmeli",
+      "failed": "Meta senkronu başarısız",
+      "pending": "Meta senkronu arka planda sürüyor…",
+      "bulkOk": "{count} lead Meta'ya senkronlandı",
+      "bulkMixed": "Meta: {synced} senkron · {skipped} atlandı · {failed} başarısız"
+    },
+    "formFilter": "Form",
+    "noForms": "Form bulunamadı",
+    "forms": "Lead Formları"
   },
   "settings": {
     "title": "Ayarlar",
