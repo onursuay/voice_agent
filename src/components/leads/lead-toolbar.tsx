@@ -677,6 +677,7 @@ function TableFilterDropdown() {
       if (!mappedFields.has(k)) newHidden.add(k);
     });
 
+    setFormFilter(null); // mutually exclusive with the form filter
     setImportJobFilter({ id: job.id, name: job.file_name, columns: [...mappedFields] });
     setHiddenColumns(newHidden);
     setColumnLabelOverrides(labelOverrides);
