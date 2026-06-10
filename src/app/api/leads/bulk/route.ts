@@ -1,7 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createServerSupabaseClient } from '@/lib/supabase/server';
 import { createAdminSupabaseClient } from '@/lib/supabase/admin';
-import { syncLeadStageToMeta, type SyncLead, type SyncStage } from '@/lib/crm/metaAudienceSync';
+import { syncLeadStageToMeta, type SyncLead, type SyncStage, type AudienceSyncResult } from '@/lib/crm/metaAudienceSync';
+
+/** Aggregated stage→Meta sync outcome returned to the UI for the bulk action. */
+type BulkMetaSync =
+  | { pending: true; total: number }
+  | { total: number; synced: number; skipped: number; failed: number; reason?: string };
+
+const SKIP_REASONS = new Set(['meta_not_connected', 'no_ad_account', 'no_pii']);
 
 export async function POST(request: NextRequest) {
   try {
