@@ -217,7 +217,7 @@ export async function POST(request: NextRequest) {
         return NextResponse.json({ error: `Unknown action: ${action}` }, { status: 400 });
     }
 
-    return NextResponse.json({ updated });
+    return NextResponse.json({ updated, meta_sync: metaSync });
   } catch (err) {
     console.error('POST /api/leads/bulk error:', err);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
