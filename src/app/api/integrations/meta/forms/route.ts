@@ -124,6 +124,20 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ error: 'Missing page token' }, { status: 500 });
   }
 
+  // When a specific form is requested, return the grid columns it collects
+  // (used by the lead table's form filter to drive dynamic columns).
+  const formId = request.nextUrl.searchParams.get('form_id');
+  if (formId) {
+    try {
+      const result = await fetchFormColumns(formId, pageToken);
+      return NextResponse.json(result);
+    } catch (error) {
+      const message = error instanceof Error ? error.message : 'Unknown error';
+      console.error(`[Meta form fields GET] failed form=${formId}: ${message}`);
+      return NextResponse.json({ error: message }, { status: 502 });
+    }
+  }
+
   try {
     const forms = await fetchLeadgenForms(pageId, pageToken);
 
