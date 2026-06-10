@@ -1,6 +1,12 @@
 import { create } from 'zustand';
 import type { AppSession, Lead, CrmStage, FilterConfig, SortConfig, OrganizationMember } from './types';
 
+// Columns hidden by default (still toggleable via the "Kolonlar" menu). These
+// are CRM-internal extras that clutter the table for most lead sources; the
+// user can re-enable any of them. Used both as the initial state and as the
+// baseline that filters (import/form) reset back to.
+export const DEFAULT_HIDDEN_COLUMNS = ['score', 'campaign_name', 'tags'];
+
 interface AppStore {
   // Session
   session: AppSession | null;
