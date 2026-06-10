@@ -4,7 +4,7 @@ import React, { useEffect, useState, useCallback, useRef } from 'react';
 import { Users } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useAppStore } from '@/lib/store';
-import { LeadGrid } from '@/components/leads/lead-grid';
+import { LeadGrid, SyncToast } from '@/components/leads/lead-grid';
 import { LeadToolbar, BulkActionBar } from '@/components/leads/lead-toolbar';
 import { LeadDetailDrawer } from '@/components/leads/lead-detail-drawer';
 import { EmptyState } from '@/components/ui/empty-state';
