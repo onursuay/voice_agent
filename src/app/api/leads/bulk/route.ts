@@ -33,6 +33,7 @@ export async function POST(request: NextRequest) {
     }
 
     let updated = 0;
+    let metaSync: BulkMetaSync | undefined;
 
     switch (action) {
       case 'assign': {
