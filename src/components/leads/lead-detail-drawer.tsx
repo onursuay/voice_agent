@@ -408,6 +408,9 @@ function DetailTab({ lead }: { lead: Lead }) {
         <InfoRow icon={<Globe className="h-4 w-4" />} label={t('drawer.country')} value={lead.country} />
       </Section>
 
+      {/* Contact Outcome / Accountability */}
+      {lead.phone && <ContactSection lead={lead} />}
+
       {/* CRM Section */}
       <Section title={t('drawer.crm')}>
         <div className="space-y-3">
