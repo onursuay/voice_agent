@@ -485,6 +485,18 @@ export function BulkActionBar() {
             <Button variant="secondary" size="sm" icon={<Tag className="h-4 w-4" />} onClick={() => openModal('tag')}>
               {t('addTag')}
             </Button>
+            <Button
+              variant="secondary"
+              size="sm"
+              icon={runningRules ? <Loader2 className="h-4 w-4 animate-spin" /> : <Play className="h-4 w-4" />}
+              onClick={handleRunRules}
+              disabled={runningRules}
+            >
+              {runningRules ? tRouting('running') : tRouting('runRules')}
+            </Button>
+            {runRulesResult && (
+              <span className="text-xs text-gray-600">{runRulesResult}</span>
+            )}
             <Button variant="danger" size="sm" icon={<Trash2 className="h-4 w-4" />} onClick={() => openModal('delete')}>
               {t('delete')}
             </Button>
