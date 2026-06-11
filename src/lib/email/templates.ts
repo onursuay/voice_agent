@@ -40,10 +40,25 @@ export function leadToVars(lead: LeadLike): Record<string, string> {
   };
 }
 
+// Lead değerleri dış kaynaktan gelir (güvenilmez). Şablonun KENDİ HTML'i korunur;
+// yalnızca {{değişken}} ile gömülen değerler kaçışlanır (HTML/e-posta injection'a karşı).
+function escapeHtml(s: string): string {
+  return s
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
 export function renderTemplate(
   tpl: RenderableTemplate,
   vars: Record<string, string>
 ): { subject: string; html: string } {
-  const sub = (s: string) => s.replace(/\{\{\s*(\w+)\s*\}\}/g, (_, k) => vars[k] ?? '-');
-  return { subject: sub(tpl.subject), html: sub(tpl.body) };
+  // Subject düz metin: CR/LF temizle (header injection'a karşı). Body: HTML-escape.
+  const subjectSub = (s: string) =>
+    s.replace(/\{\{\s*(\w+)\s*\}\}/g, (_, k) => (vars[k] ?? '-').replace(/[\r\n]+/g, ' '));
+  const bodySub = (s: string) =>
+    s.replace(/\{\{\s*(\w+)\s*\}\}/g, (_, k) => escapeHtml(vars[k] ?? '-'));
+  return { subject: subjectSub(tpl.subject), html: bodySub(tpl.body) };
 }
