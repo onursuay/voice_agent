@@ -295,7 +295,8 @@
       "pipeline": "Pipeline Stages",
       "profile": "Profile",
       "integrations": "Integrations",
-      "logs": "Log Records"
+      "logs": "Log Records",
+      "access": "Access Management"
     },
     "logs": {
       "title": "Log Records",
