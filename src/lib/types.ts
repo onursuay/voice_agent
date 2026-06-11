@@ -96,6 +96,12 @@ export interface Lead {
   routing_status?: string | null;
   routing_last_emailed_at?: string | null;
   routing_rule_id?: string | null;
+  // Accountability / Contact tracking
+  assigned_at?: string | null;
+  first_contact_at?: string | null;
+  last_contact_at?: string | null;
+  contact_attempts?: number | null;
+  contact_outcome?: string | null;
   // Joined
   stage?: CrmStage;
   assigned_user?: Profile;
