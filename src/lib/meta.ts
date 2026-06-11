@@ -145,11 +145,14 @@ export function parseMetaLeadFields(
     const value = field.values?.[0]?.trim() || '';
     if (!value) continue;
 
-    const normalizedName = field.name.toLowerCase().trim();
-    const mappedKey = FIELD_NAME_MAP[normalizedName];
+    const normalizedName = normalizeFieldName(field.name);
+    const mappedKey = FIELD_NAME_MAP[normalizedName] ?? fuzzyClassifyField(normalizedName);
 
     if (mappedKey) {
-      result[mappedKey] = value;
+      // Don't let a later unmapped duplicate clobber an already-filled field
+      if (!result[mappedKey]) result[mappedKey] = value;
+      // Keep original raw value in custom_fields too, so nothing is ever lost
+      result.custom_fields[field.name] = value;
     } else {
       result.custom_fields[field.name] = value;
     }
