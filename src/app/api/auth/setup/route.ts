@@ -79,11 +79,16 @@ export async function POST(request: NextRequest) {
       targetOrgId = process.env.DEFAULT_ORG_ID.trim();
     } else {
       // 3b) Otherwise look for the first-ever org (oldest by created_at)
-      const { data: orgs } = await supabase
+      const { data: orgs, error: listErr } = await supabase
         .from("organizations")
         .select("id")
         .order("created_at", { ascending: true })
         .limit(1);
+      // Fail-CLOSED: sorgu hata verirse owner-bootstrap'a DÜŞME (geçici hata = privilege escalation olmasın)
+      if (listErr) {
+        console.error("Org lookup error:", listErr);
+        return NextResponse.json({ error: "Could not resolve organization" }, { status: 500 });
+      }
       if (orgs && orgs.length > 0) {
         targetOrgId = orgs[0].id as string;
       }
