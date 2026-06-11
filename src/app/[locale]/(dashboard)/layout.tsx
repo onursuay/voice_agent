@@ -113,10 +113,15 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     <SubscriptionProvider>
       <CreditProvider>
         <div className="flex h-screen bg-gray-50">
-          <Sidebar />
+          {/* Desktop sidebar — hidden on small screens */}
+          <div className="hidden md:flex">
+            <Sidebar />
+          </div>
+          {/* Mobile sidebar overlay */}
+          <MobileSidebarOverlay />
           <div className="min-w-0 flex-1 flex flex-col overflow-hidden">
             <Topbar />
-            <main className="flex-1 overflow-y-auto p-6">{children}</main>
+            <main className="flex-1 overflow-y-auto p-4 md:p-6">{children}</main>
           </div>
         </div>
       </CreditProvider>
