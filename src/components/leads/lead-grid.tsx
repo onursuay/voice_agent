@@ -1306,5 +1306,6 @@ export function LeadGrid() {
         )}
       </div>
     </div>
+    </>
   );
 }
