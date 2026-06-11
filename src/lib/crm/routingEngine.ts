@@ -87,10 +87,27 @@ export async function evaluateLeadRouting(
     let errorMessage: string | null = null;
 
     if (action.send_email) {
-      const recipientId = action.assigned_to || lead.assigned_to;
-      const { data: recipient } = recipientId
-        ? await supabase.from('profiles').select('id, email').eq('id', recipientId).single()
-        : { data: null };
+      const recipientId = (action.assigned_to && assigneeValid) ? action.assigned_to : lead.assigned_to;
+      // Alıcı e-postasını lead'in org'una üyelik üzerinden çöz (cross-tenant PII sızıntısı + güvenilir
+      // gönderim domaini suistimaline karşı). Org üyesi değilse mail GÖNDERİLMEZ.
+      let recipientEmail: string | null = null;
+      if (recipientId) {
+        const { data: member } = await supabase
+          .from('organization_members')
+          .select('user_id')
+          .eq('user_id', recipientId)
+          .eq('organization_id', lead.organization_id)
+          .eq('is_active', true)
+          .maybeSingle();
+        if (member) {
+          const { data: profile } = await supabase
+            .from('profiles')
+            .select('email')
+            .eq('id', recipientId)
+            .single();
+          recipientEmail = profile?.email ?? null;
+        }
+      }
 
       let tpl: RenderableTemplate = DEFAULT_ROUTING_TEMPLATE;
       if (action.email_template_id) {
@@ -98,17 +115,18 @@ export async function evaluateLeadRouting(
           .from('email_templates')
           .select('subject, body')
           .eq('id', action.email_template_id)
+          .eq('organization_id', lead.organization_id)
           .single();
         if (t) tpl = { subject: t.subject, body: t.body };
       }
       const { subject, html } = renderTemplate(tpl, leadToVars(lead));
 
-      if (!recipient?.email) {
+      if (!recipientEmail) {
         status = 'failed';
-        errorMessage = 'recipient has no email';
+        errorMessage = 'recipient not in org or has no email';
       } else {
         try {
-          const res = await sendEmail({ to: recipient.email, subject, html });
+          const res = await sendEmail({ to: recipientEmail, subject, html });
           providerMessageId = res.id;
           status = 'sent';
         } catch (e) {
@@ -122,7 +140,7 @@ export async function evaluateLeadRouting(
         lead_id: leadId,
         rule_id: matched.id,
         recipient_user_id: recipientId || null,
-        to_email: recipient?.email || '-',
+        to_email: recipientEmail || '-',
         subject,
         body: html,
         status: status === 'sent' ? 'sent' : 'failed',
@@ -140,7 +158,7 @@ export async function evaluateLeadRouting(
           activity_type: 'email_sent',
           title: 'Routing email sent',
           description: null,
-          metadata: { rule_id: matched.id, to: recipient?.email },
+          metadata: { rule_id: matched.id, to: recipientEmail },
         });
       }
     } else {
