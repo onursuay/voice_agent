@@ -32,6 +32,14 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "All fields are required" }, { status: 400 });
     }
 
+    // Kimlik doğrula: çağıran, oturum sahibi user_id ile aynı olmalı.
+    // (Servis-rol anahtarıyla rastgele user_id enjeksiyonu / membership injection engellenir.)
+    const authClient = await createServerSupabaseClient();
+    const { data: { user: authUser } } = await authClient.auth.getUser();
+    if (!authUser || authUser.id !== user_id) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
     const supabase = createServiceClient();
 
     // 1) Upsert profile (idempotent - safe to retry)
