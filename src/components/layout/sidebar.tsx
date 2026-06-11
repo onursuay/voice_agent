@@ -59,10 +59,13 @@ export function Sidebar() {
   const tNav = useTranslations('nav');
   const tSidebar = useTranslations('sidebar');
 
-  const navItems = NAV_ITEMS_BASE.map(item => ({
-    ...item,
-    label: tNav(item.labelKey),
-  }));
+  const allowed = resolveAllowedPages(session?.membership?.role, session?.membership?.allowed_pages);
+  const navItems = NAV_ITEMS_BASE
+    .filter(item => allowed.includes(item.id as NavPageKey))
+    .map(item => ({
+      ...item,
+      label: tNav(item.labelKey),
+    }));
 
   const [collapsed, setCollapsed] = useState(true);
   const [ready, setReady] = useState(false);
