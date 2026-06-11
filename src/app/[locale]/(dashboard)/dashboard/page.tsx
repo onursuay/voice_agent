@@ -326,6 +326,105 @@ export default function DashboardPage() {
           )}
         </div>
       </div>
+
+      {/* Accountability Panel — visible only to owner/admin/sales_manager */}
+      {isManager && (
+        <div className="premium-card">
+          <div className="premium-card-header">
+            <div className="flex items-center gap-2">
+              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-rose-50">
+                <ShieldAlert className="h-4 w-4 text-rose-600" />
+              </div>
+              <h2 className="text-sm font-semibold text-gray-900">{ta('title')}</h2>
+            </div>
+            {accountabilityReps.length > 0 && (
+              <span className="text-xs font-medium text-gray-400">{accountabilityReps.length} temsilci</span>
+            )}
+          </div>
+
+          <div className="overflow-x-auto">
+            {accountabilityLoading ? (
+              <div className="px-6 py-8 space-y-2">
+                {[1, 2, 3].map(i => (
+                  <div key={i} className="skeleton h-10 rounded-xl" />
+                ))}
+              </div>
+            ) : accountabilityError ? (
+              <div className="px-6 py-8 text-sm text-red-500">{accountabilityError}</div>
+            ) : accountabilityReps.length === 0 ? (
+              <div className="flex flex-col items-center justify-center py-16 text-center">
+                <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gray-50 mb-4">
+                  <Users className="h-7 w-7 text-gray-300" />
+                </div>
+                <p className="text-sm font-medium text-gray-400">{ta('noData')}</p>
+              </div>
+            ) : (
+              <table className="premium-table w-full text-sm">
+                <thead>
+                  <tr className="border-b border-gray-100">
+                    <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-400">{ta('rep')}</th>
+                    <th className="px-6 py-3 text-right text-xs font-semibold uppercase tracking-wider text-gray-400">{ta('assigned')}</th>
+                    <th className="px-6 py-3 text-right text-xs font-semibold uppercase tracking-wider text-gray-400">{ta('called')}</th>
+                    <th className="px-6 py-3 text-right text-xs font-semibold uppercase tracking-wider text-gray-400">{ta('reached')}</th>
+                    <th className="px-6 py-3 text-right text-xs font-semibold uppercase tracking-wider text-gray-400">{ta('waiting')}</th>
+                    <th className="px-6 py-3 text-right text-xs font-semibold uppercase tracking-wider text-gray-400">{ta('slaBreaches')}</th>
+                    <th className="px-6 py-3 text-right text-xs font-semibold uppercase tracking-wider text-gray-400">{ta('avgFirstCall')}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {accountabilityReps.map((rep, i) => {
+                    const hasWarning = rep.waiting > 0 || rep.slaBreaches > 0;
+                    const hasSla = rep.slaBreaches > 0;
+                    return (
+                      <tr
+                        key={rep.id}
+                        className="border-b border-gray-50/80"
+                        style={{
+                          animationDelay: `${i * 60}ms`,
+                          backgroundColor: hasSla ? 'rgba(254,226,226,0.35)' : hasWarning ? 'rgba(255,251,235,0.5)' : undefined,
+                        }}
+                      >
+                        <td className="px-6 py-4">
+                          <div className="flex items-center gap-3">
+                            <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-rose-400 to-violet-500 text-xs font-bold text-white">
+                              {rep.name[0]?.toUpperCase() ?? '?'}
+                            </div>
+                            <span className="font-medium text-gray-900">{rep.name}</span>
+                          </div>
+                        </td>
+                        <td className="px-6 py-4 text-right font-semibold text-gray-700">{rep.assigned}</td>
+                        <td className="px-6 py-4 text-right text-gray-600">{rep.called}</td>
+                        <td className="px-6 py-4 text-right text-emerald-600 font-medium">{rep.reached}</td>
+                        <td className="px-6 py-4 text-right">
+                          {rep.waiting > 0 ? (
+                            <span className="inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-xs font-semibold bg-amber-100 text-amber-700">
+                              {rep.waiting}
+                            </span>
+                          ) : (
+                            <span className="text-gray-400">0</span>
+                          )}
+                        </td>
+                        <td className="px-6 py-4 text-right">
+                          {rep.slaBreaches > 0 ? (
+                            <span className="inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-xs font-semibold bg-rose-100 text-rose-700">
+                              {rep.slaBreaches}
+                            </span>
+                          ) : (
+                            <span className="text-gray-400">0</span>
+                          )}
+                        </td>
+                        <td className="px-6 py-4 text-right text-xs text-gray-400">
+                          {rep.avgFirstCallMins !== null ? `${rep.avgFirstCallMins} dk` : '—'}
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
