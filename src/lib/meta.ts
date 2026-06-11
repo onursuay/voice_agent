@@ -112,7 +112,7 @@ const FIELD_NAME_MAP: Record<string, MappedKey> = {
  */
 function fuzzyClassifyField(normalized: string): MappedKey | null {
   const n = normalized;
-  if (/mail/.test(n)) return 'email';
+  if (/mail|eposta|e_posta/.test(n)) return 'email';
   if (/telefon|phone|gsm|cep|mobil|^tel$|_tel$|^tel_/.test(n)) return 'phone';
   if (/ad_?soyad|adsoyad|full_?name|isim_?soy|ad_ve_soyad/.test(n)) return 'full_name';
   if (/soyad|soyisim|surname|last_?name/.test(n)) return 'last_name';
