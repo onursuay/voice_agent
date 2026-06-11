@@ -990,7 +990,7 @@ function PerPageDropdown() {
         onClick={() => setOpen(o => !o)}
         className="flex items-center gap-1.5 rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
       >
-        <span>{perPage}</span>
+        <span>{perPage}{total > 0 && <span className="text-gray-400"> / {total}</span>}</span>
         <ChevronDown className={`h-3.5 w-3.5 text-gray-400 transition-transform duration-150 ${open ? 'rotate-180' : ''}`} />
       </button>
 
