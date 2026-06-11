@@ -369,6 +369,7 @@ export async function ingestLead(input: NormalizedLeadInput) {
       meta_page_id: metaPageId,
       meta_form_id: metaFormId,
       meta_ad_id: metaAdId,
+      city: sanitizeText(input.city),
       campaign_name: sanitizeText(input.campaignName),
       ad_name: sanitizeText(input.adName),
       form_name: sanitizeText(input.formName),
