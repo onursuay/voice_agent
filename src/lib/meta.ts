@@ -25,6 +25,13 @@ function normalizeFieldName(name: string): string {
   return name
     .toLowerCase()
     .trim()
+    // Fold Turkish characters to ASCII so "Adınız"/"Şehir" match map keys
+    .replace(/ı/g, 'i')
+    .replace(/ş/g, 's')
+    .replace(/ğ/g, 'g')
+    .replace(/ü/g, 'u')
+    .replace(/ö/g, 'o')
+    .replace(/ç/g, 'c')
     .replace(/[\s\-./]+/g, '_')
     .replace(/_+/g, '_')
     .replace(/^_|_$/g, '');
