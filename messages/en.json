@@ -235,7 +235,16 @@
       "noteAdd": "Add Note",
       "noteSendHint": "Cmd+Enter to send",
       "copy": "Copy",
-      "call": "Call"
+      "call": "Call",
+      "contact": {
+        "callResult": "Call result",
+        "outcomeReached": "Reached",
+        "outcomeNoAnswer": "No answer",
+        "outcomeBusy": "Busy",
+        "outcomeWrong": "Wrong number",
+        "attempts": "Attempts",
+        "firstCallAfter": "First call after"
+      }
     },
     "gridActions": {
       "edit": "Edit",
