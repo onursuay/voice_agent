@@ -49,9 +49,9 @@
     "unknownUser": "Bilinmeyen Kullanıcı"
   },
   "nav": {
-    "dashboard": "Dashboard",
+    "dashboard": "Panel",
     "leads": "Lead",
-    "pipeline": "Pipeline",
+    "pipeline": "Satış Hattı",
     "import": "İçe Aktar",
     "email": "E-posta",
     "automations": "Otomasyonlar",
