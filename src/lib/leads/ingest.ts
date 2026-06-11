@@ -141,7 +141,7 @@ async function findDuplicateLead(
   const recentThreshold = new Date(Date.now() - 90 * 24 * 60 * 60 * 1000).toISOString();
   let query = supabase
     .from('leads')
-    .select('id, full_name, email, phone, stage_id, assigned_to, score, source_platform, custom_fields, raw_payload, meta_lead_id, meta_page_id, meta_form_id, meta_ad_id')
+    .select('id, full_name, email, phone, city, stage_id, assigned_to, score, source_platform, custom_fields, raw_payload, meta_lead_id, meta_page_id, meta_form_id, meta_ad_id')
     .eq('organization_id', organizationId)
     .gte('created_at', recentThreshold)
     .order('created_at', { ascending: false })
