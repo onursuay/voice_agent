@@ -2,6 +2,64 @@ import { createAdminSupabaseClient } from '@/lib/supabase/admin';
 import { sendEmail } from '@/lib/email/send';
 import { leadToVars, renderTemplate, type RenderableTemplate } from '@/lib/email/templates';
 
+// Speed-to-lead eşikleri (saat) — env ile ayarlanabilir.
+const SLA_FIRST_HOURS = Number(process.env.SLA_FIRST_HOURS) || 4;
+const SLA_RETRY_HOURS = Number(process.env.SLA_RETRY_HOURS) || 4;
+
+function escapeHtml(s: string): string {
+  return s
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+type SlaLead = {
+  id: string;
+  organization_id: string;
+  assigned_to: string | null;
+  full_name: string | null;
+  phone: string | null;
+  city: string | null;
+  assigned_at: string | null;
+  routing_last_emailed_at: string | null;
+  first_seen_at: string | null;
+  created_at: string | null;
+  last_contact_at: string | null;
+  contact_outcome: string | null;
+  sla_alert_retry_at: string | null;
+  stage: { is_won: boolean | null; is_lost: boolean | null } | null;
+};
+
+async function profileEmail(
+  sb: ReturnType<typeof createAdminSupabaseClient>,
+  userId: string | null
+): Promise<string | null> {
+  if (!userId) return null;
+  const { data } = await sb.from('profiles').select('email').eq('id', userId).single();
+  return data?.email ?? null;
+}
+
+async function ownerEmail(
+  sb: ReturnType<typeof createAdminSupabaseClient>,
+  orgId: string,
+  cache: Map<string, string | null>
+): Promise<string | null> {
+  if (cache.has(orgId)) return cache.get(orgId) ?? null;
+  const { data: ow } = await sb
+    .from('organization_members')
+    .select('user_id')
+    .eq('organization_id', orgId)
+    .eq('role', 'owner')
+    .eq('is_active', true)
+    .limit(1)
+    .maybeSingle();
+  const email = ow?.user_id ? await profileEmail(sb, ow.user_id) : null;
+  cache.set(orgId, email);
+  return email;
+}
+
 // Hatırlatma şablonu — atanan temsilciye, lead hâlâ ilk aşamada beklerken.
 const REMINDER_TEMPLATE: RenderableTemplate = {
   subject: 'Hatırlatma: {{full_name}} ({{city}}) hâlâ ilk aşamada',
