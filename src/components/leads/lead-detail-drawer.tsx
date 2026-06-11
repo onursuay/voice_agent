@@ -27,6 +27,7 @@ import {
   Clock,
   Link2,
   Hash,
+  PhoneCall,
 } from 'lucide-react';
 import { cn, formatRelativeTime, getSourceColor, getScoreColor, getInitials } from '@/lib/utils';
 import { useAppStore } from '@/lib/store';
