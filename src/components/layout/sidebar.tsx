@@ -30,6 +30,7 @@ import {
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { useSubscription } from '@/components/providers/SubscriptionProvider';
 import { useTranslations } from 'next-intl';
+import { resolveAllowedPages, type NavPageKey } from '@/lib/access';
 
 interface NavItem {
   id: string;
