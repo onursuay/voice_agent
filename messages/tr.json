@@ -971,5 +971,10 @@
     "cancel": "Vazgeç",
     "delete": "Sil",
     "sourceImport": "İçe Aktarma"
+  },
+  "access": {
+    "pendingTitle": "Hesabınız onay bekliyor",
+    "pendingDesc": "Yöneticiniz hesabınızı onayladığında erişebileceksiniz.",
+    "logout": "Çıkış yap"
   }
 }
