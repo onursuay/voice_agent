@@ -88,11 +88,10 @@ function mergeNonEmpty<T>(incoming: T | null | undefined, current: T | null | un
   return incoming ?? current;
 }
 
-// Source priority: meta_lead_form > zapier > manual
+// Source priority: meta_lead_form > manual
 // Prevents downgrading a high-quality source with a lower-priority one
 const SOURCE_PRIORITY: Record<IngestionLeadSource, number> = {
-  meta_lead_form: 3,
-  zapier: 2,
+  meta_lead_form: 2,
   manual: 1,
 };
 
