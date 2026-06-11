@@ -398,6 +398,13 @@ export async function ingestLead(input: NormalizedLeadInput) {
       })
       .eq('id', createdEvent.id);
 
+    // Best-effort otomatik yönlendirme — yalnız dış otomatik kanal (Meta). Bloklamaz.
+    if (input.source === 'meta_lead_form') {
+      void import('@/lib/crm/routingEngine')
+        .then((m) => m.evaluateLeadRouting(createdLead.id, { trigger: 'auto' }))
+        .catch((e) => console.error('[routing] auto eval failed', e));
+    }
+
     return { lead: createdLead, eventId: createdEvent.id, action: 'created' as const };
   } catch (error) {
     const errorMessage = error instanceof Error ? error.message : 'Unknown ingestion error';
