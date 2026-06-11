@@ -821,6 +821,18 @@ export function LeadDetailDrawer({ onDelete, onEdit }: LeadDetailDrawerProps) {
           </div>
 
           <div className="flex items-center gap-1">
+            {/* Ara (Call) button — shown when phone exists */}
+            {lead.phone && (
+              <a
+                href={`tel:${lead.phone}`}
+                onClick={(e) => e.stopPropagation()}
+                className="inline-flex items-center gap-1.5 rounded-lg bg-emerald-600 px-3 py-1.5 text-sm font-semibold text-white hover:bg-emerald-700 active:bg-emerald-800 transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-600"
+                title={lead.phone}
+              >
+                <Phone className="h-4 w-4" />
+                <span>{t('drawer.call')}</span>
+              </a>
+            )}
             <Dropdown
               trigger={
                 <button
