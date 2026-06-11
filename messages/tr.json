@@ -232,7 +232,8 @@
       "notePlaceholder": "Not ekle...",
       "noteAdd": "Not Ekle",
       "noteSendHint": "Cmd+Enter ile gönder",
-      "copy": "Kopyala"
+      "copy": "Kopyala",
+      "call": "Ara"
     },
     "gridActions": {
       "edit": "Düzenle",
