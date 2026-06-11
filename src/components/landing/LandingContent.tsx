@@ -300,7 +300,7 @@ export default function LandingContent() {
                 <span className="font-medium">{p.label}</span>
               </div>
             ))}
-            {['WhatsApp', 'Instagram', 'Messenger', 'Zapier', 'Webhook'].map((label, i) => (
+            {['WhatsApp', 'Instagram', 'Messenger', 'Webhook'].map((label, i) => (
               <span key={i} className="text-sm font-medium text-gray-500 bg-white/[0.03] border border-white/[0.06] px-4 py-1.5 rounded-full">{label}</span>
             ))}
           </div>
