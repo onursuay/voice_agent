@@ -1,6 +1,6 @@
 import { createAdminSupabaseClient } from '@/lib/supabase/admin';
 
-export type IngestionLeadSource = 'meta_lead_form' | 'zapier' | 'manual';
+export type IngestionLeadSource = 'meta_lead_form' | 'manual';
 
 export interface NormalizedLeadInput {
   organizationId: string;
