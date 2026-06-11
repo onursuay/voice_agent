@@ -10,6 +10,17 @@ function createServiceClient() {
   );
 }
 
+const VALID_ROLES = ['owner', 'admin', 'sales_manager', 'sales_rep', 'analyst', 'readonly'];
+
+function escapeHtml(s: string): string {
+  return s
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
 export async function GET() {
   try {
     const supabase = await createServerSupabaseClient();
