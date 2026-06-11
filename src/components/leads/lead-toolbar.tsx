@@ -996,7 +996,7 @@ function PerPageDropdown() {
 
       {open && (
         <div className="absolute left-0 top-full z-50 mt-1.5 w-24 overflow-hidden rounded-xl border border-gray-200 bg-white shadow-lg">
-          {PER_PAGE_OPTIONS.map(n => (
+          {perPageOptions.map(n => (
             <button
               key={n}
               onClick={() => { setPerPage(n); setOpen(false); }}
