@@ -61,7 +61,9 @@ export default function LeadsPage() {
       if (!res.ok) throw new Error(t('loadError'));
 
       const data = await res.json();
-      setLeads(Array.isArray(data) ? data : data.leads || []);
+      const arr = Array.isArray(data) ? data : data.leads || [];
+      setLeads(arr);
+      setTotal(typeof data.total === 'number' ? data.total : arr.length);
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : t('loadError'));
     } finally {
