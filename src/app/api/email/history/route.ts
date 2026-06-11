@@ -1,14 +1,25 @@
 import { NextResponse } from 'next/server';
 import { createServerSupabaseClient } from '@/lib/supabase/server';
 
-export async function GET(req: Request) {
-  const supabase = await createServerSupabaseClient();
-  const { data: { user } } = await supabase.auth.getUser();
-  if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-  const url = new URL(req.url);
-  const leadId = url.searchParams.get('lead_id');
-  let q = supabase.from('email_log').select('*').order('created_at', { ascending: false }).limit(100);
-  if (leadId) q = q.eq('lead_id', leadId);
-  const { data } = await q;
-  return NextResponse.json({ logs: data || [] });
+export async function GET() {
+  try {
+    const supabase = await createServerSupabaseClient();
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) return NextResponse.json({ history: [] });
+
+    const { data: m } = await supabase.from('organization_members').select('organization_id').eq('user_id', user.id).eq('is_active', true).single();
+    if (!m) return NextResponse.json({ history: [] });
+
+    const { data } = await supabase
+      .from('lead_activities')
+      .select('*')
+      .eq('organization_id', m.organization_id)
+      .eq('activity_type', 'email_sent')
+      .order('created_at', { ascending: false })
+      .limit(50);
+
+    return NextResponse.json({ history: data || [] });
+  } catch {
+    return NextResponse.json({ history: [] });
+  }
 }

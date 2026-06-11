@@ -158,7 +158,7 @@ export async function evaluateLeadRouting(
           activity_type: 'email_sent',
           title: 'Routing email sent',
           description: null,
-          metadata: { rule_id: matched.id, to: recipientEmail },
+          metadata: { rule_id: matched.id, to: recipientEmail, subject, status: 'sent' },
         });
       }
     } else {
