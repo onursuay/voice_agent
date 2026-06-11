@@ -15,6 +15,7 @@ import { NAV_PAGE_KEYS, resolveAllowedPages, canAccessPage } from '@/lib/access'
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   const router = useRouter();
+  const pathname = usePathname();
   const tCommon = useTranslations('common');
   const [loading, setLoading] = useState(true);
   const { session, setSession, setStages, setMembers } = useAppStore();
