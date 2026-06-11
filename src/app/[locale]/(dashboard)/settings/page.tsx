@@ -110,6 +110,24 @@ export default function SettingsPage() {
   const [logEvents, setLogEvents] = useState<LeadEvent[]>([]);
   const [logsLoading, setLogsLoading] = useState(false);
 
+  // Access management state
+  const [accessMembers, setAccessMembers] = useState<OrganizationMember[]>([]);
+  const [accessLoading, setAccessLoading] = useState(false);
+  const [pendingActions, setPendingActions] = useState<Record<string, 'approving' | 'rejecting'>>({});
+  const [memberSaving, setMemberSaving] = useState<Record<string, boolean>>({});
+  const [memberSavedId, setMemberSavedId] = useState<string | null>(null);
+  const [inviteOpen, setInviteOpen] = useState(false);
+  const [inviteForm, setInviteForm] = useState({
+    email: '',
+    full_name: '',
+    role: 'sales_rep' as UserRole,
+    lead_scope: 'assigned_only',
+    allowed_pages: [] as NavPageKey[],
+  });
+  const [inviting, setInviting] = useState(false);
+  const [inviteResult, setInviteResult] = useState<string | null>(null);
+  const [memberEdits, setMemberEdits] = useState<Record<string, { role: UserRole; lead_scope: string; allowed_pages: NavPageKey[] }>>({});
+
   // Feedback messages
   const [error, setError] = useState('');
 
