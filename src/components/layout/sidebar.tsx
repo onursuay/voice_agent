@@ -156,6 +156,7 @@ export function Sidebar() {
       className={`bg-white border-r border-gray-200 h-screen flex flex-col shrink-0 ${animate ? 'transition-[width] duration-300' : ''}`}
       style={{ width: collapsed ? '72px' : '260px' }}
     >
+
       {/* Header / Logo */}
       <div className="p-4 border-b border-gray-200 flex items-center justify-between min-h-[56px]">
         {collapsed ? (
