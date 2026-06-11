@@ -233,7 +233,16 @@
       "noteAdd": "Not Ekle",
       "noteSendHint": "Cmd+Enter ile gönder",
       "copy": "Kopyala",
-      "call": "Ara"
+      "call": "Ara",
+      "contact": {
+        "callResult": "Arama sonucu",
+        "outcomeReached": "Ulaştı",
+        "outcomeNoAnswer": "Ulaşamadı",
+        "outcomeBusy": "Meşgul",
+        "outcomeWrong": "Yanlış no",
+        "attempts": "Arama denemesi",
+        "firstCallAfter": "İlk arama"
+      }
     },
     "gridActions": {
       "edit": "Düzenle",
