@@ -161,7 +161,7 @@ export async function POST(request: NextRequest) {
     // --- Send invite email (non-fatal) ---
     let emailSent = false;
     try {
-      const greeting = full_name ? `Merhaba ${full_name},` : 'Merhaba,';
+      const greeting = full_name ? `Merhaba ${escapeHtml(full_name)},` : 'Merhaba,';
       const actionBlock = actionLink
         ? `<p>Hesabını oluşturmak için aşağıdaki butona tıkla:</p>
            <p><a href="${actionLink}" style="background:#2563eb;color:#fff;padding:10px 20px;border-radius:6px;text-decoration:none;display:inline-block;">Hesabını Oluştur</a></p>`
