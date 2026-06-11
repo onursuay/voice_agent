@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useCallback } from 'react';
-import { Zap, Plus, Trash2, Edit3, ToggleLeft, ToggleRight, ArrowRight, ChevronDown } from 'lucide-react';
+import { Zap, Plus, Trash2, Edit3, ToggleLeft, ToggleRight, ArrowRight, MapPin } from 'lucide-react';
 import { useAppStore } from '@/lib/store';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -20,7 +20,24 @@ interface AutomationRule {
   action_type: string;
   action_config: Record<string, unknown>;
   is_active: boolean;
+  priority: number;
   created_at: string;
+}
+
+interface EmailTemplate {
+  id: string;
+  name: string;
+}
+
+// ─── Condition summary helper ───────────────────────────────────────────────
+function useConditionSummary(rule: AutomationRule, fieldCityLabel: string, opLabels: Record<string, string>) {
+  const conditions = (rule.trigger_config?.conditions as Array<{ field: string; operator: string; value: string | string[] }> | undefined);
+  if (!conditions || conditions.length === 0) return null;
+  const c = conditions[0];
+  const fieldLabel = c.field === 'city' ? fieldCityLabel : c.field;
+  const opLabel = opLabels[c.operator] || c.operator;
+  const valueStr = Array.isArray(c.value) ? c.value.join(', ') : c.value;
+  return `${fieldLabel} ${opLabel} ${valueStr}`;
 }
 
 export default function AutomationsPage() {
@@ -65,9 +82,9 @@ export default function AutomationsPage() {
   // Mock rules for local mode
   const fetchRules = useCallback(async () => {
     const mockRules: AutomationRule[] = [
-      { id: 'auto-1', name: t('mockRule1Name'), trigger_type: 'lead_created', trigger_config: {}, action_type: 'assign', action_config: { round_robin: true }, is_active: true, created_at: '2026-03-20T10:00:00Z' },
-      { id: 'auto-2', name: t('mockRule2Name'), trigger_type: 'inactivity', trigger_config: { days: 3 }, action_type: 'create_reminder', action_config: { message: t('mockRule2Message') }, is_active: true, created_at: '2026-03-18T10:00:00Z' },
-      { id: 'auto-3', name: t('mockRule3Name'), trigger_type: 'stage_changed', trigger_config: { to_stage: 'won' }, action_type: 'send_email', action_config: { template: 'congratulations' }, is_active: false, created_at: '2026-03-15T10:00:00Z' },
+      { id: 'auto-1', name: t('mockRule1Name'), trigger_type: 'lead_created', trigger_config: {}, action_type: 'assign', action_config: { round_robin: true }, is_active: true, priority: 0, created_at: '2026-03-20T10:00:00Z' },
+      { id: 'auto-2', name: t('mockRule2Name'), trigger_type: 'inactivity', trigger_config: { days: 3 }, action_type: 'create_reminder', action_config: { message: t('mockRule2Message') }, is_active: true, priority: 0, created_at: '2026-03-18T10:00:00Z' },
+      { id: 'auto-3', name: t('mockRule3Name'), trigger_type: 'stage_changed', trigger_config: { to_stage: 'won' }, action_type: 'send_email', action_config: { template: 'congratulations' }, is_active: false, priority: 0, created_at: '2026-03-15T10:00:00Z' },
     ];
     try {
       const res = await fetch('/api/automations');
@@ -89,7 +106,7 @@ export default function AutomationsPage() {
       try { await fetch(`/api/automations/${editingId}`, { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) }); } catch {}
       setRules(prev => prev.map(r => r.id === editingId ? { ...r, ...payload } : r));
     } else {
-      const newRule: AutomationRule = { id: `auto-${Date.now()}`, ...payload, is_active: true, created_at: new Date().toISOString() };
+      const newRule: AutomationRule = { id: `auto-${Date.now()}`, ...payload, is_active: true, priority: 0, created_at: new Date().toISOString() };
       try { const res = await fetch('/api/automations', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) }); const d = await res.json(); if (d.rule) newRule.id = d.rule.id; } catch {}
       setRules(prev => [newRule, ...prev]);
     }
@@ -115,55 +132,64 @@ export default function AutomationsPage() {
     setModalOpen(true);
   };
 
+  // Filter: general rules (non-route_lead) vs route_lead rules
+  const generalRules = rules.filter(r => r.action_type !== 'route_lead');
+
   if (loading) return <div className="flex justify-center py-16"><Spinner size="lg" /></div>;
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-bold text-gray-900">{t('pageTitle')}</h1>
-          <p className="mt-1 text-sm text-gray-500">{t('subtitle')}</p>
+    <div className="space-y-8">
+      {/* ── General Automations Section ── */}
+      <div className="space-y-6">
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-2xl font-bold text-gray-900">{t('pageTitle')}</h1>
+            <p className="mt-1 text-sm text-gray-500">{t('subtitle')}</p>
+          </div>
+          <Button icon={<Plus className="h-4 w-4" />} onClick={() => { setEditingId(null); setForm({ name: '', trigger_type: '', trigger_config: {}, action_type: '', action_config: {} }); setModalOpen(true); }}>
+            {t('newAutomation')}
+          </Button>
         </div>
-        <Button icon={<Plus className="h-4 w-4" />} onClick={() => { setEditingId(null); setForm({ name: '', trigger_type: '', trigger_config: {}, action_type: '', action_config: {} }); setModalOpen(true); }}>
-          {t('newAutomation')}
-        </Button>
-      </div>
 
-      {rules.length === 0 ? (
-        <EmptyState icon={<Zap className="h-6 w-6" />} title={t('noAutomations')} description={t('noAutomationsDesc')} />
-      ) : (
-        <div className="space-y-3">
-          {rules.map(rule => (
-            <div key={rule.id} className={`rounded-xl border bg-white p-5 transition-all ${rule.is_active ? 'border-gray-200' : 'border-gray-100 opacity-60'}`}>
-              <div className="flex items-start justify-between gap-4">
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-3 mb-2">
-                    <h3 className="font-semibold text-gray-900">{rule.name}</h3>
-                    {rule.is_active ? <Badge color="green" size="sm">{t('active')}</Badge> : <Badge color="gray" size="sm">{t('passive')}</Badge>}
+        {generalRules.length === 0 ? (
+          <EmptyState icon={<Zap className="h-6 w-6" />} title={t('noAutomations')} description={t('noAutomationsDesc')} />
+        ) : (
+          <div className="space-y-3">
+            {generalRules.map(rule => (
+              <div key={rule.id} className={`rounded-xl border bg-white p-5 transition-all ${rule.is_active ? 'border-gray-200' : 'border-gray-100 opacity-60'}`}>
+                <div className="flex items-start justify-between gap-4">
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-3 mb-2">
+                      <h3 className="font-semibold text-gray-900">{rule.name}</h3>
+                      {rule.is_active ? <Badge color="green" size="sm">{t('active')}</Badge> : <Badge color="gray" size="sm">{t('passive')}</Badge>}
+                    </div>
+                    <div className="flex items-center gap-2 text-sm text-gray-600">
+                      <Badge color="blue" size="sm">{TRIGGER_LABELS[rule.trigger_type] || rule.trigger_type}</Badge>
+                      <ArrowRight className="h-3.5 w-3.5 text-gray-400" />
+                      <Badge color="purple" size="sm">{ACTION_LABELS[rule.action_type] || rule.action_type}</Badge>
+                    </div>
+                    {rule.trigger_config && Object.keys(rule.trigger_config).length > 0 && (
+                      <p className="mt-2 text-xs text-gray-400">{t('configLabel')}: {JSON.stringify(rule.trigger_config)}</p>
+                    )}
                   </div>
-                  <div className="flex items-center gap-2 text-sm text-gray-600">
-                    <Badge color="blue" size="sm">{TRIGGER_LABELS[rule.trigger_type] || rule.trigger_type}</Badge>
-                    <ArrowRight className="h-3.5 w-3.5 text-gray-400" />
-                    <Badge color="purple" size="sm">{ACTION_LABELS[rule.action_type] || rule.action_type}</Badge>
+                  <div className="flex items-center gap-2">
+                    <button onClick={() => handleToggle(rule)} className="text-gray-400 hover:text-gray-600">
+                      {rule.is_active ? <ToggleRight className="h-6 w-6 text-green-500" /> : <ToggleLeft className="h-6 w-6" />}
+                    </button>
+                    <button onClick={() => handleEdit(rule)} className="rounded-md p-1.5 text-gray-400 hover:bg-gray-100 hover:text-gray-600"><Edit3 className="h-4 w-4" /></button>
+                    <button onClick={() => handleDelete(rule.id)} className="rounded-md p-1.5 text-gray-400 hover:bg-red-50 hover:text-red-500"><Trash2 className="h-4 w-4" /></button>
                   </div>
-                  {rule.trigger_config && Object.keys(rule.trigger_config).length > 0 && (
-                    <p className="mt-2 text-xs text-gray-400">{t('configLabel')}: {JSON.stringify(rule.trigger_config)}</p>
-                  )}
-                </div>
-                <div className="flex items-center gap-2">
-                  <button onClick={() => handleToggle(rule)} className="text-gray-400 hover:text-gray-600">
-                    {rule.is_active ? <ToggleRight className="h-6 w-6 text-green-500" /> : <ToggleLeft className="h-6 w-6" />}
-                  </button>
-                  <button onClick={() => handleEdit(rule)} className="rounded-md p-1.5 text-gray-400 hover:bg-gray-100 hover:text-gray-600"><Edit3 className="h-4 w-4" /></button>
-                  <button onClick={() => handleDelete(rule.id)} className="rounded-md p-1.5 text-gray-400 hover:bg-red-50 hover:text-red-500"><Trash2 className="h-4 w-4" /></button>
                 </div>
               </div>
-            </div>
-          ))}
-        </div>
-      )}
+            ))}
+          </div>
+        )}
+      </div>
 
-      {/* Create/Edit Modal */}
+      {/* ── Routing Rules Section ── */}
+      <RoutingRulesSection allRules={rules} onRulesChange={setRules} members={members} />
+
+      {/* Create/Edit General Automation Modal */}
       {modalOpen && (
         <Modal open={modalOpen} title={editingId ? t('editTitle') : t('newTitle')} onClose={() => setModalOpen(false)} size="lg">
           <div className="space-y-5">
@@ -221,6 +247,375 @@ export default function AutomationsPage() {
             <div className="flex justify-end gap-2 pt-2">
               <Button variant="secondary" onClick={() => setModalOpen(false)}>{tCommon('cancel')}</Button>
               <Button onClick={handleSave} disabled={!form.name || !form.trigger_type || !form.action_type}>{tCommon('save')}</Button>
+            </div>
+          </div>
+        </Modal>
+      )}
+    </div>
+  );
+}
+
+// ─── Routing Rules Sub-Section ───────────────────────────────────────────────
+
+interface RoutingRulesSectionProps {
+  allRules: AutomationRule[];
+  onRulesChange: (rules: AutomationRule[]) => void;
+  members: ReturnType<typeof useAppStore extends (s: (state: import('@/lib/store').AppState) => infer R) => R ? never : never>;
+}
+
+// We need a proper type; import from store
+import type { AppState } from '@/lib/store';
+
+interface RoutingRulesSectionProps2 {
+  allRules: AutomationRule[];
+  onRulesChange: (rules: AutomationRule[]) => void;
+  members: AppState['members'];
+}
+
+function RoutingRulesSection({ allRules, onRulesChange, members }: RoutingRulesSectionProps2) {
+  const tR = useTranslations('routing');
+  const tCommon = useTranslations('common');
+
+  const routeRules = allRules.filter(r => r.action_type === 'route_lead');
+
+  const [modalOpen, setModalOpen] = useState(false);
+  const [editingId, setEditingId] = useState<string | null>(null);
+  const [templates, setTemplates] = useState<EmailTemplate[]>([]);
+  const [form, setForm] = useState({
+    name: '',
+    field: 'city',
+    operator: 'equals',
+    value: '',
+    assigned_to: '',
+    send_email: true,
+    email_template_id: '' as string | null,
+    priority: 0,
+    is_active: true,
+  });
+
+  const OPERATOR_OPTIONS = [
+    { value: 'equals', label: tR('opEquals') },
+    { value: 'not_equals', label: tR('opNotEquals') },
+    { value: 'contains', label: tR('opContains') },
+    { value: 'in', label: tR('opIn') },
+  ];
+
+  const FIELD_OPTIONS = [
+    { value: 'city', label: tR('fieldCity') },
+  ];
+
+  const OP_LABELS: Record<string, string> = Object.fromEntries(OPERATOR_OPTIONS.map(o => [o.value, o.label]));
+
+  useEffect(() => {
+    fetch('/api/email/templates')
+      .then(r => r.json())
+      .then(d => setTemplates(d.templates || []))
+      .catch(() => {});
+  }, []);
+
+  const refetch = useCallback(async () => {
+    try {
+      const res = await fetch('/api/automations');
+      if (!res.ok) throw new Error();
+      const data = await res.json();
+      onRulesChange(data.rules || []);
+    } catch {}
+  }, [onRulesChange]);
+
+  const openCreate = () => {
+    setEditingId(null);
+    setForm({ name: '', field: 'city', operator: 'equals', value: '', assigned_to: '', send_email: true, email_template_id: null, priority: 0, is_active: true });
+    setModalOpen(true);
+  };
+
+  const openEdit = (rule: AutomationRule) => {
+    const conds = (rule.trigger_config?.conditions as Array<{ field: string; operator: string; value: string | string[] }> | undefined) || [];
+    const c = conds[0] || { field: 'city', operator: 'equals', value: '' };
+    const ac = rule.action_config as { assigned_to?: string; send_email?: boolean; email_template_id?: string | null };
+    const rawValue = Array.isArray(c.value) ? c.value.join(', ') : (c.value || '');
+    setEditingId(rule.id);
+    setForm({
+      name: rule.name,
+      field: c.field || 'city',
+      operator: c.operator || 'equals',
+      value: rawValue,
+      assigned_to: ac.assigned_to || '',
+      send_email: ac.send_email !== false,
+      email_template_id: ac.email_template_id || null,
+      priority: rule.priority ?? 0,
+      is_active: rule.is_active,
+    });
+    setModalOpen(true);
+  };
+
+  const handleSave = async () => {
+    const conditionValue = form.operator === 'in'
+      ? form.value.split(',').map(v => v.trim()).filter(Boolean)
+      : form.value;
+
+    const payload = {
+      name: form.name,
+      trigger_type: 'lead_created',
+      trigger_config: {
+        conditions: [{ field: form.field, operator: form.operator, value: conditionValue }],
+        match: 'all',
+      },
+      action_type: 'route_lead',
+      action_config: {
+        assigned_to: form.assigned_to,
+        send_email: form.send_email,
+        email_template_id: form.email_template_id || null,
+      },
+      priority: form.priority,
+      is_active: form.is_active,
+    };
+
+    if (editingId) {
+      try {
+        await fetch(`/api/automations/${editingId}`, {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
+      } catch {}
+    } else {
+      try {
+        await fetch('/api/automations', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
+      } catch {}
+    }
+
+    setModalOpen(false);
+    setEditingId(null);
+    await refetch();
+  };
+
+  const handleDelete = async (id: string) => {
+    try { await fetch(`/api/automations/${id}`, { method: 'DELETE' }); } catch {}
+    await refetch();
+  };
+
+  const handleToggle = async (rule: AutomationRule) => {
+    const newActive = !rule.is_active;
+    try {
+      await fetch(`/api/automations/${rule.id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ is_active: newActive }),
+      });
+    } catch {}
+    await refetch();
+  };
+
+  const getAssigneeName = (assignedTo: string) => {
+    const member = members.find(m => m.user_id === assignedTo);
+    return member?.profile?.full_name || member?.profile?.email || assignedTo || '—';
+  };
+
+  const getConditionSummary = (rule: AutomationRule) => {
+    const conditions = (rule.trigger_config?.conditions as Array<{ field: string; operator: string; value: string | string[] }> | undefined);
+    if (!conditions || conditions.length === 0) return null;
+    const c = conditions[0];
+    const fieldLabel = c.field === 'city' ? tR('fieldCity') : c.field;
+    const opLabel = OP_LABELS[c.operator] || c.operator;
+    const valueStr = Array.isArray(c.value) ? c.value.join(', ') : c.value;
+    return `${fieldLabel} ${opLabel} ${valueStr}`;
+  };
+
+  return (
+    <div className="space-y-4">
+      {/* Section header */}
+      <div className="border-t border-gray-200 pt-6">
+        <div className="flex items-center justify-between">
+          <div>
+            <h2 className="text-lg font-semibold text-gray-900">{tR('rulesTitle')}</h2>
+            <p className="mt-0.5 text-sm text-gray-500">{tR('rulesDesc')}</p>
+          </div>
+          <Button icon={<Plus className="h-4 w-4" />} onClick={openCreate}>
+            {tR('newRule')}
+          </Button>
+        </div>
+      </div>
+
+      {/* Rules list */}
+      {routeRules.length === 0 ? (
+        <EmptyState icon={<MapPin className="h-6 w-6" />} title={tR('noRules')} description={tR('noRulesDesc')} />
+      ) : (
+        <div className="space-y-3">
+          {routeRules
+            .slice()
+            .sort((a, b) => (a.priority ?? 0) - (b.priority ?? 0))
+            .map(rule => {
+              const ac = rule.action_config as { assigned_to?: string; send_email?: boolean };
+              const summary = getConditionSummary(rule);
+              return (
+                <div
+                  key={rule.id}
+                  className={`rounded-xl border bg-white p-5 transition-all ${rule.is_active ? 'border-gray-200' : 'border-gray-100 opacity-60'}`}
+                >
+                  <div className="flex items-start justify-between gap-4">
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-3 mb-2">
+                        <h3 className="font-semibold text-gray-900">{rule.name}</h3>
+                        {rule.is_active
+                          ? <Badge color="green" size="sm">{tR('active')}</Badge>
+                          : <Badge color="gray" size="sm">{tR('active')}</Badge>
+                        }
+                        <Badge color="orange" size="sm">#{rule.priority ?? 0}</Badge>
+                      </div>
+                      <div className="flex flex-wrap items-center gap-2 text-sm text-gray-600">
+                        {summary && (
+                          <Badge color="blue" size="sm">{summary}</Badge>
+                        )}
+                        <ArrowRight className="h-3.5 w-3.5 text-gray-400" />
+                        <span className="text-gray-700 font-medium">{getAssigneeName(ac.assigned_to || '')}</span>
+                        {ac.send_email && <Badge color="purple" size="sm">{tR('sendEmail')}</Badge>}
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <button onClick={() => handleToggle(rule)} className="text-gray-400 hover:text-gray-600">
+                        {rule.is_active
+                          ? <ToggleRight className="h-6 w-6 text-green-500" />
+                          : <ToggleLeft className="h-6 w-6" />
+                        }
+                      </button>
+                      <button
+                        onClick={() => openEdit(rule)}
+                        className="rounded-md p-1.5 text-gray-400 hover:bg-gray-100 hover:text-gray-600"
+                      >
+                        <Edit3 className="h-4 w-4" />
+                      </button>
+                      <button
+                        onClick={() => handleDelete(rule.id)}
+                        className="rounded-md p-1.5 text-gray-400 hover:bg-red-50 hover:text-red-500"
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+        </div>
+      )}
+
+      {/* Create/Edit Routing Rule Modal */}
+      {modalOpen && (
+        <Modal
+          open={modalOpen}
+          title={editingId ? tR('editRule') : tR('newRule')}
+          onClose={() => setModalOpen(false)}
+          size="lg"
+        >
+          <div className="space-y-4">
+            {/* Name */}
+            <Input
+              label={tR('ruleName')}
+              value={form.name}
+              onChange={e => setForm({ ...form, name: e.target.value })}
+              placeholder={tR('ruleName')}
+            />
+
+            {/* Condition block */}
+            <div className="rounded-lg border border-blue-100 bg-blue-50/50 p-4 space-y-3">
+              <p className="text-sm font-semibold text-blue-800">{tR('field')}</p>
+              <div className="grid grid-cols-3 gap-3">
+                <Select
+                  label={tR('field')}
+                  value={form.field}
+                  onChange={e => setForm({ ...form, field: e.target.value })}
+                  options={FIELD_OPTIONS}
+                />
+                <Select
+                  label={tR('operator')}
+                  value={form.operator}
+                  onChange={e => setForm({ ...form, operator: e.target.value })}
+                  options={OPERATOR_OPTIONS}
+                />
+                <Input
+                  label={tR('value')}
+                  value={form.value}
+                  onChange={e => setForm({ ...form, value: e.target.value })}
+                  placeholder={form.operator === 'in' ? 'Ankara, İstanbul' : 'Ankara'}
+                />
+              </div>
+            </div>
+
+            {/* Action block */}
+            <div className="rounded-lg border border-purple-100 bg-purple-50/50 p-4 space-y-3">
+              <p className="text-sm font-semibold text-purple-800">{tR('assignee')}</p>
+
+              {/* Assignee */}
+              <Select
+                label={tR('assignee')}
+                value={form.assigned_to}
+                onChange={e => setForm({ ...form, assigned_to: e.target.value })}
+                options={[
+                  { value: '', label: '—' },
+                  ...members.map(m => ({
+                    value: m.user_id,
+                    label: m.profile?.full_name || m.profile?.email || m.user_id,
+                  })),
+                ]}
+              />
+
+              {/* Send email toggle */}
+              <label className="flex items-center gap-2 cursor-pointer select-none">
+                <input
+                  type="checkbox"
+                  checked={form.send_email}
+                  onChange={e => setForm({ ...form, send_email: e.target.checked })}
+                  className="rounded border-gray-300 text-emerald-600 h-4 w-4"
+                />
+                <span className="text-sm font-medium text-gray-700">{tR('sendEmail')}</span>
+              </label>
+
+              {/* Email template */}
+              {form.send_email && (
+                <Select
+                  label={tR('template')}
+                  value={form.email_template_id || ''}
+                  onChange={e => setForm({ ...form, email_template_id: e.target.value || null })}
+                  options={[
+                    { value: '', label: tR('templateDefault') },
+                    ...templates.map(tmpl => ({ value: tmpl.id, label: tmpl.name })),
+                  ]}
+                />
+              )}
+            </div>
+
+            {/* Priority & Active */}
+            <div className="grid grid-cols-2 gap-3">
+              <Input
+                label={tR('priority')}
+                type="number"
+                value={String(form.priority)}
+                onChange={e => setForm({ ...form, priority: Number(e.target.value) })}
+                placeholder="0"
+              />
+              <label className="flex items-end gap-2 pb-2 cursor-pointer select-none">
+                <input
+                  type="checkbox"
+                  checked={form.is_active}
+                  onChange={e => setForm({ ...form, is_active: e.target.checked })}
+                  className="rounded border-gray-300 text-emerald-600 h-4 w-4 mb-1"
+                />
+                <span className="text-sm font-medium text-gray-700">{tR('active')}</span>
+              </label>
+            </div>
+
+            {/* Actions */}
+            <div className="flex justify-end gap-2 pt-2">
+              <Button variant="secondary" onClick={() => setModalOpen(false)}>{tCommon('cancel')}</Button>
+              <Button
+                onClick={handleSave}
+                disabled={!form.name || !form.value || !form.assigned_to}
+              >
+                {tCommon('save')}
+              </Button>
             </div>
           </div>
         </Modal>
