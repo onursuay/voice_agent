@@ -361,7 +361,7 @@ function DetailTab({ lead }: { lead: Lead }) {
                 </Badge>
               )}
               {lead.routing_status && !routingStatusConfig[lead.routing_status] && (
-                <Badge color="amber" size="sm">
+                <Badge color="yellow" size="sm">
                   {tR('statusPending')}
                 </Badge>
               )}
