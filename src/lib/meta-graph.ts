@@ -121,6 +121,7 @@ export async function fetchMetaLeadDetails(leadgenId: string, organizationId: st
     fullName: parsed.full_name,
     email: parsed.email,
     phone: parsed.phone,
+    city: parsed.city,
     customFields: parsed.custom_fields,
     rawLead: lead,
   };
