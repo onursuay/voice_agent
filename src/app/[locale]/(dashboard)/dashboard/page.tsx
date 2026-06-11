@@ -6,11 +6,22 @@ import { useAppStore } from '@/lib/store';
 import { formatRelativeTime } from '@/lib/utils';
 import {
   Users, UserPlus, TrendingUp, GitBranch, ArrowUpRight, ArrowDownRight,
-  Upload, Phone, Mail, Zap, ChevronRight, Sparkles, BarChart3
+  Upload, Phone, Mail, Zap, ChevronRight, Sparkles, BarChart3, ShieldAlert
 } from 'lucide-react';
 import { Link } from '@/i18n/navigation';
 import type { Lead } from '@/lib/types';
 import { useTranslations } from 'next-intl';
+
+interface RepStat {
+  id: string;
+  name: string;
+  assigned: number;
+  called: number;
+  reached: number;
+  waiting: number;
+  slaBreaches: number;
+  avgFirstCallMins: number | null;
+}
 
 const GRADIENTS = [
   'linear-gradient(135deg, #047857 0%, #10b981 50%, #047857 100%)',
