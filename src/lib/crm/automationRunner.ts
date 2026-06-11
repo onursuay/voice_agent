@@ -203,3 +203,69 @@ export async function runInactivityReminders(): Promise<ReminderRunResult> {
 
   return out;
 }
+
+/**
+ * Speed-to-lead + retry SLA kontrolü (saatlik cron):
+ * - İlk-arama SLA: lead atandı ama SLA_FIRST_HOURS içinde hiç aranmadı → rep + owner'a uyarı.
+ * - Retry SLA: ulaşılamadı (no_answer/busy) ama SLA_RETRY_HOURS içinde tekrar aranmadı → uyarı.
+ * Kapalı aşamalar (won/lost) hariç. Dedup `sla_alert_*` kolonlarıyla.
+ */
+export async function runSlaChecks(): Promise<{ firstAlerts: number; retryAlerts: number }> {
+  const supabase = createAdminSupabaseClient();
+  const out = { firstAlerts: 0, retryAlerts: 0 };
+  const ownerCache = new Map<string, string | null>();
+  const now = Date.now();
+  const firstMs = SLA_FIRST_HOURS * 3600 * 1000;
+  const retryMs = SLA_RETRY_HOURS * 3600 * 1000;
+
+  // --- İlk-arama SLA ihlali ---
+  const { data: firstCand } = await supabase
+    .from('leads')
+    .select('*, stage:crm_stages(is_won,is_lost)')
+    .not('assigned_to', 'is', null)
+    .eq('contact_attempts', 0)
+    .is('first_contact_at', null)
+    .is('sla_alert_first_at', null);
+
+  for (const lead of ((firstCand || []) as unknown as SlaLead[])) {
+    if (lead.stage && (lead.stage.is_won || lead.stage.is_lost)) continue;
+    const ref = lead.assigned_at || lead.routing_last_emailed_at || lead.first_seen_at || lead.created_at;
+    if (!ref || now - new Date(ref).getTime() < firstMs) continue;
+
+    const repE = await profileEmail(supabase, lead.assigned_to);
+    const ownE = await ownerEmail(supabase, lead.organization_id, ownerCache);
+    const subject = `SLA: ${lead.full_name || 'Lead'} ${SLA_FIRST_HOURS} saattir aranmadı`;
+    const html = `<h2>İlk arama SLA ihlali</h2><p><b>${escapeHtml(lead.full_name || '-')}</b> atandı ama ${SLA_FIRST_HOURS} saat içinde aranmadı.</p><p>Telefon: ${escapeHtml(lead.phone || '-')} · Şehir: ${escapeHtml(lead.city || '-')}</p>`;
+    for (const addr of [...new Set([repE, ownE].filter((x): x is string => !!x))]) {
+      try { await sendEmail({ to: addr, subject, html }); } catch { /* best effort */ }
+    }
+    await supabase.from('leads').update({ sla_alert_first_at: new Date().toISOString() }).eq('id', lead.id);
+    out.firstAlerts++;
+  }
+
+  // --- Retry SLA ihlali (ulaşılamadı, tekrar aranmadı) ---
+  const { data: retryCand } = await supabase
+    .from('leads')
+    .select('*, stage:crm_stages(is_won,is_lost)')
+    .not('assigned_to', 'is', null)
+    .in('contact_outcome', ['no_answer', 'busy']);
+
+  for (const lead of ((retryCand || []) as unknown as SlaLead[])) {
+    if (lead.stage && (lead.stage.is_won || lead.stage.is_lost)) continue;
+    if (!lead.last_contact_at || now - new Date(lead.last_contact_at).getTime() < retryMs) continue;
+    // Her yeni başarısız denemeden sonra tekrar uyar: alert son aramadan eski olmalı
+    if (lead.sla_alert_retry_at && new Date(lead.sla_alert_retry_at).getTime() >= new Date(lead.last_contact_at).getTime()) continue;
+
+    const repE = await profileEmail(supabase, lead.assigned_to);
+    const ownE = await ownerEmail(supabase, lead.organization_id, ownerCache);
+    const subject = `SLA: ${lead.full_name || 'Lead'} ulaşılamadı, tekrar aranmadı`;
+    const html = `<h2>Retry SLA ihlali</h2><p><b>${escapeHtml(lead.full_name || '-')}</b> "${escapeHtml(lead.contact_outcome || '-')}" sonucuyla ${SLA_RETRY_HOURS}+ saattir tekrar aranmadı.</p><p>Telefon: ${escapeHtml(lead.phone || '-')}</p>`;
+    for (const addr of [...new Set([repE, ownE].filter((x): x is string => !!x))]) {
+      try { await sendEmail({ to: addr, subject, html }); } catch { /* best effort */ }
+    }
+    await supabase.from('leads').update({ sla_alert_retry_at: new Date().toISOString() }).eq('id', lead.id);
+    out.retryAlerts++;
+  }
+
+  return out;
+}
