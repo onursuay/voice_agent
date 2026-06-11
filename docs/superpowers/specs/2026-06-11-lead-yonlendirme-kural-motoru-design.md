@@ -28,7 +28,7 @@ Faz 3 (gün sonu raporu) ayrı spec'lerle ele alınacak; mimari bunları destekl
 | Fazlama | Önce çekirdek (Faz 1): kural motoru + şehir→temsilci e-posta + "İletildi". |
 | E-posta servisi | **Resend**. |
 | Hosting / cron (Faz 2+) | **Vercel** (Vercel Cron). |
-| Tetikleme | Yeni lead düştüğünde — **yalnızca dış otomatik kanallar** (Meta, Zapier). |
+| Tetikleme | Yeni lead düştüğünde — **yalnızca Meta Lead Form** (doğrudan Meta Graph API / `leads_retrieval`). Zapier kapsam dışı. |
 | Eşleşme | **İlk eşleşen kural** (öncelik sırasına göre). |
 | Alıcı | **Sistemdeki kullanıcılar** (organization_members) — `assigned_to` ile birebir. |
 | "İletildi" derinliği | **Basit**: gönderildi / hata (Resend webhook ile gerçek teslimat Faz 2+). |
