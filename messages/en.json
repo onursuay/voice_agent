@@ -259,7 +259,8 @@
       "company": "Company",
       "tags": "Tags",
       "first_seen_at": "First Seen",
-      "last_activity_at": "Last Activity"
+      "last_activity_at": "Last Activity",
+      "routing_status": "Delivered"
     },
     "saved": "Saved",
     "sync": {
