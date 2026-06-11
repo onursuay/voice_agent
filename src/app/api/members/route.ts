@@ -140,7 +140,7 @@ export async function POST(request: NextRequest) {
       .insert({
         organization_id: orgId,
         user_id: userId,
-        role: role || 'sales_rep',
+        role: safeRole,
         allowed_pages: allowed_pages ?? null,
         lead_scope: lead_scope || 'assigned_only',
         approval_status: 'approved',
