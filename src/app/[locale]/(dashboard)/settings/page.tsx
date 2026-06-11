@@ -64,9 +64,13 @@ export default function SettingsPage() {
   const { session, stages, setStages } = useAppStore();
   const searchParams = useSearchParams();
   const t = useTranslations('settings');
+  const tAccess = useTranslations('access');
   const tCommon = useTranslations('common');
   const initialTab = (searchParams.get('tab') as SettingsTab) || 'organization';
   const [activeTab, setActiveTab] = useState<SettingsTab>(initialTab);
+
+  const userRole = session?.membership?.role;
+  const canManageAccess = userRole === 'owner' || userRole === 'admin';
 
   const TABS = [
     { key: 'organization', label: t('tabs.organization'), icon: <Building2 className="h-4 w-4" /> },
@@ -74,6 +78,7 @@ export default function SettingsPage() {
     { key: 'pipeline', label: t('tabs.pipeline'), icon: <GitBranch className="h-4 w-4" /> },
     { key: 'profile', label: t('tabs.profile'), icon: <User className="h-4 w-4" /> },
     { key: 'logs', label: t('tabs.logs'), icon: <ScrollText className="h-4 w-4" /> },
+    ...(canManageAccess ? [{ key: 'access', label: tAccess('title'), icon: <ShieldCheck className="h-4 w-4" /> }] : []),
   ];
 
   // Org state
