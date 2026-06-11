@@ -1,6 +1,7 @@
 import { createAdminSupabaseClient } from '@/lib/supabase/admin';
 import { sendEmail } from '@/lib/email/send';
 import { leadToVars, renderTemplate, type RenderableTemplate } from '@/lib/email/templates';
+import { syncLeadStageToMeta, type SyncLead, type SyncStage } from '@/lib/crm/metaAudienceSync';
 
 // Speed-to-lead eşikleri (saat) — env ile ayarlanabilir.
 const SLA_FIRST_HOURS = Number(process.env.SLA_FIRST_HOURS) || 4;
