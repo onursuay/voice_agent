@@ -67,7 +67,7 @@ export function Topbar() {
       <div className="flex items-center gap-3">
         <button
           onClick={() => setSidebarOpen(!sidebarOpen)}
-          className="flex h-9 w-9 items-center justify-center rounded-lg text-gray-500 hover:bg-gray-100 hover:text-foreground transition-colors lg:hidden"
+          className="flex h-9 w-9 items-center justify-center rounded-lg text-gray-500 hover:bg-gray-100 hover:text-foreground transition-colors md:hidden"
         >
           <Menu className="h-5 w-5" />
         </button>
