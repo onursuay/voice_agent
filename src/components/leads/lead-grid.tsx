@@ -438,6 +438,7 @@ const NEW_ROW_SENTINEL = '__NEW_ROW__';
 
 export function LeadGrid() {
   const t = useTranslations('leads');
+  const tRouting = useTranslations('routing');
 
   const columnLabelOverrides = useAppStore((s) => s.columnLabelOverrides);
 
