@@ -66,6 +66,35 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     loadSession();
   }, [router, setSession, setStages, setMembers]);
 
+  // Access guard: runs after session is set and on every navigation
+  useEffect(() => {
+    if (!session) return;
+
+    const role = session.membership?.role;
+    const allowed = (session.membership as OrganizationMember & { allowed_pages?: string[] | null })?.allowed_pages;
+    const status = (session.membership as OrganizationMember & { approval_status?: string | null })?.approval_status;
+
+    // Pending / rejected → send to waiting screen
+    if (status === 'pending' || status === 'rejected') {
+      router.replace('/pending-approval');
+      return;
+    }
+
+    // Determine which NAV_PAGE_KEY the current pathname belongs to
+    const matchedKey = NAV_PAGE_KEYS.find(
+      (key) => pathname === '/' + key || pathname.startsWith('/' + key + '/'),
+    );
+
+    // If no nav key matches (account pages, settings, root, etc.) → allow
+    if (!matchedKey) return;
+
+    // Check page access (owner/admin always pass via resolveAllowedPages)
+    if (!canAccessPage(matchedKey, role, allowed)) {
+      const firstAllowed = resolveAllowedPages(role, allowed)[0] || 'leads';
+      router.replace('/' + firstAllowed);
+    }
+  }, [session, pathname, router]);
+
   if (loading) {
     return (
       <div className="flex h-screen items-center justify-center bg-gray-50">
