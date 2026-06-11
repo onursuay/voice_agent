@@ -52,7 +52,7 @@ const navContent = {
       { icon: 'meta', label: 'Meta Ads', desc: 'Automatically pull Facebook and Instagram ad leads.', href: '/#entegrasyonlar' },
       { icon: 'whatsapp', label: 'WhatsApp', desc: 'Capture leads from WhatsApp messages.', href: '/#entegrasyonlar' },
       { icon: 'instagram', label: 'Instagram', desc: 'Automatically save leads from Instagram.', href: '/#entegrasyonlar' },
-      { icon: 'webhook', label: 'Webhook / Zapier', desc: 'Easily integrate with your existing tools via webhook.', href: '/#entegrasyonlar' },
+      { icon: 'webhook', label: 'Webhook', desc: 'Easily integrate with your existing tools via webhook.', href: '/#entegrasyonlar' },
     ],
   },
 }
