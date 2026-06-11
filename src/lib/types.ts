@@ -89,6 +89,10 @@ export interface Lead {
   first_seen_at: string;
   created_at: string;
   updated_at: string;
+  // Routing
+  routing_status?: string | null;
+  routing_last_emailed_at?: string | null;
+  routing_rule_id?: string | null;
   // Joined
   stage?: CrmStage;
   assigned_user?: Profile;
