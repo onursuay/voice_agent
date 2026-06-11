@@ -69,6 +69,27 @@ eklenir/garanti edilir. Admin importları filtreleyip toplu seçip kuralları ç
 - Manuel "Yeniden gönder": bilinçli aksiyondur, `routing_status`'a bakmadan gönderir.
 - Her gönderim denemesi `email_log`'a ayrı kayıt olur.
 
+### 3.5 Zapier entegrasyonunun kaldırılması (kapsam dahili)
+Meta leadleri doğrudan Meta Graph API ile geldiği için Zapier'e gerek yok; entegrasyon
+tamamen kaldırılır. Silinecek/temizlenecek noktalar:
+- **Endpoint**: `src/app/api/webhooks/zapier-leads/route.ts` (dosya silinir).
+- **Ingestion**: `IngestionLeadSource` tipinden ve `SOURCE_PRIORITY`'den `zapier`
+  ([src/lib/leads/ingest.ts](../../../src/lib/leads/ingest.ts)).
+- **Tipler/etiketler**: `LeadSourcePlatform` ve etiket map
+  ([src/lib/types.ts](../../../src/lib/types.ts)), kaynak rengi
+  ([src/lib/utils.ts](../../../src/lib/utils.ts)).
+- **UI kaynak listeleri**: import sayfası
+  ([src/app/[locale]/(dashboard)/import/page.tsx](../../../src/app/%5Blocale%5D/%28dashboard%29/import/page.tsx))
+  ve toolbar filtresi ([src/components/leads/lead-toolbar.tsx](../../../src/components/leads/lead-toolbar.tsx)).
+- **Webhook durum sayfası**: `ZAPIER_INGEST_SECRET` kontrolü ve `zapier_endpoint` duyurusu
+  ([src/app/api/webhooks/status/route.ts](../../../src/app/api/webhooks/status/route.ts)).
+- **Landing/pazarlama**: "Webhook / Zapier" referansları "Webhook" olarak sadeleştirilir
+  ([LandingHeader.tsx](../../../src/components/landing/LandingHeader.tsx),
+  [LandingContent.tsx](../../../src/components/landing/LandingContent.tsx)).
+- **Env**: `ZAPIER_INGEST_SECRET` artık kullanılmaz (deploy ortamından kaldırılabilir).
+- **DB enum**: `lead_source_platform` enum'undaki `zapier` değeri **bırakılır** (Postgres
+  enum değeri güvenli şekilde DROP edilemez); kullanılmadığı için sorun değildir.
+
 ## 4. Veri Modeli (yeni migration)
 
 Yeni migration dosyası: `supabase/migrations/20260611_lead_routing.sql`.
