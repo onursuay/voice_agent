@@ -234,7 +234,8 @@
       "notePlaceholder": "Add a note...",
       "noteAdd": "Add Note",
       "noteSendHint": "Cmd+Enter to send",
-      "copy": "Copy"
+      "copy": "Copy",
+      "call": "Call"
     },
     "gridActions": {
       "edit": "Edit",
