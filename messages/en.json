@@ -948,6 +948,17 @@
     "terms": "Terms of Service",
     "dataDeletion": "Data Deletion"
   },
+  "accountability": {
+    "title": "Team Tracking",
+    "rep": "Rep",
+    "assigned": "Assigned",
+    "called": "Called",
+    "reached": "Reached",
+    "waiting": "Waiting",
+    "slaBreaches": "SLA breaches",
+    "avgFirstCall": "Avg first call",
+    "noData": "No data"
+  },
   "routing": {
     "column": "Delivered",
     "statusSent": "Delivered",
