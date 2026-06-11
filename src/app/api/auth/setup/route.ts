@@ -62,7 +62,47 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ success: true, organization: existingOrg });
     }
 
-    // 3) Create organization
+    // 3) Determine target company org (single-company model)
+    let targetOrgId: string | null = null;
+
+    // 3a) Prefer DEFAULT_ORG_ID env var if set
+    if (process.env.DEFAULT_ORG_ID && process.env.DEFAULT_ORG_ID.trim() !== "") {
+      targetOrgId = process.env.DEFAULT_ORG_ID.trim();
+    } else {
+      // 3b) Otherwise look for the first-ever org (oldest by created_at)
+      const { data: orgs } = await supabase
+        .from("organizations")
+        .select("id")
+        .order("created_at", { ascending: true })
+        .limit(1);
+      if (orgs && orgs.length > 0) {
+        targetOrgId = orgs[0].id as string;
+      }
+    }
+
+    if (targetOrgId !== null) {
+      // 4a) Company org already exists — join as pending sales_rep
+      const { error: memberError } = await supabase
+        .from("organization_members")
+        .insert({
+          organization_id: targetOrgId,
+          user_id,
+          role: "sales_rep",
+          approval_status: "pending",
+        });
+
+      if (memberError) {
+        console.error("Membership error:", memberError);
+        return NextResponse.json(
+          { error: "Could not create membership: " + memberError.message },
+          { status: 500 }
+        );
+      }
+
+      return NextResponse.json({ success: true, pending: true, organization_id: targetOrgId });
+    }
+
+    // 4b) NO org exists yet — this is the FIRST user: bootstrap as owner (approved by default)
     let slug = slugify(organization_name) || `org-${Date.now()}`;
 
     // Handle slug conflicts
@@ -80,10 +120,10 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Could not create organization: " + orgError.message }, { status: 500 });
     }
 
-    // 4) Create membership (owner)
+    // Owner membership — approval_status defaults to 'approved' in DB, explicitly set for clarity
     const { error: memberError } = await supabase
       .from("organization_members")
-      .insert({ organization_id: orgData.id, user_id, role: "owner" });
+      .insert({ organization_id: orgData.id, user_id, role: "owner", approval_status: "approved" });
 
     if (memberError) {
       console.error("Membership error:", memberError);
