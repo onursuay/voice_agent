@@ -257,7 +257,8 @@
       "company": "Şirket",
       "tags": "Etiketler",
       "first_seen_at": "İlk Görülme",
-      "last_activity_at": "Son Aktivite"
+      "last_activity_at": "Son Aktivite",
+      "routing_status": "İletildi"
     },
     "saved": "Kaydedildi",
     "sync": {
