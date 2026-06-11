@@ -841,6 +841,14 @@ export function LeadGrid() {
     const key = col.key;
 
     switch (key) {
+      case 'routing_status': {
+        const status = (lead as Lead & { routing_status?: string | null }).routing_status;
+        if (status === 'sent') return <Badge color="green" size="sm">{tRouting('statusSent')}</Badge>;
+        if (status === 'failed') return <Badge color="red" size="sm">{tRouting('statusFailed')}</Badge>;
+        if (status === 'no_match') return <Badge color="gray" size="sm">{tRouting('statusNoMatch')}</Badge>;
+        if (status === 'skipped') return <Badge color="gray" size="sm">{tRouting('statusSkipped')}</Badge>;
+        return <Badge color="yellow" size="sm">{tRouting('statusPending')}</Badge>;
+      }
       case 'full_name':
         return <span className="truncate font-medium text-gray-900">{lead.full_name || ''}</span>;
       case 'phone':
