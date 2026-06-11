@@ -32,6 +32,7 @@ type LeadRow = {
   full_name: string | null;
   email: string | null;
   phone: string | null;
+  city?: string | null;
   stage_id: string | null;
   assigned_to?: string | null;
   score: number | null;
