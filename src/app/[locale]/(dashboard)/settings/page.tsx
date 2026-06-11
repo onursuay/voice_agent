@@ -8,7 +8,11 @@ import { Tabs } from '@/components/ui/tabs';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { Select } from '@/components/ui/select';
+import { Modal } from '@/components/ui/modal';
 import { ROLE_LABELS } from '@/lib/types';
+import { NAV_PAGE_KEYS, ROLE_PAGE_PRESETS, resolveAllowedPages } from '@/lib/access';
+import type { NavPageKey } from '@/lib/access';
 import type { Organization, Profile, OrganizationMember, CrmStage, UserRole } from '@/lib/types';
 import { useTranslations } from 'next-intl';
 import {
@@ -26,9 +30,12 @@ import {
   AlertCircle,
   Check,
   ScrollText,
+  ShieldCheck,
+  X,
+  Send,
 } from 'lucide-react';
 
-type SettingsTab = 'organization' | 'members' | 'pipeline' | 'profile' | 'logs';
+type SettingsTab = 'organization' | 'members' | 'pipeline' | 'profile' | 'logs' | 'access';
 
 type LeadEvent = {
   id: string;
