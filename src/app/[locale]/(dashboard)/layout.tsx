@@ -71,8 +71,8 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     if (!session) return;
 
     const role = session.membership?.role;
-    const allowed = (session.membership as OrganizationMember & { allowed_pages?: string[] | null })?.allowed_pages;
-    const status = (session.membership as OrganizationMember & { approval_status?: string | null })?.approval_status;
+    const allowed = session.membership?.allowed_pages;
+    const status = session.membership?.approval_status;
 
     // Pending / rejected → send to waiting screen
     if (status === 'pending' || status === 'rejected') {
