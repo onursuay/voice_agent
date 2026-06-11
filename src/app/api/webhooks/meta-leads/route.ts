@@ -212,6 +212,7 @@ export async function POST(request: NextRequest) {
           fullName: metaLead.fullName,
           email: metaLead.email,
           phone: metaLead.phone,
+          city: metaLead.city,
           customFields: metaLead.customFields,
           rawPayload: {
             webhook: change,
