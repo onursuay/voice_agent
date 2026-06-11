@@ -340,7 +340,7 @@ function DetailTab({ lead }: { lead: Lead }) {
             <div className="flex items-center gap-2">
               <Button
                 size="sm"
-                variant="outline"
+                variant="secondary"
                 onClick={handleRunRules}
                 loading={runningRules}
                 disabled={runningRules}
