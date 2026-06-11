@@ -37,13 +37,18 @@ Faz 3 (gün sonu raporu) ayrı spec'lerle ele alınacak; mimari bunları destekl
 
 ## 3. Kapsam & Tetikleme Modeli
 
-### 3.1 Otomatik tetikleme (sadece dış otomatik kanallar)
-- Yalnızca yeni lead **oluşturulduğunda** (`action === 'created'`) ve `source ∈
-  {meta_lead_form, zapier}` ise çalışır.
+### 3.1 Otomatik tetikleme (sadece Meta Lead Form)
+- Yalnızca yeni lead **oluşturulduğunda** (`action === 'created'`) ve
+  `source === 'meta_lead_form'` ise çalışır.
+- Meta leadleri **doğrudan Meta'dan** gelir (Zapier üzerinden DEĞİL): Meta webhook'u
+  ([src/app/api/webhooks/meta-leads](../../../src/app/api/webhooks/meta-leads/route.ts))
+  yalnızca `leadgen_id` alır, ardından `fetchMetaLeadDetails` ile **Meta Graph API**'den
+  (`leads_retrieval` izni) lead detayını çeker ve `ingestLead`'i çağırır.
 - Tek hook noktası: `ingestLead` ([src/lib/leads/ingest.ts](../../../src/lib/leads/ingest.ts)).
-  Meta webhook'u ([src/app/api/webhooks/meta-leads](../../../src/app/api/webhooks/meta-leads/route.ts))
-  ve Zapier webhook'u ([src/app/api/webhooks/zapier-leads](../../../src/app/api/webhooks/zapier-leads/route.ts))
-  ikisi de bu fonksiyondan geçer.
+- **Zapier kapsam dışı**: Zapier webhook'u
+  ([src/app/api/webhooks/zapier-leads](../../../src/app/api/webhooks/zapier-leads/route.ts))
+  ayrı, opsiyonel bir genel kanaldır ve Meta ile ilgisi yoktur. Zapier'den düşen leadler
+  otomatik tetiklenmez; manuel kanallar gibi yalnızca manuel tetiklemeyle gönderilir.
 - Dedupe ile **`updated`** olan leadlerde tetiklenmez (mükerrer mail önlenir).
 
 ### 3.2 Manuel tetikleme (otomatik tetiklenmeyen her şey)
