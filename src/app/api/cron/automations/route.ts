@@ -16,8 +16,9 @@ export async function GET(request: Request) {
   }
 
   try {
-    const result = await runInactivityReminders();
-    return NextResponse.json({ ok: true, ...result });
+    const reminders = await runInactivityReminders();
+    const sla = await runSlaChecks();
+    return NextResponse.json({ ok: true, reminders, sla });
   } catch (e) {
     console.error('[cron/automations] failed', e);
     return NextResponse.json(
