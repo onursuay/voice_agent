@@ -301,7 +301,7 @@ export async function ingestLead(input: NormalizedLeadInput) {
         meta_ad_id: mergeNonEmpty(metaAdId, duplicateLead.meta_ad_id),
         stage_id: duplicateLead.stage_id || defaultStageId,
         score: duplicateLead.score ?? input.score ?? 0,
-        // Preserve higher-priority source: meta_lead_form > zapier > manual
+        // Preserve higher-priority source: meta_lead_form > manual
         source_platform: mergeSource(input.source, duplicateLead.source_platform),
         external_platform_id: metaLeadId || input.eventExternalId || duplicateLead.meta_lead_id || null,
         city: mergeNonEmpty(sanitizeText(input.city), duplicateLead.city),
