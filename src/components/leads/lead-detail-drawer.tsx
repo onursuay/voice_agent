@@ -161,6 +161,131 @@ function CollapsibleSection({ title, children }: { title: string; children: Reac
 }
 
 // ============================================
+// Contact Outcome Section
+// ============================================
+const OUTCOME_KEYS = ['reached', 'no_answer', 'busy', 'wrong_number'] as const;
+type ContactOutcome = (typeof OUTCOME_KEYS)[number];
+
+function ContactSection({ lead }: { lead: Lead }) {
+  const t = useTranslations('leads.drawer.contact');
+  const { updateLead } = useAppStore();
+  const [logging, setLogging] = useState<ContactOutcome | null>(null);
+
+  const outcomeLabel: Record<ContactOutcome, string> = {
+    reached: t('outcomeReached'),
+    no_answer: t('outcomeNoAnswer'),
+    busy: t('outcomeBusy'),
+    wrong_number: t('outcomeWrong'),
+  };
+
+  const outcomeColor: Record<ContactOutcome, string> = {
+    reached: 'bg-emerald-50 text-emerald-700 border-emerald-200 hover:bg-emerald-100 active:bg-emerald-200',
+    no_answer: 'bg-yellow-50 text-yellow-700 border-yellow-200 hover:bg-yellow-100 active:bg-yellow-200',
+    busy: 'bg-orange-50 text-orange-700 border-orange-200 hover:bg-orange-100 active:bg-orange-200',
+    wrong_number: 'bg-red-50 text-red-700 border-red-200 hover:bg-red-100 active:bg-red-200',
+  };
+
+  const currentOutcomeColor: Record<ContactOutcome, string> = {
+    reached: 'green',
+    no_answer: 'yellow',
+    busy: 'yellow',
+    wrong_number: 'red',
+  };
+
+  const handleLogOutcome = async (outcome: ContactOutcome) => {
+    setLogging(outcome);
+    try {
+      const res = await fetch(`/api/leads/${lead.id}/contact`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ outcome }),
+      });
+      if (res.ok) {
+        const data = await res.json();
+        const l = data.lead;
+        updateLead(lead.id, {
+          contact_attempts: l.contact_attempts,
+          last_contact_at: l.last_contact_at,
+          first_contact_at: l.first_contact_at,
+          contact_outcome: l.contact_outcome,
+        });
+      }
+    } catch (err) {
+      console.error('Contact log failed:', err);
+    } finally {
+      setLogging(null);
+    }
+  };
+
+  // Speed-to-lead: diff between assigned_at and first_contact_at
+  const speedToLead = (() => {
+    if (!lead.assigned_at || !lead.first_contact_at) return null;
+    const diffMs =
+      new Date(lead.first_contact_at).getTime() - new Date(lead.assigned_at).getTime();
+    if (diffMs < 0) return null;
+    const totalSec = Math.floor(diffMs / 1000);
+    if (totalSec < 60) return `${totalSec}s`;
+    const mins = Math.floor(totalSec / 60);
+    if (mins < 60) return `${mins}dk`;
+    const hrs = Math.floor(mins / 60);
+    const remMins = mins % 60;
+    return remMins > 0 ? `${hrs}sa ${remMins}dk` : `${hrs}sa`;
+  })();
+
+  return (
+    <Section title={t('callResult')}>
+      {/* Outcome buttons */}
+      <div className="flex flex-wrap gap-1.5 mb-3">
+        {OUTCOME_KEYS.map((outcome) => (
+          <button
+            key={outcome}
+            type="button"
+            disabled={logging !== null}
+            onClick={() => handleLogOutcome(outcome)}
+            className={cn(
+              'inline-flex items-center gap-1 rounded-md border px-2.5 py-1 text-xs font-medium transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-500 disabled:opacity-50 disabled:cursor-not-allowed',
+              outcomeColor[outcome],
+              logging === outcome && 'opacity-70 cursor-wait'
+            )}
+          >
+            {logging === outcome ? (
+              <span className="h-3 w-3 animate-spin rounded-full border border-current border-t-transparent" />
+            ) : (
+              <PhoneCall className="h-3 w-3" />
+            )}
+            {outcomeLabel[outcome]}
+          </button>
+        ))}
+      </div>
+
+      {/* Stats row */}
+      <div className="flex flex-wrap items-center gap-3 text-xs text-gray-500">
+        {typeof lead.contact_attempts === 'number' && lead.contact_attempts > 0 && (
+          <span>
+            {t('attempts')}:{' '}
+            <span className="font-semibold text-gray-700">{lead.contact_attempts}</span>
+          </span>
+        )}
+        {lead.contact_outcome && OUTCOME_KEYS.includes(lead.contact_outcome as ContactOutcome) && (
+          <Badge
+            color={currentOutcomeColor[lead.contact_outcome as ContactOutcome] as 'green' | 'yellow' | 'red'}
+            size="sm"
+          >
+            {outcomeLabel[lead.contact_outcome as ContactOutcome]}
+          </Badge>
+        )}
+        {speedToLead && (
+          <span>
+            {t('firstCallAfter')}:{' '}
+            <span className="font-semibold text-gray-700">{speedToLead}</span>
+          </span>
+        )}
+      </div>
+    </Section>
+  );
+}
+
+// ============================================
 // Detail Tab
 // ============================================
 function DetailTab({ lead }: { lead: Lead }) {
