@@ -174,7 +174,7 @@ export async function POST(request: NextRequest) {
           <div style="font-family:sans-serif;max-width:480px;margin:0 auto;padding:24px">
             <h2 style="margin-bottom:8px">YO CRM'e davet edildiniz</h2>
             <p>${greeting}</p>
-            <p>Organizasyona <strong>${role || 'sales_rep'}</strong> rolüyle eklendiniz.</p>
+            <p>Organizasyona <strong>${safeRole}</strong> rolüyle eklendiniz.</p>
             ${actionBlock}
             <hr style="margin:24px 0;border:none;border-top:1px solid #e5e7eb"/>
             <p style="color:#6b7280;font-size:12px">Bu e-postayı beklemiyorsanız dikkate almayın.</p>
