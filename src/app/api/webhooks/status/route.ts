@@ -33,7 +33,6 @@ export async function GET(request: NextRequest) {
     webhook_urls: {
       meta_verify_url: `${request.nextUrl.origin}/api/webhooks/meta-leads`,
       meta_callback_url: `${request.nextUrl.origin}/api/webhooks/meta-leads`,
-      zapier_endpoint: `${request.nextUrl.origin}/api/webhooks/zapier-leads`,
     },
   };
 
