@@ -340,6 +340,19 @@ export async function ingestLead(input: NormalizedLeadInput) {
       return { lead: updatedLead, eventId: createdEvent.id, action: 'updated' as const };
     }
 
+    // Safety net: a new lead with no name/phone/email almost always means the
+    // form used field names our parser didn't recognise (the data is still in
+    // custom_fields/raw_payload). We don't drop the lead, but we surface the gap
+    // in logs so the field mapping in src/lib/meta.ts can be extended.
+    if (!fullName && !email && !phone) {
+      const unmappedKeys = Object.keys(input.customFields || {});
+      console.warn(
+        `[ingest] Lead created with NO contact info — likely unmapped form fields. ` +
+          `org=${input.organizationId} source=${input.source} meta_form_id=${metaFormId ?? 'n/a'} ` +
+          `custom_field_keys=${JSON.stringify(unmappedKeys)}`
+      );
+    }
+
     const insertPayload = {
       organization_id: input.organizationId,
       full_name: fullName,
