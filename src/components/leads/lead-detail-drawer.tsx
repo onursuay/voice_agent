@@ -164,9 +164,11 @@ function CollapsibleSection({ title, children }: { title: string; children: Reac
 // ============================================
 function DetailTab({ lead }: { lead: Lead }) {
   const t = useTranslations('leads');
+  const tR = useTranslations('routing');
   const { stages, members, updateLead } = useAppStore();
   const [tagInput, setTagInput] = useState('');
   const [showTagInput, setShowTagInput] = useState(false);
+  const [runningRules, setRunningRules] = useState(false);
 
   const handleStageChange = async (stageId: string) => {
     try {
