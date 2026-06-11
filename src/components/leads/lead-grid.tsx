@@ -432,6 +432,81 @@ function TagsEditor({
   );
 }
 
+// ── Mobile Card List ────────────────────────────────────
+
+function LeadCardList() {
+  const t = useTranslations('leads');
+  const tRouting = useTranslations('routing');
+  const leads = useAppStore((s) => s.leads);
+  const stages = useAppStore((s) => s.stages);
+  const setActiveLeadId = useAppStore((s) => s.setActiveLeadId);
+  const stageLabel = useStageLabel();
+
+  const getRoutingBadge = (status: string | undefined | null) => {
+    if (status === 'sent') return <Badge color="green" size="sm">{tRouting('statusSent')}</Badge>;
+    if (status === 'failed') return <Badge color="red" size="sm">{tRouting('statusFailed')}</Badge>;
+    if (status === 'no_match') return <Badge color="gray" size="sm">{tRouting('statusNoMatch')}</Badge>;
+    if (status === 'skipped') return <Badge color="gray" size="sm">{tRouting('statusSkipped')}</Badge>;
+    if (status) return <Badge color="yellow" size="sm">{tRouting('statusPending')}</Badge>;
+    return null;
+  };
+
+  if (leads.length === 0) {
+    return (
+      <div className="flex items-center justify-center py-20 text-gray-400">
+        <div className="text-center">
+          <p className="text-lg font-medium">{t('emptyTitle')}</p>
+          <p className="mt-1 text-sm">{t('emptyDesc')}</p>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="divide-y divide-gray-100">
+      {leads.map((lead) => {
+        const stage = lead.stage || stages.find((s) => s.id === lead.stage_id);
+        const routingStatus = (lead as Lead & { routing_status?: string | null }).routing_status;
+        return (
+          <button
+            key={lead.id}
+            type="button"
+            onClick={() => setActiveLeadId(lead.id)}
+            className="w-full text-left px-4 py-3 bg-white hover:bg-gray-50 active:bg-gray-100 transition-colors flex items-start gap-3"
+          >
+            <div className="flex-shrink-0 mt-0.5">
+              <div className="h-9 w-9 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-700 font-semibold text-sm">
+                {getInitials(lead.full_name || '?')}
+              </div>
+            </div>
+            <div className="min-w-0 flex-1">
+              <div className="flex items-center justify-between gap-2">
+                <p className="font-semibold text-sm text-gray-900 truncate">
+                  {lead.full_name || t('namelessLead')}
+                </p>
+                {stage && (
+                  <Badge color={getStageBadgeColor(stage.color)} size="sm">
+                    {stageLabel(stage)}
+                  </Badge>
+                )}
+              </div>
+              <div className="flex items-center gap-2 mt-0.5 flex-wrap">
+                {lead.city && (
+                  <span className="text-xs text-gray-500">{lead.city}</span>
+                )}
+                {lead.phone && (
+                  <span className="text-xs text-gray-500 font-mono">{lead.phone}</span>
+                )}
+                {getRoutingBadge(routingStatus)}
+              </div>
+            </div>
+          </button>
+        );
+      })}
+    </div>
+  );
+}
+
 // ── Main Grid Component ─────────────────────────────────
 
 const NEW_ROW_SENTINEL = '__NEW_ROW__';
