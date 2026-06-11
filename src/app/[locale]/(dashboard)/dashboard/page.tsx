@@ -62,6 +62,23 @@ export default function DashboardPage() {
     fetchData();
   }, [session, setLeads]);
 
+  useEffect(() => {
+    if (!session || !isManager) return;
+    setAccountabilityLoading(true);
+    fetch('/api/dashboard/accountability')
+      .then(res => res.json())
+      .then(data => {
+        if (data.error) {
+          setAccountabilityError(data.error);
+        } else {
+          setAccountabilityReps(data.reps || []);
+        }
+      })
+      .catch(() => setAccountabilityError('fetch error'))
+      .finally(() => setAccountabilityLoading(false));
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [session, isManager]);
+
   const recentLeads = useMemo(() => leads.slice(0, 5), [leads]);
 
   const stats = useMemo(() => {
