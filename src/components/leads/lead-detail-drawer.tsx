@@ -242,6 +242,32 @@ function DetailTab({ lead }: { lead: Lead }) {
     }
   };
 
+  const handleRunRules = async () => {
+    setRunningRules(true);
+    try {
+      const res = await fetch(`/api/leads/${lead.id}/route-rules`, { method: 'POST' });
+      if (res.ok) {
+        const data = await res.json();
+        const result = data?.result ?? {};
+        updateLead(lead.id, {
+          routing_status: result.status ?? lead.routing_status,
+          ...(result.assigneeId ? { assigned_to: result.assigneeId } : {}),
+        });
+      }
+    } catch (err) {
+      console.error('Run rules failed:', err);
+    } finally {
+      setRunningRules(false);
+    }
+  };
+
+  const routingStatusConfig: Record<string, { label: string; color: 'green' | 'red' | 'gray' | 'amber' }> = {
+    sent: { label: tR('statusSent'), color: 'green' },
+    failed: { label: tR('statusFailed'), color: 'red' },
+    no_match: { label: tR('statusNoMatch'), color: 'gray' },
+    skipped: { label: tR('statusSkipped'), color: 'gray' },
+  };
+
   const currentStage = lead.stage || stages.find((s) => s.id === lead.stage_id);
 
   return (
