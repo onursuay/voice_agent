@@ -346,6 +346,31 @@ export function BulkActionBar() {
     }
   };
 
+  const handleRunRules = async () => {
+    setRunningRules(true);
+    setRunRulesResult(null);
+    try {
+      const res = await fetch('/api/leads/route-rules', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ lead_ids: ids }),
+      });
+      if (!res.ok) {
+        const body = await res.json().catch(() => ({}));
+        throw new Error(body.error || 'An error occurred');
+      }
+      const data = await res.json().catch(() => ({}));
+      const count: number = data.count ?? (Array.isArray(data.results) ? data.results.length : ids.length);
+      setRunRulesResult(tRouting('runDone', { count }));
+      clearSelection();
+      triggerLeadsRefresh();
+    } catch (err) {
+      setRunRulesResult(err instanceof Error ? err.message : 'An error occurred');
+    } finally {
+      setRunningRules(false);
+    }
+  };
+
   return (
     <>
       {/* Stage Modal */}
