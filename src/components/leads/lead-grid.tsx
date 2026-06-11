@@ -1020,7 +1020,14 @@ export function LeadGrid() {
   }
 
   return (
-    <div ref={gridRef} className="h-full w-full overflow-auto rounded-lg border border-gray-200 bg-white">
+    <>
+      {/* Mobile card list — visible only on small screens */}
+      <div className="md:hidden rounded-lg border border-gray-200 bg-white overflow-hidden">
+        <LeadCardList />
+      </div>
+
+      {/* Desktop table — hidden on small screens */}
+      <div ref={gridRef} className="hidden md:block h-full w-full overflow-auto rounded-lg border border-gray-200 bg-white">
       <SavedToast show={showSaved} label={t('saved')} />
 
       {contextMenu && (() => {
