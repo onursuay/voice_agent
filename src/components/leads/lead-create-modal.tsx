@@ -69,7 +69,10 @@ export function LeadCreateModal({ open, onClose }: LeadCreateModalProps) {
       }
 
       const newLead: Lead = await res.json();
-      setLeads([newLead, ...leads]);
+      // Append to the END of the list (after the last filled row), matching the
+      // inline new-row path and the API's ascending-by-created_at order. New leads
+      // must never jump to row 1.
+      addLead(newLead);
       setForm(initialForm);
       onClose();
     } catch (err: unknown) {
