@@ -6,9 +6,9 @@
 
 **Architecture:** Mevcut `automation_rules` tablosu (JSON config) üzerinde jenerik kural motoru. Yeni lead `ingestLead`'te oluşunca (yalnızca Meta) best-effort tetiklenir; import/manuel için butonla tetiklenir. İlk uyan kural lead'i atar + Resend ile mail atar; her gönderim `email_log`'a yazılır, lead'de `routing_status` güncellenir.
 
-**Tech Stack:** Next.js 16 (App Router), Supabase (PostgreSQL + RLS), Resend, next-intl, vitest (yalnız saf mantık için), TypeScript.
+**Tech Stack:** Next.js 16 (App Router), Supabase (PostgreSQL + RLS), Resend, next-intl, TypeScript.
 
-**Test yaklaşımı (hafif):** Saf mantık (koşul değerlendirme, şablon render, normalize) → vitest birim testi. API/UI/migration → `npm run build` + `npm run lint` + elle doğrulama.
+**Test yaklaşımı:** Projeye test altyapısı/dosyası **EKLENMEZ** (kullanıcı isteği — geçici/test alanı istenmiyor). Doğrulama yalnızca `npm run build` + `npm run lint` + elle (localhost) doğrulama ile yapılır.
 
 **Referans spec:** [docs/superpowers/specs/2026-06-11-lead-yonlendirme-kural-motoru-design.md](../specs/2026-06-11-lead-yonlendirme-kural-motoru-design.md)
 
@@ -18,18 +18,15 @@
 
 **Yeni:**
 - `supabase/migrations/20260611_lead_routing.sql` — DB değişiklikleri
-- `vitest.config.ts` — test runner config
 - `src/lib/email/resend.ts` — Resend client
 - `src/lib/email/send.ts` — `sendEmail()`
 - `src/lib/email/templates.ts` — varsayılan şablon + `renderTemplate()` + `leadToVars()`
-- `src/lib/email/templates.test.ts` — render birim testleri
 - `src/lib/crm/ruleConditions.ts` — koşul normalize + değerlendirme (saf)
-- `src/lib/crm/ruleConditions.test.ts` — koşul birim testleri
 - `src/lib/crm/routingEngine.ts` — `evaluateLeadRouting()`
 - `src/app/api/leads/[id]/route-rules/route.ts` — tek lead manuel tetikleme
 - `src/app/api/leads/route-rules/route.ts` — toplu manuel tetikleme
 
-**Değişrecek:**
+**Değişecek:**
 - `src/lib/leads/ingest.ts` — `city` eşlemesi + routing hook (Meta, created)
 - `src/lib/meta.ts` — Meta form alanından `city` çıkarımı
 - `src/app/api/automations/route.ts` + `[id]/route.ts` — `priority` + sıralama
@@ -41,52 +38,6 @@
 - `src/app/[locale]/(dashboard)/email/page.tsx` — şablon editörü + gönderim geçmişi
 - `src/messages/tr.json` + `src/messages/en.json` — yeni metin anahtarları
 - **Zapier kaldırma:** `src/app/api/webhooks/zapier-leads/route.ts` (sil), `src/lib/leads/ingest.ts`, `src/lib/types.ts`, `src/lib/utils.ts`, `src/app/[locale]/(dashboard)/import/page.tsx`, `src/components/leads/lead-toolbar.tsx`, `src/app/api/webhooks/status/route.ts`, `src/components/landing/LandingHeader.tsx`, `src/components/landing/LandingContent.tsx`
-
----
-
-## Task 0: vitest kurulumu
-
-**Files:**
-- Create: `vitest.config.ts`
-- Modify: `package.json` (scripts)
-
-- [ ] **Step 1: vitest'i dev bağımlılığı olarak kur**
-
-Run: `npm i -D vitest`
-Expected: `vitest` devDependencies'e eklenir.
-
-- [ ] **Step 2: vitest.config.ts oluştur**
-
-```ts
-import { defineConfig } from 'vitest/config';
-import path from 'path';
-
-export default defineConfig({
-  test: {
-    environment: 'node',
-    include: ['src/**/*.test.ts'],
-  },
-  resolve: {
-    alias: { '@': path.resolve(__dirname, 'src') },
-  },
-});
-```
-
-- [ ] **Step 3: package.json'a test script ekle**
-
-`scripts` içine ekle: `"test": "vitest run"`
-
-- [ ] **Step 4: Çalıştığını doğrula (boş)**
-
-Run: `npm test`
-Expected: "No test files found" veya 0 test — hata vermeden çıkar.
-
-- [ ] **Step 5: Commit**
-
-```bash
-git add vitest.config.ts package.json package-lock.json
-git commit -m "chore: add vitest for unit tests"
-```
 
 ---
 
@@ -156,7 +107,7 @@ git commit -m "feat(db): lead routing columns + email_log table"
 ## Task 2: E-posta modülü (Resend)
 
 **Files:**
-- Create: `src/lib/email/resend.ts`, `src/lib/email/send.ts`, `src/lib/email/templates.ts`, `src/lib/email/templates.test.ts`
+- Create: `src/lib/email/resend.ts`, `src/lib/email/send.ts`, `src/lib/email/templates.ts`
 - Modify: `.env` / `.env.local` (anahtarlar)
 
 - [ ] **Step 1: Resend'i kur**
@@ -276,48 +227,16 @@ export function renderTemplate(
 }
 ```
 
-- [ ] **Step 6: Render birim testlerini yaz**
+- [ ] **Step 6: Build doğrula**
 
-`src/lib/email/templates.test.ts`:
-```ts
-import { describe, it, expect } from 'vitest';
-import { renderTemplate, leadToVars, DEFAULT_ROUTING_TEMPLATE } from './templates';
+Run: `npm run build`
+Expected: Tip/derleme hatası yok.
 
-describe('renderTemplate', () => {
-  it('placeholderları doldurur', () => {
-    const out = renderTemplate({ subject: 'Hi {{full_name}}', body: '<p>{{phone}}</p>' }, { full_name: 'Ali Veli', phone: '+9053' });
-    expect(out.subject).toBe('Hi Ali Veli');
-    expect(out.html).toBe('<p>+9053</p>');
-  });
-
-  it('eksik değişkeni "-" yapar', () => {
-    const out = renderTemplate({ subject: '{{yok}}', body: '' }, {});
-    expect(out.subject).toBe('-');
-  });
-
-  it('leadToVars full_name boşsa ad+soyad birleştirir', () => {
-    const vars = leadToVars({ first_name: 'Ali', last_name: 'Veli' });
-    expect(vars.full_name).toBe('Ali Veli');
-  });
-
-  it('default şablon city ve full_name içerir', () => {
-    const out = renderTemplate(DEFAULT_ROUTING_TEMPLATE, leadToVars({ full_name: 'X', city: 'Ankara' }));
-    expect(out.subject).toContain('Ankara');
-    expect(out.html).toContain('X');
-  });
-});
-```
-
-- [ ] **Step 7: Testleri çalıştır**
-
-Run: `npm test`
-Expected: templates.test.ts → 4 test PASS.
-
-- [ ] **Step 8: Commit**
+- [ ] **Step 7: Commit**
 
 ```bash
 git add src/lib/email package.json package-lock.json
-git commit -m "feat(email): Resend client, sendEmail, template render + tests"
+git commit -m "feat(email): Resend client, sendEmail, template render"
 ```
 
 ---
@@ -325,7 +244,7 @@ git commit -m "feat(email): Resend client, sendEmail, template render + tests"
 ## Task 3: Kural koşul değerlendirme (saf mantık)
 
 **Files:**
-- Create: `src/lib/crm/ruleConditions.ts`, `src/lib/crm/ruleConditions.test.ts`
+- Create: `src/lib/crm/ruleConditions.ts`
 
 - [ ] **Step 1: Modülü yaz**
 
@@ -385,55 +304,16 @@ export function evaluateConditions(cfg: TriggerConfig, lead: Record<string, unkn
 }
 ```
 
-- [ ] **Step 2: Birim testlerini yaz**
+- [ ] **Step 2: Build doğrula**
 
-`src/lib/crm/ruleConditions.test.ts`:
-```ts
-import { describe, it, expect } from 'vitest';
-import { normalizeValue, evaluateCondition, evaluateConditions } from './ruleConditions';
+Run: `npm run build`
+Expected: Hata yok.
 
-describe('normalizeValue', () => {
-  it('Türkçe büyük/küçük ve aksanı sadeleştirir', () => {
-    expect(normalizeValue('Ankara')).toBe('ankara');
-    expect(normalizeValue('İstanbul')).toBe(normalizeValue('Istanbul'));
-    expect(normalizeValue('  Şanlıurfa ')).toBe('sanliurfa');
-  });
-});
-
-describe('evaluateCondition', () => {
-  it('equals şehir eşleşmesi (case/aksan duyarsız)', () => {
-    expect(evaluateCondition({ field: 'city', operator: 'equals', value: 'Ankara' }, { city: 'ANKARA' })).toBe(true);
-    expect(evaluateCondition({ field: 'city', operator: 'equals', value: 'Ankara' }, { city: 'İzmir' })).toBe(false);
-  });
-  it('in operatörü liste içi kontrol', () => {
-    expect(evaluateCondition({ field: 'city', operator: 'in', value: ['Ankara', 'İzmir'] }, { city: 'izmir' })).toBe(true);
-  });
-  it('contains', () => {
-    expect(evaluateCondition({ field: 'city', operator: 'contains', value: 'kara' }, { city: 'Ankara' })).toBe(true);
-  });
-});
-
-describe('evaluateConditions', () => {
-  it('koşulsuz config catch-all (true)', () => {
-    expect(evaluateConditions({}, { city: 'x' })).toBe(true);
-  });
-  it('match all', () => {
-    const cfg = { conditions: [{ field: 'city', operator: 'equals' as const, value: 'Ankara' }], match: 'all' as const };
-    expect(evaluateConditions(cfg, { city: 'ankara' })).toBe(true);
-  });
-});
-```
-
-- [ ] **Step 3: Testleri çalıştır**
-
-Run: `npm test`
-Expected: ruleConditions.test.ts → tüm testler PASS.
-
-- [ ] **Step 4: Commit**
+- [ ] **Step 3: Commit**
 
 ```bash
-git add src/lib/crm/ruleConditions.ts src/lib/crm/ruleConditions.test.ts
-git commit -m "feat(crm): rule condition evaluation (tr-normalized) + tests"
+git add src/lib/crm/ruleConditions.ts
+git commit -m "feat(crm): rule condition evaluation (tr-normalized)"
 ```
 
 ---
@@ -616,7 +496,7 @@ git commit -m "feat(crm): lead routing engine (first-match, assign + email, best
 ## Task 5: Şehir eşlemesi + otomatik tetikleme (ingest)
 
 **Files:**
-- Modify: `src/lib/meta.ts`, `src/lib/leads/ingest.ts`
+- Modify: `src/lib/meta.ts`, `src/lib/leads/ingest.ts`, `src/app/api/webhooks/meta-leads/route.ts`
 
 - [ ] **Step 1: `src/lib/meta.ts`'te city çıkarımı**
 
@@ -631,15 +511,15 @@ git commit -m "feat(crm): lead routing engine (first-match, assign + email, best
 
 - [ ] **Step 3: `ingest.ts` — insert/update payload'ına city yaz**
 
-`insertPayload` nesnesine ekle (mevcut `full_name, email, phone` satırlarının yanına):
+`duplicateLead` select listelerine (satır ~129 ve ~142) `city` kolonunu ekle. `insertPayload` nesnesine ekle (mevcut `full_name, email, phone` satırlarının yanına):
 ```ts
       city: sanitizeText(input.city),
 ```
-`updatePayload` nesnesine de ekle (dolu gelirse güncelle, boşsa silme — diğer alanların desenini izle):
+`updatePayload` nesnesine de ekle; boş gelirse mevcut değeri koru (diğer alanların `mergeNonEmpty`/sil desenini izle):
 ```ts
-      city: sanitizeText(input.city) ?? duplicateLead_city_fallback,
+      city: mergeNonEmpty(sanitizeText(input.city), duplicateLead.city),
 ```
-Not: `duplicateLead` select listesine `city` ekle (satır 129 ve 142'deki select string'lerine `, city`). Boş gelirse mevcut değeri koru.
+(Boşsa update'ten düşür: `if (!input.city) delete (updatePayload as Record<string, unknown>).city;`)
 
 - [ ] **Step 4: Meta webhook'unun city'yi geçmesi**
 
@@ -679,7 +559,7 @@ git commit -m "feat(leads): map city on ingest + auto-route Meta leads on create
 
 **Files:**
 - Create: `src/app/api/leads/[id]/route-rules/route.ts`, `src/app/api/leads/route-rules/route.ts`
-- Modify: `src/app/api/automations/route.ts`, `src/app/api/automations/[id]/route.ts`, `src/app/api/email/templates/route.ts`, `src/app/api/email/templates/[id]/route.ts`, `src/app/api/email/history/route.ts`, `src/app/api/email/send/route.ts`
+- Modify: `src/app/api/automations/route.ts`, `src/app/api/email/templates/route.ts`, `src/app/api/email/templates/[id]/route.ts`, `src/app/api/email/history/route.ts`, `src/app/api/email/send/route.ts`
 
 - [ ] **Step 1: Tek lead manuel tetikleme**
 
@@ -767,7 +647,7 @@ export async function GET(req: Request) {
 
 - [ ] **Step 6: email/send stub'ını doldur (manuel tekil mail)**
 
-`src/app/api/email/send/route.ts` POST: `{ to, subject, html }` alır, `sendEmail` çağırır, `email_log`'a yazar. (E-posta sayfasından test/manuel gönderim için.)
+`src/app/api/email/send/route.ts` POST: `{ to, subject, html }` alır, `sendEmail` çağırır.
 ```ts
 import { NextResponse } from 'next/server';
 import { createServerSupabaseClient } from '@/lib/supabase/server';
@@ -814,7 +694,7 @@ Run: `git rm "src/app/api/webhooks/zapier-leads/route.ts"`
 
 - [ ] **Step 2: ingest.ts — zapier'i kaldır**
 
-`IngestionLeadSource` tipini `'meta_lead_form' | 'manual'` yap. `SOURCE_PRIORITY`'den `zapier: 2` satırını sil (meta_lead_form: 2, manual: 1 olarak yeniden numaralandır). `mergeSource` ve yorumlardaki zapier referanslarını temizle.
+`IngestionLeadSource` tipini `'meta_lead_form' | 'manual'` yap. `SOURCE_PRIORITY`'den `zapier` satırını sil (meta_lead_form: 2, manual: 1). `mergeSource` ve yorumlardaki zapier referanslarını temizle.
 
 - [ ] **Step 3: types.ts — zapier'i kaldır**
 
@@ -836,10 +716,10 @@ Run: `git rm "src/app/api/webhooks/zapier-leads/route.ts"`
 
 `LandingHeader.tsx` (satır 35, 55) ve `LandingContent.tsx` (satır 303): "Webhook / Zapier" → "Webhook"; bağımsız "Zapier" öğesini listeden çıkar.
 
-- [ ] **Step 8: Build + lint**
+- [ ] **Step 8: Build + lint + referans taraması**
 
 Run: `npm run build && npm run lint`
-Expected: `zapier` referansından kalan tip hatası YOK. Kontrol: `grep -rin zapier src | grep -v node_modules` → yalnızca migration dosyasındaki enum (DB) kalmalı; src'de 0.
+Run: `grep -rin zapier src | grep -v node_modules` → çıktı BOŞ olmalı (DB enum migration'ı hariç, o src dışında).
 
 - [ ] **Step 9: Commit**
 
@@ -852,7 +732,7 @@ git commit -m "chore: remove Zapier integration (code + UI), Meta is direct"
 
 ## Task 8: UI — Otomasyonlar, E-posta, Leads grid/toolbar/drawer + i18n
 
-> Her alt-adımda önce ilgili dosyayı oku ve mevcut bileşen/stil desenini izle (Button, Modal, Dropdown, Badge bileşenleri `src/components/ui`). Tüm metinler `useTranslations` ile TR+EN.
+> Her alt-adımda önce ilgili dosyayı oku ve mevcut bileşen/stil desenini izle (Button, Modal, Dropdown, Badge bileşenleri `src/components/ui`). Tüm metinler `useTranslations` ile TR+EN. **TR'de Türkçe, EN'de İngilizce göründüğü doğrulanır.**
 
 **Files:**
 - Modify: `src/app/[locale]/(dashboard)/automations/page.tsx`, `src/app/[locale]/(dashboard)/email/page.tsx`, `src/components/leads/lead-grid.tsx`, `src/components/leads/lead-toolbar.tsx`, `src/components/leads/lead-detail-drawer.tsx`, `src/messages/tr.json`, `src/messages/en.json`
@@ -885,7 +765,7 @@ EN karşılıkları İngilizce. **Ayrıca** `nav.dashboard`'ı TR'de "Panel", `n
 - [ ] **Step 3: Toolbar — import filtresi + toplu aksiyon**
 
 `src/components/leads/lead-toolbar.tsx`:
-- Kaynak filtre listesinde `import` değerinin bulunduğundan emin ol: `{ value: 'import', label: 'İçe Aktarma' }` (yoksa ekle; label `useTranslations`).
+- Kaynak filtre listesinde `import` değerinin bulunduğundan emin ol: `{ value: 'import', label: t(...) }` ("İçe Aktarma" / "Import"); yoksa ekle.
 - Bulk actions menüsüne "Kuralları çalıştır" ekle → seçili `lead_ids` ile `POST /api/leads/route-rules` çağır, dönen sonucu toast/sayım olarak göster, listeyi yenile.
 
 - [ ] **Step 4: Drawer — çalıştır/yeniden gönder + mail geçmişi**
@@ -907,7 +787,7 @@ EN karşılıkları İngilizce. **Ayrıca** `nav.dashboard`'ı TR'de "Panel", `n
 
 - [ ] **Step 6: E-posta sayfası — şablon editörü + geçmiş**
 
-`src/app/[locale]/(dashboard)/email/page.tsx`: 
+`src/app/[locale]/(dashboard)/email/page.tsx`:
 - Şablon listesi/editörü (`/api/email/templates`): name, subject, body (değişken çipleri: `{{full_name}} {{phone}} {{email}} {{city}} {{source}}`).
 - Gönderim geçmişi (`/api/email/history`): kime / ne zaman / durum.
 
@@ -940,4 +820,4 @@ git commit -m "feat(ui): routing rules page, email templates/history, İletildi 
 - [ ] Eşleşme yok / İletilemedi durumları doğru gösterilir; `email_log` her denemeyi kaydeder.
 - [ ] Zapier kodda kalmaz (src'de 0 referans).
 - [ ] TR'de Türkçe, EN'de İngilizce; nav başlıkları düzeltildi.
-- [ ] `npm run build`, `npm run lint`, `npm test` hatasız.
+- [ ] `npm run build`, `npm run lint` hatasız.
