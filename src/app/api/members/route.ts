@@ -93,6 +93,8 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'email is required' }, { status: 400 });
     }
 
+    const safeRole = VALID_ROLES.includes(role) ? role : 'sales_rep';
+
     const admin = createServiceClient();
 
     // --- Generate invite link ---
