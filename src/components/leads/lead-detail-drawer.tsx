@@ -261,7 +261,7 @@ function DetailTab({ lead }: { lead: Lead }) {
     }
   };
 
-  const routingStatusConfig: Record<string, { label: string; color: 'green' | 'red' | 'gray' | 'amber' }> = {
+  const routingStatusConfig: Record<string, { label: string; color: 'green' | 'red' | 'gray' | 'yellow' }> = {
     sent: { label: tR('statusSent'), color: 'green' },
     failed: { label: tR('statusFailed'), color: 'red' },
     no_match: { label: tR('statusNoMatch'), color: 'gray' },
