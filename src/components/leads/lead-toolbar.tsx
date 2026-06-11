@@ -260,6 +260,8 @@ export function BulkActionBar() {
   const [tagInput, setTagInput] = useState('');
   const [deleteError, setDeleteError] = useState<string | null>(null);
   const [deleting, setDeleting] = useState(false);
+  const [runningRules, setRunningRules] = useState(false);
+  const [runRulesResult, setRunRulesResult] = useState<string | null>(null);
 
   const openModal = useCallback((m: BulkModal) => {
     setError(null);
