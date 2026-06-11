@@ -32,8 +32,7 @@ export function LeadCreateModal({ open, onClose }: LeadCreateModalProps) {
   const tCommon = useTranslations('common');
   const stages = useAppStore((s) => s.stages);
   const members = useAppStore((s) => s.members);
-  const leads = useAppStore((s) => s.leads);
-  const setLeads = useAppStore((s) => s.setLeads);
+  const addLead = useAppStore((s) => s.addLead);
 
   const [form, setForm] = useState(initialForm);
   const [loading, setLoading] = useState(false);
