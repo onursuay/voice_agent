@@ -963,13 +963,18 @@ function FormFilterDropdown() {
 
 // ── Per-page Dropdown ────────────────────────────────────
 
-const PER_PAGE_OPTIONS = [25, 50, 100, 150, 200, 250, 300, 350, 400, 450, 500];
-
 function PerPageDropdown() {
   const perPage = useAppStore((s) => s.perPage);
   const setPerPage = useAppStore((s) => s.setPerPage);
+  const total = useAppStore((s) => s.total);
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
+
+  // Lead sayısına göre 25'er artan dinamik seçenekler (kullanıcı tüm leadleri görebilsin)
+  const cap = Math.min(Math.max(Math.ceil((total || 0) / 25) * 25, 50), 1000);
+  const perPageOptions: number[] = [];
+  for (let n = 25; n <= cap; n += 25) perPageOptions.push(n);
+  if (perPage > cap && !perPageOptions.includes(perPage)) perPageOptions.push(perPage);
 
   useEffect(() => {
     function handleClickOutside(e: MouseEvent) {
