@@ -23,7 +23,6 @@ export async function GET(request: NextRequest) {
       META_APP_SECRET: Boolean(process.env.META_APP_SECRET),
       META_APP_ACCESS_TOKEN: Boolean(process.env.META_APP_ACCESS_TOKEN),
       META_PAGE_ACCESS_TOKEN: Boolean(process.env.META_PAGE_ACCESS_TOKEN),
-      ZAPIER_INGEST_SECRET: Boolean(process.env.ZAPIER_INGEST_SECRET),
       SUPABASE_SERVICE_ROLE_KEY: Boolean(process.env.SUPABASE_SERVICE_ROLE_KEY),
       NEXT_PUBLIC_SUPABASE_URL: Boolean(process.env.NEXT_PUBLIC_SUPABASE_URL),
     },
