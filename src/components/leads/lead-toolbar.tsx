@@ -475,7 +475,6 @@ export function BulkActionBar() {
 
 const SOURCE_FILTER_OPTIONS = [
   { value: 'meta_lead_form', label: 'Meta Lead Form' },
-  { value: 'zapier', label: 'Zapier' },
   { value: 'whatsapp', label: 'WhatsApp' },
   { value: 'instagram_dm', label: 'Instagram DM' },
   { value: 'messenger', label: 'Messenger' },
