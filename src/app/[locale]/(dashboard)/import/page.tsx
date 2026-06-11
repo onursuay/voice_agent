@@ -527,7 +527,6 @@ function StatusBadge({ status }: { status: string }) {
 
 const SOURCE_OPTIONS = [
   { value: 'meta_lead_form', label: 'Lead Form' },
-  { value: 'zapier', label: 'Zapier' },
   { value: 'whatsapp', label: 'WhatsApp' },
   { value: 'instagram_dm', label: 'Instagram DM' },
   { value: 'messenger', label: 'Messenger' },
