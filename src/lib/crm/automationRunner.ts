@@ -270,3 +270,61 @@ export async function runSlaChecks(): Promise<{ firstAlerts: number; retryAlerts
 
   return out;
 }
+
+/**
+ * Negatif aşama (niteliksiz/kaybedildi) → Meta'dan silme GÜVENCESİ (paralel, saatlik).
+ * Aşama değişiminde syncLeadStageToMeta zaten çıkarır; bu, Meta hatası nedeniyle
+ * çıkarılamamış (meta_sync_error dolu) negatif-aşama Meta leadlerini tekrar dener.
+ * Meta bağlı değilse her lead için ucuz erken-çıkış (Meta çağrısı yapılmaz).
+ */
+export async function reconcileNegativeStageMeta(): Promise<{ checked: number; reconciled: number; failed: number }> {
+  const supabase = createAdminSupabaseClient();
+  const out = { checked: 0, reconciled: 0, failed: 0 };
+
+  const { data: leads } = await supabase
+    .from('leads')
+    .select('id, email, phone, full_name, meta_ad_id, meta_capi_sent, organization_id, stage:crm_stages(id,name,position,is_won,is_lost)')
+    .not('meta_ad_id', 'is', null)
+    .not('meta_sync_error', 'is', null)
+    .limit(50);
+
+  if (!leads || leads.length === 0) return out;
+
+  const stagesCache = new Map<string, SyncStage[]>();
+  const getStages = async (orgId: string): Promise<SyncStage[]> => {
+    const cached = stagesCache.get(orgId);
+    if (cached) return cached;
+    const { data } = await supabase.from('crm_stages').select('id,name,position,is_won,is_lost').eq('organization_id', orgId);
+    const list = (data || []) as unknown as SyncStage[];
+    stagesCache.set(orgId, list);
+    return list;
+  };
+
+  type StageObj = { id: string; name: string; position: number; is_won: boolean; is_lost: boolean };
+  type Row = {
+    id: string; email: string | null; phone: string | null; full_name: string | null;
+    meta_ad_id: string | null; meta_capi_sent: boolean | null; organization_id: string;
+    stage: StageObj | StageObj[] | null;
+  };
+
+  for (const row of (leads as unknown as Row[])) {
+    const st = Array.isArray(row.stage) ? row.stage[0] : row.stage;
+    if (!st) continue;
+    const isNegative = st.is_lost || /niteliksiz|unqualified|disqualif|spam|geçersiz|hatal[ıi]/i.test(st.name);
+    if (!isNegative) continue;
+    out.checked++;
+    const allStages = await getStages(row.organization_id);
+    const lead: SyncLead = {
+      id: row.id, email: row.email, phone: row.phone, full_name: row.full_name,
+      meta_ad_id: row.meta_ad_id, meta_capi_sent: row.meta_capi_sent,
+    };
+    try {
+      const res = await syncLeadStageToMeta({ organizationId: row.organization_id, lead, stage: st as SyncStage, allStages });
+      if (res.ok) out.reconciled++; else out.failed++;
+    } catch {
+      out.failed++;
+    }
+  }
+
+  return out;
+}
