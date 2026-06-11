@@ -54,8 +54,22 @@ export async function evaluateLeadRouting(
 
     const action = (matched.action_config || {}) as ActionConfig;
 
-    // Atama
-    if (action.assigned_to && action.assigned_to !== lead.assigned_to) {
+    // action.assigned_to'yu lead'in org'una AKTİF üyeliğe göre doğrula (cross-tenant koruma —
+    // motor admin client / RLS bypass kullanıyor; geçersiz UUID ile başka org'a atama/PII sızıntısı engellenir).
+    let assigneeValid = false;
+    if (action.assigned_to) {
+      const { data: member } = await supabase
+        .from('organization_members')
+        .select('user_id')
+        .eq('user_id', action.assigned_to)
+        .eq('organization_id', lead.organization_id)
+        .eq('is_active', true)
+        .maybeSingle();
+      assigneeValid = !!member;
+    }
+
+    // Atama (yalnız geçerli, org-içi atanan)
+    if (action.assigned_to && assigneeValid && action.assigned_to !== lead.assigned_to) {
       await supabase.from('leads').update({ assigned_to: action.assigned_to }).eq('id', leadId);
       await supabase.from('lead_activities').insert({
         lead_id: leadId,
