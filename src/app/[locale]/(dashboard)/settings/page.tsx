@@ -207,11 +207,37 @@ export default function SettingsPage() {
     }
   }, []);
 
+  const loadAccessMembers = useCallback(async () => {
+    setAccessLoading(true);
+    try {
+      const res = await fetch('/api/members');
+      if (res.ok) {
+        const data: OrganizationMember[] = await res.json();
+        setAccessMembers(data);
+        // Initialize edits from current member data
+        const edits: Record<string, { role: UserRole; lead_scope: string; allowed_pages: NavPageKey[] }> = {};
+        data.forEach((m) => {
+          edits[m.id] = {
+            role: m.role,
+            lead_scope: m.lead_scope || 'all',
+            allowed_pages: resolveAllowedPages(m.role, m.allowed_pages),
+          };
+        });
+        setMemberEdits(edits);
+      }
+    } catch (err) {
+      console.error('Access members fetch error:', err);
+    } finally {
+      setAccessLoading(false);
+    }
+  }, []);
+
   useEffect(() => {
     if (activeTab === 'members') loadMembers();
     if (activeTab === 'pipeline') loadStageLeadCounts();
     if (activeTab === 'logs') loadLogs();
-  }, [activeTab, loadMembers, loadStageLeadCounts, loadLogs]);
+    if (activeTab === 'access') loadAccessMembers();
+  }, [activeTab, loadMembers, loadStageLeadCounts, loadLogs, loadAccessMembers]);
 
   // Clear feedback messages after delay
   useEffect(() => {
