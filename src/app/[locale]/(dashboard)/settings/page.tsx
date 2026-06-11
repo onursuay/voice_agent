@@ -387,6 +387,137 @@ export default function SettingsPage() {
     }
   };
 
+  // ========================
+  // ACCESS MANAGEMENT HANDLERS
+  // ========================
+
+  const handleApproveReject = async (memberId: string, action: 'approved' | 'rejected') => {
+    setPendingActions((prev) => ({ ...prev, [memberId]: action === 'approved' ? 'approving' : 'rejecting' }));
+    try {
+      const res = await fetch(`/api/members/${memberId}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ approval_status: action }),
+      });
+      if (res.ok) await loadAccessMembers();
+    } catch (err) {
+      console.error('Approve/reject error:', err);
+    } finally {
+      setPendingActions((prev) => { const n = { ...prev }; delete n[memberId]; return n; });
+    }
+  };
+
+  const handleSaveMember = async (memberId: string) => {
+    const edit = memberEdits[memberId];
+    if (!edit) return;
+    setMemberSaving((prev) => ({ ...prev, [memberId]: true }));
+    try {
+      const res = await fetch(`/api/members/${memberId}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          role: edit.role,
+          lead_scope: edit.lead_scope,
+          allowed_pages: edit.allowed_pages,
+        }),
+      });
+      if (res.ok) {
+        setMemberSavedId(memberId);
+        setTimeout(() => setMemberSavedId(null), 2000);
+        await loadAccessMembers();
+      }
+    } catch (err) {
+      console.error('Save member error:', err);
+    } finally {
+      setMemberSaving((prev) => { const n = { ...prev }; delete n[memberId]; return n; });
+    }
+  };
+
+  const handleDeleteMember = async (memberId: string) => {
+    setMemberSaving((prev) => ({ ...prev, [memberId]: true }));
+    try {
+      const res = await fetch(`/api/members/${memberId}`, { method: 'DELETE' });
+      if (res.ok) await loadAccessMembers();
+    } catch (err) {
+      console.error('Delete member error:', err);
+    } finally {
+      setMemberSaving((prev) => { const n = { ...prev }; delete n[memberId]; return n; });
+    }
+  };
+
+  const handleInvite = async () => {
+    if (!inviteForm.email.trim() || !inviteForm.full_name.trim()) return;
+    setInviting(true);
+    setInviteResult(null);
+    try {
+      const res = await fetch('/api/members', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email: inviteForm.email.trim(),
+          full_name: inviteForm.full_name.trim(),
+          role: inviteForm.role,
+          lead_scope: inviteForm.lead_scope,
+          allowed_pages: inviteForm.allowed_pages.length ? inviteForm.allowed_pages : null,
+        }),
+      });
+      const data = await res.json();
+      if (res.ok) {
+        setInviteResult(data.emailSent ? tAccess('inviteSuccessEmail') : tAccess('inviteSuccessNoEmail'));
+        setInviteForm({ email: '', full_name: '', role: 'sales_rep', lead_scope: 'assigned_only', allowed_pages: [] });
+        await loadAccessMembers();
+        setTimeout(() => {
+          setInviteOpen(false);
+          setInviteResult(null);
+        }, 2500);
+      }
+    } catch (err) {
+      console.error('Invite error:', err);
+    } finally {
+      setInviting(false);
+    }
+  };
+
+  const updateMemberEdit = (memberId: string, patch: Partial<{ role: UserRole; lead_scope: string; allowed_pages: NavPageKey[] }>) => {
+    setMemberEdits((prev) => ({
+      ...prev,
+      [memberId]: { ...prev[memberId], ...patch },
+    }));
+  };
+
+  const applyPreset = (memberId: string, preset: 'saha' | 'yonetici') => {
+    if (preset === 'saha') {
+      updateMemberEdit(memberId, {
+        role: 'sales_rep',
+        allowed_pages: ROLE_PAGE_PRESETS['sales_rep'] as NavPageKey[],
+        lead_scope: 'assigned_only',
+      });
+    } else {
+      updateMemberEdit(memberId, {
+        role: 'sales_manager',
+        allowed_pages: ROLE_PAGE_PRESETS['sales_manager'] as NavPageKey[],
+        lead_scope: 'all',
+      });
+    }
+  };
+
+  const toggleInvitePage = (page: NavPageKey) => {
+    setInviteForm((prev) => ({
+      ...prev,
+      allowed_pages: prev.allowed_pages.includes(page)
+        ? prev.allowed_pages.filter((p) => p !== page)
+        : [...prev.allowed_pages, page],
+    }));
+  };
+
+  const toggleMemberPage = (memberId: string, page: NavPageKey) => {
+    const current = memberEdits[memberId]?.allowed_pages || [];
+    const updated = current.includes(page)
+      ? current.filter((p) => p !== page)
+      : [...current, page];
+    updateMemberEdit(memberId, { allowed_pages: updated });
+  };
+
   if (!session) {
     return (
       <div className="flex items-center justify-center py-20">
