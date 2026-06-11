@@ -134,8 +134,8 @@ edilebilir. Şablon değişkenleri Bölüm 6'da.
 kalıyor. Şehir bazlı yönlendirmenin Meta/Zapier leadlerinde çalışması için:
 - `NormalizedLeadInput`'a `city` alanı eklenir; `ingestLead` insert/update payload'ına
   `city` yazar.
-- Form alanı eşlemesi ([src/lib/meta.ts](../../../src/lib/meta.ts)) ve Zapier payload'ında
-  yaygın anahtarlar (`şehir`, `il`, `city`, `location`, `province`) `city`'ye map'lenir.
+- Meta form alanı eşlemesi ([src/lib/meta.ts](../../../src/lib/meta.ts)) yaygın anahtarları
+  (`şehir`, `il`, `city`, `location`, `province`) `city`'ye map'ler.
 
 ## 6. Kural Motoru Modülü — `src/lib/crm/routingEngine.ts`
 
