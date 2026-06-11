@@ -76,7 +76,7 @@ export async function GET() {
     // --- Aggregate per rep (skip closed leads) ---
     const repMap = new Map<string, RepStats & { firstCallDelayMins: number[] }>();
 
-    for (const lead of (leads || []) as LeadRow[]) {
+    for (const lead of (leads || []) as unknown as LeadRow[]) {
       // Skip won/lost
       if (lead.stage?.is_won || lead.stage?.is_lost) continue;
 
