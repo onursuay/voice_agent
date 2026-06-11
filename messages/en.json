@@ -973,5 +973,10 @@
     "cancel": "Cancel",
     "delete": "Delete",
     "sourceImport": "Import"
+  },
+  "access": {
+    "pendingTitle": "Your account is pending approval",
+    "pendingDesc": "You will be able to access once your admin approves your account.",
+    "logout": "Sign out"
   }
 }
