@@ -336,3 +336,27 @@ export function Sidebar() {
     </div>
   );
 }
+
+// ── Mobile Sidebar Overlay ───────────────────────────────
+// Rendered only on small screens (< md). Slides in as a full-height overlay
+// over the content when sidebarOpen === true.
+export function MobileSidebarOverlay() {
+  const { sidebarOpen, setSidebarOpen } = useAppStore();
+
+  return (
+    <>
+      {/* Dark backdrop */}
+      <div
+        className={`fixed inset-0 z-40 bg-black/40 md:hidden transition-opacity duration-300 ${sidebarOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}
+        onClick={() => setSidebarOpen(false)}
+        aria-hidden="true"
+      />
+      {/* Sidebar panel */}
+      <div
+        className={`fixed left-0 top-0 z-50 h-full md:hidden transform transition-transform duration-300 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}
+      >
+        <Sidebar />
+      </div>
+    </>
+  );
+}
