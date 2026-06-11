@@ -30,10 +30,20 @@ const GRADIENTS = [
   'linear-gradient(135deg, #1d4ed8 0%, #60a5fa 50%, #1d4ed8 100%)',
 ];
 
+const MANAGER_ROLES = ['owner', 'admin', 'sales_manager'];
+
 export default function DashboardPage() {
   const { session, stages, leads, setLeads } = useAppStore();
   const [loading, setLoading] = useState(true);
   const t = useTranslations('dashboard');
+  const ta = useTranslations('accountability');
+
+  const role = session?.membership?.role ?? '';
+  const isManager = MANAGER_ROLES.includes(role);
+
+  const [accountabilityReps, setAccountabilityReps] = useState<RepStat[]>([]);
+  const [accountabilityLoading, setAccountabilityLoading] = useState(false);
+  const [accountabilityError, setAccountabilityError] = useState<string | null>(null);
 
   useEffect(() => {
     if (!session) return;
