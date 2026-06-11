@@ -39,6 +39,7 @@ export async function POST(request: Request) {
       action_type: body.action_type,
       action_config: body.action_config || {},
       is_active: body.is_active ?? true,
+      priority: body.priority ?? 0,
     }).select().single();
 
     if (error) return NextResponse.json({ error: error.message }, { status: 500 });
