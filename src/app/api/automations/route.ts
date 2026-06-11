@@ -15,7 +15,7 @@ export async function GET() {
     const auth = await getAuth(supabase);
     if (!auth) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
-    const { data, error } = await supabase.from('automation_rules').select('*').eq('organization_id', auth.orgId).order('created_at', { ascending: false });
+    const { data, error } = await supabase.from('automation_rules').select('*').eq('organization_id', auth.orgId).order('priority', { ascending: true });
     if (error) return NextResponse.json({ rules: [] });
     return NextResponse.json({ rules: data || [] });
   } catch {
