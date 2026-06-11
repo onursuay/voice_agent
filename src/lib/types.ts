@@ -38,6 +38,9 @@ export interface OrganizationMember {
   invited_at: string;
   joined_at: string;
   profile?: Profile;
+  allowed_pages?: string[] | null;
+  lead_scope?: string | null;
+  approval_status?: string | null;
 }
 
 export interface CrmStage {
