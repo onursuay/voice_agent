@@ -946,6 +946,17 @@
     "terms": "Kullanım Koşulları",
     "dataDeletion": "Veri Silme"
   },
+  "accountability": {
+    "title": "Ekip Takibi",
+    "rep": "Temsilci",
+    "assigned": "Atanan",
+    "called": "Arandı",
+    "reached": "Ulaşıldı",
+    "waiting": "Bekleyen",
+    "slaBreaches": "SLA ihlali",
+    "avgFirstCall": "Ort. ilk arama",
+    "noData": "Veri yok"
+  },
   "routing": {
     "column": "İletildi",
     "statusSent": "İletildi",
