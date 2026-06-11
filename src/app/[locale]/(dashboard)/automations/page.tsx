@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Zap, Plus, Trash2, Edit3, ToggleLeft, ToggleRight, ArrowRight, MapPin } from 'lucide-react';
 import { useAppStore } from '@/lib/store';
+import type { OrganizationMember } from '@/lib/types';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Select } from '@/components/ui/select';
@@ -27,17 +28,6 @@ interface AutomationRule {
 interface EmailTemplate {
   id: string;
   name: string;
-}
-
-// ─── Condition summary helper ───────────────────────────────────────────────
-function useConditionSummary(rule: AutomationRule, fieldCityLabel: string, opLabels: Record<string, string>) {
-  const conditions = (rule.trigger_config?.conditions as Array<{ field: string; operator: string; value: string | string[] }> | undefined);
-  if (!conditions || conditions.length === 0) return null;
-  const c = conditions[0];
-  const fieldLabel = c.field === 'city' ? fieldCityLabel : c.field;
-  const opLabel = opLabels[c.operator] || c.operator;
-  const valueStr = Array.isArray(c.value) ? c.value.join(', ') : c.value;
-  return `${fieldLabel} ${opLabel} ${valueStr}`;
 }
 
 export default function AutomationsPage() {
@@ -79,7 +69,6 @@ export default function AutomationsPage() {
     action_config: {} as Record<string, unknown>,
   });
 
-  // Mock rules for local mode
   const fetchRules = useCallback(async () => {
     const mockRules: AutomationRule[] = [
       { id: 'auto-1', name: t('mockRule1Name'), trigger_type: 'lead_created', trigger_config: {}, action_type: 'assign', action_config: { round_robin: true }, is_active: true, priority: 0, created_at: '2026-03-20T10:00:00Z' },
@@ -107,7 +96,11 @@ export default function AutomationsPage() {
       setRules(prev => prev.map(r => r.id === editingId ? { ...r, ...payload } : r));
     } else {
       const newRule: AutomationRule = { id: `auto-${Date.now()}`, ...payload, is_active: true, priority: 0, created_at: new Date().toISOString() };
-      try { const res = await fetch('/api/automations', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) }); const d = await res.json(); if (d.rule) newRule.id = d.rule.id; } catch {}
+      try {
+        const res = await fetch('/api/automations', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+        const d = await res.json();
+        if (d.rule) newRule.id = d.rule.id;
+      } catch {}
       setRules(prev => [newRule, ...prev]);
     }
     setModalOpen(false);
@@ -132,7 +125,7 @@ export default function AutomationsPage() {
     setModalOpen(true);
   };
 
-  // Filter: general rules (non-route_lead) vs route_lead rules
+  // Separate route_lead rules from general rules
   const generalRules = rules.filter(r => r.action_type !== 'route_lead');
 
   if (loading) return <div className="flex justify-center py-16"><Spinner size="lg" /></div>;
@@ -146,7 +139,14 @@ export default function AutomationsPage() {
             <h1 className="text-2xl font-bold text-gray-900">{t('pageTitle')}</h1>
             <p className="mt-1 text-sm text-gray-500">{t('subtitle')}</p>
           </div>
-          <Button icon={<Plus className="h-4 w-4" />} onClick={() => { setEditingId(null); setForm({ name: '', trigger_type: '', trigger_config: {}, action_type: '', action_config: {} }); setModalOpen(true); }}>
+          <Button
+            icon={<Plus className="h-4 w-4" />}
+            onClick={() => {
+              setEditingId(null);
+              setForm({ name: '', trigger_type: '', trigger_config: {}, action_type: '', action_config: {} });
+              setModalOpen(true);
+            }}
+          >
             {t('newAutomation')}
           </Button>
         </div>
@@ -260,19 +260,10 @@ export default function AutomationsPage() {
 interface RoutingRulesSectionProps {
   allRules: AutomationRule[];
   onRulesChange: (rules: AutomationRule[]) => void;
-  members: ReturnType<typeof useAppStore extends (s: (state: import('@/lib/store').AppState) => infer R) => R ? never : never>;
+  members: OrganizationMember[];
 }
 
-// We need a proper type; import from store
-import type { AppState } from '@/lib/store';
-
-interface RoutingRulesSectionProps2 {
-  allRules: AutomationRule[];
-  onRulesChange: (rules: AutomationRule[]) => void;
-  members: AppState['members'];
-}
-
-function RoutingRulesSection({ allRules, onRulesChange, members }: RoutingRulesSectionProps2) {
+function RoutingRulesSection({ allRules, onRulesChange, members }: RoutingRulesSectionProps) {
   const tR = useTranslations('routing');
   const tCommon = useTranslations('common');
 
@@ -288,7 +279,7 @@ function RoutingRulesSection({ allRules, onRulesChange, members }: RoutingRulesS
     value: '',
     assigned_to: '',
     send_email: true,
-    email_template_id: '' as string | null,
+    email_template_id: null as string | null,
     priority: 0,
     is_active: true,
   });
@@ -410,13 +401,13 @@ function RoutingRulesSection({ allRules, onRulesChange, members }: RoutingRulesS
     await refetch();
   };
 
-  const getAssigneeName = (assignedTo: string) => {
+  const getAssigneeName = (assignedTo: string): string => {
     const member = members.find(m => m.user_id === assignedTo);
     return member?.profile?.full_name || member?.profile?.email || assignedTo || '—';
   };
 
-  const getConditionSummary = (rule: AutomationRule) => {
-    const conditions = (rule.trigger_config?.conditions as Array<{ field: string; operator: string; value: string | string[] }> | undefined);
+  const getConditionSummary = (rule: AutomationRule): string | null => {
+    const conditions = rule.trigger_config?.conditions as Array<{ field: string; operator: string; value: string | string[] }> | undefined;
     if (!conditions || conditions.length === 0) return null;
     const c = conditions[0];
     const fieldLabel = c.field === 'city' ? tR('fieldCity') : c.field;
@@ -427,7 +418,7 @@ function RoutingRulesSection({ allRules, onRulesChange, members }: RoutingRulesS
 
   return (
     <div className="space-y-4">
-      {/* Section header */}
+      {/* Section divider + header */}
       <div className="border-t border-gray-200 pt-6">
         <div className="flex items-center justify-between">
           <div>
@@ -467,11 +458,9 @@ function RoutingRulesSection({ allRules, onRulesChange, members }: RoutingRulesS
                         <Badge color="orange" size="sm">#{rule.priority ?? 0}</Badge>
                       </div>
                       <div className="flex flex-wrap items-center gap-2 text-sm text-gray-600">
-                        {summary && (
-                          <Badge color="blue" size="sm">{summary}</Badge>
-                        )}
+                        {summary && <Badge color="blue" size="sm">{summary}</Badge>}
                         <ArrowRight className="h-3.5 w-3.5 text-gray-400" />
-                        <span className="text-gray-700 font-medium">{getAssigneeName(ac.assigned_to || '')}</span>
+                        <span className="font-medium text-gray-700">{getAssigneeName(ac.assigned_to || '')}</span>
                         {ac.send_email && <Badge color="purple" size="sm">{tR('sendEmail')}</Badge>}
                       </div>
                     </div>
@@ -511,7 +500,7 @@ function RoutingRulesSection({ allRules, onRulesChange, members }: RoutingRulesS
           size="lg"
         >
           <div className="space-y-4">
-            {/* Name */}
+            {/* Rule name */}
             <Input
               label={tR('ruleName')}
               value={form.name}
@@ -548,7 +537,6 @@ function RoutingRulesSection({ allRules, onRulesChange, members }: RoutingRulesS
             <div className="rounded-lg border border-purple-100 bg-purple-50/50 p-4 space-y-3">
               <p className="text-sm font-semibold text-purple-800">{tR('assignee')}</p>
 
-              {/* Assignee */}
               <Select
                 label={tR('assignee')}
                 value={form.assigned_to}
@@ -562,7 +550,6 @@ function RoutingRulesSection({ allRules, onRulesChange, members }: RoutingRulesS
                 ]}
               />
 
-              {/* Send email toggle */}
               <label className="flex items-center gap-2 cursor-pointer select-none">
                 <input
                   type="checkbox"
@@ -573,7 +560,6 @@ function RoutingRulesSection({ allRules, onRulesChange, members }: RoutingRulesS
                 <span className="text-sm font-medium text-gray-700">{tR('sendEmail')}</span>
               </label>
 
-              {/* Email template */}
               {form.send_email && (
                 <Select
                   label={tR('template')}
@@ -588,7 +574,7 @@ function RoutingRulesSection({ allRules, onRulesChange, members }: RoutingRulesS
             </div>
 
             {/* Priority & Active */}
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-2 gap-3 items-end">
               <Input
                 label={tR('priority')}
                 type="number"
@@ -596,18 +582,18 @@ function RoutingRulesSection({ allRules, onRulesChange, members }: RoutingRulesS
                 onChange={e => setForm({ ...form, priority: Number(e.target.value) })}
                 placeholder="0"
               />
-              <label className="flex items-end gap-2 pb-2 cursor-pointer select-none">
+              <label className="flex items-center gap-2 pb-2 cursor-pointer select-none">
                 <input
                   type="checkbox"
                   checked={form.is_active}
                   onChange={e => setForm({ ...form, is_active: e.target.checked })}
-                  className="rounded border-gray-300 text-emerald-600 h-4 w-4 mb-1"
+                  className="rounded border-gray-300 text-emerald-600 h-4 w-4"
                 />
                 <span className="text-sm font-medium text-gray-700">{tR('active')}</span>
               </label>
             </div>
 
-            {/* Actions */}
+            {/* Footer actions */}
             <div className="flex justify-end gap-2 pt-2">
               <Button variant="secondary" onClick={() => setModalOpen(false)}>{tCommon('cancel')}</Button>
               <Button
