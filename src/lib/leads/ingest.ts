@@ -128,7 +128,7 @@ async function findDuplicateLead(
   if (metaLeadId) {
     const { data } = await supabase
       .from('leads')
-      .select('id, full_name, email, phone, stage_id, assigned_to, score, source_platform, custom_fields, raw_payload, meta_lead_id, meta_page_id, meta_form_id, meta_ad_id')
+      .select('id, full_name, email, phone, city, stage_id, assigned_to, score, source_platform, custom_fields, raw_payload, meta_lead_id, meta_page_id, meta_form_id, meta_ad_id')
       .eq('organization_id', organizationId)
       .eq('meta_lead_id', metaLeadId)
       .maybeSingle();
