@@ -105,6 +105,8 @@ export const useAppStore = create<AppStore>((set, get) => ({
 
   leads: [],
   setLeads: (leads) => set({ leads }),
+  total: 0,
+  setTotal: (total) => set({ total }),
   addLead: (lead) => set({ leads: [...get().leads, lead] }),
   updateLead: (id, data) => set({
     leads: get().leads.map(l => l.id === id ? { ...l, ...data } : l),
