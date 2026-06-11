@@ -455,7 +455,7 @@ function RoutingRulesSection({ allRules, onRulesChange, members }: RoutingRulesS
                           ? <Badge color="green" size="sm">{tR('active')}</Badge>
                           : <Badge color="gray" size="sm">{tR('active')}</Badge>
                         }
-                        <Badge color="orange" size="sm">#{rule.priority ?? 0}</Badge>
+                        <Badge color="yellow" size="sm">#{rule.priority ?? 0}</Badge>
                       </div>
                       <div className="flex flex-wrap items-center gap-2 text-sm text-gray-600">
                         {summary && <Badge color="blue" size="sm">{summary}</Badge>}
