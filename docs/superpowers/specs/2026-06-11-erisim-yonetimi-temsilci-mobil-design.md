@@ -33,6 +33,7 @@
 | Mobil | Mobil-öncelikli, responsive; temsilci için kart tabanlı lead görünümü. |
 | Zorunluluk | 3 katman: menü gizleme + rota koruması + DB (RLS) veri kısıtı. |
 | i18n | TR'de Türkçe, EN'de İngilizce GÖRÜNDÜĞÜ doğrulanır; istisnasız. |
+| Kayıt onayı | Herkese açık kayıt serbest ama yeni kullanıcı **"onay bekliyor"** durumunda; owner onaylayana kadar giriş/erişim YOK. |
 
 ## 3. Erişim Modeli
 
