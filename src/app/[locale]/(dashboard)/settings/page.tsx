@@ -984,6 +984,369 @@ export default function SettingsPage() {
             )}
           </div>
         )}
+
+        {/* ============================== */}
+        {/* ERİŞİM YÖNETİMİ */}
+        {/* ============================== */}
+        {activeTab === 'access' && (
+          <div className="p-6 space-y-6">
+            {!canManageAccess ? (
+              <div className="flex items-center gap-2 rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-700">
+                <AlertCircle className="h-4 w-4 shrink-0" />
+                {tAccess('unauthorized')}
+              </div>
+            ) : (
+              <>
+                {/* Header */}
+                <div className="flex items-center justify-between pb-4 border-b border-gray-100">
+                  <div className="flex items-center gap-3">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-emerald-100">
+                      <ShieldCheck className="h-5 w-5 text-emerald-600" />
+                    </div>
+                    <div>
+                      <h2 className="text-base font-semibold text-foreground">{tAccess('title')}</h2>
+                      <p className="text-sm text-muted">{tAccess('subtitle')}</p>
+                    </div>
+                  </div>
+                  <Button
+                    size="sm"
+                    icon={<UserPlus className="h-4 w-4" />}
+                    onClick={() => setInviteOpen(true)}
+                  >
+                    {tAccess('invite')}
+                  </Button>
+                </div>
+
+                {accessLoading ? (
+                  <div className="space-y-3">
+                    {[1, 2, 3].map((i) => (
+                      <div key={i} className="h-20 animate-pulse rounded-lg bg-gray-100" />
+                    ))}
+                  </div>
+                ) : (
+                  <>
+                    {/* ---- PENDING SECTION ---- */}
+                    {(() => {
+                      const pending = accessMembers.filter((m) => m.approval_status === 'pending');
+                      return pending.length > 0 ? (
+                        <div className="space-y-3">
+                          <h3 className="text-sm font-semibold text-gray-700">{tAccess('pendingSectionTitle')}</h3>
+                          <div className="divide-y divide-gray-100 rounded-lg border border-amber-200 bg-amber-50/40 overflow-hidden">
+                            {pending.map((m) => (
+                              <div key={m.id} className="flex items-center justify-between px-4 py-3.5 gap-4">
+                                <div className="flex items-center gap-3 min-w-0">
+                                  <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-amber-200 text-amber-800 text-sm font-bold">
+                                    {m.profile?.full_name
+                                      ? m.profile.full_name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2)
+                                      : 'U'}
+                                  </div>
+                                  <div className="min-w-0">
+                                    <p className="text-sm font-medium text-foreground truncate">
+                                      {m.profile?.full_name || tCommon('unknownUser')}
+                                    </p>
+                                    <p className="text-xs text-muted truncate">{m.profile?.email || '-'}</p>
+                                  </div>
+                                </div>
+                                <div className="flex items-center gap-2 shrink-0">
+                                  <Button
+                                    size="sm"
+                                    variant="secondary"
+                                    loading={pendingActions[m.id] === 'rejecting'}
+                                    disabled={!!pendingActions[m.id]}
+                                    onClick={() => handleApproveReject(m.id, 'rejected')}
+                                    className="border-red-200 text-red-600 hover:bg-red-50"
+                                  >
+                                    {pendingActions[m.id] === 'rejecting' ? tAccess('rejecting') : tAccess('reject')}
+                                  </Button>
+                                  <Button
+                                    size="sm"
+                                    loading={pendingActions[m.id] === 'approving'}
+                                    disabled={!!pendingActions[m.id]}
+                                    onClick={() => handleApproveReject(m.id, 'approved')}
+                                  >
+                                    {pendingActions[m.id] === 'approving' ? tAccess('approving') : tAccess('approve')}
+                                  </Button>
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="rounded-lg border border-dashed border-gray-200 bg-gray-50 px-4 py-3 text-center">
+                          <p className="text-sm text-muted">{tAccess('noPending')}</p>
+                        </div>
+                      );
+                    })()}
+
+                    {/* ---- USERS SECTION ---- */}
+                    <div className="space-y-3">
+                      <h3 className="text-sm font-semibold text-gray-700">{tAccess('usersTitle')}</h3>
+                      {(() => {
+                        const approved = accessMembers.filter((m) => m.approval_status !== 'pending');
+                        if (approved.length === 0) {
+                          return (
+                            <p className="text-sm text-muted text-center py-4">{tAccess('noUsers')}</p>
+                          );
+                        }
+                        return (
+                          <div className="space-y-3">
+                            {approved.map((m) => {
+                              const isOwner = m.role === 'owner';
+                              const edit = memberEdits[m.id] || { role: m.role, lead_scope: m.lead_scope || 'all', allowed_pages: resolveAllowedPages(m.role, m.allowed_pages) };
+                              const isFullAccess = edit.role === 'owner' || edit.role === 'admin';
+                              return (
+                                <div key={m.id} className="rounded-xl border border-gray-200 bg-white overflow-hidden">
+                                  {/* Row header */}
+                                  <div className="flex items-center justify-between px-4 py-3 border-b border-gray-100 bg-gray-50/50">
+                                    <div className="flex items-center gap-3 min-w-0">
+                                      <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-emerald-100 text-emerald-700 text-sm font-bold">
+                                        {m.profile?.full_name
+                                          ? m.profile.full_name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2)
+                                          : 'U'}
+                                      </div>
+                                      <div className="min-w-0">
+                                        <p className="text-sm font-medium text-foreground truncate">
+                                          {m.profile?.full_name || tCommon('unknownUser')}
+                                        </p>
+                                        <p className="text-xs text-muted truncate">{m.profile?.email || '-'}</p>
+                                      </div>
+                                    </div>
+                                    <div className="flex items-center gap-2 shrink-0">
+                                      {m.approval_status === 'rejected' && (
+                                        <Badge color="red" size="sm">{tAccess('statusRejected')}</Badge>
+                                      )}
+                                      {!m.is_active && (
+                                        <Badge color="gray" size="sm">Pasif</Badge>
+                                      )}
+                                      {isOwner && (
+                                        <Badge color="indigo" size="sm">{ROLE_LABELS['owner']}</Badge>
+                                      )}
+                                      {!isOwner && (
+                                        <button
+                                          onClick={() => handleDeleteMember(m.id)}
+                                          disabled={memberSaving[m.id]}
+                                          className="rounded p-1 text-gray-400 hover:bg-red-50 hover:text-red-500 disabled:opacity-30 transition-colors"
+                                          title={tAccess('removeUser')}
+                                        >
+                                          <Trash2 className="h-4 w-4" />
+                                        </button>
+                                      )}
+                                    </div>
+                                  </div>
+
+                                  {/* Edit body */}
+                                  {isOwner ? (
+                                    <div className="px-4 py-3">
+                                      <p className="text-xs text-muted italic">{tAccess('ownerReadOnly')}</p>
+                                    </div>
+                                  ) : (
+                                    <div className="px-4 py-4 space-y-4">
+                                      {/* Role + Scope + Presets row */}
+                                      <div className="flex flex-wrap items-end gap-3">
+                                        <div className="min-w-[160px]">
+                                          <Select
+                                            label={tAccess('role')}
+                                            value={edit.role}
+                                            onChange={(e) => {
+                                              const newRole = e.target.value as UserRole;
+                                              const pages = resolveAllowedPages(newRole, null);
+                                              updateMemberEdit(m.id, { role: newRole, allowed_pages: pages });
+                                            }}
+                                            options={[
+                                              { value: 'admin', label: ROLE_LABELS['admin'] },
+                                              { value: 'sales_manager', label: ROLE_LABELS['sales_manager'] },
+                                              { value: 'sales_rep', label: ROLE_LABELS['sales_rep'] },
+                                              { value: 'analyst', label: ROLE_LABELS['analyst'] },
+                                              { value: 'readonly', label: ROLE_LABELS['readonly'] },
+                                            ]}
+                                          />
+                                        </div>
+                                        <div className="min-w-[180px]">
+                                          <Select
+                                            label={tAccess('leadScope')}
+                                            value={edit.lead_scope}
+                                            onChange={(e) => updateMemberEdit(m.id, { lead_scope: e.target.value })}
+                                            options={[
+                                              { value: 'all', label: tAccess('scopeAll') },
+                                              { value: 'assigned_only', label: tAccess('scopeMine') },
+                                            ]}
+                                          />
+                                        </div>
+                                        <div className="flex items-end gap-2 pb-0">
+                                          <button
+                                            onClick={() => applyPreset(m.id, 'saha')}
+                                            className="rounded-lg border border-gray-300 bg-white px-2.5 py-2 text-xs font-medium text-gray-600 hover:bg-gray-50 transition-colors"
+                                          >
+                                            {tAccess('presetSaha')}
+                                          </button>
+                                          <button
+                                            onClick={() => applyPreset(m.id, 'yonetici')}
+                                            className="rounded-lg border border-gray-300 bg-white px-2.5 py-2 text-xs font-medium text-gray-600 hover:bg-gray-50 transition-colors"
+                                          >
+                                            {tAccess('presetYonetici')}
+                                          </button>
+                                        </div>
+                                      </div>
+
+                                      {/* Page toggles */}
+                                      <div>
+                                        <p className="mb-2 text-xs font-medium text-gray-500 uppercase tracking-wide">{tAccess('pages')}</p>
+                                        {isFullAccess ? (
+                                          <span className="text-xs text-muted italic">{tAccess('fullAccess')}</span>
+                                        ) : (
+                                          <div className="flex flex-wrap gap-2">
+                                            {NAV_PAGE_KEYS.map((page) => {
+                                              const checked = edit.allowed_pages.includes(page);
+                                              return (
+                                                <button
+                                                  key={page}
+                                                  type="button"
+                                                  onClick={() => toggleMemberPage(m.id, page)}
+                                                  className={`flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-medium border transition-colors ${
+                                                    checked
+                                                      ? 'bg-emerald-600 border-emerald-600 text-white'
+                                                      : 'bg-white border-gray-300 text-gray-500 hover:border-emerald-400 hover:text-emerald-600'
+                                                  }`}
+                                                >
+                                                  {checked && <Check className="h-3 w-3" />}
+                                                  {tAccess(`pageKeys.${page}`)}
+                                                </button>
+                                              );
+                                            })}
+                                          </div>
+                                        )}
+                                      </div>
+
+                                      {/* Save row */}
+                                      <div className="flex items-center justify-end gap-3 pt-1">
+                                        {memberSavedId === m.id && (
+                                          <span className="flex items-center gap-1.5 text-sm font-medium text-green-600">
+                                            <Check className="h-4 w-4" />
+                                            {tAccess('saved')}
+                                          </span>
+                                        )}
+                                        <Button
+                                          size="sm"
+                                          loading={memberSaving[m.id]}
+                                          icon={<Save className="h-3.5 w-3.5" />}
+                                          onClick={() => handleSaveMember(m.id)}
+                                        >
+                                          {memberSaving[m.id] ? tAccess('saving') : tAccess('save')}
+                                        </Button>
+                                      </div>
+                                    </div>
+                                  )}
+                                </div>
+                              );
+                            })}
+                          </div>
+                        );
+                      })()}
+                    </div>
+                  </>
+                )}
+
+                {/* INVITE MODAL */}
+                <Modal
+                  open={inviteOpen}
+                  onClose={() => { setInviteOpen(false); setInviteResult(null); }}
+                  title={tAccess('inviteTitle')}
+                  size="md"
+                >
+                  <div className="space-y-4">
+                    {inviteResult && (
+                      <div className="flex items-center gap-2 rounded-lg border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-700">
+                        <Check className="h-4 w-4 shrink-0" />
+                        {inviteResult}
+                      </div>
+                    )}
+                    <Input
+                      label={tAccess('inviteEmail')}
+                      type="email"
+                      value={inviteForm.email}
+                      onChange={(e) => setInviteForm((p) => ({ ...p, email: e.target.value }))}
+                      placeholder={tAccess('inviteEmailPlaceholder')}
+                    />
+                    <Input
+                      label={tAccess('inviteName')}
+                      value={inviteForm.full_name}
+                      onChange={(e) => setInviteForm((p) => ({ ...p, full_name: e.target.value }))}
+                      placeholder={tAccess('inviteNamePlaceholder')}
+                    />
+                    <div className="grid grid-cols-2 gap-3">
+                      <Select
+                        label={tAccess('inviteRole')}
+                        value={inviteForm.role}
+                        onChange={(e) => {
+                          const newRole = e.target.value as UserRole;
+                          const pages = resolveAllowedPages(newRole, null);
+                          setInviteForm((p) => ({ ...p, role: newRole, allowed_pages: pages }));
+                        }}
+                        options={[
+                          { value: 'admin', label: ROLE_LABELS['admin'] },
+                          { value: 'sales_manager', label: ROLE_LABELS['sales_manager'] },
+                          { value: 'sales_rep', label: ROLE_LABELS['sales_rep'] },
+                          { value: 'analyst', label: ROLE_LABELS['analyst'] },
+                          { value: 'readonly', label: ROLE_LABELS['readonly'] },
+                        ]}
+                      />
+                      <Select
+                        label={tAccess('inviteLeadScope')}
+                        value={inviteForm.lead_scope}
+                        onChange={(e) => setInviteForm((p) => ({ ...p, lead_scope: e.target.value }))}
+                        options={[
+                          { value: 'all', label: tAccess('scopeAll') },
+                          { value: 'assigned_only', label: tAccess('scopeMine') },
+                        ]}
+                      />
+                    </div>
+
+                    {/* Page toggles in invite */}
+                    {inviteForm.role !== 'admin' && (
+                      <div>
+                        <p className="mb-2 text-xs font-medium text-gray-500 uppercase tracking-wide">{tAccess('invitePages')}</p>
+                        <div className="flex flex-wrap gap-2">
+                          {NAV_PAGE_KEYS.map((page) => {
+                            const checked = inviteForm.allowed_pages.includes(page);
+                            return (
+                              <button
+                                key={page}
+                                type="button"
+                                onClick={() => toggleInvitePage(page)}
+                                className={`flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-medium border transition-colors ${
+                                  checked
+                                    ? 'bg-emerald-600 border-emerald-600 text-white'
+                                    : 'bg-white border-gray-300 text-gray-500 hover:border-emerald-400 hover:text-emerald-600'
+                                }`}
+                              >
+                                {checked && <Check className="h-3 w-3" />}
+                                {tAccess(`pageKeys.${page}`)}
+                              </button>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    )}
+
+                    <div className="flex justify-end gap-2 pt-2">
+                      <Button variant="secondary" onClick={() => setInviteOpen(false)}>
+                        {tAccess('cancel')}
+                      </Button>
+                      <Button
+                        loading={inviting}
+                        disabled={!inviteForm.email.trim() || !inviteForm.full_name.trim()}
+                        icon={<Send className="h-4 w-4" />}
+                        onClick={handleInvite}
+                      >
+                        {inviting ? tAccess('inviting') : tAccess('inviteSubmit')}
+                      </Button>
+                    </div>
+                  </div>
+                </Modal>
+              </>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );
