@@ -32,7 +32,7 @@ const navContent = {
       { icon: 'meta', label: 'Meta Ads', desc: 'Facebook ve Instagram reklam leadlerini otomatik çekin.', href: '/#entegrasyonlar' },
       { icon: 'whatsapp', label: 'WhatsApp', desc: "WhatsApp mesajlarından gelen leadleri yakalayın.", href: '/#entegrasyonlar' },
       { icon: 'instagram', label: 'Instagram', desc: "Instagram'dan gelen leadleri otomatik kaydedin.", href: '/#entegrasyonlar' },
-      { icon: 'webhook', label: 'Webhook / Zapier', desc: 'Mevcut araçlarınızla webhook ile kolayca entegre olun.', href: '/#entegrasyonlar' },
+      { icon: 'webhook', label: 'Webhook', desc: 'Mevcut araçlarınızla webhook ile kolayca entegre olun.', href: '/#entegrasyonlar' },
     ],
   },
   en: {
