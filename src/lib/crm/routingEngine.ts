@@ -70,7 +70,7 @@ export async function evaluateLeadRouting(
 
     // Atama (yalnız geçerli, org-içi atanan)
     if (action.assigned_to && assigneeValid && action.assigned_to !== lead.assigned_to) {
-      await supabase.from('leads').update({ assigned_to: action.assigned_to }).eq('id', leadId);
+      await supabase.from('leads').update({ assigned_to: action.assigned_to, assigned_at: new Date().toISOString() }).eq('id', leadId);
       await supabase.from('lead_activities').insert({
         lead_id: leadId,
         organization_id: lead.organization_id,
