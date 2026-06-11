@@ -15,6 +15,8 @@ interface AppStore {
   // Leads
   leads: Lead[];
   setLeads: (leads: Lead[]) => void;
+  total: number;
+  setTotal: (n: number) => void;
   addLead: (lead: Lead) => void;
   updateLead: (id: string, data: Partial<Lead>) => void;
   deleteLead: (id: string) => void;
