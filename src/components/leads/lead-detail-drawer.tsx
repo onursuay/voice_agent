@@ -794,10 +794,10 @@ export function LeadDetailDrawer({ onDelete, onEdit }: LeadDetailDrawerProps) {
         onClick={handleClose}
       />
 
-      {/* Drawer */}
+      {/* Drawer — full-width on mobile, max 480px on md+ */}
       <div
         className={cn(
-          'fixed right-0 top-0 z-50 flex h-full w-full max-w-[480px] flex-col bg-white shadow-2xl',
+          'fixed right-0 top-0 z-50 flex h-full w-full md:max-w-[480px] flex-col bg-white shadow-2xl',
           'transform transition-transform duration-300 ease-out',
           drawerOpen ? 'translate-x-0' : 'translate-x-full'
         )}
