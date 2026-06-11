@@ -245,7 +245,6 @@ export const LEAD_FIELD_OPTIONS: { value: string; label: string }[] = [
 // Display strings — UI callers should prefer t() from useTranslations
 export const SOURCE_PLATFORM_LABELS: Record<LeadSourcePlatform, string> = {
   meta_lead_form: 'Lead',
-  zapier: 'Zapier',
   whatsapp: 'WhatsApp',
   instagram_dm: 'Instagram',
   messenger: 'Messenger',
