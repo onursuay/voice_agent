@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useRouter } from '@/i18n/navigation';
+import { useRouter, usePathname } from '@/i18n/navigation';
 import { createClient } from '@/lib/supabase/client';
 import { useAppStore } from '@/lib/store';
 import { Sidebar } from '@/components/layout/sidebar';
@@ -11,6 +11,7 @@ import { useTranslations } from 'next-intl';
 import type { Profile, Organization, OrganizationMember, CrmStage } from '@/lib/types';
 import { SubscriptionProvider } from '@/components/providers/SubscriptionProvider';
 import { CreditProvider } from '@/components/providers/CreditProvider';
+import { NAV_PAGE_KEYS, resolveAllowedPages, canAccessPage } from '@/lib/access';
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   const router = useRouter();
