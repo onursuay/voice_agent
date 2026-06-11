@@ -78,7 +78,6 @@ export async function GET(request: NextRequest) {
       !checks.env.META_WEBHOOK_VERIFY_TOKEN && 'Set META_WEBHOOK_VERIFY_TOKEN env var',
       !checks.env.META_APP_SECRET && 'Set META_APP_SECRET env var (from Meta App Settings > App Secret)',
       !checks.meta_access_token_available && 'Set META_APP_ACCESS_TOKEN or META_PAGE_ACCESS_TOKEN env var',
-      !checks.env.ZAPIER_INGEST_SECRET && 'Set ZAPIER_INGEST_SECRET env var',
       !orgResolved && 'Set DEFAULT_ORG_ID env var — run the query below in Supabase SQL Editor:\n  SELECT id FROM organizations LIMIT 1;',
     ].filter(Boolean),
   });
