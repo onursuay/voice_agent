@@ -16,6 +16,7 @@ export interface NormalizedLeadInput {
   fullName?: string | null;
   email?: string | null;
   phone?: string | null;
+  city?: string | null;
   score?: number | null;
   assignedTo?: string | null;
   stageId?: string | null;
