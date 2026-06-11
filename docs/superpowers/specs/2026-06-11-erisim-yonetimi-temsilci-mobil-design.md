@@ -103,6 +103,24 @@ gerçek akış kurulur:
 
 İzin: yalnızca `members.manage` (owner/admin).
 
+### 5.1 Kayıt + Owner Onayı (gated registration)
+Herkese açık kayıt (`/api/auth/register`) açık kalır AMA yeni kayıt olan kullanıcı doğrudan
+erişim kazanmaz — owner onayı şart:
+- `organization_members`'a `approval_status TEXT NOT NULL DEFAULT 'approved'` eklenir.
+  Self-signup ile oluşan üyelikler **`'pending'`**; owner-davetiyle gelenler doğrudan
+  `'approved'`.
+- `'pending'` kullanıcı giriş yapsa bile dashboard'a giremez → "Hesabınız onay bekliyor"
+  ekranına yönlenir (route guard, Bölüm 4.2 ile aynı katman).
+- Owner, **Ayarlar → Erişim Yönetimi**'nde bekleyen kayıtları görür; **Onayla**
+  (→ `'approved'` + rol/sayfa/lead-kapsamı ataması) veya **Reddet** (→ `'rejected'` ya da
+  üyeliği sil) yapar.
+- RLS + route guard yalnızca `approval_status='approved'` kullanıcılara veri/sayfa erişimi
+  verir (Bölüm 4.3 RLS politikalarına `approval_status='approved'` koşulu eklenir).
+- Onaylandığında istenirse bilgilendirme maili (Resend, routing ile aynı altyapı) gider.
+
+Davet akışı (Bölüm 5) ile birlikte çalışır: owner ister önceden davet eder (otomatik
+approved), ister gelen kayıt taleplerini sonradan onaylar.
+
 ## 6. Mobil / Responsive
 
 ### 6.1 Genel layout
