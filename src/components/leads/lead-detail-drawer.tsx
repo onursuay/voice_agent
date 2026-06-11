@@ -333,6 +333,40 @@ function DetailTab({ lead }: { lead: Lead }) {
               ))}
             </select>
           </div>
+
+          {/* Routing — Run / Resend */}
+          <div>
+            <p className="text-xs text-gray-500 mb-1.5">{tR('rulesTitle')}</p>
+            <div className="flex items-center gap-2">
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={handleRunRules}
+                loading={runningRules}
+                disabled={runningRules}
+                icon={<Send className="h-3.5 w-3.5" />}
+              >
+                {runningRules
+                  ? tR('running')
+                  : lead.routing_status === 'sent' || lead.routing_status === 'failed'
+                  ? tR('resend')
+                  : tR('runRules')}
+              </Button>
+              {lead.routing_status && routingStatusConfig[lead.routing_status] && (
+                <Badge
+                  color={routingStatusConfig[lead.routing_status].color}
+                  size="sm"
+                >
+                  {routingStatusConfig[lead.routing_status].label}
+                </Badge>
+              )}
+              {lead.routing_status && !routingStatusConfig[lead.routing_status] && (
+                <Badge color="amber" size="sm">
+                  {tR('statusPending')}
+                </Badge>
+              )}
+            </div>
+          </div>
         </div>
       </Section>
 
