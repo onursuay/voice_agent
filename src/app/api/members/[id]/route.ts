@@ -50,12 +50,23 @@ export async function PATCH(
       approval_status?: string;
     };
 
-    // Build update object from only provided fields
+    // Build update object from only provided + VALIDATED fields
+    const VALID_ROLES = ['owner', 'admin', 'sales_manager', 'sales_rep', 'analyst', 'readonly'];
     const updates: Record<string, unknown> = {};
-    if ('allowed_pages' in body) updates.allowed_pages = body.allowed_pages;
-    if ('lead_scope' in body) updates.lead_scope = body.lead_scope;
-    if ('role' in body) updates.role = body.role;
-    if ('approval_status' in body) updates.approval_status = body.approval_status;
+    if ('allowed_pages' in body && (Array.isArray(body.allowed_pages) || body.allowed_pages === null)) {
+      updates.allowed_pages = body.allowed_pages;
+    }
+    if (body.lead_scope === 'all' || body.lead_scope === 'assigned_only') updates.lead_scope = body.lead_scope;
+    if (typeof body.role === 'string' && VALID_ROLES.includes(body.role)) {
+      // Yalnız owner, 'owner' rolü atayabilir (admin self-escalation engeli)
+      if (body.role === 'owner' && caller.role !== 'owner') {
+        return NextResponse.json({ error: 'Only an owner can grant the owner role' }, { status: 403 });
+      }
+      updates.role = body.role;
+    }
+    if (['approved', 'pending', 'rejected'].includes(body.approval_status ?? '')) {
+      updates.approval_status = body.approval_status;
+    }
 
     if (Object.keys(updates).length === 0) {
       return NextResponse.json({ error: 'No fields to update' }, { status: 400 });
