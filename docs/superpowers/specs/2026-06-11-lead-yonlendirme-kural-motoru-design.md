@@ -34,6 +34,7 @@ Faz 3 (gün sonu raporu) ayrı spec'lerle ele alınacak; mimari bunları destekl
 | "İletildi" derinliği | **Basit**: gönderildi / hata (Resend webhook ile gerçek teslimat Faz 2+). |
 | Mimari | **A** — mevcut `automation_rules` tablosu + JSON config + `priority` kolonu. |
 | Import istisnası | **İçe Aktarma (Dosya/Google Sheets) ve manuel ekleme otomatik tetiklenmez**; sadece manuel tetikleme ile gönderilir. |
+| Zapier | Entegrasyon projeden **tamamen kaldırılır** (kod + UI). DB enum değeri Postgres kısıtı nedeniyle kalır ama kullanılmaz. |
 
 ## 3. Kapsam & Tetikleme Modeli
 
