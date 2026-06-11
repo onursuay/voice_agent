@@ -5,6 +5,7 @@ import { useRouter, usePathname } from '@/i18n/navigation';
 import { createClient } from '@/lib/supabase/client';
 import { useAppStore } from '@/lib/store';
 import { Sidebar } from '@/components/layout/sidebar';
+import { MobileSidebarOverlay } from '@/components/layout/sidebar';
 import { Topbar } from '@/components/layout/topbar';
 import { Loader2 } from 'lucide-react';
 import { useTranslations } from 'next-intl';
