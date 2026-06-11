@@ -293,7 +293,8 @@
       "pipeline": "Pipeline Aşamaları",
       "profile": "Profil",
       "integrations": "Entegrasyonlar",
-      "logs": "Log Kayıtları"
+      "logs": "Log Kayıtları",
+      "access": "Erişim Yönetimi"
     },
     "logs": {
       "title": "Log Kayıtları",
