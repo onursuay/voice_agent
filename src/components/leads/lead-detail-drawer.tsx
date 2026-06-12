@@ -764,7 +764,7 @@ function ActivitiesTab({ leadId }: { leadId: string }) {
               <div className="min-w-0 flex-1 pt-0.5">
                 <div className="flex items-start justify-between gap-2">
                   <div>
-                    <p className="text-sm font-medium text-gray-900">{activity.title}</p>
+                    <p className="text-sm font-medium text-gray-900">{activityTitle(activity)}</p>
                     {activity.description && (
                       <p className="text-xs text-gray-500 mt-0.5">{activity.description}</p>
                     )}
