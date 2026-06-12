@@ -232,7 +232,7 @@ export default function InboxView() {
                 <button
                   key={tab}
                   onClick={() => setChannelFilter(tab)}
-                  className={`flex-1 rounded-lg px-2 py-1.5 text-xs font-medium transition-colors ${
+                  className={`flex-1 rounded-lg px-2 py-1.5 text-xs font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-300 active:scale-[0.98] ${
                     active ? 'bg-gray-900 text-white' : 'text-gray-500 hover:bg-gray-200/60'
                   }`}
                 >
