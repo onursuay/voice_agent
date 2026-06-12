@@ -59,6 +59,17 @@ export async function POST(request: NextRequest) {
           metadata: { assigned_to: data.assigned_to, bulk: true },
         }));
         await supabase.from('lead_activities').insert(activities);
+
+        // Atanan kişiye bildirim maili — bulk'ta tek özet yerine lead başına
+        // değil, İLK lead üzerinden tek mail (spam önleme). Best-effort.
+        void import('@/lib/crm/assignmentNotify')
+          .then((m) => m.notifyAssignment({
+            organizationId: orgId,
+            leadId: lead_ids[0],
+            assignedTo: data.assigned_to,
+            assignedBy: user.id,
+          }))
+          .catch((e) => console.error('[assignmentNotify] bulk error:', e));
         break;
       }
 
