@@ -542,7 +542,7 @@ function DetailTab({ lead }: { lead: Lead }) {
           )}
           {lead.meta_lead_id && (
             <div className="flex items-start gap-2">
-              <span className="text-xs text-gray-500 shrink-0">Lead ID</span>
+              <span className="text-xs text-gray-500 shrink-0">{t('leadId')}</span>
               <span className="text-xs text-gray-500 font-mono">{lead.meta_lead_id}</span>
             </div>
           )}
