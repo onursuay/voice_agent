@@ -35,6 +35,25 @@ function stripLocale(pathname: string): { locale: string | null; rest: string } 
 export async function middleware(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
 
+  // Yanlışlıkla oluşan çift locale öneklerini normalize et (/en/en/inbox -> /en/inbox)
+  const segments = pathname.split('/').filter(Boolean);
+  if (
+    segments.length >= 2 &&
+    (routing.locales as readonly string[]).includes(segments[0]) &&
+    (routing.locales as readonly string[]).includes(segments[1])
+  ) {
+    let firstNonLocale = 1;
+    while (
+      firstNonLocale < segments.length &&
+      (routing.locales as readonly string[]).includes(segments[firstNonLocale])
+    ) {
+      firstNonLocale++;
+    }
+    const url = request.nextUrl.clone();
+    url.pathname = '/' + [segments[0], ...segments.slice(firstNonLocale)].join('/');
+    return NextResponse.redirect(url);
+  }
+
   // Let the intl middleware handle locale detection / redirect first
   const intlResponse = intlMiddleware(request);
 
