@@ -172,7 +172,7 @@ export function MessagingCard() {
                       {messengerOn && <span className="rounded-full bg-sky-50 px-1.5 py-0.5 text-[9px] font-medium text-sky-700">Messenger</span>}
                       {instagramOn && <span className="rounded-full bg-rose-50 px-1.5 py-0.5 text-[9px] font-medium text-rose-700">Instagram</span>}
                       <button onClick={() => enablePage(p.page_id)} disabled={enabling === p.page_id}
-                        className={`flex items-center gap-1 rounded-lg px-2 py-1 text-[10px] font-medium transition-colors ${
+                        className={`flex items-center gap-1 rounded-lg px-2 py-1 text-[10px] font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-300 active:scale-[0.97] disabled:opacity-50 ${
                           on ? 'text-gray-400 hover:bg-gray-100' : 'bg-gray-900 text-white hover:bg-gray-700'
                         }`}>
                         {enabling === p.page_id ? <Loader2 className="h-3 w-3 animate-spin" /> : <Link2 className="h-3 w-3" />}
