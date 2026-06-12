@@ -55,7 +55,10 @@ export default function LeadsPage() {
       if (importJobFilter) params.set('import_job_id', importJobFilter.id);
       if (formFilter) params.set('meta_form_id', formFilter.id);
       if (pageFilter) params.set('meta_page_id', pageFilter);
-      params.set('per_page', String(perPage));
+      // Sayfalama yok — tüm leadler tek listede; yeni gelenler created_at artan ile alta eklenir.
+      params.set('per_page', '1000');
+      // Meta Custom Audience'e başarıyla senkronize tamamlanmış leadleri varsayılan gizle.
+      if (showSynced) params.set('hide_synced', 'false');
 
       const res = await fetch(`/api/leads?${params.toString()}`);
       if (!res.ok) throw new Error(t('loadError'));
