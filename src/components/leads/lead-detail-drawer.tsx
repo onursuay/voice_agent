@@ -671,9 +671,9 @@ function DetailTab({ lead }: { lead: Lead }) {
         <Section title={t('drawer.customFields')}>
           <div className="space-y-2">
             {Object.entries(lead.custom_fields).map(([key, value]) => (
-              <div key={key} className="flex items-start gap-2">
-                <span className="text-xs text-gray-500 shrink-0">{key}:</span>
-                <span className="text-sm text-gray-900">{String(value)}</span>
+              <div key={key} className="flex items-baseline gap-2">
+                <span className="shrink-0 text-xs font-medium text-gray-500">{prettifyFieldKey(key)}:</span>
+                <span className="break-words text-sm text-gray-900">{String(value)}</span>
               </div>
             ))}
           </div>
