@@ -455,7 +455,7 @@ export function BulkActionBar() {
               <Button variant="primary" size="sm" disabled={!tagInput.trim() || loading}
                 icon={loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Tag className="h-4 w-4" />}
                 onClick={() => bulkApi('tag', { tags: tagInput.split(',').map(tg => tg.trim()).filter(Boolean) })}>
-                {loading ? 'Kaydediliyor...' : t('addTag')}
+                {loading ? tCommon('saving') : t('addTag')}
               </Button>
             </div>
           </div>
