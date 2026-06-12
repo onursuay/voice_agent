@@ -31,7 +31,10 @@ export async function GET(request: NextRequest) {
     // of jumping to the top. Explicit UI sorting still honours asc/desc.
     const sortDir = params.get('sort_dir') === 'desc' ? false : true;
     const page = Math.max(1, parseInt(params.get('page') || '1', 10));
-    const perPage = Math.min(500, Math.max(1, parseInt(params.get('per_page') || '25', 10)));
+    const perPage = Math.min(2000, Math.max(1, parseInt(params.get('per_page') || '25', 10)));
+    // Varsayılan: Meta Custom Audience'e başarıyla senkronize (tamamlanmış) leadleri gizle.
+    // hide_synced=false → hepsini göster.
+    const hideSynced = params.get('hide_synced') !== 'false';
 
     const from = (page - 1) * perPage;
     const to = from + perPage - 1;
