@@ -113,10 +113,17 @@ export async function runInactivityReminders(): Promise<ReminderRunResult> {
     .eq('trigger_type', 'inactivity')
     .eq('action_type', 'send_email');
 
+  const notifCache = new Map<string, Awaited<ReturnType<typeof getNotificationSettings>>>();
+
   for (const rule of rules || []) {
     out.rules++;
     const days = Number((rule.trigger_config as { days?: number } | null)?.days) || 3;
     const orgId = rule.organization_id as string;
+
+    // Owner ayarı: hareketsizlik hatırlatmaları kapalıysa bu org'u atla
+    const notif = await getNotificationSettings(orgId, notifCache);
+    if (!notif.inactivity_reminders) continue;
+
     const cutoff = new Date(Date.now() - days * 24 * 60 * 60 * 1000).toISOString();
 
     // Org'un giriş (entry) aşaması — position en küçük olan
