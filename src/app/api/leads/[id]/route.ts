@@ -122,7 +122,7 @@ export async function PATCH(request: NextRequest, context: RouteContext) {
       }
     }
 
-    // If assigned_to changed, create activity
+    // If assigned_to changed, create activity + notify the assignee by email
     if (body.assigned_to !== undefined && body.assigned_to !== currentLead.assigned_to) {
       await supabase.from('lead_activities').insert({
         lead_id: id,
@@ -136,6 +136,19 @@ export async function PATCH(request: NextRequest, context: RouteContext) {
           to_user: body.assigned_to,
         },
       });
+
+      // Atanan kişiye bildirim maili (best-effort; kaydı asla bloklamaz).
+      // Org ayarı settings.notifications.assignment_email=false ile kapatılabilir.
+      if (body.assigned_to) {
+        void import('@/lib/crm/assignmentNotify')
+          .then((m) => m.notifyAssignment({
+            organizationId: orgId,
+            leadId: id,
+            assignedTo: body.assigned_to,
+            assignedBy: user.id,
+          }))
+          .catch((e) => console.error('[assignmentNotify] PATCH error:', e));
+      }
     }
 
     return NextResponse.json({ ...updated, meta_sync: metaSync });
