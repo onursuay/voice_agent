@@ -1098,8 +1098,11 @@ export function LeadToolbar() {
           overflow-hidden KULLANILMAZ (filtre dropdown'ları absolute açılıyor, kesilirdi);
           bunun yerine açılır-kapanır arama + kompakt aralık ile içerik tek satıra sığar. */}
       <div className="flex w-full items-center justify-between gap-2">
-        {/* Sol grup — esnek, tek satır, kompakt aralık */}
-        <div className="flex min-w-0 flex-1 flex-nowrap items-center gap-1.5">
+        {/* Sol grup — esnek, tek satır, kompakt aralık. lead-toolbar-left bir CSS
+            container'dır: daraldıkça (sidebar açık / küçük ekran) filtre butonları
+            globals.css'teki @container kurallarıyla kompaktlaşır → dropdown'ları
+            KESMEDEN (container-type paint-containment içermez) tek satıra sığar. */}
+        <div className="lead-toolbar-left flex min-w-0 flex-1 flex-nowrap items-center gap-1.5">
           <SearchBox />
           <AccountFilter />
           <LeadFilters />
