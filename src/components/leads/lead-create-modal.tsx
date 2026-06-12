@@ -153,7 +153,7 @@ export function LeadCreateModal({ open, onClose }: LeadCreateModalProps) {
             type="email"
             value={form.email}
             onChange={(e) => handleChange('email', e.target.value)}
-            placeholder="example@company.com"
+            placeholder={t('placeholders.email')}
           />
         </div>
 
