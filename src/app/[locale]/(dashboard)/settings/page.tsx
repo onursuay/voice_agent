@@ -1350,6 +1350,15 @@ export default function SettingsPage() {
             )}
           </div>
         )}
+
+        {/* ============================== */}
+        {/* BİLDİRİMLER (owner) */}
+        {/* ============================== */}
+        {activeTab === 'notifications' && (
+          <div className="p-6">
+            <NotificationsTab />
+          </div>
+        )}
       </div>
     </div>
   );
