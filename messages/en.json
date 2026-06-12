@@ -310,7 +310,8 @@
       "profile": "Profile",
       "integrations": "Integrations",
       "logs": "Log Records",
-      "access": "Access Management"
+      "access": "Access Management",
+      "notifications": "Notifications"
     },
     "logs": {
       "title": "Log Records",
@@ -447,6 +448,20 @@
         "successCount": "{count} pages successfully connected",
         "goToIntegrations": "Go to Integrations"
       }
+    },
+    "notifications": {
+      "title": "Email Notifications",
+      "desc": "Control when the system emails whom. Changes save instantly.",
+      "saved": "Saved",
+      "ownerOnly": "Only the organization owner can change these settings.",
+      "assignmentTitle": "Assignment notification",
+      "assignmentDesc": "When a lead is assigned, the assignee receives an email.",
+      "inactivityTitle": "Inactivity reminder",
+      "inactivityDesc": "Reps get a reminder for leads untouched for the configured number of days.",
+      "slaTitle": "SLA alerts",
+      "slaDesc": "Rep + owner are alerted when a lead is not called in time or not retried after no answer.",
+      "dailyTitle": "Daily report",
+      "dailyDesc": "Every evening the owner receives the day's lead summary with an Excel attachment."
     }
   },
   "hesabim": {

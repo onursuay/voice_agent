@@ -308,7 +308,8 @@
       "profile": "Profil",
       "integrations": "Entegrasyonlar",
       "logs": "Log Kayıtları",
-      "access": "Erişim Yönetimi"
+      "access": "Erişim Yönetimi",
+      "notifications": "Bildirimler"
     },
     "logs": {
       "title": "Log Kayıtları",
@@ -445,6 +446,20 @@
         "successCount": "{count} sayfa başarıyla bağlandı",
         "goToIntegrations": "Entegrasyonlara Git"
       }
+    },
+    "notifications": {
+      "title": "E-posta Bildirimleri",
+      "desc": "Sistem hangi durumda kime mail göndersin — buradan yönetin. Değişiklikler anında kaydedilir.",
+      "saved": "Kaydedildi",
+      "ownerOnly": "Bu ayarları yalnız organizasyon sahibi (Owner) değiştirebilir.",
+      "assignmentTitle": "Atama bildirimi",
+      "assignmentDesc": "Bir lead bir temsilciye atandığında atanan kişiye e-posta gönderilir.",
+      "inactivityTitle": "Hareketsizlik hatırlatması",
+      "inactivityDesc": "Belirlenen gün sayısı boyunca işlem görmeyen leadler için temsilciye hatırlatma gönderilir.",
+      "slaTitle": "SLA uyarıları",
+      "slaDesc": "Lead zamanında aranmadıysa veya ulaşılamayıp tekrar aranmadıysa temsilci + owner uyarılır.",
+      "dailyTitle": "Günlük rapor",
+      "dailyDesc": "Her akşam günün lead özeti Excel ekiyle owner'a gönderilir."
     }
   },
   "hesabim": {

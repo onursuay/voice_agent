@@ -1,12 +1,13 @@
 import { createHmac } from 'crypto';
 
 /**
- * Meta OAuth is split into two flows:
- *  - 'account': BM / business + ads-sync scopes only (no page chooser shown by Meta)
- *  - 'pages':   page-level scopes, triggered later from "Sayfa Bağla" on the dashboard
+ * Meta OAuth is split into three flows:
+ *  - 'account':   BM / business + ads-sync scopes only (no page chooser shown by Meta)
+ *  - 'pages':     page-level scopes, triggered later from "Sayfa Bağla" on the dashboard
+ *  - 'messaging': WhatsApp/IG/Messenger mesajlaşma scope'ları (Omnichannel Inbox bağlama)
  * The mode is signed into the OAuth state so the shared callback knows what to do.
  */
-export type MetaOAuthMode = 'account' | 'pages';
+export type MetaOAuthMode = 'account' | 'pages' | 'messaging';
 
 const STATE_TTL_MS = 10 * 60 * 1000;
 
