@@ -998,7 +998,17 @@
     "save": "Save",
     "cancel": "Cancel",
     "delete": "Delete",
-    "sourceImport": "Import"
+    "sourceImport": "Import",
+    "fieldCountry": "Country",
+    "fieldSource": "Source",
+    "fieldPage": "Account (Page)",
+    "fieldFormName": "Form Name",
+    "fieldCampaign": "Campaign",
+    "fieldCompany": "Company",
+    "fieldEmail": "Email",
+    "fieldPhone": "Phone",
+    "fieldFullName": "Full Name",
+    "fieldCustomPrefix": "Form field"
   },
   "access": {
     "pendingTitle": "Your account is pending approval",
