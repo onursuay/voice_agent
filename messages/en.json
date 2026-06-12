@@ -287,7 +287,10 @@
     },
     "formFilter": "Form",
     "noForms": "No forms found",
-    "forms": "Lead Forms"
+    "forms": "Lead Forms",
+    "syncedHidden": "Synced hidden",
+    "syncedShown": "Show all",
+    "syncedToggleHint": "Show/hide completed leads successfully synced with Meta Custom Audience target audiences"
   },
   "settings": {
     "title": "Settings",

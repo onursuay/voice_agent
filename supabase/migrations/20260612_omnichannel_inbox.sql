@@ -51,9 +51,11 @@ CREATE TABLE IF NOT EXISTS conversations (
 );
 
 -- Tek konuşma: (org, channel, channel_account, external_conversation_id)
+-- Not: COALESCE yok — partial WHERE her iki anahtarın da dolu olmasını şart koşar,
+-- böylece NULL-distinctness yarışı oluşmaz (messaging konuşmalarında ikisi de hep dolu).
 CREATE UNIQUE INDEX IF NOT EXISTS idx_conversations_external
-  ON conversations (organization_id, channel, (COALESCE(channel_account_id, '')), (COALESCE(external_conversation_id, '')))
-  WHERE external_conversation_id IS NOT NULL;
+  ON conversations (organization_id, channel, channel_account_id, external_conversation_id)
+  WHERE external_conversation_id IS NOT NULL AND channel_account_id IS NOT NULL;
 
 CREATE INDEX IF NOT EXISTS idx_conversations_org_last ON conversations(organization_id, last_message_at DESC);
 CREATE INDEX IF NOT EXISTS idx_conversations_lead ON conversations(lead_id);

@@ -285,7 +285,10 @@
     },
     "formFilter": "Form",
     "noForms": "Form bulunamadı",
-    "forms": "Lead Formları"
+    "forms": "Lead Formları",
+    "syncedHidden": "Senkronize gizli",
+    "syncedShown": "Tümü",
+    "syncedToggleHint": "Meta Custom Audience hedef kitleleriyle başarıyla senkronize olan tamamlanmış lead'leri göster/gizle"
   },
   "settings": {
     "title": "Ayarlar",
