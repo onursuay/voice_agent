@@ -55,6 +55,11 @@ interface AppStore {
   sourceFilter: string;
   setSourceFilter: (source: string) => void;
 
+  // Meta Custom Audience ile başarıyla senkronize (tamamlanan) leadleri göster/gizle.
+  // Varsayılan false: senkronize olanlar listeden gizlenir.
+  showSynced: boolean;
+  setShowSynced: (show: boolean) => void;
+
   // Import table filter
   importJobFilter: { id: string; name: string; columns: string[] } | null;
   setImportJobFilter: (job: { id: string; name: string; columns: string[] } | null) => void;
