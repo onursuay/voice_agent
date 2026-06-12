@@ -1304,7 +1304,7 @@ export function LeadGrid() {
                   <button
                     onClick={(e) => { e.stopPropagation(); setActiveLeadId(lead.id); }}
                     className="flex h-6 w-6 items-center justify-center rounded bg-white text-gray-400 shadow-sm ring-1 ring-gray-200 transition-colors hover:text-emerald-600"
-                    title="Ac"
+                    title={tCommon('open')}
                   >
                     <ExternalLink className="h-3 w-3" />
                   </button>
