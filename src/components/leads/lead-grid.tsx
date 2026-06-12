@@ -950,14 +950,13 @@ export function LeadGrid() {
         return <span className={cn('inline-flex rounded-md px-2 py-0.5 text-xs font-semibold', colorCls)}>{lead.score}</span>;
       }
       case 'assigned_to': {
-        const user = lead.assigned_user;
-        if (!user) return <span className="text-gray-400">-</span>;
-        return (
-          <div className="flex items-center gap-2">
-            <Avatar src={user.avatar_url} name={user.full_name} size="xs" />
-            <span className="truncate text-sm text-gray-700">{user.full_name}</span>
-          </div>
-        );
+        // assigned_user join'i inline güncellemede bayatlayabilir — members'tan da çöz
+        const name =
+          lead.assigned_user?.full_name ||
+          members.find((m) => m.user_id === lead.assigned_to)?.profile?.full_name ||
+          null;
+        if (!name) return <span className="text-gray-400">-</span>;
+        return <span className="truncate text-sm text-gray-700">{name}</span>;
       }
       case 'campaign_name':
         return <span className="truncate text-gray-700">{lead.campaign_name || ''}</span>;
