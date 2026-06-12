@@ -995,60 +995,112 @@ function SyncedToggle() {
   );
 }
 
+// ── Collapsible Search ──────────────────────────────────
+// Varsayılan: yalnızca mercek ikonlu kompakt kare buton (yer kaplamaz → toolbar tek
+// satırda kalır). Tıklayınca input sağa açılır; ESC / dışarı tıklama (blur) / X ile
+// kapanır. Filtre mantığı (store.searchQuery) korunur; aktif aramada ikon vurgulanır.
+function SearchBox() {
+  const t = useTranslations('leads');
+  const searchQuery = useAppStore((s) => s.searchQuery);
+  const setSearchQuery = useAppStore((s) => s.setSearchQuery);
+  const [localSearch, setLocalSearch] = useState(searchQuery);
+  const [open, setOpen] = useState(false);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const handleChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const val = e.target.value;
+      setLocalSearch(val);
+      if (debounceRef.current) clearTimeout(debounceRef.current);
+      debounceRef.current = setTimeout(() => setSearchQuery(val), 300);
+    },
+    [setSearchQuery]
+  );
+
+  useEffect(() => () => { if (debounceRef.current) clearTimeout(debounceRef.current); }, []);
+  useEffect(() => { if (open) inputRef.current?.focus(); }, [open]);
+
+  const clearAndClose = () => {
+    if (debounceRef.current) clearTimeout(debounceRef.current);
+    setLocalSearch('');
+    setSearchQuery('');
+    setOpen(false);
+  };
+
+  if (!open) {
+    const active = searchQuery.trim().length > 0;
+    return (
+      <button
+        type="button"
+        onClick={() => setOpen(true)}
+        title={active ? searchQuery : t('searchPlaceholder')}
+        aria-label={t('searchPlaceholder')}
+        className={cn(
+          'relative flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border transition-colors',
+          'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500/30',
+          active
+            ? 'border-emerald-300 bg-emerald-50 text-emerald-600 hover:bg-emerald-100'
+            : 'border-gray-300 bg-white text-gray-500 hover:bg-gray-50'
+        )}
+      >
+        <Search className="h-4 w-4" />
+        {active && <span className="absolute right-1.5 top-1.5 h-1.5 w-1.5 rounded-full bg-emerald-500" />}
+      </button>
+    );
+  }
+
+  return (
+    <div className="relative w-[240px] shrink-0">
+      <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+      <input
+        ref={inputRef}
+        type="text"
+        placeholder={t('searchPlaceholder')}
+        value={localSearch}
+        onChange={handleChange}
+        onKeyDown={(e) => { if (e.key === 'Escape') { e.preventDefault(); setOpen(false); } }}
+        onBlur={(e) => {
+          // Odak dışarı çıkınca kapat (X butonuna geçişte değil)
+          if (!e.currentTarget.parentElement?.contains(e.relatedTarget as Node)) setOpen(false);
+        }}
+        className={cn(
+          'block w-full rounded-lg border border-gray-300 bg-white py-2 pl-10 pr-8 text-sm text-gray-900',
+          'placeholder:text-gray-400 transition-colors',
+          'focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/20'
+        )}
+      />
+      <button
+        type="button"
+        onMouseDown={(e) => e.preventDefault()}
+        onClick={clearAndClose}
+        aria-label={t('searchClear')}
+        className="absolute right-1.5 top-1/2 flex h-5 w-5 -translate-y-1/2 items-center justify-center rounded text-gray-400 transition-colors hover:bg-gray-100 hover:text-gray-600"
+      >
+        <X className="h-3.5 w-3.5" />
+      </button>
+    </div>
+  );
+}
+
 // ── Main Toolbar ────────────────────────────────────────
 
 export function LeadToolbar() {
   const router = useRouter();
   const t = useTranslations('leads');
   const tNav = useTranslations('nav');
-  const searchQuery = useAppStore((s) => s.searchQuery);
-  const setSearchQuery = useAppStore((s) => s.setSearchQuery);
-  const [localSearch, setLocalSearch] = useState(searchQuery);
   const [createOpen, setCreateOpen] = useState(false);
-  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-
-  const handleSearchChange = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      const val = e.target.value;
-      setLocalSearch(val);
-      if (debounceRef.current) clearTimeout(debounceRef.current);
-      debounceRef.current = setTimeout(() => {
-        setSearchQuery(val);
-      }, 300);
-    },
-    [setSearchQuery]
-  );
-
-  useEffect(() => {
-    return () => { if (debounceRef.current) clearTimeout(debounceRef.current); };
-  }, []);
 
   return (
     <>
-      {/* Toolbar wraps instead of overflowing: the action group (Import / New Lead) stays
-          pinned to the right while the search + filter group wraps below as the content
-          area narrows (e.g. sidebar expanded). Keeps the right edge aligned with the
-          "+ New Lead" button and prevents page-level horizontal overflow. */}
-      <div className="flex flex-wrap items-center gap-2">
-        {/* Search + filters — min-w-0 lets this group shrink and wrap internally so it
-            never pushes the action group off the line. */}
-        <div className="flex min-w-0 flex-1 flex-wrap items-center gap-2">
-          {/* Search */}
-          <div className="relative min-w-[150px] max-w-md flex-1">
-            <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
-            <input
-              type="text"
-              placeholder={t('searchPlaceholder')}
-              value={localSearch}
-              onChange={handleSearchChange}
-              className={cn(
-                'block w-full rounded-lg border border-gray-300 bg-white py-2 pl-10 pr-3.5 text-sm text-gray-900',
-                'placeholder:text-gray-400 transition-colors',
-                'focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/20'
-              )}
-            />
-          </div>
-
+      {/* Tek satır toolbar: sol grup (arama + filtreler) esner, sağ grup (İçe Aktar /
+          Yeni Lead) daima sağ kenarda sabit. flex-nowrap → öğeler ikinci satıra düşmez.
+          overflow-hidden KULLANILMAZ (filtre dropdown'ları absolute açılıyor, kesilirdi);
+          bunun yerine açılır-kapanır arama + kompakt aralık ile içerik tek satıra sığar. */}
+      <div className="flex w-full items-center justify-between gap-2">
+        {/* Sol grup — esnek, tek satır, kompakt aralık */}
+        <div className="flex min-w-0 flex-1 flex-nowrap items-center gap-1.5">
+          <SearchBox />
           <AccountFilter />
           <LeadFilters />
           <SourceFilterDropdown />
@@ -1059,8 +1111,8 @@ export function LeadToolbar() {
           <SyncedToggle />
         </div>
 
-        {/* Action group — pinned right; ml-auto keeps it right-aligned when it wraps to its own line. */}
-        <div className="ml-auto flex shrink-0 items-center gap-2">
+        {/* Sağ grup — daima sağ kenarda; küçülmez, sarmaz */}
+        <div className="flex shrink-0 items-center gap-2">
           <Button
             variant="secondary"
             size="sm"
