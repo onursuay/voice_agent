@@ -17,7 +17,6 @@ import type { Organization, Profile, OrganizationMember, CrmStage, UserRole } fr
 import { useTranslations } from 'next-intl';
 import {
   Building2,
-  Users,
   GitBranch,
   User,
   Save,
