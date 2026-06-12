@@ -448,7 +448,7 @@ export function BulkActionBar() {
               className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-emerald-500 focus:outline-none"
               onKeyDown={(e) => { if (e.key === 'Enter' && tagInput.trim()) bulkApi('tag', { tags: tagInput.split(',').map(t => t.trim()).filter(Boolean) }); }}
             />
-            <p className="mt-1 text-xs text-gray-400">Separate multiple tags with commas</p>
+            <p className="mt-1 text-xs text-gray-400">{t('tagInputHint')}</p>
             {error && <p className="mt-2 text-sm text-red-600">{error}</p>}
             <div className="mt-4 flex justify-end gap-2">
               <Button variant="secondary" size="sm" onClick={() => setModal(null)} disabled={loading}>{t('cancel')}</Button>
