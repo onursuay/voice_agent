@@ -1081,7 +1081,7 @@ export function LeadGrid() {
         />
       )}
 
-      <div style={{ minWidth: `max(${totalWidth}px, 100%)` }}>
+      <div className="w-full">
         {/* ── Header ───────────────────────────────── */}
         <div className="sticky top-0 z-20 flex border-b border-gray-200 bg-gray-50">
           {visibleColumns.map((col) => {
