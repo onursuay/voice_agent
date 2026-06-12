@@ -1130,10 +1130,10 @@ export function LeadGrid() {
                 ) : isRowNum ? (
                   <span className="text-gray-400">#</span>
                 ) : (
-                  <div className="flex items-center gap-1">
-                    <span>{col.label}</span>
+                  <div className="flex min-w-0 items-center gap-1">
+                    <span className="truncate">{col.label}</span>
                     {col.sortable && (
-                      <span className="ml-0.5">
+                      <span className="ml-0.5 shrink-0">
                         {isSorted ? (
                           sort?.direction === 'asc'
                             ? <ArrowUp className="h-3.5 w-3.5 text-emerald-500" />
