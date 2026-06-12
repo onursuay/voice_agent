@@ -99,56 +99,96 @@ CREATE UNIQUE INDEX IF NOT EXISTS idx_messages_external_id
 CREATE INDEX IF NOT EXISTS idx_messages_conversation ON messages(conversation_id, created_at);
 CREATE INDEX IF NOT EXISTS idx_messages_org ON messages(organization_id);
 
--- 4) ROW LEVEL SECURITY — leads desenine birebir uyumlu (org + lead_scope)
+-- 4) MESSAGING KANAL HESABI BENZERSİZLİĞİ
+-- phone_number_id / page_id / ig_business_account_id global kimliklerdir; bir hesap
+-- yalnız BİR org'a bağlanabilsin (inbound webhook çözümünde org çakışmasını önler).
+CREATE UNIQUE INDEX IF NOT EXISTS idx_integration_settings_whatsapp_phone
+  ON integration_settings ((config->>'phone_number_id'))
+  WHERE provider = 'meta_whatsapp' AND is_active = true;
+CREATE UNIQUE INDEX IF NOT EXISTS idx_integration_settings_messenger_page
+  ON integration_settings ((config->>'page_id'))
+  WHERE provider = 'meta_messenger' AND is_active = true;
+CREATE UNIQUE INDEX IF NOT EXISTS idx_integration_settings_instagram_account
+  ON integration_settings ((config->>'ig_business_account_id'))
+  WHERE provider = 'meta_instagram' AND is_active = true;
+
+-- 5) ROW LEVEL SECURITY — leads desenine birebir uyumlu (org + lead_scope)
+-- Tüm policy'ler idempotent (DROP IF EXISTS) ve org-eşleşme guard'lı (cross-org lead_id sızıntısı kapalı).
 ALTER TABLE conversations ENABLE ROW LEVEL SECURITY;
 ALTER TABLE messages ENABLE ROW LEVEL SECURITY;
 
 -- conversations: org üyesi + (kapsam='all' VEYA konuşma/lead bana atanmış)
+DROP POLICY IF EXISTS "conversations_select" ON conversations;
 CREATE POLICY "conversations_select" ON conversations FOR SELECT USING (
   organization_id IN (SELECT get_user_org_ids(auth.uid()))
   AND (
     get_user_lead_scope(organization_id) = 'all'
     OR assigned_to = auth.uid()
-    OR EXISTS (SELECT 1 FROM leads l WHERE l.id = conversations.lead_id AND l.assigned_to = auth.uid())
+    OR EXISTS (
+      SELECT 1 FROM leads l
+      WHERE l.id = conversations.lead_id
+        AND l.organization_id = conversations.organization_id
+        AND l.assigned_to = auth.uid()
+    )
   )
 );
+DROP POLICY IF EXISTS "conversations_insert" ON conversations;
 CREATE POLICY "conversations_insert" ON conversations FOR INSERT WITH CHECK (
   organization_id IN (SELECT get_user_org_ids(auth.uid()))
 );
+DROP POLICY IF EXISTS "conversations_update" ON conversations;
 CREATE POLICY "conversations_update" ON conversations FOR UPDATE USING (
   organization_id IN (SELECT get_user_org_ids(auth.uid()))
   AND (
     get_user_lead_scope(organization_id) = 'all'
     OR assigned_to = auth.uid()
-    OR EXISTS (SELECT 1 FROM leads l WHERE l.id = conversations.lead_id AND l.assigned_to = auth.uid())
+    OR EXISTS (
+      SELECT 1 FROM leads l
+      WHERE l.id = conversations.lead_id
+        AND l.organization_id = conversations.organization_id
+        AND l.assigned_to = auth.uid()
+    )
   )
 );
+DROP POLICY IF EXISTS "conversations_delete" ON conversations;
 CREATE POLICY "conversations_delete" ON conversations FOR DELETE USING (
   organization_id IN (SELECT get_user_org_ids(auth.uid()))
   AND get_user_lead_scope(organization_id) = 'all'
 );
 
--- messages: kapsamı bağlı konuşma üzerinden türet
+-- messages: kapsamı bağlı konuşma üzerinden türet (iki ayrı EXISTS — NULL-OR belirsizliği yok)
+DROP POLICY IF EXISTS "messages_select" ON messages;
 CREATE POLICY "messages_select" ON messages FOR SELECT USING (
   organization_id IN (SELECT get_user_org_ids(auth.uid()))
   AND (
     get_user_lead_scope(organization_id) = 'all'
     OR EXISTS (
       SELECT 1 FROM conversations c
-      LEFT JOIN leads l ON l.id = c.lead_id
       WHERE c.id = messages.conversation_id
-        AND (c.assigned_to = auth.uid() OR l.assigned_to = auth.uid())
+        AND c.organization_id = messages.organization_id
+        AND c.assigned_to = auth.uid()
+    )
+    OR EXISTS (
+      SELECT 1 FROM conversations c
+      JOIN leads l ON l.id = c.lead_id
+      WHERE c.id = messages.conversation_id
+        AND c.organization_id = messages.organization_id
+        AND l.organization_id = messages.organization_id
+        AND l.assigned_to = auth.uid()
     )
   )
 );
+DROP POLICY IF EXISTS "messages_insert" ON messages;
 CREATE POLICY "messages_insert" ON messages FOR INSERT WITH CHECK (
   organization_id IN (SELECT get_user_org_ids(auth.uid()))
 );
+DROP POLICY IF EXISTS "messages_update" ON messages;
 CREATE POLICY "messages_update" ON messages FOR UPDATE USING (
   organization_id IN (SELECT get_user_org_ids(auth.uid()))
 );
 
--- 5) updated_at trigger (conversations)
+-- 6) updated_at trigger (conversations) — idempotent
+DROP TRIGGER IF EXISTS set_updated_at ON conversations;
 CREATE TRIGGER set_updated_at BEFORE UPDATE ON conversations FOR EACH ROW EXECUTE FUNCTION update_updated_at();
 
 -- 6) REALTIME — inbox canlı güncelleme için publication'a ekle (idempotent)
