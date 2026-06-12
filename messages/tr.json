@@ -1129,5 +1129,38 @@
       "refresh": "Yenile",
       "pagesHint": "Etkinleştirmek, sayfayı mesaj webhook'una abone eder ve bağlı Instagram hesabını da ekler. Mevcut Lead Ads aboneliği korunur."
     }
+  },
+  "sequences": {
+    "title": "AI Orkestra Senaryoları",
+    "desc": "Lead düşünce plana göre AI araması yapılır, sonuca göre teşekkür/funnel mailleri gönderilir.",
+    "newSequence": "Yeni Senaryo",
+    "editSequence": "Senaryoyu Düzenle",
+    "empty": "Henüz senaryo yok",
+    "emptyDesc": "İlk senaryonuzu kurun: AI arasın, açmazsa mail gitsin, görüşüldüyse teşekkür maili gönderilsin.",
+    "name": "Senaryo adı",
+    "namePlaceholder": "Örn. Yeni lead — ara ve takip et",
+    "trigger": "Tetik koşulu (hangi lead'ler bu senaryoya girer?)",
+    "triggerAll": "Tüm yeni lead'ler",
+    "window": "Arama saatleri",
+    "windowStart": "Arama başlangıç saati",
+    "windowEnd": "Arama bitiş saati",
+    "steps": "Adımlar (sırayla çalışır)",
+    "stepType": "Adım",
+    "stepCall": "AI Arama",
+    "stepEmail": "E-posta",
+    "delay": "Bekleme (dk)",
+    "condition": "Koşul",
+    "onlyIfAlways": "Her zaman",
+    "onlyIfNotReached": "Ulaşılamadıysa",
+    "onlyIfReached": "Görüşüldüyse",
+    "onlyIfNotReachedShort": "ulaşılamadıysa",
+    "onlyIfReachedShort": "görüşüldüyse",
+    "templateAuto": "Otomatik (koşula göre)",
+    "addStep": "Adım ekle",
+    "stepHint": "Bekleme, önceki adımın bitiminden itibaren sayılır. Aramalar yalnız arama saatleri içinde yapılır.",
+    "active": "Aktif",
+    "passive": "Pasif",
+    "deleteConfirm": "Bu senaryo silinsin mi? Devam eden kayıtlar durur.",
+    "enrollmentSummary": "{active} aktif · {completed} tamamlanan kayıt"
   }
 }

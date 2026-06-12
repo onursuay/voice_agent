@@ -1131,5 +1131,38 @@
       "refresh": "Refresh",
       "pagesHint": "Enabling subscribes the page to the message webhook and adds the linked Instagram account. The existing Lead Ads subscription is preserved."
     }
+  },
+  "sequences": {
+    "title": "AI Orchestra Scenarios",
+    "desc": "When a lead arrives, the AI calls on schedule; thank-you/funnel emails follow based on the outcome.",
+    "newSequence": "New Scenario",
+    "editSequence": "Edit Scenario",
+    "empty": "No scenarios yet",
+    "emptyDesc": "Build your first scenario: AI calls, emails if unreachable, thank-you email after a conversation.",
+    "name": "Scenario name",
+    "namePlaceholder": "E.g. New lead — call and follow up",
+    "trigger": "Trigger condition (which leads enter this scenario?)",
+    "triggerAll": "All new leads",
+    "window": "Call hours",
+    "windowStart": "Call window start hour",
+    "windowEnd": "Call window end hour",
+    "steps": "Steps (run in order)",
+    "stepType": "Step",
+    "stepCall": "AI Call",
+    "stepEmail": "Email",
+    "delay": "Wait (min)",
+    "condition": "Condition",
+    "onlyIfAlways": "Always",
+    "onlyIfNotReached": "If not reached",
+    "onlyIfReached": "If reached",
+    "onlyIfNotReachedShort": "if not reached",
+    "onlyIfReachedShort": "if reached",
+    "templateAuto": "Automatic (by condition)",
+    "addStep": "Add step",
+    "stepHint": "Wait counts from the end of the previous step. Calls only happen within call hours.",
+    "active": "Active",
+    "passive": "Inactive",
+    "deleteConfirm": "Delete this scenario? Ongoing enrollments will stop.",
+    "enrollmentSummary": "{active} active · {completed} completed enrollments"
   }
 }
