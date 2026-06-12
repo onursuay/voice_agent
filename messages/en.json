@@ -725,9 +725,7 @@
     "mockRule3Name": "Won stage → Congratulations email",
     "mockRule2Message": "Contact the lead",
     "tagTriggerPlaceholder": "VIP",
-    "tagActionPlaceholder": "to-follow-up",
-    "valuePlaceholderMulti": "Ankara, Istanbul",
-    "valuePlaceholder": "Ankara"
+    "tagActionPlaceholder": "to-follow-up"
   },
   "import": {
     "pageTitle": "Lead Import",
@@ -1034,7 +1032,9 @@
     "fieldEmail": "Email",
     "fieldPhone": "Phone",
     "fieldFullName": "Full Name",
-    "fieldCustomPrefix": "Form field"
+    "fieldCustomPrefix": "Form field",
+    "valuePlaceholder": "Ankara",
+    "valuePlaceholderMulti": "Ankara, Istanbul"
   },
   "access": {
     "pendingTitle": "Your account is pending approval",
@@ -1196,7 +1196,6 @@
     "active": "Active",
     "passive": "Inactive",
     "deleteConfirm": "Delete this scenario? Ongoing enrollments will stop.",
-    "enrollmentSummary": "{active} active · {completed} completed enrollments",
-    "valuePlaceholder": "Ankara"
+    "enrollmentSummary": "{active} active · {completed} completed enrollments"
   }
 }

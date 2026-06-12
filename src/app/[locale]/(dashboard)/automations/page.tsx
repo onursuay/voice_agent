@@ -576,7 +576,7 @@ function RoutingRulesSection({ allRules, onRulesChange, members }: RoutingRulesS
                     label={tR('value')}
                     value={form.value}
                     onChange={e => setForm({ ...form, value: e.target.value })}
-                    placeholder={form.operator === 'in' ? 'Ankara, İstanbul' : 'Ankara'}
+                    placeholder={form.operator === 'in' ? tR('valuePlaceholderMulti') : tR('valuePlaceholder')}
                   />
                 )}
               </div>
