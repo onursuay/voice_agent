@@ -24,7 +24,18 @@ export function normalizeValue(v: unknown): string {
 }
 
 function leadFieldValue(lead: Record<string, unknown>, field: string): string {
-  return normalizeValue(lead[field]);
+  // 'custom.X' → lead.custom_fields[X] (form sorularından gelen dinamik alanlar:
+  // amac, butce, konum, zaman vb. — Meta form başlıklarına göre kural kurulabilir)
+  if (field.startsWith('custom.')) {
+    const cf = lead.custom_fields as Record<string, unknown> | null | undefined;
+    return normalizeValue(cf?.[field.slice(7)]);
+  }
+  const direct = lead[field];
+  if (direct !== undefined && direct !== null && direct !== '') return normalizeValue(direct);
+  // Düz kolon boşsa aynı isimli form alanına düş (eski kurallarla geriye uyumlu)
+  const cf = lead.custom_fields as Record<string, unknown> | null | undefined;
+  if (cf && typeof cf === 'object' && field in cf) return normalizeValue(cf[field]);
+  return normalizeValue(direct);
 }
 
 export function evaluateCondition(cond: Condition, lead: Record<string, unknown>): boolean {
