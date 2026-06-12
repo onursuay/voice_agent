@@ -143,7 +143,7 @@ export function MessagingCard() {
               </div>
             ) : (
               <button onClick={() => setWaOpen(true)}
-                className="mt-2 flex w-full items-center justify-center gap-1 rounded-lg border border-dashed border-emerald-300 py-1.5 text-xs font-medium text-emerald-600 hover:bg-emerald-50">
+                className="mt-2 flex w-full items-center justify-center gap-1 rounded-lg border border-dashed border-emerald-300 py-1.5 text-xs font-medium text-emerald-600 transition-colors hover:bg-emerald-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-300 active:scale-[0.98]">
                 <Plus className="h-3 w-3" /> {t('connect.addNumber')}
               </button>
             )}
