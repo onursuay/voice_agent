@@ -88,10 +88,6 @@ export default function SettingsPage() {
   const [orgSaving, setOrgSaving] = useState(false);
   const [orgSuccess, setOrgSuccess] = useState(false);
 
-  // Members state
-  const [members, setMembers] = useState<OrganizationMember[]>([]);
-  const [membersLoading, setMembersLoading] = useState(false);
-
   // Pipeline state
   const [localStages, setLocalStages] = useState<CrmStage[]>([]);
   const [newStageName, setNewStageName] = useState('');
