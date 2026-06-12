@@ -81,7 +81,7 @@ export default function InboxView() {
     } finally {
       setLoadingList(false);
     }
-  }, [orgId, channelFilter, statusFilter, search]);
+  }, [orgId, channelFilter, search]);
 
   // loader'ı ref'te tut — realtime her filtre değişiminde yeniden abone olmasın
   const loaderRef = useRef(loadConversations);
