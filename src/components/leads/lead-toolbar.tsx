@@ -427,7 +427,7 @@ export function BulkActionBar() {
               <Button variant="primary" size="sm" disabled={!selectedUserId || loading}
                 icon={loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <UserPlus className="h-4 w-4" />}
                 onClick={() => bulkApi('assign', { assigned_to: selectedUserId })}>
-                {loading ? 'Saving...' : t('assign')}
+                {loading ? tCommon('saving') : t('assign')}
               </Button>
             </div>
           </div>
