@@ -314,7 +314,8 @@ async function runDueSteps(admin: Admin): Promise<{ calls: number; emails: numbe
       const to = (lead.email || '').trim();
       if (!to) { await advance(admin, enr, steps, step.position, enr.last_call_outcome); skipped++; continue; }
 
-      let tpl: RenderableTemplate = FUNNEL_DEFAULT_TEMPLATE;
+      // Varsayılan şablon adım koşuluna göre: görüşüldüyse teşekkür, değilse ulaşamadık
+      let tpl: RenderableTemplate = step.only_if === 'reached' ? THANKYOU_DEFAULT_TEMPLATE : FUNNEL_DEFAULT_TEMPLATE;
       const templateId = step.config?.email_template_id;
       if (templateId) {
         const { data: t } = await admin
