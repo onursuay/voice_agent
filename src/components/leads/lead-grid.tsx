@@ -1325,8 +1325,8 @@ export function LeadGrid() {
         {leads.length === 0 && (
           <div className="flex items-center justify-center py-20 text-gray-400">
             <div className="text-center">
-              <p className="text-lg font-medium">Henuz lead yok</p>
-              <p className="mt-1 text-sm">Yukaridaki bos satira tiklayarak yeni lead ekleyebilirsiniz</p>
+              <p className="text-lg font-medium">{t('gridEmptyTitle')}</p>
+              <p className="mt-1 text-sm">{t('gridEmptyDesc')}</p>
             </div>
           </div>
         )}
