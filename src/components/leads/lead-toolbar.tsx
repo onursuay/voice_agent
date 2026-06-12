@@ -396,7 +396,7 @@ export function BulkActionBar() {
               <Button variant="primary" size="sm" disabled={!selectedStageId || loading}
                 icon={loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <GitBranch className="h-4 w-4" />}
                 onClick={() => bulkApi('stage', { stage_id: selectedStageId })}>
-                {loading ? 'Saving...' : t('changeStage')}
+                {loading ? tCommon('saving') : t('changeStage')}
               </Button>
             </div>
           </div>
