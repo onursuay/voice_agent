@@ -163,7 +163,7 @@ export function LeadCreateModal({ open, onClose }: LeadCreateModalProps) {
             name="company"
             value={form.company}
             onChange={(e) => handleChange('company', e.target.value)}
-            placeholder="Company name"
+            placeholder={t('placeholders.company')}
           />
           <Input
             label={t('fields.city')}
