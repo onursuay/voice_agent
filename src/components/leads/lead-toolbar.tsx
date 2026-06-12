@@ -1048,7 +1048,7 @@ export function LeadToolbar() {
         <TableFilterDropdown />
         <SortDropdown />
         <ColumnVisibilityDropdown />
-        <PerPageDropdown />
+        <SyncedToggle />
 
         <div className="flex-1 !shrink" />
 
