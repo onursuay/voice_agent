@@ -213,11 +213,10 @@ export default function SettingsPage() {
   }, []);
 
   useEffect(() => {
-    if (activeTab === 'members') loadMembers();
     if (activeTab === 'pipeline') loadStageLeadCounts();
     if (activeTab === 'logs') loadLogs();
     if (activeTab === 'access') loadAccessMembers();
-  }, [activeTab, loadMembers, loadStageLeadCounts, loadLogs, loadAccessMembers]);
+  }, [activeTab, loadStageLeadCounts, loadLogs, loadAccessMembers]);
 
   // Clear feedback messages after delay
   useEffect(() => {
