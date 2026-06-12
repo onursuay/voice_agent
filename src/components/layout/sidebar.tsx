@@ -10,6 +10,7 @@ import {
   LayoutDashboard,
   Users,
   GitBranch,
+  MessagesSquare,
   Upload,
   Settings,
   Mail,
