@@ -235,23 +235,13 @@ export async function processInboundMessage(
     throw new Error(`insert message failed: ${msgError.message}`);
   }
 
-  // Konuşma özetini güncelle (read-modify-write; webhook hacmi düşük olduğu için yeterli)
+  // Konuşma özetini atomik güncelle (unread artışı yarış-güvenli — bkz. bump_conversation_inbound)
   const preview = (msg.text || `[${msg.messageType}]`).slice(0, 200);
-  const { data: conv } = await admin
-    .from('conversations')
-    .select('unread_count, status')
-    .eq('id', conversationId)
-    .single();
-  await admin
-    .from('conversations')
-    .update({
-      last_message_at: msg.timestamp || new Date().toISOString(),
-      last_message_preview: preview,
-      unread_count: (conv?.unread_count ?? 0) + 1,
-      status: conv?.status === 'resolved' ? 'open' : (conv?.status ?? 'open'),
-      updated_at: new Date().toISOString(),
-    })
-    .eq('id', conversationId);
+  await admin.rpc('bump_conversation_inbound', {
+    conv_id: conversationId,
+    preview,
+    ts: msg.timestamp,
+  });
 
   // Lead son aktivite zamanı
   await admin.from('leads').update({ last_activity_at: msg.timestamp || new Date().toISOString() }).eq('id', leadId);
