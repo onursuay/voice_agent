@@ -12,6 +12,7 @@ import { Badge } from '@/components/ui/badge';
 import { EmptyState } from '@/components/ui/empty-state';
 import { Spinner } from '@/components/ui/loading';
 import { useTranslations } from 'next-intl';
+import { SequencesSection } from '@/components/automations/sequences-section';
 
 interface AutomationRule {
   id: string;
