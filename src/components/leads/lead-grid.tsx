@@ -625,14 +625,21 @@ export function LeadGrid() {
   const handleInlineSave = useCallback((leadId: string, field: string, value: string | number | string[] | null) => {
     const payload: Partial<Lead> = {};
     (payload as Record<string, unknown>)[field] = value;
-    updateLead(leadId, payload);
+    // Local state: atamada join'lenen assigned_user da güncellensin ki isim
+    // sayfa yenilemeden görünsün (PATCH body'sine girmez — DB kolonu değil).
+    const localPatch: Partial<Lead> = { ...payload };
+    if (field === 'assigned_to') {
+      const member = members.find((m) => m.user_id === value);
+      (localPatch as Record<string, unknown>).assigned_user = member?.profile ?? null;
+    }
+    updateLead(leadId, localPatch);
     flashSaved();
     fetch(`/api/leads/${leadId}`, {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload),
     }).catch(console.error);
-  }, [updateLead, flashSaved]);
+  }, [updateLead, flashSaved, members]);
 
   // ── Save new row ──────────────────────────────────────
   const handleNewRowSave = useCallback(() => {
