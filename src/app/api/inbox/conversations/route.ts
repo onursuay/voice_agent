@@ -43,11 +43,12 @@ export async function GET(request: NextRequest) {
 
     if (search) {
       // Arama: ilgili lead'leri bul → konuşmaları lead_id ile filtrele
+      const safe = sanitizeSearch(search);
       const { data: matchLeads } = await supabase
         .from('leads')
         .select('id')
         .eq('organization_id', orgId)
-        .or(`full_name.ilike.%${search}%,display_name.ilike.%${search}%,phone.ilike.%${search}%,instagram_username.ilike.%${search}%`)
+        .or(`full_name.ilike.%${safe}%,display_name.ilike.%${safe}%,phone.ilike.%${safe}%,instagram_username.ilike.%${safe}%`)
         .limit(200);
       const leadIds = (matchLeads || []).map((l: { id: string }) => l.id);
       if (leadIds.length === 0) return NextResponse.json({ conversations: [] });
