@@ -269,26 +269,37 @@ function ContactSection({ lead }: { lead: Lead }) {
     <Section title={t('callResult')}>
       {/* Outcome buttons */}
       <div className="flex flex-wrap gap-1.5 mb-3">
-        {OUTCOME_KEYS.map((outcome) => (
-          <button
-            key={outcome}
-            type="button"
-            disabled={logging !== null}
-            onClick={() => handleLogOutcome(outcome)}
-            className={cn(
-              'inline-flex items-center gap-1 rounded-md border px-2.5 py-1 text-xs font-medium transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-500 disabled:opacity-50 disabled:cursor-not-allowed',
-              outcomeColor[outcome],
-              logging === outcome && 'opacity-70 cursor-wait'
-            )}
-          >
-            {logging === outcome ? (
-              <span className="h-3 w-3 animate-spin rounded-full border border-current border-t-transparent" />
-            ) : (
-              <PhoneCall className="h-3 w-3" />
-            )}
-            {outcomeLabel[outcome]}
-          </button>
-        ))}
+        {OUTCOME_KEYS.map((outcome) => {
+          // Tekli seçim: yalnızca kayıtlı sonuç (lead.contact_outcome) renkli/vurgulu,
+          // diğerleri sönük. Tıklama sonucu değiştirir ve bir arama denemesi kaydeder.
+          const isSelected = lead.contact_outcome === outcome;
+          return (
+            <button
+              key={outcome}
+              type="button"
+              disabled={logging !== null}
+              onClick={() => handleLogOutcome(outcome)}
+              aria-pressed={isSelected}
+              className={cn(
+                'inline-flex items-center gap-1 rounded-md border px-2.5 py-1 text-xs font-medium transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-500 disabled:cursor-not-allowed',
+                isSelected
+                  ? cn(outcomeColor[outcome], 'font-semibold shadow-sm')
+                  : 'border-gray-200 bg-white text-gray-500 hover:bg-gray-50 hover:text-gray-700',
+                logging !== null && logging !== outcome && 'opacity-50',
+                logging === outcome && 'opacity-80 cursor-wait'
+              )}
+            >
+              {logging === outcome ? (
+                <span className="h-3 w-3 animate-spin rounded-full border border-current border-t-transparent" />
+              ) : isSelected ? (
+                <Check className="h-3 w-3" />
+              ) : (
+                <PhoneCall className="h-3 w-3" />
+              )}
+              {outcomeLabel[outcome]}
+            </button>
+          );
+        })}
       </div>
 
       {/* Stats row */}
