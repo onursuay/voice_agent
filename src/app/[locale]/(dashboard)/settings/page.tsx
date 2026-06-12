@@ -633,28 +633,19 @@ export default function SettingsPage() {
                   <p className="text-sm text-muted">{t('members.desc')}</p>
                 </div>
               </div>
-              <Button
-                variant="secondary"
-                size="sm"
-                icon={<UserPlus className="h-4 w-4" />}
-                onClick={async () => {
-                  try {
-                    const res = await fetch('/api/members', {
-                      method: 'POST',
-                      headers: { 'Content-Type': 'application/json' },
-                      body: JSON.stringify({ email: '' }),
-                    });
-                    const data = await res.json();
-                    if (data.message) {
-                      setError(data.message);
-                    }
-                  } catch {
-                    setError(t('members.invite'));
-                  }
-                }}
-              >
-                {t('members.invite')}
-              </Button>
+              {/* Davet işi tek bir yerde: Erişim Yönetimi (rol + sayfa izinleriyle).
+                  Bu buton oradaki gerçek davet modalını açar; mantık tekrarlanmaz.
+                  Yalnız yetkili roller görür. */}
+              {canManageAccess && (
+                <Button
+                  variant="secondary"
+                  size="sm"
+                  icon={<UserPlus className="h-4 w-4" />}
+                  onClick={() => { setActiveTab('access'); setInviteOpen(true); }}
+                >
+                  {t('members.invite')}
+                </Button>
+              )}
             </div>
 
             {membersLoading ? (
