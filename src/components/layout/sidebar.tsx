@@ -16,7 +16,7 @@ import {
   Mail,
   Zap,
   Phone,
-  Plug,
+  Blocks,
   LogOut,
   PanelLeftClose,
   PanelLeftOpen,
