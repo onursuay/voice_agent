@@ -1193,7 +1193,7 @@ export function LeadGrid() {
                 const isCellEditing = cellEq(editingCell, { row: rowIndex, col: col.key });
                 const isDropdownOpen = cellEq(dropdownCell, { row: rowIndex, col: col.key });
                 const w = getColWidth(col);
-                const isLastCol = col.key === visibleColumns[visibleColumns.length - 1]?.key;
+                const isFixedCol = isCheckbox || isRowNum;
 
                 return (
                   <div
@@ -1202,8 +1202,6 @@ export function LeadGrid() {
                       'relative flex shrink-0 items-center border-r border-gray-200 px-2 py-1.5 text-sm',
                       // Ad Soyad sola yaslı; diğer tüm kolonlar hücre içinde ortalı
                       col.key !== 'full_name' && 'justify-center',
-                      // Son kolon kalan alanı doldurur → tablo sağ kenarı toolbar ile hizalı
-                      isLastCol && 'flex-1',
                       !isDropdownOpen && 'overflow-hidden',
                       isDropdownOpen && 'z-40 bg-white',
                       isSticky && 'sticky z-10',
@@ -1212,7 +1210,14 @@ export function LeadGrid() {
                       isCellSelected && !isCellEditing && 'ring-2 ring-inset ring-blue-500',
                       isCellEditing && 'bg-white shadow-sm ring-2 ring-inset ring-blue-500 z-20'
                     )}
-                    style={{ width: isLastCol ? undefined : w, minWidth: isLastCol ? w : undefined, left: isSticky ? stickyLefts[col.key] : undefined }}
+                    // Header ile aynı orantılı esneme: sidebar açık/kapalı her genişlikte
+                    // kolonlar konteyneri doldurur; dar ekranda flexBasis korunur (scroll).
+                    style={{
+                      flexGrow: isFixedCol ? 0 : w,
+                      flexShrink: 0,
+                      flexBasis: w,
+                      left: isSticky ? stickyLefts[col.key] : undefined,
+                    }}
                     onClick={(e) => {
                       if (isCheckbox) {
                         e.stopPropagation();
