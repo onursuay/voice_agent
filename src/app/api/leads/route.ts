@@ -45,7 +45,9 @@ export async function GET(request: NextRequest) {
       .eq('organization_id', orgId);
 
     if (search) {
-      query = query.or(`full_name.ilike.%${search}%,email.ilike.%${search}%,phone.ilike.%${search}%,company.ilike.%${search}%`);
+      // PostgREST .or() filtre injection'ı önle: yapısal karakterleri boşlukla değiştir.
+      const safe = search.replace(/[,()*:."\\]/g, ' ').trim();
+      query = query.or(`full_name.ilike.%${safe}%,email.ilike.%${safe}%,phone.ilike.%${safe}%,company.ilike.%${safe}%`);
     }
     if (stageId) query = query.eq('stage_id', stageId);
     if (metaPageId) query = query.eq('meta_page_id', metaPageId);
