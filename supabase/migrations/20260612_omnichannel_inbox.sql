@@ -191,6 +191,19 @@ CREATE POLICY "messages_update" ON messages FOR UPDATE USING (
 DROP TRIGGER IF EXISTS set_updated_at ON conversations;
 CREATE TRIGGER set_updated_at BEFORE UPDATE ON conversations FOR EACH ROW EXECUTE FUNCTION update_updated_at();
 
+-- 6b) Atomik konuşma güncellemesi (inbound mesaj sonrası)
+-- Tek UPDATE ile unread artışı; eşzamanlı webhook'larda read-modify-write yarışını önler.
+CREATE OR REPLACE FUNCTION bump_conversation_inbound(conv_id UUID, preview TEXT, ts TIMESTAMPTZ)
+RETURNS void AS $$
+  UPDATE conversations
+  SET last_message_at = COALESCE(ts, now()),
+      last_message_preview = preview,
+      unread_count = unread_count + 1,
+      status = CASE WHEN status = 'resolved' THEN 'open' ELSE status END,
+      updated_at = now()
+  WHERE id = conv_id;
+$$ LANGUAGE SQL;
+
 -- 7) REALTIME — inbox canlı güncelleme için publication'a ekle (idempotent)
 DO $$
 BEGIN
