@@ -220,6 +220,7 @@ function ContactSection({ lead }: { lead: Lead }) {
           last_contact_at: l.last_contact_at,
           first_contact_at: l.first_contact_at,
           contact_outcome: l.contact_outcome,
+          last_activity_at: l.last_activity_at,
         });
       }
     } catch (err) {
