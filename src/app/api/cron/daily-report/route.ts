@@ -36,10 +36,16 @@ export async function GET(request: Request) {
   const { data: owners } = await ownersQuery;
 
   let reportsSent = 0;
+  const notifCache = new Map<string, Awaited<ReturnType<typeof import('@/lib/crm/notificationSettings').getNotificationSettings>>>();
+  const { getNotificationSettings } = await import('@/lib/crm/notificationSettings');
   for (const ow of (owners || [])) {
     const orgId = ow.organization_id as string;
     const ownerEmail = (ow.profile as Nested)?.email;
     if (!ownerEmail) continue;
+
+    // Owner ayarı: günlük rapor kapalıysa atla
+    const notif = await getNotificationSettings(orgId, notifCache);
+    if (!notif.daily_report) continue;
 
     const { data: todays } = await supabase
       .from('leads')
