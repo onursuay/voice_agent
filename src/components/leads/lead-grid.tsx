@@ -1010,9 +1010,6 @@ export function LeadGrid() {
     return map[colKey] || '...';
   };
 
-  // ── Compute total width ───────────────────────────────
-  const totalWidth = visibleColumns.reduce((sum, col) => sum + getColWidth(col), 0);
-
   // Sticky column left offsets
   const stickyLefts: Record<string, number> = {};
   let leftAcc = 0;
