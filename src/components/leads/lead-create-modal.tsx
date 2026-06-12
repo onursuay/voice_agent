@@ -134,7 +134,7 @@ export function LeadCreateModal({ open, onClose }: LeadCreateModalProps) {
             name="last_name"
             value={form.last_name}
             onChange={(e) => handleChange('last_name', e.target.value)}
-            placeholder="Doe"
+            placeholder={t('placeholders.lastName')}
           />
         </div>
 
