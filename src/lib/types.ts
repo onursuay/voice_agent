@@ -102,9 +102,98 @@ export interface Lead {
   last_contact_at?: string | null;
   contact_attempts?: number | null;
   contact_outcome?: string | null;
+  // Omnichannel inbox — channel identities (primary match keys per channel)
+  display_name?: string | null;
+  whatsapp_wa_id?: string | null;
+  instagram_user_id?: string | null;
+  instagram_username?: string | null;
+  messenger_psid?: string | null;
   // Joined
   stage?: CrmStage;
   assigned_user?: Profile;
+}
+
+// ============================================
+// OMNICHANNEL INBOX
+// ============================================
+export type InboxChannel = 'whatsapp' | 'instagram' | 'messenger' | 'lead_form';
+export type ConversationStatus = 'new' | 'open' | 'pending' | 'resolved' | 'snoozed';
+export type ConversationSource =
+  | 'organic'
+  | 'click_to_whatsapp'
+  | 'instagram_dm'
+  | 'messenger'
+  | 'lead_form';
+export type MessageDirection = 'inbound' | 'outbound';
+export type MessageStatus = 'received' | 'sent' | 'delivered' | 'read' | 'failed';
+export type MessageSenderType = 'contact' | 'agent' | 'system';
+export type MessageType =
+  | 'text'
+  | 'image'
+  | 'video'
+  | 'audio'
+  | 'document'
+  | 'location'
+  | 'template'
+  | 'interactive'
+  | 'system';
+
+export interface Conversation {
+  id: string;
+  organization_id: string;
+  lead_id: string | null;
+  channel: InboxChannel;
+  source: ConversationSource | string;
+  status: ConversationStatus;
+  assigned_to: string | null;
+  channel_account_id: string | null;
+  external_conversation_id: string | null;
+  ctwa_clid: string | null;
+  ad_source_id: string | null;
+  ad_source_url: string | null;
+  ad_headline: string | null;
+  unread_count: number;
+  last_message_at: string | null;
+  last_message_preview: string | null;
+  metadata: Record<string, unknown>;
+  created_at: string;
+  updated_at: string;
+  // Joined
+  lead?: Lead | null;
+  assigned_user?: Profile | null;
+}
+
+export interface Message {
+  id: string;
+  organization_id: string;
+  conversation_id: string;
+  lead_id: string | null;
+  channel: InboxChannel;
+  direction: MessageDirection;
+  message_type: MessageType | string;
+  message_text: string | null;
+  content: Record<string, unknown>;
+  external_message_id: string | null;
+  external_sender_id: string | null;
+  external_recipient_id: string | null;
+  status: MessageStatus;
+  error_message: string | null;
+  sender_type: MessageSenderType;
+  sender_user_id: string | null;
+  raw_payload?: Record<string, unknown> | null;
+  sent_at: string | null;
+  created_at: string;
+}
+
+// Connected messaging channel account (stored in integration_settings)
+export interface MessagingChannelAccount {
+  id: string;             // integration_settings row id
+  channel: InboxChannel;
+  channel_account_id: string;   // phone_number_id | ig_business_account_id | page_id
+  display_name: string | null;  // numara / sayfa / IG kullanıcı adı
+  page_id?: string | null;
+  connected_at: string | null;
+  is_active: boolean;
 }
 
 export interface LeadSource {
