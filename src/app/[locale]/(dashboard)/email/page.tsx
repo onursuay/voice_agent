@@ -192,7 +192,7 @@ function ComposeTab() {
           <div className="flex items-center gap-2 text-sm">
             {result.sent > 0 && <span className="flex items-center gap-1 text-green-600"><CheckCircle className="h-4 w-4" />{t('sentCount', { count: result.sent })}</span>}
             {result.failed > 0 && <span className="flex items-center gap-1 text-red-500"><XCircle className="h-4 w-4" />{t('failedCount', { count: result.failed })}</span>}
-            {result.mock && <Badge color="yellow" size="sm">Mock Mode</Badge>}
+            {result.mock && <Badge color="yellow" size="sm">{t('mockMode')}</Badge>}
           </div>
         )}
       </div>
