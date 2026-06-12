@@ -310,14 +310,6 @@ function ContactSection({ lead }: { lead: Lead }) {
             <span className="font-semibold text-gray-700">{lead.contact_attempts}</span>
           </span>
         )}
-        {lead.contact_outcome && OUTCOME_KEYS.includes(lead.contact_outcome as ContactOutcome) && (
-          <Badge
-            color={currentOutcomeColor[lead.contact_outcome as ContactOutcome] as 'green' | 'yellow' | 'red'}
-            size="sm"
-          >
-            {outcomeLabel[lead.contact_outcome as ContactOutcome]}
-          </Badge>
-        )}
         {speedToLead && (
           <span>
             {t('firstCallAfter')}:{' '}
