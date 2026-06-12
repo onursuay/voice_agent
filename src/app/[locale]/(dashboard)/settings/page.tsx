@@ -36,7 +36,7 @@ import {
 } from 'lucide-react';
 import { NotificationsTab } from '@/components/settings/notifications-tab';
 
-type SettingsTab = 'organization' | 'members' | 'pipeline' | 'profile' | 'logs' | 'access' | 'notifications';
+type SettingsTab = 'organization' | 'pipeline' | 'profile' | 'logs' | 'access' | 'notifications';
 
 type LeadEvent = {
   id: string;
