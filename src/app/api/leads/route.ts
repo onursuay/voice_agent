@@ -52,6 +52,8 @@ export async function GET(request: NextRequest) {
     if (metaFormId) query = query.eq('meta_form_id', metaFormId);
     if (sourcePlatform) query = query.eq('source_platform', sourcePlatform);
     if (assignedTo) query = query.eq('assigned_to', assignedTo);
+    // Senkronize-tamamlanmış leadleri gizle: meta_synced_at IS NULL OR meta_sync_error IS NOT NULL
+    if (hideSynced) query = query.or('meta_synced_at.is.null,meta_sync_error.not.is.null');
     if (tags) {
       const tagList = tags.split(',').map(t => t.trim()).filter(Boolean);
       query = query.overlaps('tags', tagList);
