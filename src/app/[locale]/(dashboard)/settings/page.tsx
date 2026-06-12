@@ -150,23 +150,6 @@ export default function SettingsPage() {
     setLocalStages([...stages].sort((a, b) => a.position - b.position));
   }, [stages]);
 
-  // Load members
-  const loadMembers = useCallback(async () => {
-    if (!session) return;
-    setMembersLoading(true);
-    try {
-      const res = await fetch('/api/members');
-      if (res.ok) {
-        const data = await res.json();
-        setMembers(data);
-      }
-    } catch (err) {
-      console.error('Members fetch error:', err);
-    } finally {
-      setMembersLoading(false);
-    }
-  }, [session]);
-
   // Load lead counts per stage
   const loadStageLeadCounts = useCallback(async () => {
     if (!session) return;
