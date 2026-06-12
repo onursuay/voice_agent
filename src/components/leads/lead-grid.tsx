@@ -1090,16 +1090,20 @@ export function LeadGrid() {
             const isSorted = sort?.column === col.key;
             const isSticky = col.key in stickyLefts;
             const w = getColWidth(col);
+            const isLastCol = col.key === visibleColumns[visibleColumns.length - 1]?.key;
 
             return (
               <div
                 key={col.key}
                 className={cn(
                   'group/hdr relative flex shrink-0 items-center overflow-hidden border-r border-gray-200 px-3 py-2 text-xs font-semibold uppercase tracking-wider text-gray-500',
+                  // Başlıklar da hücrelerle aynı hizada: Ad Soyad sola, gerisi ortalı
+                  col.key !== 'full_name' && 'justify-center',
+                  isLastCol && 'flex-1',
                   col.sortable && 'cursor-pointer select-none hover:bg-gray-100 hover:text-gray-700',
                   isSticky && 'sticky bg-gray-50 z-30'
                 )}
-                style={{ width: w, left: isSticky ? stickyLefts[col.key] : undefined }}
+                style={{ width: isLastCol ? undefined : w, minWidth: isLastCol ? w : undefined, left: isSticky ? stickyLefts[col.key] : undefined }}
                 onClick={() => handleSort(col)}
                 onContextMenu={(e) => {
                   if (!isCheckbox && !isRowNum) {
