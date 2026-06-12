@@ -222,6 +222,8 @@ export async function runSlaChecks(): Promise<{ firstAlerts: number; retryAlerts
   const supabase = createAdminSupabaseClient();
   const out = { firstAlerts: 0, retryAlerts: 0 };
   const ownerCache = new Map<string, string | null>();
+  const notifCache = new Map<string, Awaited<ReturnType<typeof getNotificationSettings>>>();
+  const slaEnabled = async (orgId: string) => (await getNotificationSettings(orgId, notifCache)).sla_alerts;
   const now = Date.now();
   const firstMs = SLA_FIRST_HOURS * 3600 * 1000;
   const retryMs = SLA_RETRY_HOURS * 3600 * 1000;
