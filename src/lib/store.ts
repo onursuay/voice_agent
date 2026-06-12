@@ -160,6 +160,9 @@ export const useAppStore = create<AppStore>((set, get) => ({
   sourceFilter: '',
   setSourceFilter: (sourceFilter) => set({ sourceFilter }),
 
+  showSynced: false,
+  setShowSynced: (showSynced) => set({ showSynced }),
+
   importJobFilter: null,
   setImportJobFilter: (importJobFilter) => set({ importJobFilter }),
 
