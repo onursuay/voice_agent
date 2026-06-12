@@ -123,6 +123,7 @@
     "leadsUnit": "leads",
     "namelessLead": "Unnamed Lead",
     "searchPlaceholder": "Search leads (name, phone, email...)",
+    "searchClear": "Clear search",
     "filter": "Filter",
     "sort": "Sort",
     "removeSorting": "Remove Sorting",
