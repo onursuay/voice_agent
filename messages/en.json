@@ -1101,6 +1101,22 @@
       "noDetails": "No contact details",
       "adSource": "Ad source",
       "viewAd": "View ad"
+    },
+    "connect": {
+      "title": "Messaging Channels",
+      "subtitle": "Connect WhatsApp, Messenger and Instagram DM to the CRM inbox.",
+      "phoneNumberId": "Phone Number ID",
+      "wabaId": "WhatsApp Business Account ID",
+      "displayNumber": "Display number (+1…)",
+      "accessToken": "Access token",
+      "save": "Connect",
+      "addNumber": "Add number",
+      "whatsappHint": "Enter the Phone Number ID and access token from the Meta WhatsApp API Setup screen.",
+      "pageChannels": "Page channels (Messenger / Instagram)",
+      "noPages": "Connect a Meta page from Integrations first; Messenger and Instagram DM will appear here.",
+      "enable": "Enable",
+      "refresh": "Refresh",
+      "pagesHint": "Enabling subscribes the page to the message webhook and adds the linked Instagram account. The existing Lead Ads subscription is preserved."
     }
   }
 }

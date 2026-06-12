@@ -5,6 +5,7 @@ import { useSearchParams } from 'next/navigation';
 import { useRouter } from '@/i18n/navigation';
 import { useTranslations } from 'next-intl';
 import { AlertCircle, Check, RefreshCw, Trash2, Plus, ShieldCheck } from 'lucide-react';
+import { MessagingCard } from '@/components/integrations/messaging-card';
 
 type MetaConnection = {
   id: string;
