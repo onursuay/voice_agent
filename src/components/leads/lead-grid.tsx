@@ -404,6 +404,7 @@ function TagsEditor({
   onSave: (tags: string[]) => void;
   onClose: () => void;
 }) {
+  const t = useTranslations('leads');
   const [value, setValue] = useState(tags.join(', '));
   const inputRef = useRef<HTMLInputElement>(null);
 
