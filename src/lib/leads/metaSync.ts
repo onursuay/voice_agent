@@ -113,14 +113,15 @@ export async function reconcileMetaLeads(opts: { lookbackDays?: number } = {}): 
     }
     if (!candidates.length) continue;
 
-    // CRM'de zaten var olan meta_lead_id'leri çıkar (event/routing tekrarını önle)
+    // CRM'de zaten var olan meta_lead_id'leri çıkar. GLOBAL kontrol: meta_lead_id
+    // tüm org'larda benzersizdir (idx_leads_meta_lead_id_unique). Bir sayfa birden
+    // fazla org'a bağlıysa, lead yalnız bir org'da yaşar — bu yüzden org-filtresi YOK.
     const ids = candidates.map((c) => c.id);
     const existing = new Set<string>();
     for (let i = 0; i < ids.length; i += 300) {
       const { data } = await admin
         .from('leads')
         .select('meta_lead_id')
-        .eq('organization_id', p.organizationId)
         .in('meta_lead_id', ids.slice(i, i + 300));
       for (const r of (data || []) as Array<{ meta_lead_id: string }>) existing.add(r.meta_lead_id);
     }
