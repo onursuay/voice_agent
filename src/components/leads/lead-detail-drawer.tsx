@@ -86,6 +86,26 @@ const KNOWN_ACTIVITY_TYPES = new Set<ActivityType>([
   'tag_added', 'tag_removed', 'merged', 'imported', 'edited', 'score_changed',
 ]);
 
+// Özel alan anahtarlarını okunur etikete çevirir. Meta form alanları çoğunlukla
+// diyakritiksiz/küçük harf gelir (amac, butce…); bilinenler haritadan, gerisi
+// genel biçimleme ile (alt çizgi/tire → boşluk, baş harfler büyük).
+const CUSTOM_FIELD_LABELS: Record<string, string> = {
+  amac: 'Amaç', butce: 'Bütçe', konum: 'Konum', zaman: 'Zaman', sure: 'Süre',
+  ad: 'Ad', soyad: 'Soyad', isim: 'İsim', telefon: 'Telefon', email: 'E-posta',
+  eposta: 'E-posta', adres: 'Adres', sehir: 'Şehir', il: 'İl', ilce: 'İlçe',
+  meslek: 'Meslek', firma: 'Firma', sirket: 'Şirket', mesaj: 'Mesaj', not: 'Not',
+};
+function prettifyFieldKey(key: string): string {
+  const k = key.toLowerCase().trim();
+  if (CUSTOM_FIELD_LABELS[k]) return CUSTOM_FIELD_LABELS[k];
+  return key
+    .replace(/[_-]+/g, ' ')
+    .split(' ')
+    .filter(Boolean)
+    .map((w) => w.charAt(0).toLocaleUpperCase('tr') + w.slice(1))
+    .join(' ');
+}
+
 // ============================================
 // Copy Button Helper
 // ============================================
