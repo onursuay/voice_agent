@@ -156,5 +156,5 @@ export async function reconcileMetaLeads(opts: { lookbackDays?: number } = {}): 
     }
   }
 
-  return { pagesChecked, synced, skipped, errors, lookbackDays };
+  return { pagesChecked, pagesFailed, synced, skipped, errors, lookbackDays };
 }
