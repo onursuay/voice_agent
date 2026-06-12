@@ -263,6 +263,7 @@ export async function runSlaChecks(): Promise<{ firstAlerts: number; retryAlerts
 
   for (const lead of ((retryCand || []) as unknown as SlaLead[])) {
     if (lead.stage && (lead.stage.is_won || lead.stage.is_lost)) continue;
+    if (!(await slaEnabled(lead.organization_id))) continue; // owner ayarı
     if (!lead.last_contact_at || now - new Date(lead.last_contact_at).getTime() < retryMs) continue;
     // Her yeni başarısız denemeden sonra tekrar uyar: alert son aramadan eski olmalı
     if (lead.sla_alert_retry_at && new Date(lead.sla_alert_retry_at).getTime() >= new Date(lead.last_contact_at).getTime()) continue;
