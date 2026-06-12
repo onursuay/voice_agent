@@ -36,7 +36,6 @@ export default function InboxView() {
   const [conversations, setConversations] = useState<Conversation[]>([]);
   const [loadingList, setLoadingList] = useState(true);
   const [channelFilter, setChannelFilter] = useState<InboxChannel | 'all'>('all');
-  const [statusFilter, setStatusFilter] = useState<string>('');
   const [search, setSearch] = useState('');
 
   const [selectedId, setSelectedId] = useState<string | null>(null);
