@@ -1108,7 +1108,7 @@ export function LeadGrid() {
                   flexGrow: isFixed ? 0 : w,
                   flexShrink: isFixed ? 0 : w,
                   flexBasis: w,
-                  minWidth: isFixed ? w : Math.min(w, col.key === 'full_name' ? 140 : 80),
+                  minWidth: isFixed ? w : Math.min(w, col.key === 'full_name' ? 140 : 100),
                   left: isSticky ? stickyLefts[col.key] : undefined,
                 }}
                 onClick={() => handleSort(col)}
