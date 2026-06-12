@@ -27,6 +27,17 @@ function leadName(c: Conversation): string {
   );
 }
 
+// XSS koruması: yalnız http/https şemalı URL'lere izin ver (javascript: vb. engelle)
+function safeHttpUrl(u: string | null | undefined): string | null {
+  if (!u) return null;
+  try {
+    const p = new URL(u);
+    return p.protocol === 'http:' || p.protocol === 'https:' ? p.toString() : null;
+  } catch {
+    return null;
+  }
+}
+
 export default function InboxView() {
   const t = useTranslations('inbox');
   const locale = useLocale();
