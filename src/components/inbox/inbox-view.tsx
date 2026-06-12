@@ -438,12 +438,22 @@ function MessageBubble({ message, time, youLabel }: { message: Message; time: st
 /* ── Durum menüsü ── */
 function StatusMenu({ value, onChange, label }: { value: string; onChange: (s: string) => void; label: (s: string) => string }) {
   const [open, setOpen] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!open) return;
+    const handleClickOutside = (e: MouseEvent) => {
+      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [open]);
+
   return (
-    <div className="relative">
+    <div ref={ref} className="relative">
       <button
         onClick={() => setOpen((o) => !o)}
-        onBlur={() => setTimeout(() => setOpen(false), 120)}
-        className={`flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-medium transition-colors ${statusStyle(value)}`}
+        className={`flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-300 active:scale-[0.97] ${statusStyle(value)}`}
       >
         {label(value)}
         <ChevronDown className="h-3 w-3" />
@@ -454,7 +464,7 @@ function StatusMenu({ value, onChange, label }: { value: string; onChange: (s: s
             <button
               key={s}
               onClick={() => { onChange(s); setOpen(false); }}
-              className={`flex w-full items-center gap-2 px-3 py-1.5 text-left text-xs hover:bg-gray-50 ${value === s ? 'font-semibold text-gray-900' : 'text-gray-600'}`}
+              className={`flex w-full items-center gap-2 px-3 py-1.5 text-left text-xs hover:bg-gray-50 focus-visible:outline-none focus-visible:bg-gray-50 ${value === s ? 'font-semibold text-gray-900' : 'text-gray-600'}`}
             >
               <span className={`h-2 w-2 rounded-full ${statusStyle(s).split(' ')[0]}`} />
               {label(s)}
