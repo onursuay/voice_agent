@@ -340,6 +340,9 @@ export default function IntegrationsPage() {
 
       </div>
 
+      {/* ── Omnichannel Mesajlaşma ── */}
+      <MessagingCard />
+
     </div>
   );
 }
