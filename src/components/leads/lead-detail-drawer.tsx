@@ -217,13 +217,6 @@ function ContactSection({ lead }: { lead: Lead }) {
     wrong_number: 'bg-red-50 text-red-700 border-red-200 hover:bg-red-100 active:bg-red-200',
   };
 
-  const currentOutcomeColor: Record<ContactOutcome, string> = {
-    reached: 'green',
-    no_answer: 'yellow',
-    busy: 'yellow',
-    wrong_number: 'red',
-  };
-
   const handleLogOutcome = async (outcome: ContactOutcome) => {
     setLogging(outcome);
     try {
