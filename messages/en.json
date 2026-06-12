@@ -48,7 +48,10 @@
     "notConnected": "Not connected",
     "checking": "Checking...",
     "comingSoon": "Coming soon",
-    "unknownUser": "Unknown User"
+    "unknownUser": "Unknown User",
+    "select": "Select...",
+    "saving": "Saving...",
+    "open": "Open"
   },
   "nav": {
     "dashboard": "Dashboard",
@@ -168,14 +171,11 @@
       "is_not_empty": "is not empty"
     },
     "placeholders": {
-      "full_name": "Full Name...",
-      "source_platform": "Source...",
-      "stage": "Stage...",
-      "assigned_to": "Assignee...",
-      "campaign_name": "Campaign...",
-      "city": "City...",
-      "company": "Company...",
-      "tags": "Tags..."
+      "firstName": "John",
+      "lastName": "Doe",
+      "email": "example@company.com",
+      "company": "Company name",
+      "city": "Istanbul"
     },
     "createTitle": "Create New Lead",
     "createDesc": "Add a new lead record.",
@@ -290,7 +290,13 @@
     "forms": "Lead Forms",
     "syncedHidden": "Synced",
     "syncedShown": "Show all",
-    "syncedToggleHint": "Show/hide completed leads successfully synced with Meta Custom Audience target audiences"
+    "syncedToggleHint": "Show/hide completed leads successfully synced with Meta Custom Audience target audiences",
+    "tagInputPlaceholder": "Add tag (comma-separated)",
+    "tagInputHint": "Separate multiple tags with commas",
+    "tagsCellPlaceholder": "tag1, tag2...",
+    "gridEmptyTitle": "No leads yet",
+    "gridEmptyDesc": "Click the empty row above to add a new lead",
+    "leadId": "Lead ID"
   },
   "settings": {
     "title": "Settings",
@@ -662,7 +668,8 @@
     "colStatus": "Status",
     "colDate": "Date",
     "statusSent": "Sent",
-    "statusFailed": "Failed"
+    "statusFailed": "Failed",
+    "mockMode": "Mock Mode"
   },
   "automations": {
     "pageTitle": "Automations",
@@ -716,7 +723,11 @@
     "mockRule1Name": "New lead → Assign to sales team",
     "mockRule2Name": "3 days inactive → Reminder",
     "mockRule3Name": "Won stage → Congratulations email",
-    "mockRule2Message": "Contact the lead"
+    "mockRule2Message": "Contact the lead",
+    "tagTriggerPlaceholder": "VIP",
+    "tagActionPlaceholder": "to-follow-up",
+    "valuePlaceholderMulti": "Ankara, Istanbul",
+    "valuePlaceholder": "Ankara"
   },
   "import": {
     "pageTitle": "Lead Import",
@@ -1185,6 +1196,7 @@
     "active": "Active",
     "passive": "Inactive",
     "deleteConfirm": "Delete this scenario? Ongoing enrollments will stop.",
-    "enrollmentSummary": "{active} active · {completed} completed enrollments"
+    "enrollmentSummary": "{active} active · {completed} completed enrollments",
+    "valuePlaceholder": "Ankara"
   }
 }

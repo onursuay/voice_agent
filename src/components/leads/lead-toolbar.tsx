@@ -243,6 +243,7 @@ type BulkModal = 'stage' | 'assign' | 'tag' | 'delete' | null;
 
 export function BulkActionBar() {
   const t = useTranslations('leads');
+  const tCommon = useTranslations('common');
   const tRouting = useTranslations('routing');
   const selectedLeadIds = useAppStore((s) => s.selectedLeadIds);
   const clearSelection = useAppStore((s) => s.clearSelection);

@@ -46,7 +46,12 @@
     "notConnected": "Bağlı değil",
     "checking": "Kontrol ediliyor...",
     "comingSoon": "Yakında",
-    "unknownUser": "Bilinmeyen Kullanıcı"
+    "unknownUser": "Bilinmeyen Kullanıcı",
+    "source": "Kaynak",
+    "clearFilter": "Filtreyi Temizle",
+    "select": "Seçin...",
+    "saving": "Kaydediliyor...",
+    "open": "Aç"
   },
   "nav": {
     "dashboard": "Panel",
@@ -166,14 +171,11 @@
       "is_not_empty": "boş değil"
     },
     "placeholders": {
-      "full_name": "Ad Soyad...",
-      "source_platform": "Kaynak...",
-      "stage": "Aşama...",
-      "assigned_to": "Atanan...",
-      "campaign_name": "Kampanya...",
-      "city": "Şehir...",
-      "company": "Şirket...",
-      "tags": "Etiketler..."
+      "firstName": "Ahmet",
+      "lastName": "Yılmaz",
+      "email": "ornek@sirket.com",
+      "company": "Şirket adı",
+      "city": "İstanbul"
     },
     "createTitle": "Yeni Lead Oluştur",
     "createDesc": "Yeni bir lead kaydı ekleyin.",
@@ -288,7 +290,13 @@
     "forms": "Lead Formları",
     "syncedHidden": "Senkronize",
     "syncedShown": "Tümü",
-    "syncedToggleHint": "Meta Custom Audience hedef kitleleriyle başarıyla senkronize olan tamamlanmış lead'leri göster/gizle"
+    "syncedToggleHint": "Meta Custom Audience hedef kitleleriyle başarıyla senkronize olan tamamlanmış lead'leri göster/gizle",
+    "tagInputPlaceholder": "Etiket ekle (virgülle ayırın)",
+    "tagInputHint": "Birden fazla etiketi virgülle ayırın",
+    "tagsCellPlaceholder": "etiket1, etiket2...",
+    "gridEmptyTitle": "Henüz lead yok",
+    "gridEmptyDesc": "Yukarıdaki boş satıra tıklayarak yeni lead ekleyebilirsiniz",
+    "leadId": "Lead ID"
   },
   "settings": {
     "title": "Ayarlar",
@@ -660,7 +668,8 @@
     "colStatus": "Durum",
     "colDate": "Tarih",
     "statusSent": "Gönderildi",
-    "statusFailed": "Başarısız"
+    "statusFailed": "Başarısız",
+    "mockMode": "Mock Modu"
   },
   "automations": {
     "pageTitle": "Otomasyonlar",
@@ -714,7 +723,11 @@
     "mockRule1Name": "Yeni lead → Satış ekibine ata",
     "mockRule2Name": "3 gün hareketsiz → Hatırlatıcı",
     "mockRule3Name": "Kazanıldı aşaması → Tebrik maili",
-    "mockRule2Message": "Lead ile iletişime geç"
+    "mockRule2Message": "Lead ile iletişime geç",
+    "tagTriggerPlaceholder": "VIP",
+    "tagActionPlaceholder": "takip-edilecek",
+    "valuePlaceholderMulti": "Ankara, İstanbul",
+    "valuePlaceholder": "Ankara"
   },
   "import": {
     "pageTitle": "Lead İçe Aktarma",
@@ -1183,6 +1196,7 @@
     "active": "Aktif",
     "passive": "Pasif",
     "deleteConfirm": "Bu senaryo silinsin mi? Devam eden kayıtlar durur.",
-    "enrollmentSummary": "{active} aktif · {completed} tamamlanan kayıt"
+    "enrollmentSummary": "{active} aktif · {completed} tamamlanan kayıt",
+    "valuePlaceholder": "Ankara"
   }
 }
