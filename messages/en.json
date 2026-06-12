@@ -62,7 +62,8 @@
     "integrations": "Integrations",
     "hesabim": "My Account",
     "faturalarim": "Invoices",
-    "abonelik": "Subscription"
+    "abonelik": "Subscription",
+    "inbox": "Inbox"
   },
   "sidebar": {
     "expand": "Expand",
@@ -1054,5 +1055,52 @@
     "statusRejected": "Rejected",
     "statusPending": "Pending",
     "ownerReadOnly": "Owner user cannot be edited."
+  },
+  "inbox": {
+    "title": "Inbox",
+    "searchPlaceholder": "Search conversations…",
+    "filters": {
+      "all": "All",
+      "whatsapp": "WhatsApp",
+      "instagram": "Instagram",
+      "messenger": "Messenger"
+    },
+    "status": {
+      "new": "New",
+      "open": "Open",
+      "pending": "Pending",
+      "resolved": "Resolved",
+      "snoozed": "Snoozed"
+    },
+    "source": {
+      "organic": "Organic",
+      "click_to_whatsapp": "From ad (CTWA)",
+      "instagram_dm": "Instagram DM",
+      "messenger": "Messenger",
+      "lead_form": "Lead Form"
+    },
+    "empty": {
+      "title": "No conversations",
+      "desc": "New messages will appear here.",
+      "noChannels": "No messaging channel connected yet. Connect one from Integrations."
+    },
+    "emptyThread": "Select a conversation to view",
+    "composer": {
+      "placeholder": "Type a message…",
+      "send": "Send"
+    },
+    "notRepliable": "Lead form conversations cannot be replied to.",
+    "you": "You",
+    "ctwaBadge": "Ad",
+    "sendError": "Message could not be sent",
+    "channelNotConnected": "This channel is not connected",
+    "contact": {
+      "assignee": "Assignee",
+      "unassigned": "Unassigned",
+      "openLead": "Open lead card",
+      "noDetails": "No contact details",
+      "adSource": "Ad source",
+      "viewAd": "View ad"
+    }
   }
 }

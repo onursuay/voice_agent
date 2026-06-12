@@ -60,7 +60,8 @@
     "integrations": "Entegrasyonlar",
     "hesabim": "Hesabım",
     "faturalarim": "Faturalarım",
-    "abonelik": "Abonelik"
+    "abonelik": "Abonelik",
+    "inbox": "Gelen Kutusu"
   },
   "sidebar": {
     "expand": "Genişlet",
@@ -1052,5 +1053,52 @@
     "statusRejected": "Reddedildi",
     "statusPending": "Beklemede",
     "ownerReadOnly": "Sahip kullanıcısı düzenlenemez."
+  },
+  "inbox": {
+    "title": "Gelen Kutusu",
+    "searchPlaceholder": "Konuşma ara…",
+    "filters": {
+      "all": "Tümü",
+      "whatsapp": "WhatsApp",
+      "instagram": "Instagram",
+      "messenger": "Messenger"
+    },
+    "status": {
+      "new": "Yeni",
+      "open": "Açık",
+      "pending": "Beklemede",
+      "resolved": "Çözüldü",
+      "snoozed": "Ertelendi"
+    },
+    "source": {
+      "organic": "Organik",
+      "click_to_whatsapp": "Reklamdan (CTWA)",
+      "instagram_dm": "Instagram DM",
+      "messenger": "Messenger",
+      "lead_form": "Lead Formu"
+    },
+    "empty": {
+      "title": "Konuşma yok",
+      "desc": "Yeni mesajlar burada görünecek.",
+      "noChannels": "Henüz bağlı mesajlaşma kanalı yok. Entegrasyonlar ekranından bağlayın."
+    },
+    "emptyThread": "Görüntülemek için bir konuşma seçin",
+    "composer": {
+      "placeholder": "Bir mesaj yazın…",
+      "send": "Gönder"
+    },
+    "notRepliable": "Lead formu konuşmaları yanıtlanamaz.",
+    "you": "Siz",
+    "ctwaBadge": "Reklam",
+    "sendError": "Mesaj gönderilemedi",
+    "channelNotConnected": "Bu kanal bağlı değil",
+    "contact": {
+      "assignee": "Atanan",
+      "unassigned": "Atanmamış",
+      "openLead": "Lead kartını aç",
+      "noDetails": "İletişim bilgisi yok",
+      "adSource": "Reklam kaynağı",
+      "viewAd": "Reklamı gör"
+    }
   }
 }
