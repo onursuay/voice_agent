@@ -535,8 +535,8 @@ function ContactPanel({
           </p>
           {conversation.ad_headline && <p className="text-xs text-violet-900">{conversation.ad_headline}</p>}
           {conversation.ad_source_id && <p className="break-all text-[10px] text-violet-500">ID: {conversation.ad_source_id}</p>}
-          {conversation.ad_source_url && (
-            <a href={conversation.ad_source_url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-[10px] font-medium text-violet-600 hover:underline">
+          {safeHttpUrl(conversation.ad_source_url) && (
+            <a href={safeHttpUrl(conversation.ad_source_url)!} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-[10px] font-medium text-violet-600 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-300 rounded">
               {t('contact.viewAd')} <ExternalLink className="h-2.5 w-2.5" />
             </a>
           )}
