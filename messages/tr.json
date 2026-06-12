@@ -123,6 +123,7 @@
     "leadsUnit": "lead",
     "namelessLead": "İsimsiz Lead",
     "searchPlaceholder": "Lead ara (ad, telefon, e-posta...)",
+    "searchClear": "Aramayı temizle",
     "filter": "Filtrele",
     "sort": "Sıralama",
     "removeSorting": "Sıralamayı Kaldır",
