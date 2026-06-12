@@ -74,6 +74,18 @@ const activityColorMap: Record<ActivityType, string> = {
   score_changed: 'bg-emerald-100 text-emerald-600',
 };
 
+// Arama aktivitesinin metadata.outcome değerini çeviri anahtarına eşler
+const CALL_OUTCOME_LABEL_KEY: Record<string, string> = {
+  reached: 'callReached',
+  no_answer: 'callNoAnswer',
+  busy: 'callBusy',
+  wrong_number: 'callWrong',
+};
+const KNOWN_ACTIVITY_TYPES = new Set<ActivityType>([
+  'created', 'stage_change', 'note_added', 'email_sent', 'call_made', 'assigned',
+  'tag_added', 'tag_removed', 'merged', 'imported', 'edited', 'score_changed',
+]);
+
 // ============================================
 // Copy Button Helper
 // ============================================
