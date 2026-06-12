@@ -8,6 +8,7 @@ const intlMiddleware = createIntlMiddleware(routing);
 const AUTH_PATHS = ['login', 'register'];
 const PROTECTED_PATHS = [
   'dashboard',
+  'inbox',
   'leads',
   'pipeline',
   'email',
