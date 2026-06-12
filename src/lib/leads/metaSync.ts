@@ -77,6 +77,7 @@ async function fetchRecentFormLeads(formId: string, token: string, sinceMs: numb
 
 export interface ReconcileResult {
   pagesChecked: number;
+  pagesFailed: number;
   synced: number;
   skipped: number;
   errors: number;
@@ -89,7 +90,7 @@ export async function reconcileMetaLeads(opts: { lookbackDays?: number } = {}): 
   const sinceMs = Date.now() - lookbackDays * 24 * 60 * 60 * 1000;
   const pages = await activePages(admin);
 
-  let synced = 0, skipped = 0, errors = 0, pagesChecked = 0;
+  let synced = 0, skipped = 0, errors = 0, pagesChecked = 0, pagesFailed = 0;
 
   for (const p of pages) {
     pagesChecked++;
@@ -97,8 +98,9 @@ export async function reconcileMetaLeads(opts: { lookbackDays?: number } = {}): 
       `${BASE}/${p.pageId}/leadgen_forms?fields=id,leads_count&limit=100&access_token=${encodeURIComponent(p.token)}`,
     );
     if (forms.error) {
-      errors++;
-      console.warn(`[meta-sync] ${p.pageName || p.pageId} forms hata:`, (forms.error as { message?: string })?.message);
+      // Token geçersiz/expired (ör. Meta hata 190) → sayfayı atla; "hata" değil ayrı say.
+      pagesFailed++;
+      console.warn(`[meta-sync] ${p.pageName || p.pageId} forms erişilemedi:`, (forms.error as { message?: string })?.message);
       continue;
     }
 
