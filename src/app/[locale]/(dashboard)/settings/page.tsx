@@ -33,7 +33,9 @@ import {
   ShieldCheck,
   X,
   Send,
+  Bell,
 } from 'lucide-react';
+import { NotificationsTab } from '@/components/settings/notifications-tab';
 
 type SettingsTab = 'organization' | 'members' | 'pipeline' | 'profile' | 'logs' | 'access' | 'notifications';
 
