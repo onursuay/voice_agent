@@ -4,6 +4,12 @@ import { createServerSupabaseClient } from '@/lib/supabase/server';
 const LEAD_JOIN =
   '*, lead:leads(id, full_name, display_name, phone, email, instagram_username, stage_id, assigned_to, source_platform), assigned_user:profiles!conversations_assigned_to_fkey(id, full_name, avatar_url)';
 
+// PostgREST .or() filtre injection'ı önle: yapısal karakterleri (virgül, parantez,
+// nokta, yıldız, çift tırnak, ters bölü, iki nokta) boşlukla değiştir. % ilike wildcard kalır.
+function sanitizeSearch(value: string): string {
+  return value.replace(/[,()*:."\\]/g, ' ').trim();
+}
+
 export async function GET(request: NextRequest) {
   try {
     const supabase = await createServerSupabaseClient();
