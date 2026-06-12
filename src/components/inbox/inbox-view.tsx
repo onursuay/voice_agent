@@ -264,7 +264,7 @@ export default function InboxView() {
                   <li key={c.id}>
                     <button
                       onClick={() => openConversation(c.id)}
-                      className={`flex w-full items-start gap-3 px-4 py-3 text-left transition-colors ${
+                      className={`flex w-full items-start gap-3 px-4 py-3 text-left transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-emerald-300 active:bg-white ${
                         active ? 'bg-white shadow-[inset_3px_0_0_0] shadow-emerald-500' : 'hover:bg-white/70'
                       }`}
                     >
