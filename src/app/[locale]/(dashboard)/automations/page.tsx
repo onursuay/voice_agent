@@ -190,6 +190,9 @@ export default function AutomationsPage() {
       {/* ── Routing Rules Section ── */}
       <RoutingRulesSection allRules={rules} onRulesChange={setRules} members={members} />
 
+      {/* AI Orkestra: arama + funnel mail senaryoları */}
+      <SequencesSection />
+
       {/* Create/Edit General Automation Modal */}
       {modalOpen && (
         <Modal open={modalOpen} title={editingId ? t('editTitle') : t('newTitle')} onClose={() => setModalOpen(false)} size="lg">
