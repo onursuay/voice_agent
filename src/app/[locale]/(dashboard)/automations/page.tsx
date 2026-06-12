@@ -215,7 +215,7 @@ export default function AutomationsPage() {
                 </div>
               )}
               {form.trigger_type === 'tag_added' && (
-                <Input label={t('tag')} value={(form.trigger_config.tag as string) || ''} onChange={e => setForm({ ...form, trigger_config: { ...form.trigger_config, tag: e.target.value } })} placeholder="VIP" />
+                <Input label={t('tag')} value={(form.trigger_config.tag as string) || ''} onChange={e => setForm({ ...form, trigger_config: { ...form.trigger_config, tag: e.target.value } })} placeholder={t('tagTriggerPlaceholder')} />
               )}
             </div>
 
