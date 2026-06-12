@@ -239,6 +239,7 @@ export async function runSlaChecks(): Promise<{ firstAlerts: number; retryAlerts
 
   for (const lead of ((firstCand || []) as unknown as SlaLead[])) {
     if (lead.stage && (lead.stage.is_won || lead.stage.is_lost)) continue;
+    if (!(await slaEnabled(lead.organization_id))) continue; // owner ayarı
     const ref = lead.assigned_at || lead.routing_last_emailed_at || lead.first_seen_at || lead.created_at;
     if (!ref || now - new Date(ref).getTime() < firstMs) continue;
 
