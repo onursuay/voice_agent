@@ -1311,7 +1311,7 @@ export function LeadGrid() {
                   <button
                     onClick={(e) => { e.stopPropagation(); handleDeleteLead(lead.id); }}
                     className="flex h-6 w-6 items-center justify-center rounded bg-white text-gray-400 shadow-sm ring-1 ring-gray-200 transition-colors hover:text-red-500"
-                    title="Sil"
+                    title={tCommon('delete')}
                   >
                     <X className="h-3 w-3" />
                   </button>
