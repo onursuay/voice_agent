@@ -188,7 +188,7 @@ export function MessagingCard() {
               <h3 className="text-base font-semibold text-gray-900">
                 {t('connect.modalTitle', { channel: t(`filters.${modal}`) })}
               </h3>
-              <button onClick={() => setModal(null)} className="rounded p-1 text-gray-400 hover:bg-gray-100 hover:text-gray-600" aria-label="close">
+              <button onClick={() => setModal(null)} className="rounded p-1 text-gray-400 hover:bg-gray-100 hover:text-gray-600" aria-label={tCommon('close')}>
                 <X className="h-4 w-4" />
               </button>
             </div>
