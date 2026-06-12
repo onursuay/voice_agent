@@ -88,6 +88,7 @@ export async function sendOutboundText(opts: {
     message: { text: opts.text },
   });
   if (!ok) return { ok: false, error: extractError(json, status) };
-  const messageId = (json.message_id as string) || (json.mid as string) || null;
+  // Messenger & Instagram Send API yanıtı { message_id } döner
+  const messageId = (json.message_id as string) || null;
   return { ok: true, externalMessageId: messageId };
 }
