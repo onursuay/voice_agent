@@ -34,6 +34,8 @@ export async function POST(request: Request, context: RouteContext) {
       last_contact_at: now,
       first_contact_at: lead.first_contact_at || now,
       contact_outcome: outcome,
+      // Arama da bir aktivitedir → "Son Aktivite" sütunu boş kalmasın.
+      last_activity_at: now,
     })
     .eq('id', id)
     .select('*, stage:crm_stages(*), assigned_user:profiles!leads_assigned_to_fkey(*)')
