@@ -1025,51 +1025,60 @@ export function LeadToolbar() {
 
   return (
     <>
-      <div className="flex flex-nowrap items-center gap-2 [&>*]:shrink-0">
-        {/* Search — the only item allowed to shrink so the row stays on one line */}
-        <div className="relative min-w-[150px] max-w-md flex-1 !shrink">
-          <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
-          <input
-            type="text"
-            placeholder={t('searchPlaceholder')}
-            value={localSearch}
-            onChange={handleSearchChange}
-            className={cn(
-              'block w-full rounded-lg border border-gray-300 bg-white py-2 pl-10 pr-3.5 text-sm text-gray-900',
-              'placeholder:text-gray-400 transition-colors',
-              'focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/20'
-            )}
-          />
+      {/* Toolbar wraps instead of overflowing: the action group (Import / New Lead) stays
+          pinned to the right while the search + filter group wraps below as the content
+          area narrows (e.g. sidebar expanded). Keeps the right edge aligned with the
+          "+ New Lead" button and prevents page-level horizontal overflow. */}
+      <div className="flex flex-wrap items-center gap-2">
+        {/* Search + filters — min-w-0 lets this group shrink and wrap internally so it
+            never pushes the action group off the line. */}
+        <div className="flex min-w-0 flex-1 flex-wrap items-center gap-2">
+          {/* Search */}
+          <div className="relative min-w-[150px] max-w-md flex-1">
+            <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+            <input
+              type="text"
+              placeholder={t('searchPlaceholder')}
+              value={localSearch}
+              onChange={handleSearchChange}
+              className={cn(
+                'block w-full rounded-lg border border-gray-300 bg-white py-2 pl-10 pr-3.5 text-sm text-gray-900',
+                'placeholder:text-gray-400 transition-colors',
+                'focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/20'
+              )}
+            />
+          </div>
+
+          <AccountFilter />
+          <LeadFilters />
+          <SourceFilterDropdown />
+          <FormFilterDropdown />
+          <TableFilterDropdown />
+          <SortDropdown />
+          <ColumnVisibilityDropdown />
+          <SyncedToggle />
         </div>
 
-        <AccountFilter />
-        <LeadFilters />
-        <SourceFilterDropdown />
-        <FormFilterDropdown />
-        <TableFilterDropdown />
-        <SortDropdown />
-        <ColumnVisibilityDropdown />
-        <SyncedToggle />
+        {/* Action group — pinned right; ml-auto keeps it right-aligned when it wraps to its own line. */}
+        <div className="ml-auto flex shrink-0 items-center gap-2">
+          <Button
+            variant="secondary"
+            size="sm"
+            icon={<Upload className="h-4 w-4" />}
+            onClick={() => router.push('/import')}
+          >
+            {tNav('import')}
+          </Button>
 
-        <div className="flex-1 !shrink" />
-
-        <Button
-          variant="secondary"
-          size="sm"
-          icon={<Upload className="h-4 w-4" />}
-          onClick={() => router.push('/import')}
-        >
-          {tNav('import')}
-        </Button>
-
-        <Button
-          variant="primary"
-          size="sm"
-          icon={<Plus className="h-4 w-4" />}
-          onClick={() => setCreateOpen(true)}
-        >
-          {t('newLead')}
-        </Button>
+          <Button
+            variant="primary"
+            size="sm"
+            icon={<Plus className="h-4 w-4" />}
+            onClick={() => setCreateOpen(true)}
+          >
+            {t('newLead')}
+          </Button>
+        </div>
       </div>
 
       <LeadCreateModal open={createOpen} onClose={() => setCreateOpen(false)} />
