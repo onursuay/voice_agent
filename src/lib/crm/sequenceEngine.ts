@@ -19,7 +19,9 @@ const CALL_TZ = 'Europe/Istanbul';
 const CALL_RESULT_TIMEOUT_MIN = 20;   // arama başladıktan sonra sonuç gelmezse not_reached say
 const MAX_RUNS_PER_TICK = 25;         // tek cron koşusunda işlenecek azami adım
 
-// Lead'e giden varsayılan funnel maili (senaryo adımı şablon seçmediyse)
+// Lead'e giden varsayılan funnel maili (senaryo adımı şablon seçmediyse).
+// Adımın only_if koşuluna göre uygun varsayılan seçilir:
+//   not_reached/always → "ulaşamadık" | reached → görüşme sonrası teşekkür
 const FUNNEL_DEFAULT_TEMPLATE: RenderableTemplate = {
   subject: 'Merhaba {{full_name}} — talebiniz bize ulaştı',
   body:
@@ -27,6 +29,16 @@ const FUNNEL_DEFAULT_TEMPLATE: RenderableTemplate = {
     '<p>Talebinizi aldık, size telefonla ulaşmaya çalıştık ancak ulaşamadık.</p>' +
     '<p>Uygun olduğunuz bir zamanda bu e-postayı yanıtlayabilir veya bizi arayabilirsiniz.</p>' +
     '<p>Teşekkürler.</p>',
+};
+
+const THANKYOU_DEFAULT_TEMPLATE: RenderableTemplate = {
+  subject: 'Teşekkürler {{full_name}} — görüşmemiz hakkında',
+  body:
+    '<p>Merhaba {{full_name}},</p>' +
+    '<p>Bugün gerçekleştirdiğimiz telefon görüşmesi için teşekkür ederiz.</p>' +
+    '<p>Talebinizle ilgili süreci başlattık; en kısa sürede sizinle tekrar iletişimde olacağız.</p>' +
+    '<p>Bu arada sorularınız olursa bu e-postayı yanıtlamanız yeterli.</p>' +
+    '<p>İyi günler dileriz.</p>',
 };
 
 interface StepRow {
