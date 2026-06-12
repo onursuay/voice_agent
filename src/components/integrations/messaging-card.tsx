@@ -133,7 +133,7 @@ export function MessagingCard() {
                 <WaInput placeholder={t('connect.accessToken')} value={wa.access_token} onChange={(v) => setWa({ ...wa, access_token: v })} />
                 <div className="flex gap-1.5">
                   <button onClick={addWhatsApp} disabled={waBusy || !wa.phone_number_id.trim() || !wa.access_token.trim()}
-                    className="flex flex-1 items-center justify-center gap-1 rounded-lg bg-emerald-600 py-1.5 text-xs font-medium text-white hover:bg-emerald-700 disabled:opacity-40">
+                    className="flex flex-1 items-center justify-center gap-1 rounded-lg bg-emerald-600 py-1.5 text-xs font-medium text-white transition-colors hover:bg-emerald-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-300 active:scale-[0.98] disabled:opacity-40">
                     {waBusy ? <Loader2 className="h-3 w-3 animate-spin" /> : <Check className="h-3 w-3" />} {t('connect.save')}
                   </button>
                   <button onClick={() => setWaOpen(false)} className="rounded-lg border border-gray-200 px-2 py-1.5 text-gray-500 hover:bg-gray-100">
