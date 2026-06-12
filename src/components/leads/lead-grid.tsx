@@ -1216,7 +1216,7 @@ export function LeadGrid() {
                       flexGrow: isFixedCol ? 0 : w,
                       flexShrink: isFixedCol ? 0 : w,
                       flexBasis: w,
-                      minWidth: isFixedCol ? w : Math.min(w, col.key === 'full_name' ? 140 : 80),
+                      minWidth: isFixedCol ? w : Math.min(w, col.key === 'full_name' ? 140 : 100),
                       left: isSticky ? stickyLefts[col.key] : undefined,
                     }}
                     onClick={(e) => {
