@@ -289,7 +289,7 @@ export function SequencesSection() {
                       <Select label={tR('value')} value={form.value} onChange={e => setForm({ ...form, value: e.target.value })}
                         options={[{ value: '', label: '—' }, ...connectedPages.map(p => ({ value: p.page_id, label: p.page_name || p.page_id }))]} />
                     ) : (
-                      <Input label={tR('value')} value={form.value} onChange={e => setForm({ ...form, value: e.target.value })} placeholder="Ankara" />
+                      <Input label={tR('value')} value={form.value} onChange={e => setForm({ ...form, value: e.target.value })} placeholder={tR('valuePlaceholder')} />
                     )}
                   </>
                 )}
