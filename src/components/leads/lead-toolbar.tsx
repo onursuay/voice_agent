@@ -16,6 +16,8 @@ import {
   AlertTriangle,
   Loader2,
   Play,
+  Eye,
+  EyeOff,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useAppStore, DEFAULT_HIDDEN_COLUMNS } from '@/lib/store';
