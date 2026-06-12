@@ -16,6 +16,8 @@ import {
   AlertTriangle,
   Loader2,
   Play,
+  Eye,
+  EyeOff,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useAppStore, DEFAULT_HIDDEN_COLUMNS } from '@/lib/store';
@@ -961,56 +963,34 @@ function FormFilterDropdown() {
   );
 }
 
-// ── Per-page Dropdown ────────────────────────────────────
+// ── Synced (Custom Audience) Toggle ──────────────────────
+// Meta Custom Audience'e başarıyla senkronize tamamlanmış leadler varsayılan gizli.
+// Bu toggle ile kullanıcı isterse hepsini gösterime açar.
 
-function PerPageDropdown() {
-  const perPage = useAppStore((s) => s.perPage);
-  const setPerPage = useAppStore((s) => s.setPerPage);
+function SyncedToggle() {
+  const t = useTranslations('leads');
+  const showSynced = useAppStore((s) => s.showSynced);
+  const setShowSynced = useAppStore((s) => s.setShowSynced);
   const total = useAppStore((s) => s.total);
-  const [open, setOpen] = useState(false);
-  const ref = useRef<HTMLDivElement>(null);
-
-  // Lead sayısına göre 25'er artan dinamik seçenekler (kullanıcı tüm leadleri görebilsin)
-  const cap = Math.min(Math.max(Math.ceil((total || 0) / 25) * 25, 50), 1000);
-  const perPageOptions: number[] = [];
-  for (let n = 25; n <= cap; n += 25) perPageOptions.push(n);
-  if (perPage > cap && !perPageOptions.includes(perPage)) perPageOptions.push(perPage);
-
-  useEffect(() => {
-    function handleClickOutside(e: MouseEvent) {
-      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
-    }
-    if (open) document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, [open]);
 
   return (
-    <div ref={ref} className="relative">
-      <button
-        onClick={() => setOpen(o => !o)}
-        className="flex items-center gap-1.5 rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
-      >
-        <span>{perPage}{total > 0 && <span className="text-gray-400"> / {total}</span>}</span>
-        <ChevronDown className={`h-3.5 w-3.5 text-gray-400 transition-transform duration-150 ${open ? 'rotate-180' : ''}`} />
-      </button>
-
-      {open && (
-        <div className="absolute left-0 top-full z-50 mt-1.5 w-24 overflow-hidden rounded-xl border border-gray-200 bg-white shadow-lg">
-          {perPageOptions.map(n => (
-            <button
-              key={n}
-              onClick={() => { setPerPage(n); setOpen(false); }}
-              className={`flex w-full items-center justify-between px-4 py-2 text-sm transition-colors ${
-                perPage === n ? 'bg-emerald-50 font-medium text-emerald-700' : 'text-gray-700 hover:bg-gray-50'
-              }`}
-            >
-              {n}
-              {perPage === n && <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />}
-            </button>
-          ))}
-        </div>
+    <button
+      type="button"
+      onClick={() => setShowSynced(!showSynced)}
+      title={t('syncedToggleHint')}
+      aria-pressed={showSynced}
+      className={cn(
+        'flex items-center gap-1.5 rounded-lg border px-3 py-2 text-sm transition-colors',
+        'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500/30 active:scale-[0.98]',
+        showSynced
+          ? 'border-emerald-300 bg-emerald-50 text-emerald-700'
+          : 'border-gray-300 bg-white text-gray-700 hover:bg-gray-50'
       )}
-    </div>
+    >
+      {showSynced ? <Eye className="h-4 w-4" /> : <EyeOff className="h-4 w-4" />}
+      <span>{showSynced ? t('syncedShown') : t('syncedHidden')}</span>
+      {total > 0 && <span className="text-gray-400">· {total}</span>}
+    </button>
   );
 }
 
@@ -1068,7 +1048,7 @@ export function LeadToolbar() {
         <TableFilterDropdown />
         <SortDropdown />
         <ColumnVisibilityDropdown />
-        <PerPageDropdown />
+        <SyncedToggle />
 
         <div className="flex-1 !shrink" />
 

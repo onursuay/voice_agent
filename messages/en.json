@@ -62,7 +62,8 @@
     "integrations": "Integrations",
     "hesabim": "My Account",
     "faturalarim": "Invoices",
-    "abonelik": "Subscription"
+    "abonelik": "Subscription",
+    "inbox": "Inbox"
   },
   "sidebar": {
     "expand": "Expand",
@@ -286,7 +287,10 @@
     },
     "formFilter": "Form",
     "noForms": "No forms found",
-    "forms": "Lead Forms"
+    "forms": "Lead Forms",
+    "syncedHidden": "Synced hidden",
+    "syncedShown": "Show all",
+    "syncedToggleHint": "Show/hide completed leads successfully synced with Meta Custom Audience target audiences"
   },
   "settings": {
     "title": "Settings",
@@ -1054,5 +1058,68 @@
     "statusRejected": "Rejected",
     "statusPending": "Pending",
     "ownerReadOnly": "Owner user cannot be edited."
+  },
+  "inbox": {
+    "title": "Inbox",
+    "searchPlaceholder": "Search conversations…",
+    "filters": {
+      "all": "All",
+      "whatsapp": "WhatsApp",
+      "instagram": "Instagram",
+      "messenger": "Messenger"
+    },
+    "status": {
+      "new": "New",
+      "open": "Open",
+      "pending": "Pending",
+      "resolved": "Resolved",
+      "snoozed": "Snoozed"
+    },
+    "source": {
+      "organic": "Organic",
+      "click_to_whatsapp": "From ad (CTWA)",
+      "instagram_dm": "Instagram DM",
+      "messenger": "Messenger",
+      "lead_form": "Lead Form"
+    },
+    "empty": {
+      "title": "No conversations",
+      "desc": "New messages will appear here.",
+      "noChannels": "No messaging channel connected yet. Connect one from Integrations."
+    },
+    "emptyThread": "Select a conversation to view",
+    "composer": {
+      "placeholder": "Type a message…",
+      "send": "Send"
+    },
+    "notRepliable": "Lead form conversations cannot be replied to.",
+    "you": "You",
+    "ctwaBadge": "Ad",
+    "sendError": "Message could not be sent",
+    "channelNotConnected": "This channel is not connected",
+    "contact": {
+      "assignee": "Assignee",
+      "unassigned": "Unassigned",
+      "openLead": "Open lead card",
+      "noDetails": "No contact details",
+      "adSource": "Ad source",
+      "viewAd": "View ad"
+    },
+    "connect": {
+      "title": "Messaging Channels",
+      "subtitle": "Connect WhatsApp, Messenger and Instagram DM to the CRM inbox.",
+      "phoneNumberId": "Phone Number ID",
+      "wabaId": "WhatsApp Business Account ID",
+      "displayNumber": "Display number (+1…)",
+      "accessToken": "Access token",
+      "save": "Connect",
+      "addNumber": "Add number",
+      "whatsappHint": "Enter the Phone Number ID and access token from the Meta WhatsApp API Setup screen.",
+      "pageChannels": "Page channels (Messenger / Instagram)",
+      "noPages": "Connect a Meta page from Integrations first; Messenger and Instagram DM will appear here.",
+      "enable": "Enable",
+      "refresh": "Refresh",
+      "pagesHint": "Enabling subscribes the page to the message webhook and adds the linked Instagram account. The existing Lead Ads subscription is preserved."
+    }
   }
 }

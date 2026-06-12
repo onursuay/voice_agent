@@ -1,6 +1,6 @@
 // Sidebar nav bölümleri (sidebar.tsx NAV_ITEMS_BASE ile birebir id'ler)
 export const NAV_PAGE_KEYS = [
-  'dashboard', 'leads', 'pipeline', 'import', 'email', 'automations', 'integrations', 'calls',
+  'dashboard', 'leads', 'pipeline', 'inbox', 'import', 'email', 'automations', 'integrations', 'calls',
 ] as const;
 export type NavPageKey = (typeof NAV_PAGE_KEYS)[number];
 
@@ -8,8 +8,8 @@ export type NavPageKey = (typeof NAV_PAGE_KEYS)[number];
 export const ROLE_PAGE_PRESETS: Record<string, NavPageKey[]> = {
   owner: [...NAV_PAGE_KEYS],
   admin: [...NAV_PAGE_KEYS],
-  sales_manager: ['dashboard', 'leads', 'pipeline', 'email', 'calls'],
-  sales_rep: ['leads'],
+  sales_manager: ['dashboard', 'leads', 'pipeline', 'inbox', 'email', 'calls'],
+  sales_rep: ['leads', 'inbox'],
   analyst: ['dashboard', 'leads'],
   readonly: ['leads'],
 };

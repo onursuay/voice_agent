@@ -31,7 +31,10 @@ export async function GET(request: NextRequest) {
     // of jumping to the top. Explicit UI sorting still honours asc/desc.
     const sortDir = params.get('sort_dir') === 'desc' ? false : true;
     const page = Math.max(1, parseInt(params.get('page') || '1', 10));
-    const perPage = Math.min(500, Math.max(1, parseInt(params.get('per_page') || '25', 10)));
+    const perPage = Math.min(2000, Math.max(1, parseInt(params.get('per_page') || '25', 10)));
+    // Varsayılan: Meta Custom Audience'e başarıyla senkronize (tamamlanmış) leadleri gizle.
+    // hide_synced=false → hepsini göster.
+    const hideSynced = params.get('hide_synced') !== 'false';
 
     const from = (page - 1) * perPage;
     const to = from + perPage - 1;
@@ -42,13 +45,17 @@ export async function GET(request: NextRequest) {
       .eq('organization_id', orgId);
 
     if (search) {
-      query = query.or(`full_name.ilike.%${search}%,email.ilike.%${search}%,phone.ilike.%${search}%,company.ilike.%${search}%`);
+      // PostgREST .or() filtre injection'ı önle: yapısal karakterleri boşlukla değiştir.
+      const safe = search.replace(/[,()*:."\\]/g, ' ').trim();
+      query = query.or(`full_name.ilike.%${safe}%,email.ilike.%${safe}%,phone.ilike.%${safe}%,company.ilike.%${safe}%`);
     }
     if (stageId) query = query.eq('stage_id', stageId);
     if (metaPageId) query = query.eq('meta_page_id', metaPageId);
     if (metaFormId) query = query.eq('meta_form_id', metaFormId);
     if (sourcePlatform) query = query.eq('source_platform', sourcePlatform);
     if (assignedTo) query = query.eq('assigned_to', assignedTo);
+    // Senkronize-tamamlanmış leadleri gizle: meta_synced_at IS NULL OR meta_sync_error IS NOT NULL
+    if (hideSynced) query = query.or('meta_synced_at.is.null,meta_sync_error.not.is.null');
     if (tags) {
       const tagList = tags.split(',').map(t => t.trim()).filter(Boolean);
       query = query.overlaps('tags', tagList);
