@@ -27,7 +27,7 @@ export function verifyMetaState(state: string): { orgId: string; mode: MetaOAuth
     if (parts.length !== 4) return null;
     const [orgId, mode, timestamp, receivedSig] = parts;
 
-    if (mode !== 'account' && mode !== 'pages') return null;
+    if (mode !== 'account' && mode !== 'pages' && mode !== 'messaging') return null;
     if (Date.now() - parseInt(timestamp, 10) > STATE_TTL_MS) return null;
 
     const payload = `${orgId}:${mode}:${timestamp}`;
