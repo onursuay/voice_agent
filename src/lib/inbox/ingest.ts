@@ -235,25 +235,23 @@ export async function processInboundMessage(
     throw new Error(`insert message failed: ${msgError.message}`);
   }
 
-  // Konuşma özetini güncelle
+  // Konuşma özetini güncelle (read-modify-write; webhook hacmi düşük olduğu için yeterli)
   const preview = (msg.text || `[${msg.messageType}]`).slice(0, 200);
-  await admin.rpc('increment_conversation_unread', { conv_id: conversationId }).then(
-    () => {},
-    async () => {
-      // RPC yoksa elle güncelle (unread artışı yarış-güvenli değil ama yeterli)
-      const { data: conv } = await admin.from('conversations').select('unread_count, status').eq('id', conversationId).single();
-      await admin
-        .from('conversations')
-        .update({
-          last_message_at: msg.timestamp || new Date().toISOString(),
-          last_message_preview: preview,
-          unread_count: (conv?.unread_count ?? 0) + 1,
-          status: conv?.status === 'resolved' ? 'open' : conv?.status ?? 'open',
-          updated_at: new Date().toISOString(),
-        })
-        .eq('id', conversationId);
-    },
-  );
+  const { data: conv } = await admin
+    .from('conversations')
+    .select('unread_count, status')
+    .eq('id', conversationId)
+    .single();
+  await admin
+    .from('conversations')
+    .update({
+      last_message_at: msg.timestamp || new Date().toISOString(),
+      last_message_preview: preview,
+      unread_count: (conv?.unread_count ?? 0) + 1,
+      status: conv?.status === 'resolved' ? 'open' : (conv?.status ?? 'open'),
+      updated_at: new Date().toISOString(),
+    })
+    .eq('id', conversationId);
 
   // Lead son aktivite zamanı
   await admin.from('leads').update({ last_activity_at: msg.timestamp || new Date().toISOString() }).eq('id', leadId);
