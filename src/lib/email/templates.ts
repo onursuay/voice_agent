@@ -14,6 +14,19 @@ export const DEFAULT_ROUTING_TEMPLATE: RenderableTemplate = {
     '<p><b>Kaynak:</b> {{source}}</p>',
 };
 
+// Manuel atama bildirimi (lead tablosu/detayından "Atanan" değişince)
+export const ASSIGNMENT_TEMPLATE: RenderableTemplate = {
+  subject: 'Size lead atandı: {{full_name}}',
+  body:
+    '<h2>Size yeni bir lead atandı</h2>' +
+    '<p><b>Ad Soyad:</b> {{full_name}}</p>' +
+    '<p><b>Telefon:</b> {{phone}}</p>' +
+    '<p><b>E-posta:</b> {{email}}</p>' +
+    '<p><b>Şehir:</b> {{city}}</p>' +
+    '<p><b>Kaynak:</b> {{source}}</p>' +
+    '<p>Lütfen en kısa sürede iletişime geçin.</p>',
+};
+
 export type LeadLike = {
   full_name?: string | null;
   first_name?: string | null;

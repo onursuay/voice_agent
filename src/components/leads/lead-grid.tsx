@@ -1244,7 +1244,7 @@ export function LeadGrid() {
                         autoFocus
                       />
                     ) : isDropdownOpen && col.key === 'stage' ? (
-                      <div className="relative w-full">
+                      <div className="relative flex w-full justify-center">
                         {renderCellContent(lead, col)}
                         <StageDropdown
                           stages={stages}
@@ -1254,7 +1254,7 @@ export function LeadGrid() {
                         />
                       </div>
                     ) : isDropdownOpen && col.key === 'source_platform' ? (
-                      <div className="relative w-full">
+                      <div className="relative flex w-full justify-center">
                         {renderCellContent(lead, col)}
                         <PlatformDropdown
                           currentValue={lead.source_platform}
@@ -1263,7 +1263,7 @@ export function LeadGrid() {
                         />
                       </div>
                     ) : isDropdownOpen && col.key === 'assigned_to' ? (
-                      <div className="relative w-full">
+                      <div className="relative flex w-full justify-center">
                         {renderCellContent(lead, col)}
                         <UserDropdown
                           members={members}
