@@ -71,7 +71,6 @@ export default function InboxView() {
     if (!orgId) return;
     const params = new URLSearchParams();
     if (channelFilter !== 'all') params.set('channel', channelFilter);
-    if (statusFilter) params.set('status', statusFilter);
     if (search.trim()) params.set('search', search.trim());
     try {
       const res = await fetch(`/api/inbox/conversations?${params.toString()}`);
