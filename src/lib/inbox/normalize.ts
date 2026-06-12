@@ -145,7 +145,7 @@ function normalizeWhatsAppEntry(entry: { changes?: Array<{ field?: string; value
           ? {
               clid: ref.ctwa_clid ?? null,
               sourceId: ref.source_id ?? null,
-              sourceUrl: ref.source_url ?? null,
+              sourceUrl: httpUrlOrNull(ref.source_url),
               headline: ref.headline ?? null,
             }
           : null,
