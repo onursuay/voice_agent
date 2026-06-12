@@ -229,7 +229,7 @@ export default function AutomationsPage() {
                 <Select label={t('targetStage')} value={(form.action_config.stage_id as string) || ''} onChange={e => setForm({ ...form, action_config: { ...form.action_config, stage_id: e.target.value } })} options={[{ value: '', label: t('selectPlaceholder') }, ...stages.map(s => ({ value: s.id, label: s.name }))]} />
               )}
               {form.action_type === 'add_tag' && (
-                <Input label={t('tag')} value={(form.action_config.tag as string) || ''} onChange={e => setForm({ ...form, action_config: { ...form.action_config, tag: e.target.value } })} placeholder="takip-edilecek" />
+                <Input label={t('tag')} value={(form.action_config.tag as string) || ''} onChange={e => setForm({ ...form, action_config: { ...form.action_config, tag: e.target.value } })} placeholder={t('tagActionPlaceholder')} />
               )}
               {form.action_type === 'add_note' && (
                 <Input label={t('noteContent')} value={(form.action_config.content as string) || ''} onChange={e => setForm({ ...form, action_config: { ...form.action_config, content: e.target.value } })} placeholder={t('noteContentPlaceholder')} />
