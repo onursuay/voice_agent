@@ -7,6 +7,10 @@
     {
       "path": "/api/cron/daily-report",
       "schedule": "0 20 * * *"
+    },
+    {
+      "path": "/api/cron/meta-leads-sync",
+      "schedule": "0 */2 * * *"
     }
   ]
 }
