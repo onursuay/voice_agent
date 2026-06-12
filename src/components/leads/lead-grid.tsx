@@ -427,7 +427,7 @@ function TagsEditor({
         if (e.key === 'Escape') onClose();
         e.stopPropagation();
       }}
-      placeholder="etiket1, etiket2..."
+      placeholder={t('tagsCellPlaceholder')}
       className="w-full rounded border border-blue-400 bg-white px-1.5 py-0.5 text-sm shadow-sm outline-none ring-1 ring-blue-200"
     />
   );
