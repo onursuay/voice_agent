@@ -20,9 +20,9 @@ export default function LeadsPage() {
   const sort = useAppStore(s => s.sort);
   const activeLeadId = useAppStore(s => s.activeLeadId);
   const leadsNeedRefresh = useAppStore(s => s.leadsNeedRefresh);
-  const perPage = useAppStore(s => s.perPage);
   const setTotal = useAppStore(s => s.setTotal);
   const sourceFilter = useAppStore(s => s.sourceFilter);
+  const showSynced = useAppStore(s => s.showSynced);
   const importJobFilter = useAppStore(s => s.importJobFilter);
   const formFilter = useAppStore(s => s.formFilter);
   const pageFilter = useAppStore(s => s.pageFilter);
