@@ -272,6 +272,9 @@ function RoutingRulesSection({ allRules, onRulesChange, members }: RoutingRulesS
   const [modalOpen, setModalOpen] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [templates, setTemplates] = useState<EmailTemplate[]>([]);
+  // Dinamik "Alan" kaynakları: form (custom_fields) anahtarları + bağlı Meta sayfaları
+  const [customFieldKeys, setCustomFieldKeys] = useState<string[]>([]);
+  const [connectedPages, setConnectedPages] = useState<{ page_id: string; page_name: string | null }[]>([]);
   const [form, setForm] = useState({
     name: '',
     field: 'city',
@@ -291,11 +294,35 @@ function RoutingRulesSection({ allRules, onRulesChange, members }: RoutingRulesS
     { value: 'in', label: tR('opIn') },
   ];
 
+  // Alan listesi tablo başlıkları + form alanlarına göre dinamik:
+  // standart lead kolonları + bağlı hesap (sayfa) + lead'lerde görülen form soruları
   const FIELD_OPTIONS = [
     { value: 'city', label: tR('fieldCity') },
+    { value: 'country', label: tR('fieldCountry') },
+    { value: 'source_platform', label: tR('fieldSource') },
+    { value: 'meta_page_id', label: tR('fieldPage') },
+    { value: 'form_name', label: tR('fieldFormName') },
+    { value: 'campaign_name', label: tR('fieldCampaign') },
+    { value: 'company', label: tR('fieldCompany') },
+    { value: 'email', label: tR('fieldEmail') },
+    { value: 'phone', label: tR('fieldPhone') },
+    { value: 'full_name', label: tR('fieldFullName') },
+    ...customFieldKeys.map((k) => ({ value: `custom.${k}`, label: `${tR('fieldCustomPrefix')}: ${k}` })),
   ];
 
   const OP_LABELS: Record<string, string> = Object.fromEntries(OPERATOR_OPTIONS.map(o => [o.value, o.label]));
+
+  // Form alan anahtarları + bağlı sayfalar (best-effort; boşsa dropdown standart kalır)
+  useEffect(() => {
+    fetch('/api/leads/custom-fields')
+      .then(r => (r.ok ? r.json() : { keys: [] }))
+      .then(d => setCustomFieldKeys(d.keys || []))
+      .catch(() => {});
+    fetch('/api/integrations/meta/pages')
+      .then(r => (r.ok ? r.json() : { pages: [] }))
+      .then(d => setConnectedPages(d.pages || []))
+      .catch(() => {});
+  }, []);
 
   useEffect(() => {
     fetch('/api/email/templates')
