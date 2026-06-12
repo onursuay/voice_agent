@@ -191,7 +191,7 @@ CREATE POLICY "messages_update" ON messages FOR UPDATE USING (
 DROP TRIGGER IF EXISTS set_updated_at ON conversations;
 CREATE TRIGGER set_updated_at BEFORE UPDATE ON conversations FOR EACH ROW EXECUTE FUNCTION update_updated_at();
 
--- 6) REALTIME — inbox canlı güncelleme için publication'a ekle (idempotent)
+-- 7) REALTIME — inbox canlı güncelleme için publication'a ekle (idempotent)
 DO $$
 BEGIN
   ALTER PUBLICATION supabase_realtime ADD TABLE conversations;
