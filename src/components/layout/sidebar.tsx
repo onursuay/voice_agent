@@ -51,7 +51,7 @@ const NAV_ITEMS_BASE = [
   { id: 'email', labelKey: 'email', href: '/email', icon: Mail },
   { id: 'automations', labelKey: 'automations', href: '/automations', icon: Zap },
   { id: 'calls', labelKey: 'calls', href: '/calls', icon: Phone },
-  { id: 'integrations', labelKey: 'integrations', href: '/integrations', icon: Plug },
+  { id: 'integrations', labelKey: 'integrations', href: '/integrations', icon: Blocks },
 ] as const;
 
 export function Sidebar() {
