@@ -35,7 +35,7 @@ import {
   Send,
 } from 'lucide-react';
 
-type SettingsTab = 'organization' | 'members' | 'pipeline' | 'profile' | 'logs' | 'access';
+type SettingsTab = 'organization' | 'members' | 'pipeline' | 'profile' | 'logs' | 'access' | 'notifications';
 
 type LeadEvent = {
   id: string;
