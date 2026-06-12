@@ -670,6 +670,22 @@ function ActivitiesTab({ leadId }: { leadId: string }) {
   const [activities, setActivities] = useState<LeadActivity[]>([]);
   const [loading, setLoading] = useState(true);
 
+  // Aktivite başlığını makine değeri yerine kullanıcının diline çevirir (TR/EN).
+  // Arama aktiviteleri metadata.outcome'a göre etiketlenir; bilinen tipler çeviri
+  // anahtarından gelir, bilinmeyenler ham title'a düşer.
+  const activityTitle = (activity: LeadActivity): string => {
+    const type = activity.activity_type;
+    if (type === 'call_made') {
+      const outcome = (activity.metadata as { outcome?: string } | null)?.outcome;
+      const key = outcome ? CALL_OUTCOME_LABEL_KEY[outcome] : undefined;
+      return t(`drawer.activityLabels.${key ?? 'call_made'}` as Parameters<typeof t>[0]);
+    }
+    if (KNOWN_ACTIVITY_TYPES.has(type)) {
+      return t(`drawer.activityLabels.${type}` as Parameters<typeof t>[0]);
+    }
+    return activity.title;
+  };
+
   useEffect(() => {
     let cancelled = false;
     async function fetchActivities() {
