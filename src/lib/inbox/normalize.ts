@@ -41,6 +41,17 @@ function metaTsToIso(ts: unknown): string | null {
   return new Date(num * 1000).toISOString();
 }
 
+// Yalnız http/https şemalı URL'leri kabul et (javascript: vb. DB'ye girmesin)
+function httpUrlOrNull(u: unknown): string | null {
+  if (typeof u !== 'string' || !u) return null;
+  try {
+    const p = new URL(u);
+    return p.protocol === 'http:' || p.protocol === 'https:' ? u : null;
+  } catch {
+    return null;
+  }
+}
+
 function mapStatus(s: unknown): MessageStatus {
   switch (String(s)) {
     case 'sent': return 'sent';
