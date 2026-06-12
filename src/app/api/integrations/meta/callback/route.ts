@@ -144,6 +144,31 @@ export async function GET(request: NextRequest) {
 
   const supabase = createAdminSupabaseClient();
 
+  if (mode === 'messaging') {
+    // ── Omnichannel mesajlaşma OAuth'u ──
+    // Long-lived user token'ı meta_messaging_account satırına kaydet; hesap/kanal
+    // seçimi entegrasyonlar ekranındaki kanal kartlarından yapılır (available/select).
+    const { data: existingMsg } = await supabase
+      .from('integration_settings')
+      .select('id')
+      .eq('provider', 'meta_messaging_account')
+      .filter('config->>organization_id', 'eq', orgId)
+      .maybeSingle();
+
+    const msgConfig = {
+      organization_id: orgId,
+      userToken,
+      connected_at: new Date().toISOString(),
+      expires_at: new Date(Date.now() + 59 * 24 * 60 * 60 * 1000).toISOString(),
+    };
+    if (existingMsg) {
+      await supabase.from('integration_settings').update({ config: msgConfig, is_active: true }).eq('id', existingMsg.id);
+    } else {
+      await supabase.from('integration_settings').insert({ provider: 'meta_messaging_account', config: msgConfig, is_active: true });
+    }
+    return NextResponse.redirect(`${dashboardUrl}?messaging_connected=1`);
+  }
+
   // Existing account row for this org (one per org), if any.
   const { data: existingAccount } = await supabase
     .from('integration_settings')
