@@ -557,12 +557,24 @@ function RoutingRulesSection({ allRules, onRulesChange, members }: RoutingRulesS
                   onChange={e => setForm({ ...form, operator: e.target.value })}
                   options={OPERATOR_OPTIONS}
                 />
-                <Input
-                  label={tR('value')}
-                  value={form.value}
-                  onChange={e => setForm({ ...form, value: e.target.value })}
-                  placeholder={form.operator === 'in' ? 'Ankara, İstanbul' : 'Ankara'}
-                />
+                {form.field === 'meta_page_id' ? (
+                  <Select
+                    label={tR('value')}
+                    value={form.value}
+                    onChange={e => setForm({ ...form, value: e.target.value })}
+                    options={[
+                      { value: '', label: '—' },
+                      ...connectedPages.map((p) => ({ value: p.page_id, label: p.page_name || p.page_id })),
+                    ]}
+                  />
+                ) : (
+                  <Input
+                    label={tR('value')}
+                    value={form.value}
+                    onChange={e => setForm({ ...form, value: e.target.value })}
+                    placeholder={form.operator === 'in' ? 'Ankara, İstanbul' : 'Ankara'}
+                  />
+                )}
               </div>
             </div>
 
