@@ -26,6 +26,7 @@ type ModalChannel = 'whatsapp' | 'messenger' | 'instagram' | null;
 
 export function MessagingCard() {
   const t = useTranslations('inbox');
+  const tCommon = useTranslations('common');
   const [data, setData] = useState<AvailableState | null>(null);
   const [loading, setLoading] = useState(true);
   const [busy, setBusy] = useState<string | null>(null); // platform_id işlemde
