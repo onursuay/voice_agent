@@ -75,7 +75,6 @@ export default function SettingsPage() {
 
   const TABS = [
     { key: 'organization', label: t('tabs.organization'), icon: <Building2 className="h-4 w-4" /> },
-    { key: 'members', label: t('tabs.members'), icon: <Users className="h-4 w-4" /> },
     { key: 'pipeline', label: t('tabs.pipeline'), icon: <GitBranch className="h-4 w-4" /> },
     { key: 'profile', label: t('tabs.profile'), icon: <User className="h-4 w-4" /> },
     { key: 'logs', label: t('tabs.logs'), icon: <ScrollText className="h-4 w-4" /> },
