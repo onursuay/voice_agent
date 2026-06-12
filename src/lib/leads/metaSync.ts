@@ -29,15 +29,19 @@ async function activePages(admin: Admin): Promise<PageAcct[]> {
     .eq('provider', 'meta_leads')
     .eq('is_active', true);
 
-  // Aynı sayfa için birden fazla aktif satır olabilir — page_id başına tekille.
+  // (org, page) çifti başına tekille — aynı sayfa birden fazla org'a bağlıysa
+  // (ör. ana org + Meta Review org) her birine ayrı reconcile yapılır.
   const map = new Map<string, PageAcct>();
   for (const r of (data || []) as Array<{ config: Record<string, unknown> }>) {
     const c = r.config || {};
     const pageId = typeof c.page_id === 'string' ? c.page_id : null;
     const token = typeof c.access_token === 'string' ? c.access_token : null;
     const org = typeof c.organization_id === 'string' ? c.organization_id : null;
-    if (pageId && token && org && !map.has(pageId)) {
-      map.set(pageId, { organizationId: org, pageId, pageName: (c.page_name as string) ?? null, token });
+    if (pageId && token && org) {
+      const key = `${org}|${pageId}`;
+      if (!map.has(key)) {
+        map.set(key, { organizationId: org, pageId, pageName: (c.page_name as string) ?? null, token });
+      }
     }
   }
   return [...map.values()];
