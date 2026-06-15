@@ -61,13 +61,14 @@ body {
 
 /* Leads toolbar — tek satırda tutmak için container-query tabanlı kompaktlama.
    container-type: inline-size paint-containment İÇERMEZ → filtre dropdown'ları
-   (absolute) kesilmez; yalnızca sol grup daraldıkça buton padding/font küçülür. */
-.lead-toolbar-left { container-type: inline-size; }
-@container (max-width: 1060px) {
-  .lead-toolbar-left button { padding-left: 0.5rem; padding-right: 0.5rem; }
+   (absolute) kesilmez. Kompaktlama TÜM toolbar'a (sol filtreler + sağ İçe Aktar/
+   Yeni Lead) uygulanır → her iki grubun yazı boyutu DAİMA tek tip kalır. */
+.lead-toolbar { container-type: inline-size; }
+@container (max-width: 1220px) {
+  .lead-toolbar button { padding-left: 0.5rem; padding-right: 0.5rem; }
 }
-@container (max-width: 920px) {
-  .lead-toolbar-left button { font-size: 0.75rem; }
+@container (max-width: 1080px) {
+  .lead-toolbar button { font-size: 0.75rem; }
 }
 
 /* Focus rings - scoped to dashboard only */
