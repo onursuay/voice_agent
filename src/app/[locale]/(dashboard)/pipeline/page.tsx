@@ -37,7 +37,7 @@ import { Avatar } from '@/components/ui/avatar';
 import { Spinner } from '@/components/ui/loading';
 import { LeadDetailDrawer } from '@/components/leads/lead-detail-drawer';
 import { AccountFilter } from '@/components/leads/account-filter';
-import { useTranslations } from 'next-intl';
+import { useTranslations, useLocale } from 'next-intl';
 
 // ============================================
 // Lead Card (Sortable)
