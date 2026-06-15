@@ -258,7 +258,7 @@ export default function DashboardPage() {
                           </span>
                         ) : <span className="text-xs text-gray-400">-</span>}
                       </td>
-                      <td className="px-6 py-4 text-xs text-gray-400">{formatRelativeTime(lead.created_at)}</td>
+                      <td className="px-6 py-4 text-xs text-gray-400">{formatRelativeTime(lead.created_at, locale)}</td>
                     </tr>
                   ))}
                 </tbody>
