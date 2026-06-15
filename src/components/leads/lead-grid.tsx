@@ -577,7 +577,55 @@ export function LeadGrid() {
   const allSelected = leads.length > 0 && selectedLeadIds.size === leads.length;
   const someSelected = selectedLeadIds.size > 0 && !allSelected;
 
-  const getColWidth = useCallback((col: ColumnDef) => columnWidths[col.key] || col.width || 120, [columnWidths]);
+  // ── İçeriğe göre otomatik kolon genişliği ─────────────
+  // Telefon/e-posta gibi metin kolonları verisinin en uzun değerine göre genişler
+  // → numaralar kırpılmadan tam görünür. Rozet/tarih kolonlarında varsayılan
+  // genişlik taban kabul edilir. Kullanıcı elle boyutlandırırsa (columnWidths) o
+  // değer önceliklidir.
+  const autoWidths = useMemo(() => {
+    const PER_CHAR = 7.4;   // hücre metni (text-sm) yaklaşık karakter genişliği
+    const HDR_CHAR = 7.6;   // başlık (uppercase text-xs, tracking) biraz daha geniş
+    const CELL_PAD = 22;    // px-2 + tampon
+    const HDR_PAD = 26;     // px-3 + tampon
+    const SORT_ICON = 22;   // sıralama oku + boşluk
+    const MAX_W = 360;      // aşırı uzun değerlerde tavan
+
+    const cellText = (lead: Lead, key: string): string | null => {
+      switch (key) {
+        case 'full_name': return lead.full_name || '';
+        case 'phone': return lead.phone || '';
+        case 'email': return lead.email || '';
+        case 'campaign_name': return lead.campaign_name || '';
+        case 'city': return lead.city || '';
+        case 'company': return lead.company || '';
+        case 'assigned_to':
+          return lead.assigned_user?.full_name
+            || members.find((m) => m.user_id === lead.assigned_to)?.profile?.full_name
+            || '';
+        default: return null; // rozet/tarih → ölçme, varsayılanı kullan
+      }
+    };
+
+    const widths: Record<string, number> = {};
+    for (const col of translatedColumns) {
+      if (col.key === '_select' || col.key === '_row_num') continue;
+      let w = col.label.length * HDR_CHAR + HDR_PAD + (col.sortable ? SORT_ICON : 0);
+      if (cellText(leads[0] ?? ({} as Lead), col.key) !== null) {
+        let maxLen = 0;
+        for (const lead of leads) {
+          const txt = cellText(lead, col.key);
+          if (txt && txt.length > maxLen) maxLen = txt.length;
+        }
+        w = Math.max(w, maxLen * PER_CHAR + CELL_PAD);
+      } else {
+        w = Math.max(w, col.width || 120);
+      }
+      widths[col.key] = Math.min(Math.round(w), MAX_W);
+    }
+    return widths;
+  }, [leads, members, translatedColumns]);
+
+  const getColWidth = useCallback((col: ColumnDef) => columnWidths[col.key] || autoWidths[col.key] || col.width || 120, [columnWidths, autoWidths]);
 
   // Flash saved toast
   const flashSaved = useCallback(() => {
