@@ -18,7 +18,10 @@ export function formatDateTime(date: string | Date) {
   return formatDate(date, { hour: '2-digit', minute: '2-digit' });
 }
 
-export function formatRelativeTime(date: string | Date): string {
+// Göreli zaman seçili dile göre (TR/EN) — Intl.RelativeTimeFormat doğru dil VE
+// doğru çoğulu verir ("1 gün önce" / "2 gün önce", "1 hour ago" / "2 hours ago").
+// locale çağıran component'ten useLocale() ile geçirilir; varsayılan 'tr'.
+export function formatRelativeTime(date: string | Date, locale: string = 'tr'): string {
   const now = new Date();
   const d = new Date(date);
   const diff = now.getTime() - d.getTime();
@@ -27,10 +30,11 @@ export function formatRelativeTime(date: string | Date): string {
   const hours = Math.floor(minutes / 60);
   const days = Math.floor(hours / 24);
 
-  if (seconds < 60) return 'Just now';
-  if (minutes < 60) return `${minutes} min ago`;
-  if (hours < 24) return `${hours} hours ago`;
-  if (days < 7) return `${days} days ago`;
+  const rtf = new Intl.RelativeTimeFormat(locale, { numeric: 'always' });
+  if (seconds < 60) return locale.startsWith('tr') ? 'az önce' : 'just now';
+  if (minutes < 60) return rtf.format(-minutes, 'minute');
+  if (hours < 24) return rtf.format(-hours, 'hour');
+  if (days < 7) return rtf.format(-days, 'day');
   return formatDate(date);
 }
 
