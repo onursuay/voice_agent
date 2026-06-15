@@ -50,6 +50,7 @@ interface LeadCardProps {
 
 function LeadCardContent({ lead, onClick, isDragging }: LeadCardProps) {
   const t = useTranslations('pipeline');
+  const locale = useLocale();
   return (
     <div
       onClick={onClick}
