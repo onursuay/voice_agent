@@ -1,13 +1,11 @@
 'use client';
 
 import React, { useEffect, useState, useCallback, useRef } from 'react';
-import { Users } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useAppStore } from '@/lib/store';
 import { LeadGrid, SyncToast } from '@/components/leads/lead-grid';
 import { LeadToolbar, BulkActionBar } from '@/components/leads/lead-toolbar';
 import { LeadDetailDrawer } from '@/components/leads/lead-detail-drawer';
-import { EmptyState } from '@/components/ui/empty-state';
 import { Spinner } from '@/components/ui/loading';
 import { Button } from '@/components/ui/button';
 
