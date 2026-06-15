@@ -1059,7 +1059,7 @@ export function LeadGrid() {
       default:
         return <span className="text-gray-600">-</span>;
     }
-  }, [stages, tRouting, members]);
+  }, [stages, tRouting, members, locale, sourceLabel, stageLabel]);
 
   // ── Placeholder text for new row ──────────────────────
   const getPlaceholder = (colKey: string): string => {
