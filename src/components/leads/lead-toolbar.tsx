@@ -118,7 +118,7 @@ function SortDropdown() {
                     : 'text-gray-700'
                 )}
               >
-                <span>{col.label}</span>
+                <span>{getLabel(col)}</span>
                 <span className="text-xs text-gray-400">Z-A</span>
               </button>
             </React.Fragment>
