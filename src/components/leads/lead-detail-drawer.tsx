@@ -878,7 +878,7 @@ function NotesTab({ leadId }: { leadId: string }) {
                   </span>
                 </div>
                 <span className="text-xs text-gray-400">
-                  {formatRelativeTime(note.created_at)}
+                  {formatRelativeTime(note.created_at, locale)}
                 </span>
               </div>
               <p className="text-sm text-gray-700 whitespace-pre-wrap">{note.content}</p>
