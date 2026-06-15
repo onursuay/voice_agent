@@ -1329,8 +1329,46 @@ export function LeadGrid({ loading = false }: { loading?: boolean }) {
           );
         })}
 
-        {/* Empty state */}
-        {leads.length === 0 && (
+        {/* Skeleton rows — veri yüklenirken gerçek kolon yapısının aynısı */}
+        {loading && leads.length === 0 && Array.from({ length: 8 }, (_, i) => (
+          <div key={`skel-${i}`} className="flex border-b border-gray-200 bg-white">
+            {visibleColumns.map((col) => {
+              const sw = getColWidth(col);
+              const isCheckbox = col.key === '_select';
+              const isRowNum = col.key === '_row_num';
+              const isSticky = col.key in stickyLefts;
+              return (
+                <div
+                  key={col.key}
+                  className={cn(
+                    'flex items-center border-r border-gray-200 px-2 py-2',
+                    isSticky && 'sticky z-10 bg-white'
+                  )}
+                  style={{
+                    flexGrow: 0,
+                    flexShrink: 0,
+                    flexBasis: sw,
+                    minWidth: sw,
+                    left: isSticky ? stickyLefts[col.key] : undefined,
+                  }}
+                >
+                  {isCheckbox ? (
+                    <div className="skeleton h-4 w-4 rounded" />
+                  ) : isRowNum ? (
+                    <div className="skeleton mx-auto h-3 w-4 rounded" />
+                  ) : (
+                    <div
+                      className="skeleton h-3.5 rounded"
+                      style={{ width: `${[55, 70, 45, 65, 80, 50, 60, 75][i % 8]}%` }}
+                    />
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        ))}
+        {/* Empty state — yalnızca yükleme bitti ve veri yoksa */}
+        {!loading && leads.length === 0 && (
           <div className="flex items-center justify-center py-20 text-gray-400">
             <div className="text-center">
               <p className="text-lg font-medium">{t('gridEmptyTitle')}</p>
