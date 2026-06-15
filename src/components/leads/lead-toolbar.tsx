@@ -1106,7 +1106,7 @@ export function LeadToolbar() {
           Yeni Lead) daima sağ kenarda sabit. flex-nowrap → öğeler ikinci satıra düşmez.
           overflow-hidden KULLANILMAZ (filtre dropdown'ları absolute açılıyor, kesilirdi);
           bunun yerine açılır-kapanır arama + kompakt aralık ile içerik tek satıra sığar. */}
-      <div className="flex w-full items-center justify-between gap-2">
+      <div className="lead-toolbar flex w-full items-center justify-between gap-2">
         {/* Sol grup — esnek, tek satır, kompakt aralık. lead-toolbar-left bir CSS
             container'dır: daraldıkça (sidebar açık / küçük ekran) filtre butonları
             globals.css'teki @container kurallarıyla kompaktlaşır → dropdown'ları
