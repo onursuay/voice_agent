@@ -512,7 +512,7 @@ function LeadCardList() {
 
 const NEW_ROW_SENTINEL = '__NEW_ROW__';
 
-export function LeadGrid() {
+export function LeadGrid({ loading = false }: { loading?: boolean }) {
   const t = useTranslations('leads');
   const tCommon = useTranslations('common');
   const tRouting = useTranslations('routing');
