@@ -1181,12 +1181,12 @@ export function LeadGrid() {
                   col.sortable && 'cursor-pointer select-none hover:bg-gray-100 hover:text-gray-700',
                   isSticky && 'sticky bg-gray-50 z-30'
                 )}
-                // Kolonlar içerik genişliğine oturur ve İÇERİĞİN ALTINA DARALMAZ
-                // (flexShrink:0) → telefon/e-posta kırpılmaz. Boş alan varsa orantılı
-                // büyüyüp (flexGrow:w) konteyneri doldurur; içerik konteynerden genişse
-                // yatay kaydırma çıkar. flexBasis = minWidth = içeriğe göre ölçülen w.
+                // Kolonlar SABİT içerik genişliğinde: ne büyür (flexGrow:0) ne küçülür
+                // (flexShrink:0). Böylece ilk yüklemede boş alan kolonlara dağıtılıp
+                // araları açılmaz (yayılma/dağınıklık yok); telefon/e-posta da kırpılmaz.
+                // İçerik konteynerden genişse yatay kaydırma çıkar. flexBasis = minWidth = w.
                 style={{
-                  flexGrow: isFixed ? 0 : w,
+                  flexGrow: 0,
                   flexShrink: 0,
                   flexBasis: w,
                   minWidth: w,
