@@ -771,7 +771,7 @@ function ActivitiesTab({ leadId }: { leadId: string }) {
                     )}
                   </div>
                   <span className="shrink-0 text-xs text-gray-400">
-                    {formatRelativeTime(activity.created_at)}
+                    {formatRelativeTime(activity.created_at, locale)}
                   </span>
                 </div>
                 {activity.user && (
