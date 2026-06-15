@@ -36,6 +36,7 @@ function SortDropdown() {
   const [open, setOpen] = useState(false);
   const sort = useAppStore((s) => s.sort);
   const setSort = useAppStore((s) => s.setSort);
+  const columnLabelOverrides = useAppStore((s) => s.columnLabelOverrides);
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -48,9 +49,17 @@ function SortDropdown() {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [open]);
 
+  // Kolon başlıkları ham anahtar (full_name, last_activity_at…) yerine seçili dilde
+  // gösterilir — Kolonlar menüsündeki getLabel ile aynı mantık.
+  const getLabel = (col: typeof LEAD_COLUMNS[number]) => {
+    if (columnLabelOverrides[col.key]) return columnLabelOverrides[col.key];
+    try { return t(`colLabels.${col.key}` as Parameters<typeof t>[0]); } catch { return col.label; }
+  };
+
   const sortableColumns = LEAD_COLUMNS.filter((c) => c.sortable);
+  const currentCol = sort ? sortableColumns.find((c) => c.key === sort.column) : null;
   const currentLabel = sort
-    ? `${sortableColumns.find((c) => c.key === sort.column)?.label || sort.column} ${sort.direction === 'asc' ? '(A-Z)' : '(Z-A)'}`
+    ? `${currentCol ? getLabel(currentCol) : sort.column} ${sort.direction === 'asc' ? '(A-Z)' : '(Z-A)'}`
     : t('sort');
 
   return (
