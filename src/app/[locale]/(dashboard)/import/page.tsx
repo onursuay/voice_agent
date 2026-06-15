@@ -559,6 +559,7 @@ function mergeSheetFiles(existing: SheetFile[], incoming: SheetFile[]) {
 
 export default function ImportPage() {
   const t = useTranslations('import');
+  const locale = useLocale();
   const router = useRouter();
   const searchParams = useSearchParams();
 
