@@ -1128,7 +1128,10 @@ export function LeadGrid() {
         />
       )}
 
-      <div className="w-full">
+      {/* w-max min-w-full: satırlar içerik genişliğine uzar (yatay kaydırmada bile),
+          böylece border-b/border-r ızgara çizgileri tüm kolonlarda — son kolon dahil —
+          kesintisiz görünür; içerik dardayken de min-w-full ile konteyneri doldurur. */}
+      <div className="w-max min-w-full">
         {/* ── Header ───────────────────────────────── */}
         <div className="sticky top-0 z-20 flex border-b border-gray-200 bg-gray-50">
           {visibleColumns.map((col) => {
