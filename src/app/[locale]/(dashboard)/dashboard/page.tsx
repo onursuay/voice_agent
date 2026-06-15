@@ -37,6 +37,7 @@ export default function DashboardPage() {
   const [loading, setLoading] = useState(true);
   const t = useTranslations('dashboard');
   const ta = useTranslations('accountability');
+  const locale = useLocale();
 
   const role = session?.membership?.role ?? '';
   const isManager = MANAGER_ROLES.includes(role);
