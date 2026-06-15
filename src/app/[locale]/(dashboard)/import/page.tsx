@@ -1512,7 +1512,7 @@ export default function ImportPage() {
                       <td className="px-4 py-2.5 font-medium text-gray-800">{imp.file_name}</td>
                       <td className="px-4 py-2.5"><StatusBadge status={imp.status} /></td>
                       <td className="px-4 py-2.5 text-right text-gray-600">{imp.total_rows}</td>
-                      <td className="px-4 py-2.5 text-right text-gray-500">{formatRelativeTime(imp.created_at)}</td>
+                      <td className="px-4 py-2.5 text-right text-gray-500">{formatRelativeTime(imp.created_at, locale)}</td>
                     </tr>
                   ))}
                 </tbody>
