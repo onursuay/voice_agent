@@ -258,7 +258,7 @@ function HistoryTab() {
               <div className="flex items-center gap-3">
                 {result && <Badge color={result.color} size="sm">{result.label}</Badge>}
                 <Badge color={status.color} size="sm">{status.label}</Badge>
-                <span className="text-xs text-gray-400">{formatRelativeTime(call.created_at)}</span>
+                <span className="text-xs text-gray-400">{formatRelativeTime(call.created_at, locale)}</span>
                 <ChevronDown className={`h-4 w-4 text-gray-400 transition-transform ${isExpanded ? 'rotate-180' : ''}`} />
               </div>
             </div>
