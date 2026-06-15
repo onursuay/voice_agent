@@ -111,7 +111,7 @@ function LeadCardContent({ lead, onClick, isDragging }: LeadCardProps) {
         </div>
         {lead.last_activity_at && (
           <span className="text-[10px] text-gray-400 shrink-0">
-            {formatRelativeTime(lead.last_activity_at)}
+            {formatRelativeTime(lead.last_activity_at, locale)}
           </span>
         )}
       </div>
