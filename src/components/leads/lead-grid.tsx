@@ -645,7 +645,13 @@ export function LeadGrid() {
       }
       widths[col.key] = Math.round(Math.min(Math.max(w, MIN_W), MAX_W));
     }
-    return widths;
+    // Stabilizasyon: bir kolon ölçülen genişliğinden DARALMAZ → veri/filtre
+    // değişiminde (refetch) kolonlar zıplamaz, layout shift olmaz. Yalnızca daha
+    // uzun bir değer gelirse genişler. (Manuel resize columnWidths ile her zaman önceliklidir.)
+    const stable: Record<string, number> = { ...widthsRef.current };
+    for (const key in widths) stable[key] = Math.max(stable[key] ?? 0, widths[key]);
+    widthsRef.current = stable;
+    return stable;
   }, [leads, members, translatedColumns]);
 
   const getColWidth = useCallback((col: ColumnDef) => columnWidths[col.key] || autoWidths[col.key] || col.width || 120, [columnWidths, autoWidths]);
