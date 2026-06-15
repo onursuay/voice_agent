@@ -990,16 +990,16 @@ function SyncedToggle() {
       title={t('syncedToggleHint')}
       aria-pressed={showSynced}
       className={cn(
-        'flex items-center gap-1.5 rounded-lg border px-3 py-2 text-sm transition-colors',
+        'inline-flex w-auto shrink-0 items-center gap-1.5 whitespace-nowrap rounded-lg border px-3 py-2 text-sm transition-colors',
         'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500/30 active:scale-[0.98]',
         showSynced
           ? 'border-emerald-300 bg-emerald-50 text-emerald-700'
           : 'border-gray-300 bg-white text-gray-700 hover:bg-gray-50'
       )}
     >
-      {showSynced ? <Eye className="h-4 w-4" /> : <EyeOff className="h-4 w-4" />}
-      <span>{showSynced ? t('syncedShown') : t('syncedHidden')}</span>
-      {total > 0 && <span className="text-gray-400">· {total}</span>}
+      {showSynced ? <Eye className="h-4 w-4 shrink-0" /> : <EyeOff className="h-4 w-4 shrink-0" />}
+      <span className="shrink-0">{showSynced ? t('syncedShown') : t('syncedHidden')}</span>
+      {total > 0 && <span className="shrink-0 text-gray-400">· {total}</span>}
     </button>
   );
 }

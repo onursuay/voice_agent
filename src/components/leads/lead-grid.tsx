@@ -580,8 +580,14 @@ export function LeadGrid({ loading = false }: { loading?: boolean }) {
 
   // Kolon genişlikleri LEAD_COLUMNS'da tanımlı sabit değerlerden gelir.
   // İçerik-bağımlı hesaplama olmadığı için veri gelmeden önce de sonra da
-  // kolon yapısı aynıdır → sıfır layout shift.
+  // kolon yapısı aynıdır.
   const getColWidth = useCallback((col: ColumnDef) => columnWidths[col.key] || col.width || 120, [columnWidths]);
+
+  const tableGridStyle = useMemo<React.CSSProperties>(() => ({
+    gridTemplateColumns: visibleColumns.map((col) => `${getColWidth(col)}px`).join(' '),
+    width: visibleColumns.reduce((sum, col) => sum + getColWidth(col), 0),
+    minWidth: '100%',
+  }), [visibleColumns, getColWidth]);
 
   // Flash saved toast
   const flashSaved = useCallback(() => {
@@ -947,20 +953,24 @@ export function LeadGrid({ loading = false }: { loading?: boolean }) {
         const color = getSourceColor(lead.source_platform);
         const label = sourceLabel(lead.source_platform);
         return (
-          <span className="inline-flex items-center gap-1.5 rounded-full px-2 py-0.5 text-xs font-medium" style={{ backgroundColor: `${color}15`, color }}>
-            <span className="h-1.5 w-1.5 rounded-full" style={{ backgroundColor: color }} />
-            {label}
+          <span className="inline-flex max-w-full items-center gap-1.5 overflow-hidden rounded-full px-2 py-0.5 text-xs font-medium whitespace-nowrap" style={{ backgroundColor: `${color}15`, color }}>
+            <span className="h-1.5 w-1.5 shrink-0 rounded-full" style={{ backgroundColor: color }} />
+            <span className="min-w-0 truncate">{label}</span>
           </span>
         );
       }
       case 'stage': {
         const stage = lead.stage || stages.find((s) => s.id === lead.stage_id);
         if (!stage) return <span className="text-gray-400">-</span>;
-        return <Badge color={getStageBadgeColor(stage.color)} size="sm">{stageLabel(stage)}</Badge>;
+        return (
+          <Badge color={getStageBadgeColor(stage.color)} size="sm" className="max-w-full overflow-hidden whitespace-nowrap">
+            <span className="min-w-0 truncate">{stageLabel(stage)}</span>
+          </Badge>
+        );
       }
       case 'score': {
         const colorCls = getScoreColor(lead.score);
-        return <span className={cn('inline-flex rounded-md px-2 py-0.5 text-xs font-semibold', colorCls)}>{lead.score}</span>;
+        return <span className={cn('inline-flex max-w-full overflow-hidden rounded-md px-2 py-0.5 text-xs font-semibold whitespace-nowrap', colorCls)}>{lead.score}</span>;
       }
       case 'assigned_to': {
         // assigned_user join'i inline güncellemede bayatlayabilir — members'tan da çöz
@@ -1084,41 +1094,28 @@ export function LeadGrid({ loading = false }: { loading?: boolean }) {
         />
       )}
 
-      {/* w-max min-w-full: satırlar içerik genişliğine uzar (yatay kaydırmada bile),
-          böylece border-b/border-r ızgara çizgileri tüm kolonlarda — son kolon dahil —
-          kesintisiz görünür; içerik dardayken de min-w-full ile konteyneri doldurur. */}
-      <div className="w-max min-w-full">
+      {/* Header, data rows ve skeleton aynı sabit grid template'i kullanır.
+          İçerik yalnızca hücre içinde kırpılır; kolon ölçümüne katılamaz. */}
+      <div className="min-w-full" style={{ width: tableGridStyle.width }}>
         {/* ── Header ───────────────────────────────── */}
-        <div className="sticky top-0 z-20 flex border-b border-gray-200 bg-gray-50">
+        <div className="sticky top-0 z-20 grid border-b border-gray-200 bg-gray-50" style={tableGridStyle}>
           {visibleColumns.map((col) => {
             const isCheckbox = col.key === '_select';
             const isRowNum = col.key === '_row_num';
             const isSorted = sort?.column === col.key;
             const isSticky = col.key in stickyLefts;
-            const w = getColWidth(col);
-            const isFixed = isCheckbox || isRowNum;
 
             return (
               <div
                 key={col.key}
                 className={cn(
-                  'group/hdr relative flex shrink-0 items-center overflow-hidden border-r border-gray-200 px-3 py-2 text-xs font-semibold uppercase tracking-wider text-gray-500',
+                  'group/hdr relative flex min-w-0 max-w-full items-center overflow-hidden border-r border-gray-200 px-3 py-2 text-xs font-semibold uppercase tracking-wider text-gray-500',
                   // Başlıklar da hücrelerle aynı hizada: Ad Soyad sola, gerisi ortalı
                   col.key !== 'full_name' && 'justify-center',
                   col.sortable && 'cursor-pointer select-none hover:bg-gray-100 hover:text-gray-700',
                   isSticky && 'sticky bg-gray-50 z-30'
                 )}
-                // Kolonlar SABİT içerik genişliğinde: ne büyür (flexGrow:0) ne küçülür
-                // (flexShrink:0). Böylece ilk yüklemede boş alan kolonlara dağıtılıp
-                // araları açılmaz (yayılma/dağınıklık yok); telefon/e-posta da kırpılmaz.
-                // İçerik konteynerden genişse yatay kaydırma çıkar. flexBasis = minWidth = w.
-                style={{
-                  flexGrow: 0,
-                  flexShrink: 0,
-                  flexBasis: w,
-                  minWidth: w,
-                  left: isSticky ? stickyLefts[col.key] : undefined,
-                }}
+                style={isSticky ? { left: stickyLefts[col.key] } : undefined}
                 onClick={() => handleSort(col)}
                 onContextMenu={(e) => {
                   if (!isCheckbox && !isRowNum) {
@@ -1138,8 +1135,8 @@ export function LeadGrid({ loading = false }: { loading?: boolean }) {
                 ) : isRowNum ? (
                   <span className="text-gray-400">#</span>
                 ) : (
-                  <div className="flex min-w-0 items-center gap-1">
-                    <span className="truncate">{col.label}</span>
+                  <div className="flex min-w-0 max-w-full items-center gap-1 overflow-hidden whitespace-nowrap">
+                    <span className="min-w-0 truncate">{col.label}</span>
                     {col.sortable && (
                       <span className="ml-0.5 shrink-0">
                         {isSorted ? (
@@ -1182,10 +1179,11 @@ export function LeadGrid({ loading = false }: { loading?: boolean }) {
             <div
               key={lead.id}
               className={cn(
-                'group relative flex border-b border-gray-200 transition-colors',
+                'group relative grid border-b border-gray-200 transition-colors',
                 isSelected ? 'bg-emerald-50/60' : isEvenRow ? 'bg-white' : 'bg-gray-50/30',
                 isHovered && !isSelected && 'bg-blue-50/30'
               )}
+              style={tableGridStyle}
               onMouseEnter={() => setHoveredRow(rowIndex)}
               onMouseLeave={() => setHoveredRow(null)}
               onContextMenu={(e) => {
@@ -1200,14 +1198,12 @@ export function LeadGrid({ loading = false }: { loading?: boolean }) {
                 const isCellSelected = cellEq(selectedCell, { row: rowIndex, col: col.key });
                 const isCellEditing = cellEq(editingCell, { row: rowIndex, col: col.key });
                 const isDropdownOpen = cellEq(dropdownCell, { row: rowIndex, col: col.key });
-                const w = getColWidth(col);
-                const isFixedCol = isCheckbox || isRowNum;
 
                 return (
                   <div
                     key={col.key}
                     className={cn(
-                      'relative flex shrink-0 items-center whitespace-nowrap border-r border-gray-200 px-2 py-1.5 text-sm',
+                      'relative flex min-w-0 max-w-full items-center whitespace-nowrap border-r border-gray-200 px-2 py-1.5 text-sm',
                       // Ad Soyad sola yaslı; diğer tüm kolonlar hücre içinde ortalı
                       col.key !== 'full_name' && 'justify-center',
                       !isDropdownOpen && 'overflow-hidden',
@@ -1218,15 +1214,7 @@ export function LeadGrid({ loading = false }: { loading?: boolean }) {
                       isCellSelected && !isCellEditing && 'ring-2 ring-inset ring-blue-500',
                       isCellEditing && 'bg-white shadow-sm ring-2 ring-inset ring-blue-500 z-20'
                     )}
-                    // Header ile birebir aynı: SABİT içerik genişliği (büyümez/küçülmez)
-                    // → hücreler başlıklarla hizalı kalır, kolonlar yayılmaz.
-                    style={{
-                      flexGrow: 0,
-                      flexShrink: 0,
-                      flexBasis: w,
-                      minWidth: w,
-                      left: isSticky ? stickyLefts[col.key] : undefined,
-                    }}
+                    style={isSticky ? { left: stickyLefts[col.key] } : undefined}
                     onClick={(e) => {
                       if (isCheckbox) {
                         e.stopPropagation();
@@ -1265,7 +1253,7 @@ export function LeadGrid({ loading = false }: { loading?: boolean }) {
                         autoFocus
                       />
                     ) : isDropdownOpen && col.key === 'stage' ? (
-                      <div className="relative flex w-full justify-center">
+                      <div className="relative flex w-full min-w-0 justify-center overflow-hidden whitespace-nowrap">
                         {renderCellContent(lead, col)}
                         <StageDropdown
                           stages={stages}
@@ -1275,7 +1263,7 @@ export function LeadGrid({ loading = false }: { loading?: boolean }) {
                         />
                       </div>
                     ) : isDropdownOpen && col.key === 'source_platform' ? (
-                      <div className="relative flex w-full justify-center">
+                      <div className="relative flex w-full min-w-0 justify-center overflow-hidden whitespace-nowrap">
                         {renderCellContent(lead, col)}
                         <PlatformDropdown
                           currentValue={lead.source_platform}
@@ -1284,7 +1272,7 @@ export function LeadGrid({ loading = false }: { loading?: boolean }) {
                         />
                       </div>
                     ) : isDropdownOpen && col.key === 'assigned_to' ? (
-                      <div className="relative flex w-full justify-center">
+                      <div className="relative flex w-full min-w-0 justify-center overflow-hidden whitespace-nowrap">
                         {renderCellContent(lead, col)}
                         <UserDropdown
                           members={members}
@@ -1300,7 +1288,9 @@ export function LeadGrid({ loading = false }: { loading?: boolean }) {
                         onClose={() => setDropdownCell(null)}
                       />
                     ) : (
-                      renderCellContent(lead, col)
+                      <div className="min-w-0 max-w-full overflow-hidden text-ellipsis whitespace-nowrap">
+                        {renderCellContent(lead, col)}
+                      </div>
                     )}
                   </div>
                 );
@@ -1331,9 +1321,8 @@ export function LeadGrid({ loading = false }: { loading?: boolean }) {
 
         {/* Skeleton rows — veri yüklenirken gerçek kolon yapısının aynısı */}
         {loading && leads.length === 0 && Array.from({ length: 8 }, (_, i) => (
-          <div key={`skel-${i}`} className="flex border-b border-gray-200 bg-white">
+          <div key={`skel-${i}`} className="grid border-b border-gray-200 bg-white" style={tableGridStyle}>
             {visibleColumns.map((col) => {
-              const sw = getColWidth(col);
               const isCheckbox = col.key === '_select';
               const isRowNum = col.key === '_row_num';
               const isSticky = col.key in stickyLefts;
@@ -1341,16 +1330,10 @@ export function LeadGrid({ loading = false }: { loading?: boolean }) {
                 <div
                   key={col.key}
                   className={cn(
-                    'flex items-center border-r border-gray-200 px-2 py-2',
+                    'flex min-w-0 max-w-full items-center overflow-hidden border-r border-gray-200 px-2 py-2',
                     isSticky && 'sticky z-10 bg-white'
                   )}
-                  style={{
-                    flexGrow: 0,
-                    flexShrink: 0,
-                    flexBasis: sw,
-                    minWidth: sw,
-                    left: isSticky ? stickyLefts[col.key] : undefined,
-                  }}
+                  style={isSticky ? { left: stickyLefts[col.key] } : undefined}
                 >
                   {isCheckbox ? (
                     <div className="skeleton h-4 w-4 rounded" />
