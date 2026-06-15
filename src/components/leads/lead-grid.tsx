@@ -1291,10 +1291,10 @@ export function LeadGrid() {
                       isCellSelected && !isCellEditing && 'ring-2 ring-inset ring-blue-500',
                       isCellEditing && 'bg-white shadow-sm ring-2 ring-inset ring-blue-500 z-20'
                     )}
-                    // Header ile birebir aynı esneme: içeriğe oturur, altına daralmaz
-                    // (flexShrink:0), böylece hücreler başlıklarla hizalı kalır.
+                    // Header ile birebir aynı: SABİT içerik genişliği (büyümez/küçülmez)
+                    // → hücreler başlıklarla hizalı kalır, kolonlar yayılmaz.
                     style={{
-                      flexGrow: isFixedCol ? 0 : w,
+                      flexGrow: 0,
                       flexShrink: 0,
                       flexBasis: w,
                       minWidth: w,
