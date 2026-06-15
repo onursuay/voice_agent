@@ -516,6 +516,7 @@ export function LeadGrid() {
   const t = useTranslations('leads');
   const tCommon = useTranslations('common');
   const tRouting = useTranslations('routing');
+  const locale = useLocale();
 
   const columnLabelOverrides = useAppStore((s) => s.columnLabelOverrides);
 
