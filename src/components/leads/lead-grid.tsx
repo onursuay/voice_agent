@@ -578,79 +578,10 @@ export function LeadGrid({ loading = false }: { loading?: boolean }) {
   const allSelected = leads.length > 0 && selectedLeadIds.size === leads.length;
   const someSelected = selectedLeadIds.size > 0 && !allSelected;
 
-  // ── İçeriğe göre otomatik kolon genişliği ─────────────
-  // Telefon/e-posta gibi metin kolonları verisinin en uzun değerine göre genişler
-  // → numaralar kırpılmadan tam görünür. Rozet/tarih kolonlarında varsayılan
-  // genişlik taban kabul edilir. Kullanıcı elle boyutlandırırsa (columnWidths) o
-  // değer önceliklidir.
-  const autoWidths = useMemo(() => {
-    const CELL_PAD = 24;    // px-2 (16) + okunabilirlik tamponu
-    const HDR_PAD = 28;     // px-3 (24) + tampon
-    const SORT_ICON = 22;   // sıralama oku + boşluk
-    const MIN_W = 60;       // taban
-    const MAX_W = 360;      // aşırı uzun değerlerde tavan
-
-    // Piksel-doğru ölçüm: gerçek font ile canvas measureText → telefon/e-posta
-    // karakter tahmini hatası olmadan tam genişlikte oturur. SSR'da (document yok)
-    // kaba karakter tahminine düşülür; client'ta leads gelince yeniden hesaplanır.
-    let ctx: CanvasRenderingContext2D | null = null;
-    let fontFamily = 'sans-serif';
-    if (typeof document !== 'undefined') {
-      try {
-        fontFamily = getComputedStyle(document.body).fontFamily || fontFamily;
-        ctx = document.createElement('canvas').getContext('2d');
-      } catch { ctx = null; }
-    }
-    const measure = (text: string, px: number, weight = '400') => {
-      if (!text) return 0;
-      if (ctx) { ctx.font = `${weight} ${px}px ${fontFamily}`; return ctx.measureText(text).width; }
-      return text.length * px * 0.62; // SSR fallback
-    };
-    // Başlıklar CSS ile uppercase + tracking-wider render edilir → büyük harfli ölç.
-    const measureHeader = (label: string) => measure(label.toUpperCase(), 12, '600') + label.length * 0.6;
-
-    const cellText = (lead: Lead, key: string): string | null => {
-      switch (key) {
-        case 'full_name': return lead.full_name || '';
-        case 'phone': return lead.phone || '';
-        case 'email': return lead.email || '';
-        case 'campaign_name': return lead.campaign_name || '';
-        case 'city': return lead.city || '';
-        case 'company': return lead.company || '';
-        case 'assigned_to':
-          return lead.assigned_user?.full_name
-            || members.find((m) => m.user_id === lead.assigned_to)?.profile?.full_name
-            || '';
-        default: return null; // rozet/tarih → ölçme, varsayılanı kullan
-      }
-    };
-
-    const widths: Record<string, number> = {};
-    for (const col of translatedColumns) {
-      if (col.key === '_select' || col.key === '_row_num') continue;
-      let w = measureHeader(col.label) + HDR_PAD + (col.sortable ? SORT_ICON : 0);
-      if (cellText(leads[0] ?? ({} as Lead), col.key) !== null) {
-        let maxText = 0;
-        for (const lead of leads) {
-          const txt = cellText(lead, col.key);
-          if (txt) { const px = measure(txt, 14); if (px > maxText) maxText = px; }
-        }
-        w = Math.max(w, maxText + CELL_PAD);
-      } else {
-        w = Math.max(w, col.width || 120);
-      }
-      widths[col.key] = Math.round(Math.min(Math.max(w, MIN_W), MAX_W));
-    }
-    // Stabilizasyon: bir kolon ölçülen genişliğinden DARALMAZ → veri/filtre
-    // değişiminde (refetch) kolonlar zıplamaz, layout shift olmaz. Yalnızca daha
-    // uzun bir değer gelirse genişler. (Manuel resize columnWidths ile her zaman önceliklidir.)
-    const stable: Record<string, number> = { ...widthsRef.current };
-    for (const key in widths) stable[key] = Math.max(stable[key] ?? 0, widths[key]);
-    widthsRef.current = stable;
-    return stable;
-  }, [leads, members, translatedColumns]);
-
-  const getColWidth = useCallback((col: ColumnDef) => columnWidths[col.key] || autoWidths[col.key] || col.width || 120, [columnWidths, autoWidths]);
+  // Kolon genişlikleri LEAD_COLUMNS'da tanımlı sabit değerlerden gelir.
+  // İçerik-bağımlı hesaplama olmadığı için veri gelmeden önce de sonra da
+  // kolon yapısı aynıdır → sıfır layout shift.
+  const getColWidth = useCallback((col: ColumnDef) => columnWidths[col.key] || col.width || 120, [columnWidths]);
 
   // Flash saved toast
   const flashSaved = useCallback(() => {
