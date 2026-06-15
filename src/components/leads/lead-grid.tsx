@@ -583,12 +583,30 @@ export function LeadGrid() {
   // genişlik taban kabul edilir. Kullanıcı elle boyutlandırırsa (columnWidths) o
   // değer önceliklidir.
   const autoWidths = useMemo(() => {
-    const PER_CHAR = 7.4;   // hücre metni (text-sm) yaklaşık karakter genişliği
-    const HDR_CHAR = 7.6;   // başlık (uppercase text-xs, tracking) biraz daha geniş
-    const CELL_PAD = 22;    // px-2 + tampon
-    const HDR_PAD = 26;     // px-3 + tampon
+    const CELL_PAD = 24;    // px-2 (16) + okunabilirlik tamponu
+    const HDR_PAD = 28;     // px-3 (24) + tampon
     const SORT_ICON = 22;   // sıralama oku + boşluk
+    const MIN_W = 60;       // taban
     const MAX_W = 360;      // aşırı uzun değerlerde tavan
+
+    // Piksel-doğru ölçüm: gerçek font ile canvas measureText → telefon/e-posta
+    // karakter tahmini hatası olmadan tam genişlikte oturur. SSR'da (document yok)
+    // kaba karakter tahminine düşülür; client'ta leads gelince yeniden hesaplanır.
+    let ctx: CanvasRenderingContext2D | null = null;
+    let fontFamily = 'sans-serif';
+    if (typeof document !== 'undefined') {
+      try {
+        fontFamily = getComputedStyle(document.body).fontFamily || fontFamily;
+        ctx = document.createElement('canvas').getContext('2d');
+      } catch { ctx = null; }
+    }
+    const measure = (text: string, px: number, weight = '400') => {
+      if (!text) return 0;
+      if (ctx) { ctx.font = `${weight} ${px}px ${fontFamily}`; return ctx.measureText(text).width; }
+      return text.length * px * 0.62; // SSR fallback
+    };
+    // Başlıklar CSS ile uppercase + tracking-wider render edilir → büyük harfli ölç.
+    const measureHeader = (label: string) => measure(label.toUpperCase(), 12, '600') + label.length * 0.6;
 
     const cellText = (lead: Lead, key: string): string | null => {
       switch (key) {
@@ -609,18 +627,18 @@ export function LeadGrid() {
     const widths: Record<string, number> = {};
     for (const col of translatedColumns) {
       if (col.key === '_select' || col.key === '_row_num') continue;
-      let w = col.label.length * HDR_CHAR + HDR_PAD + (col.sortable ? SORT_ICON : 0);
+      let w = measureHeader(col.label) + HDR_PAD + (col.sortable ? SORT_ICON : 0);
       if (cellText(leads[0] ?? ({} as Lead), col.key) !== null) {
-        let maxLen = 0;
+        let maxText = 0;
         for (const lead of leads) {
           const txt = cellText(lead, col.key);
-          if (txt && txt.length > maxLen) maxLen = txt.length;
+          if (txt) { const px = measure(txt, 14); if (px > maxText) maxText = px; }
         }
-        w = Math.max(w, maxLen * PER_CHAR + CELL_PAD);
+        w = Math.max(w, maxText + CELL_PAD);
       } else {
         w = Math.max(w, col.width || 120);
       }
-      widths[col.key] = Math.min(Math.round(w), MAX_W);
+      widths[col.key] = Math.round(Math.min(Math.max(w, MIN_W), MAX_W));
     }
     return widths;
   }, [leads, members, translatedColumns]);
