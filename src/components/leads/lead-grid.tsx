@@ -564,10 +564,6 @@ export function LeadGrid({ loading = false }: { loading?: boolean }) {
   const gridRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const savedTimerRef = useRef<ReturnType<typeof setTimeout>>(undefined);
-  // Kolon genişlikleri yalnızca büyür, asla daralmaz (aşağıda autoWidths) → ilk
-  // açılışta pageFilter restore'u tetiklediği refetch'te tablo "dağınık açılıp
-  // toplanmaz"; genişlikler ilk ölçümde sabitlenir.
-  const widthsRef = useRef<Record<string, number>>({});
 
   const visibleColumns = useMemo(() =>
     translatedColumns.filter((col) => col.key === '_select' || col.key === '_row_num' || !hiddenColumns.has(col.key)),
