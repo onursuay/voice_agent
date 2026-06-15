@@ -10,7 +10,7 @@ import {
 } from 'lucide-react';
 import { Link } from '@/i18n/navigation';
 import type { Lead } from '@/lib/types';
-import { useTranslations } from 'next-intl';
+import { useTranslations, useLocale } from 'next-intl';
 
 interface RepStat {
   id: string;
