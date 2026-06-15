@@ -8,7 +8,7 @@ import { Badge } from '@/components/ui/badge';
 import { Avatar } from '@/components/ui/avatar';
 import type { Lead, ColumnDef, SortConfig, CrmStage, LeadSourcePlatform } from '@/lib/types';
 import { SOURCE_PLATFORM_LABELS } from '@/lib/types';
-import { useTranslations } from 'next-intl';
+import { useTranslations, useLocale } from 'next-intl';
 
 // Default stage slugs that have translations; others fall back to stored name
 const DEFAULT_STAGE_SLUGS = new Set(['new', 'contacted', 'qualified', 'meeting', 'offer', 'won', 'lost']);
