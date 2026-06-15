@@ -1149,14 +1149,15 @@ export function LeadGrid() {
                   col.sortable && 'cursor-pointer select-none hover:bg-gray-100 hover:text-gray-700',
                   isSticky && 'sticky bg-gray-50 z-30'
                 )}
-                // Kolonlar genişlikleriyle ORANTILI hem BÜYÜR hem DARALIR → tablo,
-                // sidebar açık/kapalı her durumda konteyneri doldurur (sağ kenar
-                // toolbar'la hizalı, taşma/scroll yok). minWidth okunabilirlik tabanı.
+                // Kolonlar içerik genişliğine oturur ve İÇERİĞİN ALTINA DARALMAZ
+                // (flexShrink:0) → telefon/e-posta kırpılmaz. Boş alan varsa orantılı
+                // büyüyüp (flexGrow:w) konteyneri doldurur; içerik konteynerden genişse
+                // yatay kaydırma çıkar. flexBasis = minWidth = içeriğe göre ölçülen w.
                 style={{
                   flexGrow: isFixed ? 0 : w,
-                  flexShrink: isFixed ? 0 : w,
+                  flexShrink: 0,
                   flexBasis: w,
-                  minWidth: isFixed ? w : Math.min(w, col.key === 'full_name' ? 140 : 100),
+                  minWidth: w,
                   left: isSticky ? stickyLefts[col.key] : undefined,
                 }}
                 onClick={() => handleSort(col)}
