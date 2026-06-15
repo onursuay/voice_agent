@@ -127,17 +127,13 @@ export default function LeadsPage() {
       </div>
 
       <div className="relative flex-1 min-h-0">
-        {loading && leads.length === 0 ? (
-          <div className="flex h-64 items-center justify-center"><Spinner size="lg" /></div>
-        ) : error ? (
+        {error ? (
           <div className="flex h-64 flex-col items-center justify-center gap-3">
             <p className="text-sm text-red-500">{error}</p>
             <Button variant="secondary" size="sm" onClick={fetchLeads}>{t('retry')}</Button>
           </div>
-        ) : leads.length === 0 ? (
-          <EmptyState icon={<Users className="h-6 w-6" />} title={t('emptyTitle')} description={t('emptyDesc')} />
         ) : (
-          <LeadGrid />
+          <LeadGrid loading={loading} />
         )}
         {loading && leads.length > 0 && (
           <div className="absolute inset-0 flex items-center justify-center bg-white/50"><Spinner size="md" /></div>
