@@ -1051,10 +1051,10 @@ export function LeadGrid() {
           </div>
         );
       case 'first_seen_at':
-        return <span className="text-gray-500 text-xs" title={lead.first_seen_at}>{formatRelativeTime(lead.first_seen_at)}</span>;
+        return <span className="text-gray-500 text-xs" title={lead.first_seen_at}>{formatRelativeTime(lead.first_seen_at, locale)}</span>;
       case 'last_activity_at':
         return lead.last_activity_at
-          ? <span className="text-gray-500 text-xs" title={lead.last_activity_at}>{formatRelativeTime(lead.last_activity_at)}</span>
+          ? <span className="text-gray-500 text-xs" title={lead.last_activity_at}>{formatRelativeTime(lead.last_activity_at, locale)}</span>
           : <span className="text-gray-400">-</span>;
       default:
         return <span className="text-gray-600">-</span>;
