@@ -684,6 +684,7 @@ function DetailTab({ lead }: { lead: Lead }) {
 // ============================================
 function ActivitiesTab({ leadId }: { leadId: string }) {
   const t = useTranslations('leads');
+  const locale = useLocale();
   const [activities, setActivities] = useState<LeadActivity[]>([]);
   const [loading, setLoading] = useState(true);
 
