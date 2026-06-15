@@ -1259,13 +1259,13 @@ export function LeadGrid() {
                       isCellSelected && !isCellEditing && 'ring-2 ring-inset ring-blue-500',
                       isCellEditing && 'bg-white shadow-sm ring-2 ring-inset ring-blue-500 z-20'
                     )}
-                    // Header ile birebir aynı esneme: orantılı büyür VE daralır,
-                    // böylece hücreler başlıklarla hizalı kalır, tablo tam oturur.
+                    // Header ile birebir aynı esneme: içeriğe oturur, altına daralmaz
+                    // (flexShrink:0), böylece hücreler başlıklarla hizalı kalır.
                     style={{
                       flexGrow: isFixedCol ? 0 : w,
-                      flexShrink: isFixedCol ? 0 : w,
+                      flexShrink: 0,
                       flexBasis: w,
-                      minWidth: isFixedCol ? w : Math.min(w, col.key === 'full_name' ? 140 : 100),
+                      minWidth: w,
                       left: isSticky ? stickyLefts[col.key] : undefined,
                     }}
                     onClick={(e) => {
