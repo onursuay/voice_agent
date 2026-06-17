@@ -66,6 +66,7 @@ export async function GET() {
         'assigned_to, contact_attempts, contact_outcome, first_contact_at, assigned_at, sla_alert_first_at, sla_alert_retry_at, assigned_user:profiles!leads_assigned_to_fkey(full_name,email), stage:crm_stages(is_won,is_lost)'
       )
       .eq('organization_id', orgId)
+      .is('deleted_at', null)
       .not('assigned_to', 'is', null);
 
     if (error) {
