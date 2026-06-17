@@ -244,11 +244,11 @@ async function runDueSteps(admin: Admin): Promise<{ calls: number; emails: numbe
   let calls = 0, emails = 0, skipped = 0;
 
   for (const enr of (due || []) as EnrollmentRow[]) {
-    // Lead durumu: won/lost aşamasındaysa senaryoyu durdur
+    // Lead durumu: won/lost aşamasındaysa VEYA silinmişse (çöpte) senaryoyu durdur
     const { data: lead } = await admin
       .from('leads')
       .select('*, stage:crm_stages(is_won, is_lost)')
-      .eq('id', enr.lead_id).single();
+      .eq('id', enr.lead_id).is('deleted_at', null).single();
     if (!lead) { await admin.from('sequence_enrollments').update({ status: 'stopped', next_run_at: null }).eq('id', enr.id); continue; }
     const stage = lead.stage as { is_won?: boolean; is_lost?: boolean } | null;
     if (stage?.is_won || stage?.is_lost) {
