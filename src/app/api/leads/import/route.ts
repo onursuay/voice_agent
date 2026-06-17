@@ -102,7 +102,7 @@ export async function POST(request: NextRequest) {
           continue;
         }
 
-        // Dedupe check
+        // Dedupe check (yalnız AKTİF leadler — çöptekiyle eşleşme yapma)
         let existingLead = null;
         if (phone) {
           const { data } = await supabase
@@ -110,6 +110,7 @@ export async function POST(request: NextRequest) {
             .select('id, tags, custom_fields, notes_count, first_name, last_name')
             .eq('organization_id', orgId)
             .eq('phone', phone)
+            .is('deleted_at', null)
             .single();
           if (data) existingLead = data;
         }
@@ -119,6 +120,7 @@ export async function POST(request: NextRequest) {
             .select('id, tags, custom_fields, notes_count, first_name, last_name')
             .eq('organization_id', orgId)
             .eq('email', email)
+            .is('deleted_at', null)
             .single();
           if (data) existingLead = data;
         }
