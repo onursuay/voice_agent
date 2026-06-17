@@ -343,7 +343,27 @@
       "integrations": "Integrations",
       "logs": "Log Records",
       "access": "Access Management",
-      "notifications": "Notifications"
+      "notifications": "Notifications",
+      "backup": "Backup & Restore"
+    },
+    "backup": {
+      "title": "Lead Backup & Restore",
+      "desc": "Your leads are backed up automatically every night. Deleted leads are never lost permanently — restore them from Trash or from a backup. Restoring never overwrites your current active leads; it only re-adds missing/deleted ones.",
+      "backupNow": "Back up now",
+      "backingUp": "Backing up…",
+      "backedUp": "Backup created ({count} leads).",
+      "autoDaily": "Automatic daily backup is on",
+      "history": "Backup History",
+      "empty": "No backups yet. The first one runs automatically tonight, or you can create one now.",
+      "count": "{count} leads",
+      "restore": "Restore",
+      "restoring": "Restoring…",
+      "restored": "{count} leads restored.",
+      "confirmRestore": "This will restore missing/deleted leads from this backup. Current active leads are left untouched. Continue?",
+      "reasonDaily": "Automatic (daily)",
+      "reasonManual": "Manual",
+      "reasonPreRestore": "Before restore",
+      "ownerOnly": "Only the organization owner can view this section."
     },
     "logs": {
       "title": "Log Records",
