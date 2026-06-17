@@ -1254,6 +1254,15 @@ export default function SettingsPage() {
             <NotificationsTab />
           </div>
         )}
+
+        {/* ============================== */}
+        {/* YEDEK & GERİ YÜKLEME (owner) */}
+        {/* ============================== */}
+        {activeTab === 'backup' && (
+          <div className="p-6">
+            <BackupTab />
+          </div>
+        )}
       </div>
     </div>
   );
