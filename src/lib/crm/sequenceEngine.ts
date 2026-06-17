@@ -91,7 +91,7 @@ async function getSteps(admin: Admin, sequenceId: string): Promise<StepRow[]> {
 export async function enrollLeadInSequences(leadId: string): Promise<{ enrolled: boolean; sequenceId?: string }> {
   const admin = createAdminSupabaseClient();
   try {
-    const { data: lead } = await admin.from('leads').select('*').eq('id', leadId).single();
+    const { data: lead } = await admin.from('leads').select('*').eq('id', leadId).is('deleted_at', null).single();
     if (!lead) return { enrolled: false };
 
     const { data: seqs } = await admin
