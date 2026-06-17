@@ -940,13 +940,19 @@ export function LeadToolbar() {
             KESMEDEN (container-type paint-containment içermez) tek satıra sığar. */}
         <div className="lead-toolbar-left flex min-w-0 flex-1 flex-nowrap items-center gap-1.5">
           <SearchBox />
-          <AccountFilter />
-          <LeadFilters />
-          <SourceFilterDropdown />
-          <FormFilterDropdown />
+          {/* Çöp modunda hesap/kaynak/form/senkron filtreleri uygulanmaz → gizlenir. */}
+          {!trashMode && (
+            <>
+              <AccountFilter />
+              <LeadFilters />
+              <SourceFilterDropdown />
+              <FormFilterDropdown />
+            </>
+          )}
           <SortDropdown />
           <ColumnVisibilityDropdown />
-          <SyncedToggle />
+          {!trashMode && <SyncedToggle />}
+          <TrashToggle />
         </div>
 
         {/* Sağ grup — daima sağ kenarda; küçülmez, sarmaz */}
