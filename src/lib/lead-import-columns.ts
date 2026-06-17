@@ -12,6 +12,7 @@ export type ImportJobSummary = {
   created_rows: number;
   created_at: string;
   column_mapping?: Record<string, string>;
+  active_count?: number; // çöpte olmayan (aktif) lead sayısı — hesap menüsü filtresi
 };
 
 // CRM alan adından lead grid kolon anahtarına eşleme.
