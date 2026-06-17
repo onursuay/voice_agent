@@ -22,6 +22,7 @@ export default function LeadsPage() {
   const setTotal = useAppStore(s => s.setTotal);
   const sourceFilter = useAppStore(s => s.sourceFilter);
   const showSynced = useAppStore(s => s.showSynced);
+  const trashMode = useAppStore(s => s.trashMode);
   const importJobFilter = useAppStore(s => s.importJobFilter);
   const setImportJobFilter = useAppStore(s => s.setImportJobFilter);
   const formFilter = useAppStore(s => s.formFilter);
