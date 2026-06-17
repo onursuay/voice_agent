@@ -802,6 +802,35 @@ function SyncedToggle() {
   );
 }
 
+// ── Çöp Kutusu Toggle ───────────────────────────────────
+// Açıkken yalnız silinmiş (soft-delete) leadler listelenir; oradan geri getirilir.
+// Hiçbir lead kalıcı silinmez — silme = Çöp'e taşıma.
+function TrashToggle() {
+  const t = useTranslations('leads');
+  const trashMode = useAppStore((s) => s.trashMode);
+  const setTrashMode = useAppStore((s) => s.setTrashMode);
+  const clearSelection = useAppStore((s) => s.clearSelection);
+
+  return (
+    <button
+      type="button"
+      onClick={() => { clearSelection(); setTrashMode(!trashMode); }}
+      title={t('trashToggleHint')}
+      aria-pressed={trashMode}
+      className={cn(
+        'inline-flex w-auto shrink-0 items-center gap-1.5 whitespace-nowrap rounded-lg border px-3 py-2 text-sm transition-colors',
+        'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500/30 active:scale-[0.98]',
+        trashMode
+          ? 'border-amber-300 bg-amber-50 text-amber-700'
+          : 'border-gray-300 bg-white text-gray-700 hover:bg-gray-50'
+      )}
+    >
+      <Trash className="h-4 w-4 shrink-0" />
+      <span className="shrink-0">{t('trash')}</span>
+    </button>
+  );
+}
+
 // ── Collapsible Search ──────────────────────────────────
 // Varsayılan: yalnızca mercek ikonlu kompakt kare buton (yer kaplamaz → toolbar tek
 // satırda kalır). Tıklayınca input sağa açılır; ESC / dışarı tıklama (blur) / X ile
