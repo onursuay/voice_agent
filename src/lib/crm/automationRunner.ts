@@ -261,6 +261,7 @@ export async function runSlaChecks(): Promise<{ firstAlerts: number; retryAlerts
   const { data: retryCand } = await supabase
     .from('leads')
     .select('*, stage:crm_stages(is_won,is_lost)')
+    .is('deleted_at', null)
     .not('assigned_to', 'is', null)
     .in('contact_outcome', ['no_answer', 'busy']);
 
