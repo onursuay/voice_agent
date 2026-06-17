@@ -23,10 +23,14 @@ export default function LeadsPage() {
   const sourceFilter = useAppStore(s => s.sourceFilter);
   const showSynced = useAppStore(s => s.showSynced);
   const importJobFilter = useAppStore(s => s.importJobFilter);
+  const setImportJobFilter = useAppStore(s => s.setImportJobFilter);
   const formFilter = useAppStore(s => s.formFilter);
   const pageFilter = useAppStore(s => s.pageFilter);
   const setPageFilter = useAppStore(s => s.setPageFilter);
   const setConnectedPages = useAppStore(s => s.setConnectedPages);
+  const setImportJobs = useAppStore(s => s.setImportJobs);
+  const setHiddenColumns = useAppStore(s => s.setHiddenColumns);
+  const setColumnLabelOverrides = useAppStore(s => s.setColumnLabelOverrides);
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
