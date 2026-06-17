@@ -99,7 +99,7 @@ export default function LeadsPage() {
     let cancelled = false;
     (async () => {
       let pages: { page_id: string; page_name: string | null }[] = [];
-      let jobs: { id: string; file_name: string; status: string; total_rows: number; created_rows: number; created_at: string; column_mapping?: Record<string, string> }[] = [];
+      let jobs: { id: string; file_name: string; status: string; total_rows: number; created_rows: number; created_at: string; column_mapping?: Record<string, string>; active_count?: number }[] = [];
       try {
         const [pagesRes, jobsRes] = await Promise.all([
           fetch('/api/integrations/meta/pages'),
@@ -109,6 +109,10 @@ export default function LeadsPage() {
         if (jobsRes.ok) jobs = (await jobsRes.json())?.imports || [];
       } catch { /* ignore */ }
       if (cancelled) return;
+
+      // Hesap menüsünde yalnız hâlâ aktif lead'i olan import listeleri görünsün
+      // (import veya tüm lead'leri silinince/çöpe gidince filtreden düşer).
+      jobs = jobs.filter((j) => (j.active_count ?? 0) > 0);
 
       setConnectedPages(pages);
       setImportJobs(jobs);
