@@ -22,6 +22,7 @@ export async function GET() {
       .from('leads')
       .select('custom_fields')
       .eq('organization_id', membership.organization_id)
+      .is('deleted_at', null)
       .not('custom_fields', 'eq', '{}')
       .order('created_at', { ascending: false })
       .limit(400);
