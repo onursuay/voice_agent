@@ -926,6 +926,7 @@ export function LeadToolbar() {
   const t = useTranslations('leads');
   const tNav = useTranslations('nav');
   const [createOpen, setCreateOpen] = useState(false);
+  const trashMode = useAppStore((s) => s.trashMode);
 
   return (
     <>
