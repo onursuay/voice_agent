@@ -491,30 +491,45 @@ export function BulkActionBar() {
             {t('selected', { count: selectedLeadIds.size })}
           </span>
           <div className="flex items-center gap-2">
-            <Button variant="secondary" size="sm" icon={<GitBranch className="h-4 w-4" />} onClick={() => openModal('stage')}>
-              {t('changeStage')}
-            </Button>
-            <Button variant="secondary" size="sm" icon={<UserPlus className="h-4 w-4" />} onClick={() => openModal('assign')}>
-              {t('assign')}
-            </Button>
-            <Button variant="secondary" size="sm" icon={<Tag className="h-4 w-4" />} onClick={() => openModal('tag')}>
-              {t('addTag')}
-            </Button>
-            <Button
-              variant="secondary"
-              size="sm"
-              icon={runningRules ? <Loader2 className="h-4 w-4 animate-spin" /> : <Play className="h-4 w-4" />}
-              onClick={handleRunRules}
-              disabled={runningRules}
-            >
-              {runningRules ? tRouting('running') : tRouting('runRules')}
-            </Button>
-            {runRulesResult && (
-              <span className="text-xs text-gray-600">{runRulesResult}</span>
+            {trashMode ? (
+              // Çöp modunda tek aksiyon: seçilenleri geri getir. (Kalıcı silme YOK.)
+              <Button
+                variant="primary"
+                size="sm"
+                icon={loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <RotateCcw className="h-4 w-4" />}
+                onClick={() => bulkApi('restore', {})}
+                disabled={loading}
+              >
+                {loading ? tCommon('saving') : t('restore')}
+              </Button>
+            ) : (
+              <>
+                <Button variant="secondary" size="sm" icon={<GitBranch className="h-4 w-4" />} onClick={() => openModal('stage')}>
+                  {t('changeStage')}
+                </Button>
+                <Button variant="secondary" size="sm" icon={<UserPlus className="h-4 w-4" />} onClick={() => openModal('assign')}>
+                  {t('assign')}
+                </Button>
+                <Button variant="secondary" size="sm" icon={<Tag className="h-4 w-4" />} onClick={() => openModal('tag')}>
+                  {t('addTag')}
+                </Button>
+                <Button
+                  variant="secondary"
+                  size="sm"
+                  icon={runningRules ? <Loader2 className="h-4 w-4 animate-spin" /> : <Play className="h-4 w-4" />}
+                  onClick={handleRunRules}
+                  disabled={runningRules}
+                >
+                  {runningRules ? tRouting('running') : tRouting('runRules')}
+                </Button>
+                {runRulesResult && (
+                  <span className="text-xs text-gray-600">{runRulesResult}</span>
+                )}
+                <Button variant="danger" size="sm" icon={<Trash2 className="h-4 w-4" />} onClick={() => openModal('delete')}>
+                  {t('delete')}
+                </Button>
+              </>
             )}
-            <Button variant="danger" size="sm" icon={<Trash2 className="h-4 w-4" />} onClick={() => openModal('delete')}>
-              {t('delete')}
-            </Button>
           </div>
           <div className="ml-auto">
             <Button variant="ghost" size="sm" onClick={clearSelection}>
