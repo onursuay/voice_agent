@@ -82,6 +82,7 @@ export default function SettingsPage() {
     { key: 'logs', label: t('tabs.logs'), icon: <ScrollText className="h-4 w-4" /> },
     ...(canManageAccess ? [{ key: 'access', label: tAccess('title'), icon: <ShieldCheck className="h-4 w-4" /> }] : []),
     ...(userRole === 'owner' ? [{ key: 'notifications', label: t('tabs.notifications'), icon: <Bell className="h-4 w-4" /> }] : []),
+    ...(userRole === 'owner' ? [{ key: 'backup', label: t('tabs.backup'), icon: <DatabaseBackup className="h-4 w-4" /> }] : []),
   ];
 
   // Org state
