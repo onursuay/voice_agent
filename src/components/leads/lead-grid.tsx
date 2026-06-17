@@ -1326,13 +1326,23 @@ export function LeadGrid({ loading = false }: { loading?: boolean }) {
                   >
                     <ExternalLink className="h-3 w-3" />
                   </button>
-                  <button
-                    onClick={(e) => { e.stopPropagation(); handleDeleteLead(lead.id); }}
-                    className="flex h-6 w-6 items-center justify-center rounded bg-white text-gray-400 shadow-sm ring-1 ring-gray-200 transition-colors hover:text-red-500"
-                    title={tCommon('delete')}
-                  >
-                    <X className="h-3 w-3" />
-                  </button>
+                  {trashMode ? (
+                    <button
+                      onClick={(e) => { e.stopPropagation(); handleRestoreLead(lead.id); }}
+                      className="flex h-6 w-6 items-center justify-center rounded bg-white text-gray-400 shadow-sm ring-1 ring-gray-200 transition-colors hover:text-emerald-600"
+                      title={t('restore')}
+                    >
+                      <RotateCcw className="h-3 w-3" />
+                    </button>
+                  ) : (
+                    <button
+                      onClick={(e) => { e.stopPropagation(); handleDeleteLead(lead.id); }}
+                      className="flex h-6 w-6 items-center justify-center rounded bg-white text-gray-400 shadow-sm ring-1 ring-gray-200 transition-colors hover:text-red-500"
+                      title={tCommon('delete')}
+                    >
+                      <X className="h-3 w-3" />
+                    </button>
+                  )}
                 </div>
               )}
             </div>
