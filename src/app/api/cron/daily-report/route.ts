@@ -51,6 +51,7 @@ export async function GET(request: Request) {
       .from('leads')
       .select('full_name, phone, email, city, routing_status, contact_attempts, contact_outcome, stage:crm_stages(name), assigned_user:profiles!leads_assigned_to_fkey(full_name)')
       .eq('organization_id', orgId)
+      .is('deleted_at', null)
       .gte('created_at', startIso)
       .order('created_at', { ascending: true });
 
@@ -58,6 +59,7 @@ export async function GET(request: Request) {
       .from('leads')
       .select('assigned_to, contact_attempts, contact_outcome, sla_alert_first_at, assigned_user:profiles!leads_assigned_to_fkey(full_name), stage:crm_stages(is_won,is_lost)')
       .eq('organization_id', orgId)
+      .is('deleted_at', null)
       .not('assigned_to', 'is', null);
 
     const leadRows = (todays || []).map((l) => ({
