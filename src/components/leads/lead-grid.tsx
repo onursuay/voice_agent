@@ -726,6 +726,25 @@ export function LeadGrid({ loading = false }: { loading?: boolean }) {
     }
   }, [deleteLead]);
 
+  // Çöp modunda satır-içi geri getirme.
+  const handleRestoreLead = useCallback(async (id: string) => {
+    try {
+      const res = await fetch('/api/leads/bulk', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'restore', lead_ids: [id] }),
+      });
+      if (!res.ok) {
+        const body = await res.json().catch(() => ({}));
+        console.error('Lead geri getirilemedi:', body.error || res.status);
+        return;
+      }
+      deleteLead(id); // çöp görünümünden çıkar (artık aktif)
+    } catch (err) {
+      console.error('Lead restore error:', err);
+    }
+  }, [deleteLead]);
+
   // ── Copy lead to clipboard ────────────────────────────
   const handleCopyLead = useCallback((lead: Lead) => {
     const text = `${lead.full_name || ''}\t${lead.phone || ''}\t${lead.email || ''}\t${lead.company || ''}`;
