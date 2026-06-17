@@ -227,6 +227,10 @@ export async function POST(request: NextRequest) {
       }
 
       case 'restore': {
+        // Geri getirme yalnız owner'a açık — owner olmayanlar bu işlemi yapamaz/görmez.
+        if (membership.role !== 'owner') {
+          return NextResponse.json({ error: 'Only owners can restore leads' }, { status: 403 });
+        }
         // Çöp Kutusu'ndan geri getir (deleted_at temizle).
         const adminSupabase = createAdminSupabaseClient();
         const { data: restored, error } = await adminSupabase
