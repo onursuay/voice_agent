@@ -141,6 +141,7 @@ export async function runInactivityReminders(): Promise<ReminderRunResult> {
       .from('leads')
       .select('*')
       .eq('organization_id', orgId)
+      .is('deleted_at', null)
       .eq('routing_status', 'sent')
       .eq('stage_id', entryStage.id)
       .not('assigned_to', 'is', null);
