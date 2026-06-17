@@ -1355,8 +1355,8 @@ export function LeadGrid({ loading = false }: { loading?: boolean }) {
         {!loading && leads.length === 0 && (
           <div className="flex items-center justify-center py-20 text-gray-400">
             <div className="text-center">
-              <p className="text-lg font-medium">{t('gridEmptyTitle')}</p>
-              <p className="mt-1 text-sm">{t('gridEmptyDesc')}</p>
+              <p className="text-lg font-medium">{trashMode ? t('trashEmptyTitle') : t('gridEmptyTitle')}</p>
+              <p className="mt-1 text-sm">{trashMode ? t('trashEmptyDesc') : t('gridEmptyDesc')}</p>
             </div>
           </div>
         )}
