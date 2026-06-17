@@ -171,6 +171,9 @@ export const useAppStore = create<AppStore>((set, get) => ({
   importJobFilter: null,
   setImportJobFilter: (importJobFilter) => set({ importJobFilter }),
 
+  importJobs: [],
+  setImportJobs: (importJobs) => set({ importJobs }),
+
   formFilter: null,
   setFormFilter: (formFilter) => set({ formFilter }),
 
