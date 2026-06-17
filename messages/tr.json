@@ -343,7 +343,27 @@
       "integrations": "Entegrasyonlar",
       "logs": "Log Kayıtları",
       "access": "Erişim Yönetimi",
-      "notifications": "Bildirimler"
+      "notifications": "Bildirimler",
+      "backup": "Yedek & Geri Yükleme"
+    },
+    "backup": {
+      "title": "Lead Yedekleme & Geri Yükleme",
+      "desc": "Lead'leriniz her gece otomatik yedeklenir. Silinen lead'ler kalıcı kaybolmaz — Çöp Kutusu'ndan ya da bir yedekten geri getirilebilir. Geri yükleme mevcut aktif lead'leri ezmez; yalnız eksik/silinmiş olanları geri ekler.",
+      "backupNow": "Şimdi Yedekle",
+      "backingUp": "Yedekleniyor…",
+      "backedUp": "Yedek alındı ({count} lead).",
+      "autoDaily": "Otomatik günlük yedek aktif",
+      "history": "Yedek Geçmişi",
+      "empty": "Henüz yedek yok. İlk yedek bu gece otomatik alınacak veya şimdi alabilirsiniz.",
+      "count": "{count} lead",
+      "restore": "Geri Yükle",
+      "restoring": "Geri yükleniyor…",
+      "restored": "{count} lead geri getirildi.",
+      "confirmRestore": "Bu yedekten eksik/silinmiş lead'ler geri getirilecek. Mevcut aktif lead'lere dokunulmaz. Devam edilsin mi?",
+      "reasonDaily": "Otomatik (günlük)",
+      "reasonManual": "Manuel",
+      "reasonPreRestore": "Geri yükleme öncesi",
+      "ownerOnly": "Bu bölümü yalnızca organizasyon sahibi görebilir."
     },
     "logs": {
       "title": "Log Kayıtları",
