@@ -157,7 +157,8 @@ export default function SettingsPage() {
       const { data: leads } = await supabase
         .from('leads')
         .select('stage_id')
-        .eq('organization_id', session.organization.id);
+        .eq('organization_id', session.organization.id)
+        .is('deleted_at', null);
 
       if (leads) {
         const counts: Record<string, number> = {};
