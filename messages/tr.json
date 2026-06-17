@@ -317,6 +317,11 @@
     "tagsCellPlaceholder": "etiket1, etiket2...",
     "gridEmptyTitle": "Henüz lead yok",
     "gridEmptyDesc": "Yukarıdaki boş satıra tıklayarak yeni lead ekleyebilirsiniz",
+    "trash": "Çöp Kutusu",
+    "trashToggleHint": "Silinen lead'ler — hiçbiri kalıcı silinmez, buradan geri getirebilirsin",
+    "restore": "Geri Getir",
+    "trashEmptyTitle": "Çöp kutusu boş",
+    "trashEmptyDesc": "Silinmiş lead yok. Sildiğin lead'ler buraya gelir ve istediğin zaman geri getirebilirsin.",
     "leadId": "Lead ID"
   },
   "settings": {
