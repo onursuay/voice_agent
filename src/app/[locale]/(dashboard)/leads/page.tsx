@@ -79,46 +79,79 @@ export default function LeadsPage() {
 
   useEffect(() => { if (pagesReady) fetchLeads(); }, [fetchLeads, pagesReady]);
 
-  // Load connected Meta pages for the account dropdown; restore saved selection.
-  // Resets the filter (and clears storage) when the saved page no longer exists,
-  // so a disconnected page never silently filters the list down to zero leads.
-  // Flips `pagesReady` last (always), which releases the gated first fetch with
-  // the correct account already applied.
+  // Load the account dropdown's two sources (connected Meta pages + import lists)
+  // and restore the saved account selection. The saved account is either a Meta
+  // page ({type:'page'}) or an import list ({type:'import'}); whichever it is, we
+  // re-apply it (an import selection also re-shapes the visible columns). Drops the
+  // selection if its page/import no longer exists, so a stale account never filters
+  // the list silently to zero. Flips `pagesReady` last (always), releasing the
+  // gated first fetch with the correct account already applied.
   useEffect(() => {
     let cancelled = false;
     (async () => {
+      let pages: { page_id: string; page_name: string | null }[] = [];
+      let jobs: { id: string; file_name: string; status: string; total_rows: number; created_rows: number; created_at: string; column_mapping?: Record<string, string> }[] = [];
       try {
-        const res = await fetch('/api/integrations/meta/pages');
-        if (res.ok) {
-          const data = await res.json() as { pages?: { page_id: string; page_name: string | null }[] };
-          const pages = data.pages || [];
-          if (cancelled) return;
-          setConnectedPages(pages);
-          let stored: string | null = null;
-          try { stored = window.localStorage.getItem('leads.pageFilter'); } catch { /* unavailable */ }
-          const validId = stored && pages.some((p) => p.page_id === stored) ? stored : null;
-          setPageFilter(validId);
-          if (!validId) { try { window.localStorage.removeItem('leads.pageFilter'); } catch { /* unavailable */ } }
-        }
+        const [pagesRes, jobsRes] = await Promise.all([
+          fetch('/api/integrations/meta/pages'),
+          fetch('/api/leads/import'),
+        ]);
+        if (pagesRes.ok) pages = (await pagesRes.json())?.pages || [];
+        if (jobsRes.ok) jobs = (await jobsRes.json())?.imports || [];
       } catch { /* ignore */ }
-      finally {
-        if (!cancelled) {
-          hydratedRef.current = true;
-          setPagesReady(true);
+      if (cancelled) return;
+
+      setConnectedPages(pages);
+      setImportJobs(jobs);
+
+      // Restore saved account selection (Meta page OR import list).
+      let saved: { type?: string; id?: string } | null = null;
+      try {
+        const raw = window.localStorage.getItem('leads.account');
+        if (raw) saved = JSON.parse(raw);
+      } catch { /* unavailable */ }
+
+      let restored = false;
+      if (saved?.type === 'page' && saved.id && pages.some((p) => p.page_id === saved.id)) {
+        setPageFilter(saved.id);
+        restored = true;
+      } else if (saved?.type === 'import' && saved.id) {
+        const job = jobs.find((j) => j.id === saved.id);
+        if (job) {
+          const view = computeImportJobView(job);
+          setImportJobFilter({ id: job.id, name: job.file_name, columns: view.columns });
+          setHiddenColumns(view.hidden);
+          setColumnLabelOverrides(view.labels);
+          restored = true;
         }
       }
+      if (!restored) {
+        try {
+          window.localStorage.removeItem('leads.account');
+          window.localStorage.removeItem('leads.pageFilter'); // legacy key cleanup
+        } catch { /* unavailable */ }
+      }
+
+      hydratedRef.current = true;
+      setPagesReady(true);
     })();
     return () => { cancelled = true; };
-  }, [setConnectedPages, setPageFilter]);
+  }, [setConnectedPages, setImportJobs, setPageFilter, setImportJobFilter, setHiddenColumns, setColumnLabelOverrides]);
 
-  // Persist the active page selection across reloads (only after restore ran).
+  // Persist the active account selection across reloads (only after restore ran).
+  // Mutually exclusive: an import-list selection takes precedence over a page one.
   useEffect(() => {
     if (typeof window === 'undefined' || !hydratedRef.current) return;
     try {
-      if (pageFilter) window.localStorage.setItem('leads.pageFilter', pageFilter);
-      else window.localStorage.removeItem('leads.pageFilter');
+      if (importJobFilter) {
+        window.localStorage.setItem('leads.account', JSON.stringify({ type: 'import', id: importJobFilter.id }));
+      } else if (pageFilter) {
+        window.localStorage.setItem('leads.account', JSON.stringify({ type: 'page', id: pageFilter }));
+      } else {
+        window.localStorage.removeItem('leads.account');
+      }
     } catch { /* localStorage unavailable */ }
-  }, [pageFilter]);
+  }, [pageFilter, importJobFilter]);
 
   useEffect(() => {
     if (leadsNeedRefresh > 0) fetchLeads();
