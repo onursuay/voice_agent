@@ -56,6 +56,7 @@ export default function DashboardPage() {
         .from('leads')
         .select('*, stage:crm_stages(*), assigned_user:profiles!leads_assigned_to_fkey(*)')
         .eq('organization_id', orgId)
+        .is('deleted_at', null)
         .order('created_at', { ascending: false });
       setLeads((data || []) as Lead[]);
       setLoading(false);
