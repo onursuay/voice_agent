@@ -1117,7 +1117,6 @@ export function LeadToolbar() {
           <LeadFilters />
           <SourceFilterDropdown />
           <FormFilterDropdown />
-          <TableFilterDropdown />
           <SortDropdown />
           <ColumnVisibilityDropdown />
           <SyncedToggle />
