@@ -317,6 +317,11 @@
     "tagsCellPlaceholder": "tag1, tag2...",
     "gridEmptyTitle": "No leads yet",
     "gridEmptyDesc": "Click the empty row above to add a new lead",
+    "trash": "Trash",
+    "trashToggleHint": "Deleted leads — nothing is permanently deleted, restore from here",
+    "restore": "Restore",
+    "trashEmptyTitle": "Trash is empty",
+    "trashEmptyDesc": "No deleted leads. Leads you delete land here and can be restored anytime.",
     "leadId": "Lead ID"
   },
   "settings": {
