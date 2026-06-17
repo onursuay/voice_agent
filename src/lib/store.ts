@@ -64,6 +64,11 @@ interface AppStore {
   importJobFilter: { id: string; name: string; columns: string[] } | null;
   setImportJobFilter: (job: { id: string; name: string; columns: string[] } | null) => void;
 
+  // İçe aktarılan listeler (account dropdown'da Meta sayfalarının yanında "hesap"
+  // olarak listelenir). Leads sayfası mount'ta doldurur.
+  importJobs: ImportJobSummary[];
+  setImportJobs: (jobs: ImportJobSummary[]) => void;
+
   // Meta Lead Form filter (filters rows by meta_form_id AND drives dynamic columns)
   formFilter: { id: string; name: string; pageId: string } | null;
   setFormFilter: (form: { id: string; name: string; pageId: string } | null) => void;
