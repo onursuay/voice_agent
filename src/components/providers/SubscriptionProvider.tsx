@@ -39,14 +39,21 @@ export function SubscriptionProvider({ children }: { children: ReactNode }) {
     setSub(prev => ({ ...prev, ...partial }))
   }, [])
 
-  const paid = isPaidSubscription(sub)
-  const trial = isTrialActive(sub)
-  const trialDays = getTrialDaysRemaining(sub)
-  const active = hasActiveSubscription(sub)
+  // Organizasyon sahibi (owner) = en yetkili kişi → sınırsız/kurumsal, deneme yok.
+  // (Abonelik sistemi şu an kozmetik; owner asla "Deneme" görmez/kısıtlanmaz.)
+  const isOwner = useAppStore((s) => s.session?.membership?.role === 'owner')
+  const effective: SubscriptionState = isOwner
+    ? { ...sub, planId: 'enterprise', status: 'active', trialEndDate: null }
+    : sub
+
+  const paid = isPaidSubscription(effective)
+  const trial = isTrialActive(effective)
+  const trialDays = getTrialDaysRemaining(effective)
+  const active = hasActiveSubscription(effective)
 
   return (
     <SubscriptionContext.Provider value={{
-      subscription: sub,
+      subscription: effective,
       updateSubscription,
       isPaid: paid,
       isTrialActive: trial,
