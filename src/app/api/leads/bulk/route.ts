@@ -208,18 +208,38 @@ export async function POST(request: NextRequest) {
       }
 
       case 'delete': {
-        // Use admin client to bypass RLS for delete — auth is already verified above
+        // Soft-delete: kalıcı silmek yerine Çöp Kutusu'na taşı (deleted_at damgala).
+        // Hiçbir lead kalıcı silinmez; Çöp'ten geri getirilebilir.
         const adminSupabase = createAdminSupabaseClient();
         const { data: deleted, error } = await adminSupabase
           .from('leads')
-          .delete()
+          .update({ deleted_at: new Date().toISOString(), deleted_by: user.id })
           .eq('organization_id', orgId)
           .in('id', lead_ids)
+          .is('deleted_at', null)
           .select('id');
         if (error) return NextResponse.json({ error: error.message }, { status: 500 });
         updated = deleted?.length || 0;
         if (updated === 0) {
           return NextResponse.json({ error: 'No leads were deleted. They may not exist or belong to this organization.' }, { status: 404 });
+        }
+        break;
+      }
+
+      case 'restore': {
+        // Çöp Kutusu'ndan geri getir (deleted_at temizle).
+        const adminSupabase = createAdminSupabaseClient();
+        const { data: restored, error } = await adminSupabase
+          .from('leads')
+          .update({ deleted_at: null, deleted_by: null })
+          .eq('organization_id', orgId)
+          .in('id', lead_ids)
+          .not('deleted_at', 'is', null)
+          .select('id');
+        if (error) return NextResponse.json({ error: error.message }, { status: 500 });
+        updated = restored?.length || 0;
+        if (updated === 0) {
+          return NextResponse.json({ error: 'No leads were restored.' }, { status: 404 });
         }
         break;
       }
