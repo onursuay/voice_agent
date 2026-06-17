@@ -135,7 +135,9 @@ export function Sidebar() {
 
   const { subscription, isTrialActive: trial, trialDaysRemaining } = useSubscription();
 
-  const statusLabel = trial
+  const statusLabel = subscription.planId === 'enterprise'
+    ? tSidebar('unlimited')
+    : trial
     ? tSidebar('trialLabel', { days: trialDaysRemaining })
     : subscription.status === 'active'
     ? subscription.planId.charAt(0).toUpperCase() + subscription.planId.slice(1)
