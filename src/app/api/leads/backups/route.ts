@@ -47,7 +47,7 @@ async function insertLeadsFkSafe(admin: AdminClient, rows: Record<string, unknow
 }
 
 // GET — org'un yedeklerini listeler (payload HARİÇ, hafif).
-export async function GET(_request: NextRequest) {
+export async function GET() {
   try {
     const supabase = await createServerSupabaseClient();
     const { data: { user } } = await supabase.auth.getUser();
