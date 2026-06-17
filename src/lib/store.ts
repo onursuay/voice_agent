@@ -173,6 +173,9 @@ export const useAppStore = create<AppStore>((set, get) => ({
   showSynced: false,
   setShowSynced: (showSynced) => set({ showSynced }),
 
+  trashMode: false,
+  setTrashMode: (trashMode) => set({ trashMode }),
+
   importJobFilter: null,
   setImportJobFilter: (importJobFilter) => set({ importJobFilter }),
 
