@@ -61,6 +61,10 @@ interface AppStore {
   showSynced: boolean;
   setShowSynced: (show: boolean) => void;
 
+  // Çöp Kutusu modu: açıkken yalnız silinmiş (soft-delete) leadler listelenir.
+  trashMode: boolean;
+  setTrashMode: (on: boolean) => void;
+
   // Import table filter
   importJobFilter: { id: string; name: string; columns: string[] } | null;
   setImportJobFilter: (job: { id: string; name: string; columns: string[] } | null) => void;
