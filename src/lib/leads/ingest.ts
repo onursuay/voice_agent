@@ -142,6 +142,7 @@ async function findDuplicateLead(
     .from('leads')
     .select('id, full_name, email, phone, city, stage_id, assigned_to, score, source_platform, custom_fields, raw_payload, meta_lead_id, meta_page_id, meta_form_id, meta_ad_id')
     .eq('organization_id', organizationId)
+    .is('deleted_at', null)
     .gte('created_at', recentThreshold)
     .order('created_at', { ascending: false })
     .limit(5);
