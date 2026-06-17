@@ -150,6 +150,8 @@
     "table": "Table",
     "account": "Account",
     "allAccounts": "All accounts",
+    "metaAccounts": "Meta accounts",
+    "importLists": "Imported lists",
     "recentImports": "Recent Imports",
     "noImports": "No imports yet",
     "filterTitle": "Filters",
