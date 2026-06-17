@@ -15,6 +15,10 @@
     {
       "path": "/api/cron/sequences",
       "schedule": "*/5 * * * *"
+    },
+    {
+      "path": "/api/cron/leads-backup",
+      "schedule": "0 3 * * *"
     }
   ]
 }
