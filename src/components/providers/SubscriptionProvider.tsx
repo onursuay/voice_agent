@@ -7,9 +7,9 @@ import {
   isPaidSubscription,
   isTrialActive,
   getTrialDaysRemaining,
-  canUseOptimization,
   hasActiveSubscription,
 } from '@/lib/subscription/helpers'
+import { useAppStore } from '@/lib/store'
 
 interface SubscriptionContextValue {
   subscription: SubscriptionState
