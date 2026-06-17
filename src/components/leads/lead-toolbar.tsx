@@ -265,6 +265,7 @@ export function BulkActionBar() {
   const bulkActionModal = useAppStore((s) => s.bulkActionModal);
   const setBulkActionModal = useAppStore((s) => s.setBulkActionModal);
   const setSyncNotice = useAppStore((s) => s.setSyncNotice);
+  const trashMode = useAppStore((s) => s.trashMode);
 
   const [modal, setModal] = useState<BulkModal>(null);
   const [loading, setLoading] = useState(false);
