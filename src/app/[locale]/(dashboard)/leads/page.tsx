@@ -54,15 +54,23 @@ export default function LeadsPage() {
         params.set('sort_by', sort.column);
         params.set('sort_dir', sort.direction);
       }
-      if (filters.length > 0) params.set('filters', JSON.stringify(filters));
-      if (sourceFilter) params.set('source_platform', sourceFilter);
-      if (importJobFilter) params.set('import_job_id', importJobFilter.id);
-      if (formFilter) params.set('meta_form_id', formFilter.id);
-      if (pageFilter) params.set('meta_page_id', pageFilter);
       // Sayfalama yok — tüm leadler tek listede; yeni gelenler created_at artan ile alta eklenir.
       params.set('per_page', '1000');
-      // Meta Custom Audience'e başarıyla senkronize tamamlanmış leadleri varsayılan gizle.
-      if (showSynced) params.set('hide_synced', 'false');
+
+      if (trashMode) {
+        // Çöp Kutusu: yalnız silinmiş leadler; hesap/kaynak/form filtreleri uygulanmaz
+        // (basit, tek bir "geri dönüşüm kutusu" görünümü). Arama korunur.
+        params.set('trash', 'true');
+        params.set('hide_synced', 'false');
+      } else {
+        if (filters.length > 0) params.set('filters', JSON.stringify(filters));
+        if (sourceFilter) params.set('source_platform', sourceFilter);
+        if (importJobFilter) params.set('import_job_id', importJobFilter.id);
+        if (formFilter) params.set('meta_form_id', formFilter.id);
+        if (pageFilter) params.set('meta_page_id', pageFilter);
+        // Meta Custom Audience'e başarıyla senkronize tamamlanmış leadleri varsayılan gizle.
+        if (showSynced) params.set('hide_synced', 'false');
+      }
 
       const res = await fetch(`/api/leads?${params.toString()}`);
       if (!res.ok) throw new Error(t('loadError'));
@@ -76,7 +84,7 @@ export default function LeadsPage() {
     } finally {
       setLoading(false);
     }
-  }, [searchQuery, filters, sort, setLeads, setTotal, t, sourceFilter, importJobFilter, formFilter, pageFilter, showSynced]);
+  }, [searchQuery, filters, sort, setLeads, setTotal, t, sourceFilter, importJobFilter, formFilter, pageFilter, showSynced, trashMode]);
 
   useEffect(() => { if (pagesReady) fetchLeads(); }, [fetchLeads, pagesReady]);
 
