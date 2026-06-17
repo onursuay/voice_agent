@@ -174,11 +174,14 @@ export async function DELETE(request: NextRequest, context: RouteContext) {
     if (!membership) return NextResponse.json({ error: 'No organization' }, { status: 403 });
     const orgId = membership.organization_id;
 
+    // Soft-delete: kalıcı silmek yerine Çöp Kutusu'na taşı (deleted_at damgala).
+    // Hiçbir lead kalıcı silinmez; Çöp'ten geri getirilebilir.
     const { data: deleted, error } = await supabase
       .from('leads')
-      .delete()
+      .update({ deleted_at: new Date().toISOString(), deleted_by: user.id })
       .eq('id', id)
       .eq('organization_id', orgId)
+      .is('deleted_at', null)
       .select('id')
       .single();
 
