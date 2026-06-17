@@ -123,7 +123,8 @@ export async function POST(request: NextRequest) {
     const email = body.email?.trim().toLowerCase() || null;
     const externalPlatformId = body.external_platform_id || null;
 
-    // Dedupe check within org
+    // Dedupe check within org (yalnız AKTİF leadler — çöptekiyle eşleşme yapma,
+    // böylece silinip yeniden gelen lead taze/aktif olarak oluşturulur)
     let existingLead = null;
     if (phone) {
       const { data } = await supabase
@@ -131,6 +132,7 @@ export async function POST(request: NextRequest) {
         .select('*')
         .eq('organization_id', orgId)
         .eq('phone', phone)
+        .is('deleted_at', null)
         .single();
       if (data) existingLead = data;
     }
@@ -140,6 +142,7 @@ export async function POST(request: NextRequest) {
         .select('*')
         .eq('organization_id', orgId)
         .eq('email', email)
+        .is('deleted_at', null)
         .single();
       if (data) existingLead = data;
     }
@@ -149,6 +152,7 @@ export async function POST(request: NextRequest) {
         .select('*')
         .eq('organization_id', orgId)
         .eq('external_platform_id', externalPlatformId)
+        .is('deleted_at', null)
         .single();
       if (data) existingLead = data;
     }
