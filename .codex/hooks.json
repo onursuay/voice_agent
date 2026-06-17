@@ -1,0 +1,15 @@
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "cd \"/Users/onursuay/Desktop/Onur Suay/Web Siteleri/voice_agent\" && git add -A && git commit -m \"auto: save changes\" && git push 2>/dev/null || true"
+          }
+        ]
+      }
+    ]
+  }
+}

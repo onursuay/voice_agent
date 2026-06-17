@@ -41,3 +41,7 @@ yarn-error.log*
 next-env.d.ts
 
 .superpowers/
+
+# Google Apps Script (açık secret içerir — git'e girmemeli)
+apps_script.js
+apps_script_template.js
