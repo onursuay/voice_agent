@@ -35,6 +35,8 @@ export async function GET(request: NextRequest) {
     // Varsayılan: Meta Custom Audience'e başarıyla senkronize (tamamlanmış) leadleri gizle.
     // hide_synced=false → hepsini göster.
     const hideSynced = params.get('hide_synced') !== 'false';
+    // Çöp Kutusu modu: trash=true → yalnız silinmiş (deleted_at dolu) leadleri göster.
+    const trash = params.get('trash') === 'true';
 
     const from = (page - 1) * perPage;
     const to = from + perPage - 1;
@@ -43,6 +45,10 @@ export async function GET(request: NextRequest) {
       .from('leads')
       .select('*, stage:crm_stages(*), assigned_user:profiles!leads_assigned_to_fkey(*)', { count: 'exact' })
       .eq('organization_id', orgId);
+
+    // Soft-delete: normalde silinmişleri gizle; çöp modunda yalnız silinmişleri göster.
+    if (trash) query = query.not('deleted_at', 'is', null);
+    else query = query.is('deleted_at', null);
 
     if (search) {
       // PostgREST .or() filtre injection'ı önle: yapısal karakterleri boşlukla değiştir.
