@@ -531,6 +531,7 @@ export function LeadGrid({ loading = false }: { loading?: boolean }) {
   [t, columnLabelOverrides]);
 
   const leads = useAppStore((s) => s.leads);
+  const trashMode = useAppStore((s) => s.trashMode);
   const selectedLeadIds = useAppStore((s) => s.selectedLeadIds);
   const toggleLeadSelection = useAppStore((s) => s.toggleLeadSelection);
   const selectAllLeads = useAppStore((s) => s.selectAllLeads);
