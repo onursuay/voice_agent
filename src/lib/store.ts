@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import type { AppSession, Lead, CrmStage, FilterConfig, SortConfig, OrganizationMember } from './types';
+import type { ImportJobSummary } from './lead-import-columns';
 
 // Columns hidden by default (still toggleable via the "Kolonlar" menu). These
 // are CRM-internal extras that clutter the table for most lead sources; the
