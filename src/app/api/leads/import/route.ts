@@ -17,16 +17,42 @@ export async function GET(_request: NextRequest) {
     if (!membership) return NextResponse.json({ error: 'No organization' }, { status: 403 });
 
     const admin = createAdminSupabaseClient();
+    const orgId = membership.organization_id;
     const { data: imports, error } = await admin
       .from('import_jobs')
       .select('id, file_name, status, total_rows, created_rows, updated_rows, skipped_rows, error_rows, created_at, column_mapping')
-      .eq('organization_id', membership.organization_id)
+      .eq('organization_id', orgId)
       .order('created_at', { ascending: false })
       .limit(10);
 
     if (error) return NextResponse.json({ error: error.message }, { status: 500 });
 
-    return NextResponse.json({ imports: imports || [] });
+    // Her import için HÂLÂ AKTİF (çöpte olmayan) lead sayısını hesapla. Hesap
+    // menüsü yalnız active_count>0 olanları listeler → import veya lead'leri
+    // silinince filtreden otomatik düşer.
+    const withCounts = await Promise.all(
+      (imports || []).map(async (job) => {
+        const { data: acts } = await admin
+          .from('lead_activities')
+          .select('lead_id')
+          .eq('organization_id', orgId)
+          .contains('metadata', { import_job_id: job.id });
+        const leadIds = [...new Set((acts || []).map((a: { lead_id: string }) => a.lead_id))];
+        let activeCount = 0;
+        if (leadIds.length > 0) {
+          const { count } = await admin
+            .from('leads')
+            .select('id', { count: 'exact', head: true })
+            .eq('organization_id', orgId)
+            .is('deleted_at', null)
+            .in('id', leadIds);
+          activeCount = count || 0;
+        }
+        return { ...job, active_count: activeCount };
+      })
+    );
+
+    return NextResponse.json({ imports: withCounts });
   } catch (err) {
     console.error('GET /api/leads/import error:', err);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
