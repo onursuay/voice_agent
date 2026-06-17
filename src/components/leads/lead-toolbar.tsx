@@ -821,11 +821,15 @@ function SyncedToggle() {
 // ── Çöp Kutusu Toggle ───────────────────────────────────
 // Açıkken yalnız silinmiş (soft-delete) leadler listelenir; oradan geri getirilir.
 // Hiçbir lead kalıcı silinmez — silme = Çöp'e taşıma.
+// YALNIZ owner görür/kullanır — geri getirme owner ayrıcalığıdır.
 function TrashToggle() {
   const t = useTranslations('leads');
   const trashMode = useAppStore((s) => s.trashMode);
   const setTrashMode = useAppStore((s) => s.setTrashMode);
   const clearSelection = useAppStore((s) => s.clearSelection);
+  const isOwner = useAppStore((s) => s.session?.membership?.role === 'owner');
+
+  if (!isOwner) return null;
 
   return (
     <button
