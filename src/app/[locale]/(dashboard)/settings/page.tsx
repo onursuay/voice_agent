@@ -38,7 +38,7 @@ import { NotificationsTab } from '@/components/settings/notifications-tab';
 import { BackupTab } from '@/components/settings/backup-tab';
 import { DatabaseBackup } from 'lucide-react';
 
-type SettingsTab = 'organization' | 'pipeline' | 'profile' | 'logs' | 'access' | 'notifications';
+type SettingsTab = 'organization' | 'pipeline' | 'profile' | 'logs' | 'access' | 'notifications' | 'backup';
 
 type LeadEvent = {
   id: string;
