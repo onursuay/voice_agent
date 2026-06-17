@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useCallback, useRef, useEffect, useMemo } from 'react';
-import { ArrowUp, ArrowDown, ArrowUpDown, X, Trash2, ExternalLink, Copy, ChevronDown } from 'lucide-react';
+import { ArrowUp, ArrowDown, ArrowUpDown, X, Trash2, ExternalLink, Copy, ChevronDown, RotateCcw } from 'lucide-react';
 import { cn, formatRelativeTime, getSourceColor, getScoreColor, getInitials } from '@/lib/utils';
 import { useAppStore } from '@/lib/store';
 import { Badge } from '@/components/ui/badge';
