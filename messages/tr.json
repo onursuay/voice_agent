@@ -150,6 +150,8 @@
     "table": "Tablo",
     "account": "Hesap",
     "allAccounts": "Tüm hesaplar",
+    "metaAccounts": "Meta hesapları",
+    "importLists": "İçe aktarılan listeler",
     "recentImports": "Son İçe Aktarmalar",
     "noImports": "Henüz içe aktarma yok",
     "filterTitle": "Filtreler",
