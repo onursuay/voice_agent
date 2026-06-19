@@ -68,7 +68,7 @@ export interface Lead {
   company: string | null;
   job_title: string | null;
   city: string | null;
-  city_il: string | null; // Serbest metin city'den çözülen kanonik T.C. ili (resolver); NULL = çözülemedi
+  city_il?: string | null; // Serbest metin city'den çözülen kanonik T.C. ili (resolver); NULL/yok = çözülemedi
   country: string | null;
   stage_id: string | null;
   assigned_to: string | null;
