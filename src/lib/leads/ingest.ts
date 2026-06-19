@@ -411,11 +411,21 @@ export async function ingestLead(input: NormalizedLeadInput) {
       updated_at: new Date().toISOString(),
     };
 
-    const { data: createdLead, error: insertError } = await supabase
+    let { data: createdLead, error: insertError } = await supabase
       .from('leads')
       .insert(insertPayload)
-      .select('*, stage:crm_stages(*), assigned_user:profiles!leads_assigned_to_fkey(*)')
+      .select(LEAD_SELECT)
       .single();
+
+    if (isMissingCityIlError(insertError)) {
+      const fallback = { ...insertPayload };
+      delete (fallback as Record<string, unknown>).city_il;
+      ({ data: createdLead, error: insertError } = await supabase
+        .from('leads')
+        .insert(fallback)
+        .select(LEAD_SELECT)
+        .single());
+    }
 
     if (insertError) {
       throw new Error(`Failed to create lead: ${insertError.message}`);
