@@ -2,6 +2,7 @@ import { createAdminSupabaseClient } from '@/lib/supabase/admin';
 import { sendEmail } from '@/lib/email/send';
 import { DEFAULT_ROUTING_TEMPLATE, leadToVars, renderTemplate, type RenderableTemplate } from '@/lib/email/templates';
 import { evaluateConditions, type TriggerConfig } from '@/lib/crm/ruleConditions';
+import { resolveProvinceName } from '@/lib/leads/turkeyProvinces';
 
 export type RoutingTrigger = 'auto' | 'manual';
 
