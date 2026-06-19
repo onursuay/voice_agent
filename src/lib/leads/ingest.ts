@@ -1,4 +1,5 @@
 import { createAdminSupabaseClient } from '@/lib/supabase/admin';
+import { resolveProvinceName } from './turkeyProvinces';
 
 export type IngestionLeadSource = 'meta_lead_form' | 'manual';
 
