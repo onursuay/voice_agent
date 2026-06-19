@@ -321,7 +321,11 @@ export async function ingestLead(input: NormalizedLeadInput) {
         updated_at: new Date().toISOString(),
       };
 
-      if (!input.city) delete (updatePayload as Record<string, unknown>).city;
+      // Yeni şehir geldiyse city + city_il birlikte güncellenir; gelmediyse ikisi de korunur.
+      if (!cityRaw) {
+        delete (updatePayload as Record<string, unknown>).city;
+        delete (updatePayload as Record<string, unknown>).city_il;
+      }
       if (!updatePayload.campaign_name) delete (updatePayload as Record<string, unknown>).campaign_name;
       if (!updatePayload.ad_name) delete (updatePayload as Record<string, unknown>).ad_name;
       if (!updatePayload.form_name) delete (updatePayload as Record<string, unknown>).form_name;
