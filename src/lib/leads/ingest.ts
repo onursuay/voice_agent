@@ -103,6 +103,14 @@ function mergeSource(incoming: IngestionLeadSource, current: string | null | und
   return incomingPriority > currentPriority ? incoming : (current as IngestionLeadSource);
 }
 
+const LEAD_SELECT = '*, stage:crm_stages(*), assigned_user:profiles!leads_assigned_to_fkey(*)';
+
+// city_il kolonu DB'de henüz yoksa (migration uygulanmadıysa) insert/update'i bozmadan
+// alanı atlayıp tekrar dener — deploy ile DB migration sırasından bağımsız güvenlik ağı.
+function isMissingCityIlError(error: { message?: string } | null): boolean {
+  return !!error && /city_il/.test(error.message || '');
+}
+
 async function getFirstStageId(organizationId: string): Promise<string | null> {
   const supabase = createAdminSupabaseClient();
   const { data } = await supabase
