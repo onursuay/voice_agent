@@ -579,6 +579,15 @@ function RoutingRulesSection({ allRules, onRulesChange, members }: RoutingRulesS
                       ...connectedPages.map((p) => ({ value: p.page_id, label: p.page_name || p.page_id })),
                     ]}
                   />
+                ) : form.field === 'city' && form.operator !== 'in' ? (
+                  // Şehir seçilince Değer alanı 81 il'lik açılır liste olur (serbest yazım yerine seçim).
+                  // 'in' (birden çok il) operatöründe virgülle çoklu giriş için metin kutusu korunur.
+                  <Select
+                    label={tR('value')}
+                    value={form.value}
+                    onChange={e => setForm({ ...form, value: e.target.value })}
+                    options={IL_SELECT_OPTIONS}
+                  />
                 ) : (
                   <Input
                     label={tR('value')}
