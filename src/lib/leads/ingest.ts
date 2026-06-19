@@ -339,13 +339,25 @@ export async function ingestLead(input: NormalizedLeadInput) {
       if (!updatePayload.form_name) delete (updatePayload as Record<string, unknown>).form_name;
       if (!input.assignedTo) delete (updatePayload as Record<string, unknown>).assigned_to;
 
-      const { data: updatedLead, error: updateError } = await supabase
+      let { data: updatedLead, error: updateError } = await supabase
         .from('leads')
         .update(updatePayload)
         .eq('id', duplicateLead.id)
         .eq('organization_id', input.organizationId)
-        .select('*, stage:crm_stages(*), assigned_user:profiles!leads_assigned_to_fkey(*)')
+        .select(LEAD_SELECT)
         .single();
+
+      if (isMissingCityIlError(updateError)) {
+        const fallback = { ...updatePayload };
+        delete (fallback as Record<string, unknown>).city_il;
+        ({ data: updatedLead, error: updateError } = await supabase
+          .from('leads')
+          .update(fallback)
+          .eq('id', duplicateLead.id)
+          .eq('organization_id', input.organizationId)
+          .select(LEAD_SELECT)
+          .single());
+      }
 
       if (updateError) {
         throw new Error(`Failed to update lead: ${updateError.message}`);
