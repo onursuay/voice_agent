@@ -252,6 +252,9 @@ export async function ingestLead(input: NormalizedLeadInput) {
   const metaFormId = sanitizeText(input.metaFormId);
   const metaAdId = sanitizeText(input.metaAdId);
   const rawPayload = input.rawPayload ?? input.payload;
+  // Şehir: ham değeri sakla, ayrıca kanonik ile çöz (ilçe/plaka/yazım hatası → il).
+  const cityRaw = sanitizeText(input.city);
+  const cityIl = resolveProvinceName(cityRaw);
 
   const eventPayload = {
     organization_id: input.organizationId,
