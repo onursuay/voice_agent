@@ -13,6 +13,14 @@ import { EmptyState } from '@/components/ui/empty-state';
 import { Spinner } from '@/components/ui/loading';
 import { useTranslations } from 'next-intl';
 import { SequencesSection } from '@/components/automations/sequences-section';
+import { IL_LIST } from '@/lib/leads/turkeyProvinces.data';
+
+// Şehir alanı için 81 il (Türkçe alfabetik sıra) — kural "Değer" dropdown'ı.
+// Kullanıcı yazmak yerine listeden seçer → kural değeri kanonik il adıyla tutarlı olur.
+const IL_SELECT_OPTIONS = [
+  { value: '', label: '—' },
+  ...[...IL_LIST].sort((a, b) => a.localeCompare(b, 'tr')).map((il) => ({ value: il, label: il })),
+];
 
 interface AutomationRule {
   id: string;
