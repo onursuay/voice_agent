@@ -44,8 +44,14 @@ export async function evaluateLeadRouting(
       .eq('action_type', 'route_lead')
       .order('priority', { ascending: true });
 
+    // Kural eşleştirmesi kanonik il üzerinden yapılır: kullanıcı ilçe/plaka/yazım hatası
+    // yazsa bile ("Orhangazi", "34", "Istnbul") doğru ile çözülür. Çözülemezse ham değere düşer.
+    const rawCity = (lead as Record<string, unknown>).city;
+    const resolvedIl = ((lead as Record<string, unknown>).city_il as string | null) || resolveProvinceName(rawCity);
+    const leadForMatch = { ...(lead as Record<string, unknown>), city: resolvedIl ?? rawCity };
+
     const matched = (rules || []).find((r) =>
-      evaluateConditions((r.trigger_config || {}) as TriggerConfig, lead as Record<string, unknown>)
+      evaluateConditions((r.trigger_config || {}) as TriggerConfig, leadForMatch)
     );
 
     if (!matched) {
