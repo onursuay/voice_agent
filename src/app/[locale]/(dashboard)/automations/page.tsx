@@ -404,6 +404,8 @@ function RoutingRulesSection({ allRules, onRulesChange, members, stages, openSig
         assigned_to: form.assigned_to,
         send_email: form.send_email,
         email_template_id: form.email_template_id || null,
+        set_stage_id: form.set_stage_id || null,
+        add_tag: form.add_tag.trim() || null,
       },
       priority: form.priority,
       is_active: form.is_active,
