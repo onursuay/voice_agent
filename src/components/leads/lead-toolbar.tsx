@@ -73,7 +73,7 @@ function SortDropdown() {
         icon={<ArrowUpDown className="h-4 w-4" />}
         onClick={() => setOpen(!open)}
       >
-        {currentLabel}
+        <span className="tb-label">{currentLabel}</span>
         <ChevronDown className="ml-1 h-3 w-3" />
       </Button>
 
