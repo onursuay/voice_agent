@@ -815,8 +815,8 @@ function SyncedToggle() {
       )}
     >
       {showSynced ? <Eye className="h-4 w-4 shrink-0" /> : <EyeOff className="h-4 w-4 shrink-0" />}
-      <span className="shrink-0">{showSynced ? t('syncedShown') : t('syncedHidden')}</span>
-      {total > 0 && <span className="shrink-0 text-gray-400">· {total}</span>}
+      <span className="tb-label shrink-0">{showSynced ? t('syncedShown') : t('syncedHidden')}</span>
+      {total > 0 && <span className="tb-count shrink-0 text-gray-400">· {total}</span>}
     </button>
   );
 }
