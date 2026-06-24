@@ -39,6 +39,8 @@ export interface SyncStage {
   position: number;
   is_won: boolean;
   is_lost: boolean;
+  /** Owner'ın aşamaya atadığı Meta kovası; yoksa sezgisele düşülür. */
+  meta_audience?: 'qualified' | 'unqualified' | 'none' | null;
 }
 
 export interface AudienceSyncResult {
