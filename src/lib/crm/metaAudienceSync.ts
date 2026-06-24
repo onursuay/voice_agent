@@ -63,8 +63,12 @@ function normalizePhone(phone: string): string {
   return phone.replace(/[^0-9]/g, '').replace(/^0+/, '');
 }
 
-function audienceName(stage: SyncStage): string {
-  return `${AUDIENCE_PREFIX} — ${stage.name}`;
+// Audience adı = "<reklam hesabı adı> — <aşama>" (owner: marka/hesap önekli, ör.
+// "Fikret Petrol — Nitelikli"). Böylece Business Manager'da tüm hesapların hedef
+// kitleleri bir arada listelenince hangi markaya ait olduğu net görünür. Hesap adı
+// çözülemezse AUDIENCE_PREFIX'e düşer.
+function audienceName(prefix: string, stage: SyncStage): string {
+  return `${prefix} — ${stage.name}`;
 }
 
 interface AudienceEntry { id: string; name: string }
