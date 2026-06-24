@@ -294,6 +294,8 @@ function RoutingRulesSection({ allRules, onRulesChange, members, stages, openSig
     assigned_to: '',
     send_email: true,
     email_template_id: null as string | null,
+    set_stage_id: '',
+    add_tag: '',
     priority: 0,
     is_active: true,
   });
