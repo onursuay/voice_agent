@@ -1283,7 +1283,7 @@ export function LeadGrid({ loading = false }: { loading?: boolean }) {
                         autoFocus
                       />
                     ) : isDropdownOpen && col.key === 'stage' ? (
-                      <div className="relative flex w-full min-w-0 justify-center overflow-hidden whitespace-nowrap">
+                      <div className="relative flex w-full min-w-0 justify-center whitespace-nowrap">
                         {renderCellContent(lead, col)}
                         <StageDropdown
                           stages={stages}
@@ -1293,7 +1293,7 @@ export function LeadGrid({ loading = false }: { loading?: boolean }) {
                         />
                       </div>
                     ) : isDropdownOpen && col.key === 'source_platform' ? (
-                      <div className="relative flex w-full min-w-0 justify-center overflow-hidden whitespace-nowrap">
+                      <div className="relative flex w-full min-w-0 justify-center whitespace-nowrap">
                         {renderCellContent(lead, col)}
                         <PlatformDropdown
                           currentValue={lead.source_platform}
@@ -1302,7 +1302,7 @@ export function LeadGrid({ loading = false }: { loading?: boolean }) {
                         />
                       </div>
                     ) : isDropdownOpen && col.key === 'assigned_to' ? (
-                      <div className="relative flex w-full min-w-0 justify-center overflow-hidden whitespace-nowrap">
+                      <div className="relative flex w-full min-w-0 justify-center whitespace-nowrap">
                         {renderCellContent(lead, col)}
                         <UserDropdown
                           members={members}
