@@ -98,7 +98,7 @@ export function AccountFilter() {
         ) : (
           <Building2 className="h-4 w-4 shrink-0 opacity-70" />
         )}
-        <span className="max-w-[160px] truncate">{activeLabel}</span>
+        <span className="acc-name max-w-[160px] truncate">{activeLabel}</span>
         <ChevronDown className={`h-3.5 w-3.5 text-gray-400 transition-transform duration-150 ${open ? 'rotate-180' : ''}`} />
       </button>
 
