@@ -52,6 +52,8 @@ export interface CrmStage {
   position: number;
   is_won: boolean;
   is_lost: boolean;
+  /** Meta Custom Audience kovası: 'qualified'→Nitelikli, 'unqualified'→Niteliksiz, 'none'/null→hariç. */
+  meta_audience?: 'qualified' | 'unqualified' | 'none' | null;
   created_at: string;
   lead_count?: number;
 }
