@@ -140,7 +140,7 @@ export function LeadFilters() {
         icon={<Filter className="h-4 w-4" />}
         onClick={() => setOpen(!open)}
       >
-        {t('filter')}
+        <span className="tb-label">{t('filter')}</span>
         {filters.length > 0 && (
           <span className="ml-1 inline-flex h-5 w-5 items-center justify-center rounded-full bg-emerald-500 text-[10px] font-bold text-white">
             {filters.length}
