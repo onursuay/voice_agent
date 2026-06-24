@@ -341,6 +341,7 @@ function PlatformDropdown({
 
   const platforms = Object.keys(SOURCE_PLATFORM_LABELS) as LeadSourcePlatform[];
   const sourceLabel = useSourceLabel();
+  const up = useFlipUp(ref);
 
   return (
     <div ref={ref} className="absolute left-0 top-full z-50 mt-0.5 min-w-[160px] rounded-lg border border-gray-200 bg-white py-1 shadow-xl">
