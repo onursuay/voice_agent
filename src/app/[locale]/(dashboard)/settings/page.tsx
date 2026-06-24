@@ -364,7 +364,7 @@ export default function SettingsPage() {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          stages: localStages.map((s, i) => ({ id: s.id, position: i })),
+          stages: localStages.map((s, i) => ({ id: s.id, position: i, meta_audience: s.meta_audience ?? null })),
         }),
       });
       if (!res.ok) {
