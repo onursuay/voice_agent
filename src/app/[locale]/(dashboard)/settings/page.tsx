@@ -302,6 +302,12 @@ export default function SettingsPage() {
     setLocalStages(updated);
   };
 
+  const setStageMetaAudience = (index: number, value: 'qualified' | 'unqualified' | 'none') => {
+    const updated = [...localStages];
+    updated[index] = { ...updated[index], meta_audience: value };
+    setLocalStages(updated);
+  };
+
   const addStage = async () => {
     if (!newStageName.trim()) return;
     setError('');
