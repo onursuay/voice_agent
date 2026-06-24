@@ -312,7 +312,7 @@ export async function reconcileMetaAudienceSync(): Promise<{ checked: number; re
   const getStages = async (orgId: string): Promise<SyncStage[]> => {
     const cached = stagesCache.get(orgId);
     if (cached) return cached;
-    const { data } = await supabase.from('crm_stages').select('id,name,position,is_won,is_lost').eq('organization_id', orgId);
+    const { data } = await supabase.from('crm_stages').select('*').eq('organization_id', orgId);
     const list = (data || []) as unknown as SyncStage[];
     stagesCache.set(orgId, list);
     return list;
