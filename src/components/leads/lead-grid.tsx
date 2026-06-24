@@ -1006,6 +1006,14 @@ export function LeadGrid({ loading = false }: { loading?: boolean }) {
         return <span className="truncate text-gray-700">{lead.campaign_name || ''}</span>;
       case 'city':
         return <span className="truncate text-gray-700">{lead.city || ''}</span>;
+      case 'city_il': {
+        // "Algılanan İl" — şehir çözücünün ham city'den bulduğu kanonik il
+        // (ingest sırasında yazılır). Çözülemediyse "-" göster.
+        const cityIl = (lead as Lead & { city_il?: string | null }).city_il;
+        return cityIl
+          ? <span className="truncate text-gray-700">{cityIl}</span>
+          : <span className="text-gray-400">-</span>;
+      }
       case 'company':
         return <span className="truncate text-gray-700">{lead.company || ''}</span>;
       case 'tags':
