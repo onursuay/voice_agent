@@ -629,7 +629,7 @@ export default function SettingsPage() {
               {localStages.map((stage, index) => (
                 <div
                   key={stage.id}
-                  className="flex items-center gap-3 rounded-lg border border-gray-200 bg-white px-4 py-3 transition-shadow hover:shadow-sm"
+                  className="flex flex-wrap items-center gap-3 rounded-lg border border-gray-200 bg-white px-4 py-3 transition-shadow hover:shadow-sm"
                 >
                   {/* Color dot */}
                   <div
