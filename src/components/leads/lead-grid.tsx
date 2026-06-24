@@ -264,6 +264,18 @@ function HeaderContextMenu({ x, y, colKey, onClose, onSort, onHide, sortAscLabel
 
 // ── Stage Selector Dropdown ─────────────────────────────
 
+// Hücre dropdown'u aşağı açılınca ekranın altına taşıyorsa (tablonun alt satırları)
+// otomatik YUKARI açılsın — alt satırlarda kırpılmasın. İlk render top-full ölçülür;
+// taşıyorsa useLayoutEffect ile (boyamadan önce) bottom-full'a çevrilir (flicker yok).
+function useFlipUp(ref: React.RefObject<HTMLDivElement | null>) {
+  const [up, setUp] = useState(false);
+  useLayoutEffect(() => {
+    const r = ref.current?.getBoundingClientRect();
+    if (r && r.bottom > window.innerHeight - 12) setUp(true);
+  }, [ref]);
+  return up;
+}
+
 function StageDropdown({
   stages,
   currentStageId,
