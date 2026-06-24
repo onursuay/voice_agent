@@ -258,9 +258,12 @@ export async function syncLeadStageToMeta(opts: {
 
   const entryStageId = allStages.reduce<SyncStage | null>((min, s) => (!min || s.position < min.position ? s : min), null)?.id;
   const isEntry = stage.id === entryStageId;
-  // Negatif aşama (kaybedildi/niteliksiz) → "Niteliksiz" kovası; giriş hariç diğer
-  // tüm aşamalar → "Nitelikli" kovası. Lead aynı anda yalnız bir kovada bulunur.
+  // Kova kararı: önce aşamanın AÇIK 'meta_audience' ayarı (owner Ayarlar > Satış
+  // Hattı'ndan her aşamaya seçer); ayar yoksa makul sezgisele düş (giriş→none,
+  // kaybedildi/niteliksiz→unqualified, gerisi→qualified). Böylece migration
+  // uygulanmadan (meta_audience yokken) da doğru çalışır.
   const isNegative = stage.is_lost || /niteliksiz|unqualified|disqualif|spam|geçersiz|hatal[ıi]|kay[ıi]p|kaybed/i.test(stage.name);
+  const bucket = stage.meta_audience ?? (isEntry ? 'none' : isNegative ? 'unqualified' : 'qualified');
   const qualifiedName = `${prefix}/${QUALIFIED_LABEL}`;
   const unqualifiedName = `${prefix}/${UNQUALIFIED_LABEL}`;
 
@@ -269,9 +272,8 @@ export async function syncLeadStageToMeta(opts: {
     const audiences = await findAudiencesByName(client, account, allNames);
 
     // Lead'i hedef kovaya ekle; diğer kovadan çıkar → Meta reklamında Nitelikli
-    // DAHİL, Niteliksiz HARİÇ tutulabilir. Giriş aşamasındaki lead her iki kovadan
-    // da çıkarılır (henüz sınıflanmadı).
-    const targetName = isEntry ? null : (isNegative ? unqualifiedName : qualifiedName);
+    // DAHİL, Niteliksiz HARİÇ tutulabilir. 'none' → her iki kovadan da çıkarılır.
+    const targetName = bucket === 'qualified' ? qualifiedName : bucket === 'unqualified' ? unqualifiedName : null;
     if (targetName) {
       const targetId = await ensureAudience(client, account, targetName, audiences);
       if (targetId) await addUserToAudience(client, targetId, email, phone);
