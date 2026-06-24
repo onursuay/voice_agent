@@ -101,7 +101,7 @@ export async function PATCH(request: NextRequest, context: RouteContext) {
       try {
         const { data: allStages } = await supabase
           .from('crm_stages')
-          .select('id, name, position, is_won, is_lost')
+          .select('*') // meta_audience dahil tüm alanlar (kolon yoksa hata vermez)
           .eq('organization_id', orgId);
         const newStage = (updated as { stage?: SyncStage }).stage;
         if (allStages && newStage) {
