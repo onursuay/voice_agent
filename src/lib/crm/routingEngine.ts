@@ -16,6 +16,8 @@ interface ActionConfig {
   assigned_to?: string | null;
   send_email?: boolean;
   email_template_id?: string | null;
+  set_stage_id?: string | null;
+  add_tag?: string | null;
 }
 
 export async function evaluateLeadRouting(
