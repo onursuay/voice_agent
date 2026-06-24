@@ -267,7 +267,7 @@ export async function syncLeadStageToMeta(opts: {
     // TUTULABİLSİN (YoAi "Dönüşüm" + "Uygun Değil" modeli; dahil/hariç targeting).
     // Yalnız giriş (entry) aşaması kitlesiz kalır: oraya geri dönen lead tüm
     // kitlelerden çıkarılır. (Niteliksiz=audience'a EKLE, çıkarma DEĞİL.)
-    const targetName = isEntry ? null : audienceName(stage);
+    const targetName = isEntry ? null : audienceName(prefix, stage);
     if (targetName) {
       const targetId = await ensureAudience(client, account, targetName, audiences);
       if (targetId) await addUserToAudience(client, targetId, email, phone);
