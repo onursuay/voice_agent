@@ -300,7 +300,7 @@ function StageDropdown({
   }, [onClose]);
 
   return (
-    <div ref={ref} className="absolute left-0 top-full z-50 mt-0.5 min-w-[160px] rounded-lg border border-gray-200 bg-white py-1 shadow-xl">
+    <div ref={ref} className={cn('absolute left-0 z-50 min-w-[160px] rounded-lg border border-gray-200 bg-white py-1 shadow-xl', up ? 'bottom-full mb-0.5' : 'top-full mt-0.5')}>
       {stages.map((stage) => (
         <button
           key={stage.id}
@@ -344,7 +344,7 @@ function PlatformDropdown({
   const up = useFlipUp(ref);
 
   return (
-    <div ref={ref} className="absolute left-0 top-full z-50 mt-0.5 min-w-[160px] rounded-lg border border-gray-200 bg-white py-1 shadow-xl">
+    <div ref={ref} className={cn('absolute left-0 z-50 min-w-[160px] rounded-lg border border-gray-200 bg-white py-1 shadow-xl', up ? 'bottom-full mb-0.5' : 'top-full mt-0.5')}>
       {platforms.map((value) => (
         <button
           key={value}
