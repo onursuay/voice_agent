@@ -167,7 +167,7 @@ function ColumnVisibilityDropdown() {
         icon={<Columns3 className="h-4 w-4" />}
         onClick={() => setOpen(!open)}
       >
-        {t('columns')}
+        <span className="tb-label">{t('columns')}</span>
       </Button>
 
       {open && (
