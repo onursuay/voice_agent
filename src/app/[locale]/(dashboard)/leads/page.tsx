@@ -88,6 +88,17 @@ export default function LeadsPage() {
 
   useEffect(() => { if (pagesReady) fetchLeads(); }, [fetchLeads, pagesReady]);
 
+  // Sayfaya her girişte (ör. Satış Hattı'ndan client-side geçiş) store'da ÖNCEKİ
+  // görünümün lead'leri kalır. pagesReady kapısı açılana dek grid bunları bir an
+  // "yanlış hesap" (ör. Fikret Petrol, en alttaki lead üstte) olarak gösterip
+  // sonra doğru seçili hesaba atlardı. Mount'ta listeyi temizle → doğru hesapla
+  // fetch gelene kadar yükleniyor görünür; yanlış-hesap flaş'ı olmaz.
+  useEffect(() => {
+    setLeads([]);
+    setTotal(0);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   // Load the account dropdown's two sources (connected Meta pages + import lists)
   // and restore the saved account selection. The saved account is either a Meta
   // page ({type:'page'}) or an import list ({type:'import'}); whichever it is, we
