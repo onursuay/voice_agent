@@ -250,6 +250,11 @@ export async function syncLeadStageToMeta(opts: {
   }
   const account = `act_${adRes.data.account_id}`;
 
+  // Audience adlarını markaya göre öneklemek için reklam hesabının adını çek
+  // ("Fikret Petrol"). Çözülemezse jenerik öneke (AUDIENCE_PREFIX) düş.
+  const acctRes = await client.get<{ name?: string }>(`/${account}`, { fields: 'name' });
+  const prefix = (acctRes.ok && acctRes.data?.name?.trim()) ? acctRes.data.name.trim() : AUDIENCE_PREFIX;
+
   const entryStageId = allStages.reduce<SyncStage | null>((min, s) => (!min || s.position < min.position ? s : min), null)?.id;
   const isEntry = stage.id === entryStageId;
 
