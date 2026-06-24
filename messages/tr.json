@@ -409,7 +409,12 @@
       "stageNamePlaceholder": "Örn: Demo Yapıldı",
       "colorLabel": "Renk",
       "saveSorting": "Sıralamayı Kaydet",
-      "sortingSaved": "Sıralama Kaydedildi"
+      "sortingSaved": "Sıralama Kaydedildi",
+      "metaAudienceLabel": "Meta",
+      "metaQualified": "Nitelikli",
+      "metaUnqualified": "Niteliksiz",
+      "metaNone": "Hariç",
+      "metaAudienceHint": "Bu aşamadaki lead'ler hangi Meta hedef kitlesine aktarılsın? Nitelikli = reklamda DAHİL et / lookalike tohumu; Niteliksiz = reklamda HARİÇ tut; Hariç = hiçbir kitleye ekleme. Seçimi 'Sıralamayı Kaydet' ile kaydedin."
     },
     "profile": {
       "title": "Profil Bilgileri",
