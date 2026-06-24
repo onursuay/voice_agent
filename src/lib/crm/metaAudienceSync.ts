@@ -248,15 +248,17 @@ export async function syncLeadStageToMeta(opts: {
 
   const entryStageId = allStages.reduce<SyncStage | null>((min, s) => (!min || s.position < min.position ? s : min), null)?.id;
   const isEntry = stage.id === entryStageId;
-  // Negatif aşama (niteliksiz / kaybedildi): lead Meta'da HİÇBİR kitlede olmamalı.
-  const isNegative = stage.is_lost || /niteliksiz|unqualified|disqualif|spam|geçersiz|hatal[ıi]/i.test(stage.name);
 
   try {
     const allNames = allStages.map(audienceName);
     const audiences = await findAudiencesByName(client, account, allNames);
 
-    // Add to the target stage's audience (entry/negatif stage → no audience: tüm kitlelerden çıkar).
-    const targetName = (isEntry || isNegative) ? null : audienceName(stage);
+    // HER aşama (nitelikli VE niteliksiz/kaybedildi) kendi ayrı Custom Audience'ına
+    // eklenir → Meta reklamında nitelikliler DAHİL EDİLİP niteliksizler HARİÇ
+    // TUTULABİLSİN (YoAi "Dönüşüm" + "Uygun Değil" modeli; dahil/hariç targeting).
+    // Yalnız giriş (entry) aşaması kitlesiz kalır: oraya geri dönen lead tüm
+    // kitlelerden çıkarılır. (Niteliksiz=audience'a EKLE, çıkarma DEĞİL.)
+    const targetName = isEntry ? null : audienceName(stage);
     if (targetName) {
       const targetId = await ensureAudience(client, account, targetName, audiences);
       if (targetId) await addUserToAudience(client, targetId, email, phone);
