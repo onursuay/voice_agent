@@ -289,6 +289,7 @@ function StageDropdown({
 }) {
   const ref = useRef<HTMLDivElement>(null);
   const stageLabel = useStageLabel();
+  const up = useFlipUp(ref);
 
   useEffect(() => {
     const handler = (e: MouseEvent) => {
