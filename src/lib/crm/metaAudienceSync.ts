@@ -63,13 +63,12 @@ function normalizePhone(phone: string): string {
   return phone.replace(/[^0-9]/g, '').replace(/^0+/, '');
 }
 
-// Audience adı = "<reklam hesabı adı> — <aşama>" (owner: marka/hesap önekli, ör.
-// "Fikret Petrol — Nitelikli"). Böylece Business Manager'da tüm hesapların hedef
-// kitleleri bir arada listelenince hangi markaya ait olduğu net görünür. Hesap adı
-// çözülemezse AUDIENCE_PREFIX'e düşer.
-function audienceName(prefix: string, stage: SyncStage): string {
-  return `${prefix} — ${stage.name}`;
-}
+// İKİ sabit kova (owner formatı): pozitif aşamalar → "<Marka>/Nitelikli",
+// negatif aşamalar (kaybedildi/niteliksiz) → "<Marka>/Niteliksiz". Marka = reklam
+// hesabı adı (ör. "Fikret Petrol/Nitelikli"); çözülemezse AUDIENCE_PREFIX. Böylece
+// Meta reklamında Nitelikli DAHİL EDİLİP Niteliksiz HARİÇ tutulabilir.
+const QUALIFIED_LABEL = 'Nitelikli';
+const UNQUALIFIED_LABEL = 'Niteliksiz';
 
 interface AudienceEntry { id: string; name: string }
 
