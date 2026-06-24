@@ -18,7 +18,7 @@ export async function GET(request: Request) {
   try {
     const reminders = await runInactivityReminders();
     const sla = await runSlaChecks();
-    const metaReconcile = await reconcileNegativeStageMeta();
+    const metaReconcile = await reconcileMetaAudienceSync();
     return NextResponse.json({ ok: true, reminders, sla, metaReconcile });
   } catch (e) {
     console.error('[cron/automations] failed', e);
