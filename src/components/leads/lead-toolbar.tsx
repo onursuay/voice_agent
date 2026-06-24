@@ -10,6 +10,7 @@ import {
   ChevronDown,
   UserPlus,
   Tag,
+  FileText,
   Trash2,
   GitBranch,
   X,
