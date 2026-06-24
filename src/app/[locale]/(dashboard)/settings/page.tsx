@@ -150,7 +150,12 @@ export default function SettingsPage() {
 
   // Load stages
   useEffect(() => {
-    setLocalStages([...stages].sort((a, b) => a.position - b.position));
+    // Meta kovası boşsa makul sezgisel ile doldur (giriş→hariç, kaybedildi→niteliksiz, gerisi→nitelikli)
+    const sorted = [...stages].sort((a, b) => a.position - b.position);
+    setLocalStages(sorted.map((s, i) => ({
+      ...s,
+      meta_audience: s.meta_audience ?? (i === 0 ? 'none' : s.is_lost ? 'unqualified' : 'qualified'),
+    })));
   }, [stages]);
 
   // Load lead counts per stage
