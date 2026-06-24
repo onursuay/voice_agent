@@ -125,7 +125,7 @@ export async function POST(request: NextRequest) {
             .in('id', lead_ids);
           const { data: allStages } = await supabase
             .from('crm_stages')
-            .select('id, name, position, is_won, is_lost')
+            .select('*') // meta_audience dahil (kolon yoksa hata vermez)
             .eq('organization_id', orgId);
           const newStage = (allStages || []).find((s) => s.id === data.stage_id);
           if (syncLeads && newStage) {
