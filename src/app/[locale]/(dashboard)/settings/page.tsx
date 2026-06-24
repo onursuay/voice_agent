@@ -649,6 +649,20 @@ export default function SettingsPage() {
                     {stageLeadCounts[stage.id] || 0} {t('pipeline.leadsUnit')}
                   </span>
 
+                  {/* Meta hedef kitle kovası — owner her aşamayı Nitelikli/Niteliksiz/Hariç seçer */}
+                  <div className="flex shrink-0 items-center gap-1" title={t('pipeline.metaAudienceHint')}>
+                    <span className="text-[10px] font-medium uppercase tracking-wide text-gray-400">{t('pipeline.metaAudienceLabel')}</span>
+                    <select
+                      value={stage.meta_audience ?? 'qualified'}
+                      onChange={(e) => setStageMetaAudience(index, e.target.value as 'qualified' | 'unqualified' | 'none')}
+                      className="rounded-md border border-gray-300 bg-white px-2 py-1 text-xs text-gray-700 focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/20"
+                    >
+                      <option value="qualified">{t('pipeline.metaQualified')}</option>
+                      <option value="unqualified">{t('pipeline.metaUnqualified')}</option>
+                      <option value="none">{t('pipeline.metaNone')}</option>
+                    </select>
+                  </div>
+
                   {/* Reorder buttons */}
                   <div className="flex items-center gap-0.5">
                     <button
