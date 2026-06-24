@@ -849,7 +849,7 @@ function TrashToggle() {
       )}
     >
       <Trash className="h-4 w-4 shrink-0" />
-      <span className="shrink-0">{t('trash')}</span>
+      <span className="tb-label shrink-0">{t('trash')}</span>
     </button>
   );
 }
