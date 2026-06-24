@@ -275,7 +275,7 @@ export async function syncLeadStageToMeta(opts: {
 
     // Remove from every other stage's audience (lead lives in exactly one).
     for (const s of allStages) {
-      const name = audienceName(s);
+      const name = audienceName(prefix, s);
       if (name === targetName) continue;
       const id = audiences.get(name);
       if (id) await removeUserFromAudience(client, id, email, phone).catch(() => {});
