@@ -735,7 +735,8 @@ function FormFilterDropdown() {
             : 'border-gray-300 bg-white text-gray-700 hover:bg-gray-50'
         )}
       >
-        <span className="max-w-[120px] truncate">{formFilter ? formFilter.name : t('formFilter')}</span>
+        <FileText className="h-4 w-4 shrink-0 opacity-70" />
+        <span className="tb-label max-w-[120px] truncate">{formFilter ? formFilter.name : t('formFilter')}</span>
         {formFilter ? (
           <X
             className="h-3.5 w-3.5 text-emerald-400 hover:text-emerald-700"
