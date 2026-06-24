@@ -269,11 +269,9 @@ interface RoutingRulesSectionProps {
   allRules: AutomationRule[];
   onRulesChange: (rules: AutomationRule[]) => void;
   members: OrganizationMember[];
-  /** Üstteki "Yeni Otomasyon" butonundan tetiklenince (her artışta) bu builder'ı açar. */
-  openSignal?: number;
 }
 
-function RoutingRulesSection({ allRules, onRulesChange, members, openSignal }: RoutingRulesSectionProps) {
+function RoutingRulesSection({ allRules, onRulesChange, members }: RoutingRulesSectionProps) {
   const tR = useTranslations('routing');
   const tCommon = useTranslations('common');
 
