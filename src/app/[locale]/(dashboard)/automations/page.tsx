@@ -193,7 +193,7 @@ export default function AutomationsPage() {
       </div>
 
       {/* ── Routing Rules Section ── */}
-      <RoutingRulesSection allRules={rules} onRulesChange={setRules} members={members} />
+      <RoutingRulesSection allRules={rules} onRulesChange={setRules} members={members} openSignal={routeCreateSignal} />
 
       {/* AI Orkestra: arama + funnel mail senaryoları */}
       <SequencesSection />
