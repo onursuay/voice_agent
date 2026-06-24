@@ -287,12 +287,14 @@ export async function runSlaChecks(): Promise<{ firstAlerts: number; retryAlerts
 }
 
 /**
- * Negatif aşama (niteliksiz/kaybedildi) → Meta'dan silme GÜVENCESİ (paralel, saatlik).
- * Aşama değişiminde syncLeadStageToMeta zaten çıkarır; bu, Meta hatası nedeniyle
- * çıkarılamamış (meta_sync_error dolu) negatif-aşama Meta leadlerini tekrar dener.
- * Meta bağlı değilse her lead için ucuz erken-çıkış (Meta çağrısı yapılmaz).
+ * Meta Custom Audience sync GÜVENCESİ (paralel, saatlik). Aşama değişiminde
+ * syncLeadStageToMeta best-effort çalışır; bu cron, Meta hatası nedeniyle
+ * senkronize edilememiş (meta_sync_error dolu) TÜM Meta leadlerini — nitelikli,
+ * kazanıldı, niteliksiz/kaybedildi fark etmeksizin — tekrar dener; böylece her
+ * lead doğru ayrı audience'ına (nitelikli DAHİL / niteliksiz HARİÇ tutma için)
+ * düşer. Meta bağlı değilse her lead için ucuz erken-çıkış (Meta çağrısı yok).
  */
-export async function reconcileNegativeStageMeta(): Promise<{ checked: number; reconciled: number; failed: number }> {
+export async function reconcileMetaAudienceSync(): Promise<{ checked: number; reconciled: number; failed: number }> {
   const supabase = createAdminSupabaseClient();
   const out = { checked: 0, reconciled: 0, failed: 0 };
 
