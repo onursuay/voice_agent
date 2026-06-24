@@ -216,15 +216,24 @@ export async function syncLeadStageToMeta(opts: {
   const { organizationId, lead, stage, allStages } = opts;
   const admin = createAdminSupabaseClient();
 
-  // 1) Meta account token for the org (carries ads_management once reconnected).
-  const { data: accountRow } = await admin
-    .from('integration_settings')
-    .select('config')
-    .eq('provider', 'meta_account')
-    .eq('is_active', true)
-    .filter('config->>organization_id', 'eq', organizationId)
-    .maybeSingle();
-  const userToken = (accountRow?.config as Record<string, unknown> | null)?.userToken as string | undefined;
+  // 1) Token önceliği:
+  //    (a) Merkezi SYSTEM-USER token (env META_SYSTEM_USER_TOKEN) — kalıcı, ads_management
+  //        içerir, App Review GEREKTİRMEZ; owner'ın Business Manager'ındaki reklam
+  //        hesapları için Custom Audience yazar (Sponsorlu/YoAi ile aynı yöntem).
+  //    (b) Yoksa org'un OAuth ile bağladığı hesap token'ı (App Review'a tabi) — geriye
+  //        dönük uyum; gelecekte dış (BM dışı) müşteriler için.
+  const systemToken = process.env.META_SYSTEM_USER_TOKEN?.trim();
+  let userToken = systemToken || undefined;
+  if (!userToken) {
+    const { data: accountRow } = await admin
+      .from('integration_settings')
+      .select('config')
+      .eq('provider', 'meta_account')
+      .eq('is_active', true)
+      .filter('config->>organization_id', 'eq', organizationId)
+      .maybeSingle();
+    userToken = (accountRow?.config as Record<string, unknown> | null)?.userToken as string | undefined;
+  }
   if (!userToken) return { ok: false, reason: 'meta_not_connected' };
 
   // 2) Valid PII to match against (no junk).
