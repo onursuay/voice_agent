@@ -256,25 +256,27 @@ export async function syncLeadStageToMeta(opts: {
 
   const entryStageId = allStages.reduce<SyncStage | null>((min, s) => (!min || s.position < min.position ? s : min), null)?.id;
   const isEntry = stage.id === entryStageId;
+  // Negatif aşama (kaybedildi/niteliksiz) → "Niteliksiz" kovası; giriş hariç diğer
+  // tüm aşamalar → "Nitelikli" kovası. Lead aynı anda yalnız bir kovada bulunur.
+  const isNegative = stage.is_lost || /niteliksiz|unqualified|disqualif|spam|geçersiz|hatal[ıi]|kay[ıi]p|kaybed/i.test(stage.name);
+  const qualifiedName = `${prefix}/${QUALIFIED_LABEL}`;
+  const unqualifiedName = `${prefix}/${UNQUALIFIED_LABEL}`;
 
   try {
-    const allNames = allStages.map((s) => audienceName(prefix, s));
+    const allNames = [qualifiedName, unqualifiedName];
     const audiences = await findAudiencesByName(client, account, allNames);
 
-    // HER aşama (nitelikli VE niteliksiz/kaybedildi) kendi ayrı Custom Audience'ına
-    // eklenir → Meta reklamında nitelikliler DAHİL EDİLİP niteliksizler HARİÇ
-    // TUTULABİLSİN (YoAi "Dönüşüm" + "Uygun Değil" modeli; dahil/hariç targeting).
-    // Yalnız giriş (entry) aşaması kitlesiz kalır: oraya geri dönen lead tüm
-    // kitlelerden çıkarılır. (Niteliksiz=audience'a EKLE, çıkarma DEĞİL.)
-    const targetName = isEntry ? null : audienceName(prefix, stage);
+    // Lead'i hedef kovaya ekle; diğer kovadan çıkar → Meta reklamında Nitelikli
+    // DAHİL, Niteliksiz HARİÇ tutulabilir. Giriş aşamasındaki lead her iki kovadan
+    // da çıkarılır (henüz sınıflanmadı).
+    const targetName = isEntry ? null : (isNegative ? unqualifiedName : qualifiedName);
     if (targetName) {
       const targetId = await ensureAudience(client, account, targetName, audiences);
       if (targetId) await addUserToAudience(client, targetId, email, phone);
     }
 
-    // Remove from every other stage's audience (lead lives in exactly one).
-    for (const s of allStages) {
-      const name = audienceName(prefix, s);
+    // Diğer kovadan çıkar (lead tek kovada yaşar).
+    for (const name of allNames) {
       if (name === targetName) continue;
       const id = audiences.get(name);
       if (id) await removeUserFromAudience(client, id, email, phone).catch(() => {});
