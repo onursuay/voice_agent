@@ -194,6 +194,8 @@ export default function LeadsPage() {
             <p className="text-sm text-red-500">{error}</p>
             <Button variant="secondary" size="sm" onClick={fetchLeads}>{t('retry')}</Button>
           </div>
+        ) : !pagesReady ? (
+          <div className="absolute inset-0 flex items-center justify-center"><Spinner size="md" /></div>
         ) : (
           <LeadGrid loading={loading} />
         )}
