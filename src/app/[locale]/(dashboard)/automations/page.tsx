@@ -354,15 +354,6 @@ function RoutingRulesSection({ allRules, onRulesChange, members }: RoutingRulesS
     setModalOpen(true);
   };
 
-  // Üstteki "Yeni Otomasyon" butonu da bu sütun-bazlı kural builder'ını açsın (tek giriş).
-  useEffect(() => {
-    if (openSignal && openSignal > 0) {
-      setEditingId(null);
-      setForm({ name: '', field: 'city', operator: 'equals', value: '', assigned_to: '', send_email: true, email_template_id: null, priority: 0, is_active: true });
-      setModalOpen(true);
-    }
-  }, [openSignal]);
-
   const openEdit = (rule: AutomationRule) => {
     const conds = (rule.trigger_config?.conditions as Array<{ field: string; operator: string; value: string | string[] }> | undefined) || [];
     const c = conds[0] || { field: 'city', operator: 'equals', value: '' };
