@@ -474,19 +474,7 @@ function RoutingRulesSection({ allRules, onRulesChange, members, stages, openSig
 
   return (
     <div className="space-y-4">
-      {/* Section divider + header */}
-      <div className="border-t border-gray-200 pt-6">
-        <div className="flex items-center justify-between">
-          <div>
-            <h2 className="text-lg font-semibold text-gray-900">{tR('rulesTitle')}</h2>
-            <p className="mt-0.5 text-sm text-gray-500">{tR('rulesDesc')}</p>
-          </div>
-          <Button icon={<Plus className="h-4 w-4" />} onClick={openCreate}>
-            {tR('newRule')}
-          </Button>
-        </div>
-      </div>
-
+      {/* Tek araç: başlık/buton üstteki sayfa başlığında ("Yeni Otomasyon"). Burası sadece liste + builder. */}
       {/* Rules list */}
       {routeRules.length === 0 ? (
         <EmptyState icon={<MapPin className="h-6 w-6" />} title={tR('noRules')} description={tR('noRulesDesc')} />
