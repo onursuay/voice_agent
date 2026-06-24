@@ -80,22 +80,18 @@ export default function AutomationsPage() {
   });
 
   const fetchRules = useCallback(async () => {
-    const mockRules: AutomationRule[] = [
-      { id: 'auto-1', name: t('mockRule1Name'), trigger_type: 'lead_created', trigger_config: {}, action_type: 'assign', action_config: { round_robin: true }, is_active: true, priority: 0, created_at: '2026-03-20T10:00:00Z' },
-      { id: 'auto-2', name: t('mockRule2Name'), trigger_type: 'inactivity', trigger_config: { days: 3 }, action_type: 'create_reminder', action_config: { message: t('mockRule2Message') }, is_active: true, priority: 0, created_at: '2026-03-18T10:00:00Z' },
-      { id: 'auto-3', name: t('mockRule3Name'), trigger_type: 'stage_changed', trigger_config: { to_stage: 'won' }, action_type: 'send_email', action_config: { template: 'congratulations' }, is_active: false, priority: 0, created_at: '2026-03-15T10:00:00Z' },
-    ];
+    // Gerçek kurallar (sahte/örnek YOK — kullanıcı yanılmasın).
     try {
       const res = await fetch('/api/automations');
       if (!res.ok) throw new Error();
       const data = await res.json();
-      setRules(data.rules?.length > 0 ? data.rules : mockRules);
+      setRules(data.rules || []);
     } catch {
-      setRules(mockRules);
+      setRules([]);
     } finally {
       setLoading(false);
     }
-  }, [t]);
+  }, []);
 
   useEffect(() => { fetchRules(); }, [fetchRules]);
 
