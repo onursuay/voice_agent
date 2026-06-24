@@ -355,9 +355,15 @@ function RoutingRulesSection({ allRules, onRulesChange, members, stages, openSig
 
   const openCreate = () => {
     setEditingId(null);
-    setForm({ name: '', field: 'city', operator: 'equals', value: '', assigned_to: '', send_email: true, email_template_id: null, priority: 0, is_active: true });
+    setForm({ name: '', field: 'city', operator: 'equals', value: '', assigned_to: '', send_email: true, email_template_id: null, set_stage_id: '', add_tag: '', priority: 0, is_active: true });
     setModalOpen(true);
   };
+
+  // Üstteki "Yeni Otomasyon" butonu da bu TEK builder'ı açsın (tek giriş noktası).
+  useEffect(() => {
+    if (openSignal && openSignal > 0) openCreate();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [openSignal]);
 
   const openEdit = (rule: AutomationRule) => {
     const conds = (rule.trigger_config?.conditions as Array<{ field: string; operator: string; value: string | string[] }> | undefined) || [];
