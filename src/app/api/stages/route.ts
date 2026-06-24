@@ -108,12 +108,23 @@ export async function PATCH(request: NextRequest) {
       return NextResponse.json({ error: 'stages array is required' }, { status: 400 });
     }
 
+    const VALID_BUCKETS = new Set(['qualified', 'unqualified', 'none']);
     for (const item of body.stages) {
       await supabase
         .from('crm_stages')
         .update({ position: item.position })
         .eq('id', item.id)
         .eq('organization_id', orgId);
+      // Meta kovası ayarı (varsa) ayrı + korumalı güncellenir → kolon henüz yoksa
+      // (migration uygulanmadıysa) sıralama kaydını BOZMAZ, sessizce atlanır.
+      if (item.meta_audience !== undefined && (item.meta_audience === null || VALID_BUCKETS.has(item.meta_audience))) {
+        const { error: maErr } = await supabase
+          .from('crm_stages')
+          .update({ meta_audience: item.meta_audience })
+          .eq('id', item.id)
+          .eq('organization_id', orgId);
+        if (maErr) console.warn('[stages PATCH] meta_audience update skipped:', maErr.message);
+      }
     }
 
     // Return updated stages
