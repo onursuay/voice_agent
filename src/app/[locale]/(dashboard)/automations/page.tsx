@@ -70,6 +70,7 @@ export default function AutomationsPage() {
   const [loading, setLoading] = useState(true);
   const [modalOpen, setModalOpen] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
+  const [routeCreateSignal, setRouteCreateSignal] = useState(0);
   const [form, setForm] = useState({
     name: '',
     trigger_type: '',
