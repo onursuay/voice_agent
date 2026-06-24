@@ -382,8 +382,10 @@ function UserDropdown({
     return () => document.removeEventListener('mousedown', handler);
   }, [onClose]);
 
+  const up = useFlipUp(ref);
+
   return (
-    <div ref={ref} className="absolute left-0 top-full z-50 mt-0.5 min-w-[180px] rounded-lg border border-gray-200 bg-white py-1 shadow-xl">
+    <div ref={ref} className={cn('absolute left-0 z-50 min-w-[180px] rounded-lg border border-gray-200 bg-white py-1 shadow-xl', up ? 'bottom-full mb-0.5' : 'top-full mt-0.5')}>
       <button
         onClick={() => { onSelect(null); onClose(); }}
         className={cn('flex w-full items-center gap-2 px-3 py-1.5 text-sm text-gray-400 hover:bg-gray-100', !currentUserId && 'bg-emerald-50')}
