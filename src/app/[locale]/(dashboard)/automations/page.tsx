@@ -648,6 +648,20 @@ function RoutingRulesSection({ allRules, onRulesChange, members, stages, openSig
                   ]}
                 />
               )}
+
+              {/* Ek aksiyonlar (opsiyonel): aşama değiştir / etiket ekle */}
+              <Select
+                label={tR('actionSetStage')}
+                value={form.set_stage_id}
+                onChange={e => setForm({ ...form, set_stage_id: e.target.value })}
+                options={[{ value: '', label: tR('actionNone') }, ...stages.map(s => ({ value: s.id, label: s.name }))]}
+              />
+              <Input
+                label={tR('actionAddTag')}
+                value={form.add_tag}
+                onChange={e => setForm({ ...form, add_tag: e.target.value })}
+                placeholder={tR('actionAddTagPlaceholder')}
+              />
             </div>
 
             {/* Priority & Active */}
