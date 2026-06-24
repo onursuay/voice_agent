@@ -300,7 +300,7 @@ export async function reconcileMetaAudienceSync(): Promise<{ checked: number; re
 
   const { data: leads } = await supabase
     .from('leads')
-    .select('id, email, phone, full_name, meta_ad_id, meta_capi_sent, organization_id, stage:crm_stages(id,name,position,is_won,is_lost)')
+    .select('id, email, phone, full_name, meta_ad_id, meta_capi_sent, organization_id, stage:crm_stages(*)')
     .is('deleted_at', null)
     .not('meta_ad_id', 'is', null)
     .not('meta_sync_error', 'is', null)
