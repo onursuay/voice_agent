@@ -1247,8 +1247,14 @@ export function LeadGrid({ loading = false }: { loading?: boolean }) {
                       }
                       if (isRowNum) return;
                       setSelectedCell({ row: rowIndex, col: col.key });
-                      // Close any open dropdowns
-                      if (!isDropdownOpen) setDropdownCell(null);
+                      // Seçim tipi kolonlar (Aşama/Kaynak/Atanan/Etiket) TEK TIKLA açılır
+                      // picker ile değişsin — kullanıcı çift tık beklemeden değiştirir.
+                      const isSelectType = col.editable && (col.type === 'stage' || col.type === 'platform' || col.type === 'user' || col.type === 'tags');
+                      if (isSelectType) {
+                        if (!isDropdownOpen) startEditing(rowIndex, col.key);
+                      } else if (!isDropdownOpen) {
+                        setDropdownCell(null);
+                      }
                     }}
                     onDoubleClick={() => {
                       if (!isCheckbox && !isRowNum && col.editable) {
