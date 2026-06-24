@@ -153,39 +153,8 @@ export default function AutomationsPage() {
           </Button>
         </div>
 
-        {generalRules.length === 0 ? (
-          <EmptyState icon={<Zap className="h-6 w-6" />} title={t('noAutomations')} description={t('noAutomationsDesc')} />
-        ) : (
-          <div className="space-y-3">
-            {generalRules.map(rule => (
-              <div key={rule.id} className={`rounded-xl border bg-white p-5 transition-all ${rule.is_active ? 'border-gray-200' : 'border-gray-100 opacity-60'}`}>
-                <div className="flex items-start justify-between gap-4">
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-3 mb-2">
-                      <h3 className="font-semibold text-gray-900">{rule.name}</h3>
-                      {rule.is_active ? <Badge color="green" size="sm">{t('active')}</Badge> : <Badge color="gray" size="sm">{t('passive')}</Badge>}
-                    </div>
-                    <div className="flex items-center gap-2 text-sm text-gray-600">
-                      <Badge color="blue" size="sm">{TRIGGER_LABELS[rule.trigger_type] || rule.trigger_type}</Badge>
-                      <ArrowRight className="h-3.5 w-3.5 text-gray-400" />
-                      <Badge color="purple" size="sm">{ACTION_LABELS[rule.action_type] || rule.action_type}</Badge>
-                    </div>
-                    {rule.trigger_config && Object.keys(rule.trigger_config).length > 0 && (
-                      <p className="mt-2 text-xs text-gray-400">{t('configLabel')}: {JSON.stringify(rule.trigger_config)}</p>
-                    )}
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <button onClick={() => handleToggle(rule)} className="text-gray-400 hover:text-gray-600">
-                      {rule.is_active ? <ToggleRight className="h-6 w-6 text-green-500" /> : <ToggleLeft className="h-6 w-6" />}
-                    </button>
-                    <button onClick={() => handleEdit(rule)} className="rounded-md p-1.5 text-gray-400 hover:bg-gray-100 hover:text-gray-600"><Edit3 className="h-4 w-4" /></button>
-                    <button onClick={() => handleDelete(rule.id)} className="rounded-md p-1.5 text-gray-400 hover:bg-red-50 hover:text-red-500"><Trash2 className="h-4 w-4" /></button>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
+        {/* Eski olay-bazlı otomasyon listesi kaldırıldı — TEK araç: aşağıdaki sütun-bazlı kural builder'ı
+            (Şehir/Kaynak/Form… = değer → temsilciye ata + e-posta + aşama değiştir + etiket). */}
       </div>
 
       {/* ── Routing Rules Section ── */}
