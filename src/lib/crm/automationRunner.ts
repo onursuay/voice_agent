@@ -328,8 +328,6 @@ export async function reconcileMetaAudienceSync(): Promise<{ checked: number; re
   for (const row of (leads as unknown as Row[])) {
     const st = Array.isArray(row.stage) ? row.stage[0] : row.stage;
     if (!st) continue;
-    const isNegative = st.is_lost || /niteliksiz|unqualified|disqualif|spam|geçersiz|hatal[ıi]/i.test(st.name);
-    if (!isNegative) continue;
     out.checked++;
     const allStages = await getStages(row.organization_id);
     const lead: SyncLead = {
