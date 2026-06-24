@@ -259,7 +259,7 @@ export async function syncLeadStageToMeta(opts: {
   const isEntry = stage.id === entryStageId;
 
   try {
-    const allNames = allStages.map(audienceName);
+    const allNames = allStages.map((s) => audienceName(prefix, s));
     const audiences = await findAudiencesByName(client, account, allNames);
 
     // HER aşama (nitelikli VE niteliksiz/kaybedildi) kendi ayrı Custom Audience'ına
