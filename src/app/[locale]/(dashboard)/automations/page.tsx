@@ -147,7 +147,11 @@ export default function AutomationsPage() {
           </div>
           <Button
             icon={<Plus className="h-4 w-4" />}
-            onClick={() => setRouteCreateSignal(s => s + 1)}
+            onClick={() => {
+              setEditingId(null);
+              setForm({ name: '', trigger_type: '', trigger_config: {}, action_type: '', action_config: {} });
+              setModalOpen(true);
+            }}
           >
             {t('newAutomation')}
           </Button>
