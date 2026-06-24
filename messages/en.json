@@ -409,7 +409,12 @@
       "stageNamePlaceholder": "E.g: Demo Done",
       "colorLabel": "Color",
       "saveSorting": "Save Order",
-      "sortingSaved": "Order Saved"
+      "sortingSaved": "Order Saved",
+      "metaAudienceLabel": "Meta",
+      "metaQualified": "Qualified",
+      "metaUnqualified": "Unqualified",
+      "metaNone": "Excluded",
+      "metaAudienceHint": "Which Meta audience should leads in this stage go to? Qualified = include in ads / lookalike seed; Unqualified = exclude from ads; Excluded = no audience. Save with 'Save Order'."
     },
     "profile": {
       "title": "Profile Info",
