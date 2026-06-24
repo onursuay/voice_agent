@@ -368,7 +368,7 @@ function RoutingRulesSection({ allRules, onRulesChange, members, stages, openSig
   const openEdit = (rule: AutomationRule) => {
     const conds = (rule.trigger_config?.conditions as Array<{ field: string; operator: string; value: string | string[] }> | undefined) || [];
     const c = conds[0] || { field: 'city', operator: 'equals', value: '' };
-    const ac = rule.action_config as { assigned_to?: string; send_email?: boolean; email_template_id?: string | null };
+    const ac = rule.action_config as { assigned_to?: string; send_email?: boolean; email_template_id?: string | null; set_stage_id?: string | null; add_tag?: string | null };
     const rawValue = Array.isArray(c.value) ? c.value.join(', ') : (c.value || '');
     setEditingId(rule.id);
     setForm({
