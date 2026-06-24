@@ -318,7 +318,7 @@ export async function reconcileMetaAudienceSync(): Promise<{ checked: number; re
     return list;
   };
 
-  type StageObj = { id: string; name: string; position: number; is_won: boolean; is_lost: boolean };
+  type StageObj = { id: string; name: string; position: number; is_won: boolean; is_lost: boolean; meta_audience?: 'qualified' | 'unqualified' | 'none' | null };
   type Row = {
     id: string; email: string | null; phone: string | null; full_name: string | null;
     meta_ad_id: string | null; meta_capi_sent: boolean | null; organization_id: string;
