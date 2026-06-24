@@ -379,6 +379,8 @@ function RoutingRulesSection({ allRules, onRulesChange, members, stages, openSig
       assigned_to: ac.assigned_to || '',
       send_email: ac.send_email !== false,
       email_template_id: ac.email_template_id || null,
+      set_stage_id: ac.set_stage_id || '',
+      add_tag: ac.add_tag || '',
       priority: rule.priority ?? 0,
       is_active: rule.is_active,
     });
