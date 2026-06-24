@@ -91,6 +91,22 @@ export async function evaluateLeadRouting(
       });
     }
 
+    // Aşama değiştir (kural aksiyonu) — yalnız org-içi geçerli aşama
+    if (action.set_stage_id && action.set_stage_id !== lead.stage_id) {
+      const { data: st } = await supabase
+        .from('crm_stages').select('id')
+        .eq('id', action.set_stage_id).eq('organization_id', lead.organization_id).maybeSingle();
+      if (st) await supabase.from('leads').update({ stage_id: action.set_stage_id }).eq('id', leadId);
+    }
+    // Etiket ekle (kural aksiyonu) — mükerrer eklenmez
+    if (action.add_tag) {
+      const cur = (lead as Record<string, unknown>).tags;
+      const tags: string[] = Array.isArray(cur) ? (cur as string[]) : [];
+      if (!tags.includes(action.add_tag)) {
+        await supabase.from('leads').update({ tags: [...tags, action.add_tag] }).eq('id', leadId);
+      }
+    }
+
     let status: RoutingResult['status'] = 'no_match';
     let providerMessageId: string | null = null;
     let errorMessage: string | null = null;
