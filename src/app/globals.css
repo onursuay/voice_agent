@@ -62,7 +62,13 @@ body {
 /* Leads toolbar — tek satırda tutmak için container-query tabanlı kompaktlama.
    container-type: inline-size paint-containment İÇERMEZ → filtre dropdown'ları
    (absolute) kesilmez. Kompaktlama TÜM toolbar'a (sol filtreler + sağ İçe Aktar/
-   Yeni Lead) uygulanır → her iki grubun yazı boyutu DAİMA tek tip kalır. */
+   Yeni Lead) uygulanır → her iki grubun yazı boyutu DAİMA tek tip kalır.
+   ⚠️ ÖNEMLİ: container-type: inline-size, LAYOUT containment de getirir →
+   .lead-toolbar YENİ BİR STACKING CONTEXT olur. Bu yüzden içindeki z-50
+   filtre dropdown'ları, grid'in sticky başlık/hücrelerinin (z-10/20/30) ALTINDA
+   boyanıp görünmez kalıyordu ("Kaynak/Filtrele açılınca seçim çıkmıyor").
+   Düzeltme: toolbar'ın KENDİ stacking context'ini grid'in üstüne çıkar
+   (lead-toolbar.tsx: `relative z-40` → 40 > grid'in 30'u). Modal/drawer z-50 kalır. */
 .lead-toolbar { container-type: inline-size; }
 @container (max-width: 1220px) {
   .lead-toolbar button { padding-left: 0.5rem; padding-right: 0.5rem; }
