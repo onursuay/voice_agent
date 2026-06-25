@@ -475,7 +475,7 @@ function RoutingRulesSection({ allRules, onRulesChange, members, stages, openSig
           {routeRules
             .slice()
             .sort((a, b) => (a.priority ?? 0) - (b.priority ?? 0))
-            .map(rule => {
+            .map((rule, index, arr) => {
               const ac = rule.action_config as { assigned_to?: string; send_email?: boolean };
               const summary = getConditionSummary(rule);
               return (
