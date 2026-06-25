@@ -73,14 +73,6 @@ function LeadCardContent({ lead, onClick, isDragging }: LeadCardProps) {
             </div>
           )}
         </div>
-        <span
-          className={cn(
-            'shrink-0 inline-flex items-center rounded-full px-2 py-0.5 text-xs font-bold',
-            getScoreColor(lead.score)
-          )}
-        >
-          {lead.score}
-        </span>
       </div>
 
       {/* Phone */}
