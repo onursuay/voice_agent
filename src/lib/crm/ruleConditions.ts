@@ -23,23 +23,42 @@ export function normalizeValue(v: unknown): string {
   return s.normalize('NFD').replace(/[̀-ͯ]/g, '');
 }
 
-function leadFieldValue(lead: Record<string, unknown>, field: string): string {
+// Ham alan değeri (dizi/dize), normalize ETMEDEN — dizi alanlar (tags) için gerekli.
+function rawFieldValue(lead: Record<string, unknown>, field: string): unknown {
   // 'custom.X' → lead.custom_fields[X] (form sorularından gelen dinamik alanlar:
   // amac, butce, konum, zaman vb. — Meta form başlıklarına göre kural kurulabilir)
   if (field.startsWith('custom.')) {
     const cf = lead.custom_fields as Record<string, unknown> | null | undefined;
-    return normalizeValue(cf?.[field.slice(7)]);
+    return cf?.[field.slice(7)];
   }
   const direct = lead[field];
-  if (direct !== undefined && direct !== null && direct !== '') return normalizeValue(direct);
+  if (direct !== undefined && direct !== null && direct !== '') return direct;
   // Düz kolon boşsa aynı isimli form alanına düş (eski kurallarla geriye uyumlu)
   const cf = lead.custom_fields as Record<string, unknown> | null | undefined;
-  if (cf && typeof cf === 'object' && field in cf) return normalizeValue(cf[field]);
-  return normalizeValue(direct);
+  if (cf && typeof cf === 'object' && field in cf) return cf[field];
+  return direct;
 }
 
 export function evaluateCondition(cond: Condition, lead: Record<string, unknown>): boolean {
-  const left = leadFieldValue(lead, cond.field);
+  const raw = rawFieldValue(lead, cond.field);
+
+  // Dizi alan (ör. tags / etiket): eleman-bazlı eşleştir.
+  if (Array.isArray(raw)) {
+    const items = raw.map(normalizeValue);
+    if (cond.operator === 'in') {
+      const arr = (Array.isArray(cond.value) ? cond.value : [cond.value]).map(normalizeValue);
+      return items.some((it) => arr.includes(it));
+    }
+    const r = normalizeValue(Array.isArray(cond.value) ? cond.value[0] : cond.value);
+    switch (cond.operator) {
+      case 'equals': return items.includes(r);
+      case 'not_equals': return !items.includes(r);
+      case 'contains': return items.some((it) => it.includes(r));
+      default: return false;
+    }
+  }
+
+  const left = normalizeValue(raw);
   if (cond.operator === 'in') {
     const arr = (Array.isArray(cond.value) ? cond.value : [cond.value]).map(normalizeValue);
     return arr.includes(left);
