@@ -79,6 +79,49 @@ export async function GET(request: NextRequest) {
       query = query.in('id', leadIds);
     }
 
+    // "Filtrele" panelinden gelen kolon filtreleri (JSON). Daha önce hiç uygulanmıyordu.
+    // Grid kolon anahtarı → gerçek DB kolonu. Join/uuid kolonları (stage, assigned_to)
+    // serbest-metin değerle güvenilir eşleşmediği için atlanır (sessizce).
+    const filtersParam = params.get('filters');
+    if (filtersParam) {
+      try {
+        const filters = JSON.parse(filtersParam) as Array<{ column: string; operator: string; value: string }>;
+        const DB_COL: Record<string, string> = {
+          full_name: 'full_name', email: 'email', phone: 'phone', company: 'company',
+          city: 'city', campaign_name: 'campaign_name', source_platform: 'source_platform',
+          routing_status: 'routing_status', score: 'score', tags: 'tags',
+        };
+        for (const f of (Array.isArray(filters) ? filters : [])) {
+          const col = DB_COL[f?.column];
+          if (!col) continue;
+          const v = String(f.value ?? '').trim();
+          if (col === 'tags') {
+            if (f.operator === 'is_empty') query = query.eq('tags', '{}');
+            else if (f.operator === 'is_not_empty') query = query.neq('tags', '{}');
+            else if (!v) continue;
+            else if (f.operator === 'not_contains') query = query.not('tags', 'cs', `{${v}}`);
+            else if (f.operator === 'in') query = query.overlaps('tags', v.split(',').map(s => s.trim()).filter(Boolean));
+            else query = query.overlaps('tags', [v]); // contains / eq → lead bu etikete sahip
+            continue;
+          }
+          if (f.operator === 'is_empty') { query = query.or(`${col}.is.null,${col}.eq.`); continue; }
+          if (f.operator === 'is_not_empty') { query = query.not(col, 'is', null).neq(col, ''); continue; }
+          if (!v) continue;
+          switch (f.operator) {
+            case 'contains': query = query.ilike(col, `%${v}%`); break;
+            case 'not_contains': query = query.not(col, 'ilike', `%${v}%`); break;
+            case 'eq': query = col === 'score' ? query.eq(col, Number(v)) : query.ilike(col, v); break;
+            case 'neq': query = query.neq(col, v); break;
+            case 'in': query = query.in(col, v.split(',').map(s => s.trim()).filter(Boolean)); break;
+            case 'gt': query = query.gt(col, Number(v)); break;
+            case 'lt': query = query.lt(col, Number(v)); break;
+            case 'gte': query = query.gte(col, Number(v)); break;
+            case 'lte': query = query.lte(col, Number(v)); break;
+          }
+        }
+      } catch { /* geçersiz filters paramı → yoksay */ }
+    }
+
     query = query.order(sortBy, { ascending: sortDir }).range(from, to);
 
     const { data: leads, count, error } = await query;
