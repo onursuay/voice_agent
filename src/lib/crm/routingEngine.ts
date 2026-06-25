@@ -18,6 +18,7 @@ interface ActionConfig {
   email_template_id?: string | null;
   set_stage_id?: string | null;
   add_tag?: string | null;
+  score_delta?: number | null;
 }
 
 export async function evaluateLeadRouting(
