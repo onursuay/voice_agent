@@ -672,25 +672,16 @@ function RoutingRulesSection({ allRules, onRulesChange, members, stages, openSig
               />
             </div>
 
-            {/* Priority & Active */}
-            <div className="grid grid-cols-2 gap-3 items-end">
-              <Input
-                label={tR('priority')}
-                type="number"
-                value={String(form.priority)}
-                onChange={e => setForm({ ...form, priority: Number(e.target.value) })}
-                placeholder="0"
+            {/* Aktif (öncelik artık listede yukarı/aşağı ile belirlenir; numara yok) */}
+            <label className="flex items-center gap-2 cursor-pointer select-none">
+              <input
+                type="checkbox"
+                checked={form.is_active}
+                onChange={e => setForm({ ...form, is_active: e.target.checked })}
+                className="rounded border-gray-300 text-emerald-600 h-4 w-4"
               />
-              <label className="flex items-center gap-2 pb-2 cursor-pointer select-none">
-                <input
-                  type="checkbox"
-                  checked={form.is_active}
-                  onChange={e => setForm({ ...form, is_active: e.target.checked })}
-                  className="rounded border-gray-300 text-emerald-600 h-4 w-4"
-                />
-                <span className="text-sm font-medium text-gray-700">{tR('active')}</span>
-              </label>
-            </div>
+              <span className="text-sm font-medium text-gray-700">{tR('active')}</span>
+            </label>
 
             {/* Footer actions */}
             <div className="flex justify-end gap-2 pt-2">
