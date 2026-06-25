@@ -1078,6 +1078,7 @@
     "actionScore": "Skoru değiştir (+/-)",
     "actionScorePlaceholder": "Örn: +10 veya -5",
     "fieldCity": "Şehir",
+    "fieldTags": "Etiket",
     "opEquals": "Eşittir",
     "opNotEquals": "Eşit değil",
     "opContains": "İçerir",
