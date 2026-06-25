@@ -65,7 +65,9 @@ export function Modal({
       {/* Content */}
       <div
         className={cn(
-          'relative z-10 w-full rounded-xl bg-white shadow-xl',
+          // max-h-[90vh] + flex-col + kaydırılabilir gövde → uzun içerikte pencere
+          // ekrana sığar, başlık/footer sabit kalır, "Kaydet"e her zaman ulaşılır.
+          'relative z-10 flex max-h-[90vh] w-full flex-col rounded-xl bg-white shadow-xl',
           'mx-4 animate-in fade-in zoom-in-95 duration-200',
           sizeStyles[size],
           className
@@ -73,7 +75,7 @@ export function Modal({
       >
         {/* Header */}
         {(title || description) && (
-          <div className="border-b border-gray-100 px-6 py-4">
+          <div className="shrink-0 border-b border-gray-100 px-6 py-4">
             <div className="flex items-start justify-between">
               <div>
                 {title && (
