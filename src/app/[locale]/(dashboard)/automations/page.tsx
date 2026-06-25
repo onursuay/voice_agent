@@ -321,9 +321,17 @@ function RoutingRulesSection({ allRules, onRulesChange, members, stages, openSig
 
   const openCreate = () => {
     setEditingId(null);
-    setForm({ name: '', field: 'city', operator: 'equals', value: '', assigned_to: '', send_email: true, email_template_id: null, set_stage_id: '', add_tag: '', priority: 0, is_active: true });
+    setForm({ name: '', conditions: [{ field: 'city', operator: 'equals', value: '' }], match: 'all', assigned_to: '', send_email: true, email_template_id: null, set_stage_id: '', add_tag: '', score_delta: 0, priority: 0, is_active: true });
     setModalOpen(true);
   };
+
+  // Çoklu koşul yardımcıları (VE/VEYA ile birden çok satır)
+  const updateCondition = (i: number, patch: Partial<{ field: string; operator: string; value: string }>) =>
+    setForm(f => ({ ...f, conditions: f.conditions.map((c, idx) => idx === i ? { ...c, ...patch } : c) }));
+  const addCondition = () =>
+    setForm(f => ({ ...f, conditions: [...f.conditions, { field: 'city', operator: 'equals', value: '' }] }));
+  const removeCondition = (i: number) =>
+    setForm(f => ({ ...f, conditions: f.conditions.length === 1 ? f.conditions : f.conditions.filter((_, idx) => idx !== i) }));
 
   // Üstteki "Yeni Otomasyon" butonu da bu TEK builder'ı açsın (tek giriş noktası).
   useEffect(() => {
