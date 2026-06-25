@@ -1078,6 +1078,7 @@
     "actionScore": "Change score (+/-)",
     "actionScorePlaceholder": "E.g: +10 or -5",
     "fieldCity": "City",
+    "fieldTags": "Tag",
     "opEquals": "Equals",
     "opNotEquals": "Not equals",
     "opContains": "Contains",
