@@ -500,7 +500,13 @@ function RoutingRulesSection({ allRules, onRulesChange, members, stages, openSig
                         {ac.send_email && <Badge color="purple" size="sm">{tR('sendEmail')}</Badge>}
                       </div>
                     </div>
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-1">
+                      <button onClick={() => moveRule(index, 'up')} disabled={index === 0} className="rounded p-1 text-gray-400 hover:bg-gray-100 hover:text-gray-600 disabled:cursor-not-allowed disabled:opacity-30" title={tR('moveUp')}>
+                        <ChevronUp className="h-4 w-4" />
+                      </button>
+                      <button onClick={() => moveRule(index, 'down')} disabled={index === arr.length - 1} className="rounded p-1 text-gray-400 hover:bg-gray-100 hover:text-gray-600 disabled:cursor-not-allowed disabled:opacity-30" title={tR('moveDown')}>
+                        <ChevronDown className="h-4 w-4" />
+                      </button>
                       <button onClick={() => handleToggle(rule)} className="text-gray-400 hover:text-gray-600">
                         {rule.is_active
                           ? <ToggleRight className="h-6 w-6 text-green-500" />
