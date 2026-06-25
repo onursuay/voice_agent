@@ -36,7 +36,6 @@ export const LEAD_COLUMNS: ColumnDef[] = [
   { key: 'email', label: 'email', type: 'email', sortable: true, filterable: true, editable: true, width: 220 },
   { key: 'source_platform', label: 'source_platform', type: 'platform', sortable: true, filterable: true, editable: true, width: 130 },
   { key: 'stage', label: 'stage', type: 'stage', sortable: true, filterable: true, editable: true, width: 150 },
-  { key: 'score', label: 'score', type: 'number', sortable: true, filterable: true, editable: true, width: 80 },
   { key: 'assigned_to', label: 'assigned_to', type: 'user', sortable: true, filterable: true, editable: true, width: 140 },
   { key: 'routing_status', label: 'routing_status', type: 'text', sortable: true, filterable: true, editable: false, width: 130 },
   { key: 'campaign_name', label: 'campaign_name', type: 'text', sortable: true, filterable: true, editable: true, width: 150 },
