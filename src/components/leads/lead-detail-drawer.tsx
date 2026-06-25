@@ -29,7 +29,7 @@ import {
   Hash,
   PhoneCall,
 } from 'lucide-react';
-import { cn, formatRelativeTime, getSourceColor, getScoreColor, getInitials } from '@/lib/utils';
+import { cn, formatRelativeTime, getSourceColor, getInitials } from '@/lib/utils';
 import { useAppStore } from '@/lib/store';
 import type { Lead, LeadActivity, LeadNote, ActivityType, CrmStage } from '@/lib/types';
 import { SOURCE_PLATFORM_LABELS } from '@/lib/types';
