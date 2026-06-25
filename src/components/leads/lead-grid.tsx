@@ -3,7 +3,7 @@
 import React, { useState, useCallback, useRef, useEffect, useLayoutEffect, useMemo } from 'react';
 import { createPortal } from 'react-dom';
 import { ArrowUp, ArrowDown, ArrowUpDown, X, Trash2, ExternalLink, Copy, ChevronDown, RotateCcw } from 'lucide-react';
-import { cn, formatRelativeTime, getSourceColor, getScoreColor, getInitials } from '@/lib/utils';
+import { cn, formatRelativeTime, getSourceColor, getInitials } from '@/lib/utils';
 import { useAppStore } from '@/lib/store';
 import { Badge } from '@/components/ui/badge';
 import { Avatar } from '@/components/ui/avatar';
