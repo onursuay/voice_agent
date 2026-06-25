@@ -1030,10 +1030,6 @@ export function LeadGrid({ loading = false }: { loading?: boolean }) {
           </Badge>
         );
       }
-      case 'score': {
-        const colorCls = getScoreColor(lead.score);
-        return <span className={cn('inline-flex max-w-full overflow-hidden rounded-md px-2 py-0.5 text-xs font-semibold whitespace-nowrap', colorCls)}>{lead.score}</span>;
-      }
       case 'assigned_to': {
         // assigned_user join'i inline güncellemede bayatlayabilir — members'tan da çöz
         const name =
