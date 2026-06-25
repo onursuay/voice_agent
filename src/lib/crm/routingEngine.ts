@@ -107,6 +107,12 @@ export async function evaluateLeadRouting(
         await supabase.from('leads').update({ tags: [...tags, action.add_tag] }).eq('id', leadId);
       }
     }
+    // Skoru değiştir (kural aksiyonu) — mevcut skora ekle/çıkar, 0-100 sınırla
+    if (typeof action.score_delta === 'number' && action.score_delta !== 0) {
+      const curScore = typeof (lead as Record<string, unknown>).score === 'number' ? (lead as { score: number }).score : 0;
+      const next = Math.max(0, Math.min(100, curScore + action.score_delta));
+      if (next !== curScore) await supabase.from('leads').update({ score: next }).eq('id', leadId);
+    }
 
     let status: RoutingResult['status'] = 'no_match';
     let providerMessageId: string | null = null;
