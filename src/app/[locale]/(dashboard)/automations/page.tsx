@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useCallback } from 'react';
-import { Zap, Plus, Trash2, Edit3, ToggleLeft, ToggleRight, ArrowRight, MapPin } from 'lucide-react';
+import { Zap, Plus, Trash2, Edit3, ToggleLeft, ToggleRight, ArrowRight, MapPin, ChevronUp, ChevronDown } from 'lucide-react';
 import { useAppStore } from '@/lib/store';
 import type { OrganizationMember } from '@/lib/types';
 import { Button } from '@/components/ui/button';
