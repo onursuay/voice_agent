@@ -254,14 +254,14 @@ function RoutingRulesSection({ allRules, onRulesChange, members, stages, openSig
   const [connectedPages, setConnectedPages] = useState<{ page_id: string; page_name: string | null }[]>([]);
   const [form, setForm] = useState({
     name: '',
-    field: 'city',
-    operator: 'equals',
-    value: '',
+    conditions: [{ field: 'city', operator: 'equals', value: '' }] as { field: string; operator: string; value: string }[],
+    match: 'all' as 'all' | 'any',
     assigned_to: '',
     send_email: true,
     email_template_id: null as string | null,
     set_stage_id: '',
     add_tag: '',
+    score_delta: 0,
     priority: 0,
     is_active: true,
   });
