@@ -438,17 +438,19 @@ function RoutingRulesSection({ allRules, onRulesChange, members, stages, openSig
   const getConditionSummary = (rule: AutomationRule): string | null => {
     const conditions = rule.trigger_config?.conditions as Array<{ field: string; operator: string; value: string | string[] }> | undefined;
     if (!conditions || conditions.length === 0) return null;
-    const c = conditions[0];
-    const fieldLabel =
-      FIELD_OPTIONS.find((o) => o.value === c.field)?.label ||
-      (c.field.startsWith('custom.') ? c.field.slice(7) : c.field);
-    const opLabel = OP_LABELS[c.operator] || c.operator;
-    let valueStr = Array.isArray(c.value) ? c.value.join(', ') : c.value;
-    // Hesap koşulunda ID yerine sayfa adını göster
-    if (c.field === 'meta_page_id') {
-      valueStr = connectedPages.find((p) => p.page_id === valueStr)?.page_name || valueStr;
-    }
-    return `${fieldLabel} ${opLabel} ${valueStr}`;
+    const sep = (rule.trigger_config?.match as 'all' | 'any') === 'any' ? ' / ' : ' + ';
+    return conditions.map((c) => {
+      const fieldLabel =
+        FIELD_OPTIONS.find((o) => o.value === c.field)?.label ||
+        (c.field.startsWith('custom.') ? c.field.slice(7) : c.field);
+      const opLabel = OP_LABELS[c.operator] || c.operator;
+      let valueStr = Array.isArray(c.value) ? c.value.join(', ') : c.value;
+      // Hesap koşulunda ID yerine sayfa adını göster
+      if (c.field === 'meta_page_id') {
+        valueStr = connectedPages.find((p) => p.page_id === valueStr)?.page_name || valueStr;
+      }
+      return `${fieldLabel} ${opLabel} ${valueStr}`;
+    }).join(sep);
   };
 
   return (
