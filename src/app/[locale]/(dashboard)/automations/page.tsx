@@ -261,7 +261,6 @@ function RoutingRulesSection({ allRules, onRulesChange, members, stages, openSig
     email_template_id: null as string | null,
     set_stage_id: '',
     add_tag: '',
-    score_delta: 0,
     priority: 0,
     is_active: true,
   });
