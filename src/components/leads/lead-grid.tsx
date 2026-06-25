@@ -394,40 +394,45 @@ function UserDropdown({
   onSelect: (userId: string | null) => void;
   onClose: () => void;
 }) {
-  const ref = useRef<HTMLDivElement>(null);
+  const { anchorRef, menuRef, style } = useAnchoredMenu();
 
   useEffect(() => {
     const handler = (e: MouseEvent) => {
-      if (ref.current && !ref.current.contains(e.target as Node)) onClose();
+      const t = e.target as Node;
+      if (menuRef.current && !menuRef.current.contains(t) && anchorRef.current && !anchorRef.current.contains(t)) onClose();
     };
     document.addEventListener('mousedown', handler);
     return () => document.removeEventListener('mousedown', handler);
   }, [onClose]);
 
-  const up = useFlipUp(ref);
-
   return (
-    <div ref={ref} className={cn('absolute left-0 z-50 min-w-[180px] rounded-lg border border-gray-200 bg-white py-1 shadow-xl', up ? 'bottom-full mb-0.5' : 'top-full mt-0.5')}>
-      <button
-        onClick={() => { onSelect(null); onClose(); }}
-        className={cn('flex w-full items-center gap-2 px-3 py-1.5 text-sm text-gray-400 hover:bg-gray-100', !currentUserId && 'bg-emerald-50')}
-      >
-        Atanmamis
-      </button>
-      {members.map((m) => (
-        <button
-          key={m.user_id}
-          onClick={() => { onSelect(m.user_id); onClose(); }}
-          className={cn(
-            'flex w-full items-center gap-2 px-3 py-1.5 text-sm text-gray-700 hover:bg-gray-100',
-            currentUserId === m.user_id && 'bg-emerald-50 font-medium'
-          )}
-        >
-          <Avatar src={m.profile?.avatar_url} name={m.profile?.full_name || ''} size="xs" />
-          {m.profile?.full_name || m.user_id}
-        </button>
-      ))}
-    </div>
+    <>
+      <span ref={anchorRef} aria-hidden className="pointer-events-none absolute inset-0" />
+      {createPortal(
+        <div ref={menuRef} style={style} className="z-[1000] min-w-[180px] rounded-lg border border-gray-200 bg-white py-1 shadow-xl">
+          <button
+            onClick={() => { onSelect(null); onClose(); }}
+            className={cn('flex w-full items-center gap-2 px-3 py-1.5 text-sm text-gray-400 hover:bg-gray-100', !currentUserId && 'bg-emerald-50')}
+          >
+            Atanmamis
+          </button>
+          {members.map((m) => (
+            <button
+              key={m.user_id}
+              onClick={() => { onSelect(m.user_id); onClose(); }}
+              className={cn(
+                'flex w-full items-center gap-2 px-3 py-1.5 text-sm text-gray-700 hover:bg-gray-100',
+                currentUserId === m.user_id && 'bg-emerald-50 font-medium'
+              )}
+            >
+              <Avatar src={m.profile?.avatar_url} name={m.profile?.full_name || ''} size="xs" />
+              {m.profile?.full_name || m.user_id}
+            </button>
+          ))}
+        </div>,
+        document.body
+      )}
+    </>
   );
 }
 
