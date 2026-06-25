@@ -28,7 +28,7 @@ import {
   Target,
   Layers,
 } from 'lucide-react';
-import { cn, formatRelativeTime, getSourceColor, getScoreColor, getInitials } from '@/lib/utils';
+import { cn, formatRelativeTime, getSourceColor, getInitials } from '@/lib/utils';
 import { useAppStore } from '@/lib/store';
 import { SOURCE_PLATFORM_LABELS } from '@/lib/types';
 import type { Lead, CrmStage } from '@/lib/types';
