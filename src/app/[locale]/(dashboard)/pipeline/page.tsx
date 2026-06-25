@@ -459,15 +459,6 @@ export default function PipelinePage() {
               <p className="text-lg font-bold text-gray-900">%{stats.conversionRate}</p>
             </div>
           </div>
-          <div className="flex items-center gap-3 rounded-lg border border-gray-200 bg-white p-3">
-            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-amber-50">
-              <BarChart3 className="h-4.5 w-4.5 text-amber-600" />
-            </div>
-            <div>
-              <p className="text-xs text-gray-500">{t('avgScore')}</p>
-              <p className="text-lg font-bold text-gray-900">{stats.avgScore}</p>
-            </div>
-          </div>
         </div>
       </div>
 
