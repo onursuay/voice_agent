@@ -265,16 +265,25 @@ function HeaderContextMenu({ x, y, colKey, onClose, onSort, onHide, sortAscLabel
 
 // ── Stage Selector Dropdown ─────────────────────────────
 
-// Hücre dropdown'u aşağı açılınca ekranın altına taşıyorsa (tablonun alt satırları)
-// otomatik YUKARI açılsın — alt satırlarda kırpılmasın. İlk render top-full ölçülür;
-// taşıyorsa useLayoutEffect ile (boyamadan önce) bottom-full'a çevrilir (flicker yok).
-function useFlipUp(ref: React.RefObject<HTMLDivElement | null>) {
-  const [up, setUp] = useState(false);
+// Hücre seçim dropdown'ları (Aşama/Kaynak/Atanan): tabloyu KIRPMASIN diye PORTAL ile
+// body'ye position:fixed çizilir; hücre konumuna göre aşağı/yukarı AKILLI açılır ve
+// ekran kenarına göre hizalanır. Böylece HER hesapta, her kaydırma konumunda ve
+// listenin uzunluğundan bağımsız olarak TUTARLI + tam görünür (kırpılmaz).
+function useAnchoredMenu() {
+  const anchorRef = useRef<HTMLSpanElement>(null);
+  const menuRef = useRef<HTMLDivElement>(null);
+  const [style, setStyle] = useState<React.CSSProperties>({ position: 'fixed', left: -9999, top: -9999, visibility: 'hidden' });
   useLayoutEffect(() => {
-    const r = ref.current?.getBoundingClientRect();
-    if (r && r.bottom > window.innerHeight - 12) setUp(true);
-  }, [ref]);
-  return up;
+    const a = anchorRef.current?.getBoundingClientRect();
+    const menu = menuRef.current;
+    if (!a || !menu) return;
+    const mh = menu.offsetHeight, mw = menu.offsetWidth;
+    const openUp = window.innerHeight - a.bottom < mh + 12 && a.top > mh + 12;
+    let left = a.left;
+    if (left + mw > window.innerWidth - 8) left = Math.max(8, window.innerWidth - mw - 8);
+    setStyle({ position: 'fixed', left, top: openUp ? a.top - mh - 4 : a.bottom + 4, visibility: 'visible' });
+  }, []);
+  return { anchorRef, menuRef, style };
 }
 
 function StageDropdown({
@@ -288,34 +297,40 @@ function StageDropdown({
   onSelect: (stageId: string) => void;
   onClose: () => void;
 }) {
-  const ref = useRef<HTMLDivElement>(null);
   const stageLabel = useStageLabel();
-  const up = useFlipUp(ref);
+  const { anchorRef, menuRef, style } = useAnchoredMenu();
 
   useEffect(() => {
     const handler = (e: MouseEvent) => {
-      if (ref.current && !ref.current.contains(e.target as Node)) onClose();
+      const t = e.target as Node;
+      if (menuRef.current && !menuRef.current.contains(t) && anchorRef.current && !anchorRef.current.contains(t)) onClose();
     };
     document.addEventListener('mousedown', handler);
     return () => document.removeEventListener('mousedown', handler);
   }, [onClose]);
 
   return (
-    <div ref={ref} className={cn('absolute left-0 z-50 min-w-[160px] rounded-lg border border-gray-200 bg-white py-1 shadow-xl', up ? 'bottom-full mb-0.5' : 'top-full mt-0.5')}>
-      {stages.map((stage) => (
-        <button
-          key={stage.id}
-          onClick={() => { onSelect(stage.id); onClose(); }}
-          className={cn(
-            'flex w-full items-center gap-2 px-3 py-1.5 text-sm transition-colors hover:bg-gray-100',
-            currentStageId === stage.id && 'bg-emerald-50 font-medium'
-          )}
-        >
-          <span className="h-2.5 w-2.5 rounded-full" style={{ backgroundColor: stage.color }} />
-          {stageLabel(stage)}
-        </button>
-      ))}
-    </div>
+    <>
+      <span ref={anchorRef} aria-hidden className="pointer-events-none absolute inset-0" />
+      {createPortal(
+        <div ref={menuRef} style={style} className="z-[1000] min-w-[180px] rounded-lg border border-gray-200 bg-white py-1 shadow-xl">
+          {stages.map((stage) => (
+            <button
+              key={stage.id}
+              onClick={() => { onSelect(stage.id); onClose(); }}
+              className={cn(
+                'flex w-full items-center gap-2 px-3 py-1.5 text-sm transition-colors hover:bg-gray-100',
+                currentStageId === stage.id && 'bg-emerald-50 font-medium'
+              )}
+            >
+              <span className="h-2.5 w-2.5 rounded-full" style={{ backgroundColor: stage.color }} />
+              {stageLabel(stage)}
+            </button>
+          ))}
+        </div>,
+        document.body
+      )}
+    </>
   );
 }
 
