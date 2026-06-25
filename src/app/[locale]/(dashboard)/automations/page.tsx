@@ -670,13 +670,6 @@ function RoutingRulesSection({ allRules, onRulesChange, members, stages, openSig
                 onChange={e => setForm({ ...form, add_tag: e.target.value })}
                 placeholder={tR('actionAddTagPlaceholder')}
               />
-              <Input
-                label={tR('actionScore')}
-                type="number"
-                value={form.score_delta ? String(form.score_delta) : ''}
-                onChange={e => setForm({ ...form, score_delta: Number(e.target.value) || 0 })}
-                placeholder={tR('actionScorePlaceholder')}
-              />
             </div>
 
             {/* Priority & Active */}
