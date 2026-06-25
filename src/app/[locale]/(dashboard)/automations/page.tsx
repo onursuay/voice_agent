@@ -286,6 +286,7 @@ function RoutingRulesSection({ allRules, onRulesChange, members, stages, openSig
     { value: 'email', label: tR('fieldEmail') },
     { value: 'phone', label: tR('fieldPhone') },
     { value: 'full_name', label: tR('fieldFullName') },
+    { value: 'tags', label: tR('fieldTags') },
     ...customFieldKeys.map((k) => ({ value: `custom.${k}`, label: `${tR('fieldCustomPrefix')}: ${k}` })),
   ];
 
