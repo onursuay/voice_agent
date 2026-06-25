@@ -341,20 +341,23 @@ function RoutingRulesSection({ allRules, onRulesChange, members, stages, openSig
 
   const openEdit = (rule: AutomationRule) => {
     const conds = (rule.trigger_config?.conditions as Array<{ field: string; operator: string; value: string | string[] }> | undefined) || [];
-    const c = conds[0] || { field: 'city', operator: 'equals', value: '' };
-    const ac = rule.action_config as { assigned_to?: string; send_email?: boolean; email_template_id?: string | null; set_stage_id?: string | null; add_tag?: string | null };
-    const rawValue = Array.isArray(c.value) ? c.value.join(', ') : (c.value || '');
+    const ac = rule.action_config as { assigned_to?: string; send_email?: boolean; email_template_id?: string | null; set_stage_id?: string | null; add_tag?: string | null; score_delta?: number };
+    const formConditions = (conds.length ? conds : [{ field: 'city', operator: 'equals', value: '' }]).map(c => ({
+      field: c.field || 'city',
+      operator: c.operator || 'equals',
+      value: Array.isArray(c.value) ? c.value.join(', ') : (c.value || ''),
+    }));
     setEditingId(rule.id);
     setForm({
       name: rule.name,
-      field: c.field || 'city',
-      operator: c.operator || 'equals',
-      value: rawValue,
+      conditions: formConditions,
+      match: ((rule.trigger_config?.match as 'all' | 'any') || 'all'),
       assigned_to: ac.assigned_to || '',
       send_email: ac.send_email !== false,
       email_template_id: ac.email_template_id || null,
       set_stage_id: ac.set_stage_id || '',
       add_tag: ac.add_tag || '',
+      score_delta: typeof ac.score_delta === 'number' ? ac.score_delta : 0,
       priority: rule.priority ?? 0,
       is_active: rule.is_active,
     });
