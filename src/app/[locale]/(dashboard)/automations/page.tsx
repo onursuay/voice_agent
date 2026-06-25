@@ -370,7 +370,6 @@ function RoutingRulesSection({ allRules, onRulesChange, members, stages, openSig
       email_template_id: ac.email_template_id || null,
       set_stage_id: ac.set_stage_id || '',
       add_tag: ac.add_tag || '',
-      score_delta: typeof ac.score_delta === 'number' ? ac.score_delta : 0,
       priority: rule.priority ?? 0,
       is_active: rule.is_active,
     });
