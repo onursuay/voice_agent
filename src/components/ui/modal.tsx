@@ -96,12 +96,12 @@ export function Modal({
           </div>
         )}
 
-        {/* Body */}
-        {children && <div className="px-6 py-4">{children}</div>}
+        {/* Body — uzun içerikte kendi içinde kayar */}
+        {children && <div className="flex-1 overflow-y-auto px-6 py-4">{children}</div>}
 
         {/* Footer */}
         {footer && (
-          <div className="flex items-center justify-end gap-3 border-t border-gray-100 px-6 py-4">
+          <div className="flex shrink-0 items-center justify-end gap-3 border-t border-gray-100 px-6 py-4">
             {footer}
           </div>
         )}
