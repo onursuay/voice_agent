@@ -365,17 +365,18 @@ function RoutingRulesSection({ allRules, onRulesChange, members, stages, openSig
   };
 
   const handleSave = async () => {
-    const conditionValue = form.operator === 'in'
-      ? form.value.split(',').map(v => v.trim()).filter(Boolean)
-      : form.value;
+    const conditions = form.conditions
+      .filter(c => String(c.value).trim() !== '')
+      .map(c => ({
+        field: c.field,
+        operator: c.operator,
+        value: c.operator === 'in' ? c.value.split(',').map(v => v.trim()).filter(Boolean) : c.value.trim(),
+      }));
 
     const payload = {
       name: form.name,
       trigger_type: 'lead_created',
-      trigger_config: {
-        conditions: [{ field: form.field, operator: form.operator, value: conditionValue }],
-        match: 'all',
-      },
+      trigger_config: { conditions, match: form.match },
       action_type: 'route_lead',
       action_config: {
         assigned_to: form.assigned_to,
@@ -383,6 +384,7 @@ function RoutingRulesSection({ allRules, onRulesChange, members, stages, openSig
         email_template_id: form.email_template_id || null,
         set_stage_id: form.set_stage_id || null,
         add_tag: form.add_tag.trim() || null,
+        score_delta: form.score_delta || null,
       },
       priority: form.priority,
       is_active: form.is_active,
