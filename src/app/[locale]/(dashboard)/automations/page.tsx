@@ -321,7 +321,7 @@ function RoutingRulesSection({ allRules, onRulesChange, members, stages, openSig
 
   const openCreate = () => {
     setEditingId(null);
-    setForm({ name: '', conditions: [{ field: 'city', operator: 'equals', value: '' }], match: 'all', assigned_to: '', send_email: true, email_template_id: null, set_stage_id: '', add_tag: '', score_delta: 0, priority: 0, is_active: true });
+    setForm({ name: '', conditions: [{ field: 'city', operator: 'equals', value: '' }], match: 'all', assigned_to: '', send_email: true, email_template_id: null, set_stage_id: '', add_tag: '', priority: 0, is_active: true });
     setModalOpen(true);
   };
 
@@ -332,6 +332,19 @@ function RoutingRulesSection({ allRules, onRulesChange, members, stages, openSig
     setForm(f => ({ ...f, conditions: [...f.conditions, { field: 'city', operator: 'equals', value: '' }] }));
   const removeCondition = (i: number) =>
     setForm(f => ({ ...f, conditions: f.conditions.length === 1 ? f.conditions : f.conditions.filter((_, idx) => idx !== i) }));
+
+  // Öncelik artık NUMARA değil — kurallar listede yukarı/aşağı taşınarak sıralanır
+  // (üstteki = önce kontrol edilir = kazanır). Yeni sıra priority'ye index yazılır.
+  const moveRule = async (index: number, dir: 'up' | 'down') => {
+    const sorted = [...routeRules].sort((a, b) => (a.priority ?? 0) - (b.priority ?? 0));
+    const target = dir === 'up' ? index - 1 : index + 1;
+    if (target < 0 || target >= sorted.length) return;
+    [sorted[index], sorted[target]] = [sorted[target], sorted[index]];
+    await Promise.all(sorted.map((r, i) =>
+      fetch(`/api/automations/${r.id}`, { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ priority: i }) }).catch(() => {})
+    ));
+    await refetch();
+  };
 
   // Üstteki "Yeni Otomasyon" butonu da bu TEK builder'ı açsın (tek giriş noktası).
   useEffect(() => {
