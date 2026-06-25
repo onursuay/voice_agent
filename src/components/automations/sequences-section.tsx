@@ -11,6 +11,13 @@ import { Select } from '@/components/ui/select';
 import { Modal } from '@/components/ui/modal';
 import { Badge } from '@/components/ui/badge';
 import { EmptyState } from '@/components/ui/empty-state';
+import { IL_LIST } from '@/lib/leads/turkeyProvinces.data';
+
+// Şehir "Değer" alanı için 81 il (Türkçe sıralı) — yönlendirme kuralıyla aynı dropdown.
+const IL_SELECT_OPTIONS = [
+  { value: '', label: '—' },
+  ...[...IL_LIST].sort((a, b) => a.localeCompare(b, 'tr')).map((il) => ({ value: il, label: il })),
+];
 
 // AI Orkestra Senaryoları: lead düşünce plana göre AI arama + funnel mail zinciri.
 // Owner burada kurar: tetik koşulu, arama penceresi, adımlar (Ara/Mail + gecikme + koşul).
