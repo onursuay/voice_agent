@@ -6,7 +6,7 @@ import type { ImportJobSummary } from './lead-import-columns';
 // are CRM-internal extras that clutter the table for most lead sources; the
 // user can re-enable any of them. Used both as the initial state and as the
 // baseline that filters (import/form) reset back to.
-export const DEFAULT_HIDDEN_COLUMNS = ['score', 'campaign_name', 'tags'];
+export const DEFAULT_HIDDEN_COLUMNS = ['campaign_name', 'tags'];
 
 interface AppStore {
   // Session
