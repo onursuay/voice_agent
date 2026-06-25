@@ -345,11 +345,12 @@ function PlatformDropdown({
   onSelect: (value: LeadSourcePlatform) => void;
   onClose: () => void;
 }) {
-  const ref = useRef<HTMLDivElement>(null);
+  const { anchorRef, menuRef, style } = useAnchoredMenu();
 
   useEffect(() => {
     const handler = (e: MouseEvent) => {
-      if (ref.current && !ref.current.contains(e.target as Node)) onClose();
+      const t = e.target as Node;
+      if (menuRef.current && !menuRef.current.contains(t) && anchorRef.current && !anchorRef.current.contains(t)) onClose();
     };
     document.addEventListener('mousedown', handler);
     return () => document.removeEventListener('mousedown', handler);
@@ -357,21 +358,26 @@ function PlatformDropdown({
 
   const platforms = Object.keys(SOURCE_PLATFORM_LABELS) as LeadSourcePlatform[];
   const sourceLabel = useSourceLabel();
-  const up = useFlipUp(ref);
 
   return (
-    <div ref={ref} className={cn('absolute left-0 z-50 min-w-[160px] rounded-lg border border-gray-200 bg-white py-1 shadow-xl', up ? 'bottom-full mb-0.5' : 'top-full mt-0.5')}>
-      {platforms.map((value) => (
-        <button
-          key={value}
-          onClick={() => { onSelect(value); onClose(); }}
-          className="flex w-full items-center gap-2 px-3 py-1.5 text-sm text-gray-700 transition-colors hover:bg-gray-100"
-        >
-          <span className="h-2 w-2 rounded-full" style={{ backgroundColor: getSourceColor(value) }} />
-          {sourceLabel(value)}
-        </button>
-      ))}
-    </div>
+    <>
+      <span ref={anchorRef} aria-hidden className="pointer-events-none absolute inset-0" />
+      {createPortal(
+        <div ref={menuRef} style={style} className="z-[1000] min-w-[180px] rounded-lg border border-gray-200 bg-white py-1 shadow-xl">
+          {platforms.map((value) => (
+            <button
+              key={value}
+              onClick={() => { onSelect(value); onClose(); }}
+              className="flex w-full items-center gap-2 px-3 py-1.5 text-sm text-gray-700 transition-colors hover:bg-gray-100"
+            >
+              <span className="h-2 w-2 rounded-full" style={{ backgroundColor: getSourceColor(value) }} />
+              {sourceLabel(value)}
+            </button>
+          ))}
+        </div>,
+        document.body
+      )}
+    </>
   );
 }
 
