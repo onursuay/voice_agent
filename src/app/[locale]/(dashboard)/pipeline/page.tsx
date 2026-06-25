@@ -320,8 +320,7 @@ export default function PipelinePage() {
       return stage?.is_won;
     }).length;
     const conversionRate = total > 0 ? ((wonCount / total) * 100).toFixed(1) : '0';
-    const avgScore = total > 0 ? Math.round(visibleLeads.reduce((sum, l) => sum + l.score, 0) / total) : 0;
-    return { total, wonCount, conversionRate, avgScore };
+    return { total, wonCount, conversionRate };
   }, [visibleLeads, stages]);
 
   // DnD sensors
