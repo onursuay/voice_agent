@@ -1075,6 +1075,8 @@
     "matchAny": "OR (any)",
     "addCondition": "Add condition",
     "removeCondition": "Remove condition",
+    "moveUp": "Move up",
+    "moveDown": "Move down",
     "actionScore": "Change score (+/-)",
     "actionScorePlaceholder": "E.g: +10 or -5",
     "fieldCity": "City",
