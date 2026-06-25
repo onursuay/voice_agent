@@ -295,6 +295,8 @@ export function SequencesSection() {
                     {form.field === 'meta_page_id' ? (
                       <Select label={tR('value')} value={form.value} onChange={e => setForm({ ...form, value: e.target.value })}
                         options={[{ value: '', label: '—' }, ...connectedPages.map(p => ({ value: p.page_id, label: p.page_name || p.page_id }))]} />
+                    ) : form.field === 'city' && form.operator !== 'in' ? (
+                      <Select label={tR('value')} value={form.value} onChange={e => setForm({ ...form, value: e.target.value })} options={IL_SELECT_OPTIONS} />
                     ) : (
                       <Input label={tR('value')} value={form.value} onChange={e => setForm({ ...form, value: e.target.value })} placeholder={tR('valuePlaceholder')} />
                     )}
