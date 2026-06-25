@@ -531,50 +531,72 @@ function RoutingRulesSection({ allRules, onRulesChange, members, stages, openSig
               placeholder={tR('ruleName')}
             />
 
-            {/* Condition block */}
-            <div className="rounded-lg border border-blue-100 bg-blue-50/50 p-4 space-y-3">
-              <p className="text-sm font-semibold text-blue-800">{tR('field')}</p>
-              <div className="grid grid-cols-3 gap-3">
-                <Select
-                  label={tR('field')}
-                  value={form.field}
-                  onChange={e => setForm({ ...form, field: e.target.value })}
-                  options={FIELD_OPTIONS}
-                />
-                <Select
-                  label={tR('operator')}
-                  value={form.operator}
-                  onChange={e => setForm({ ...form, operator: e.target.value })}
-                  options={OPERATOR_OPTIONS}
-                />
-                {form.field === 'meta_page_id' ? (
-                  <Select
-                    label={tR('value')}
-                    value={form.value}
-                    onChange={e => setForm({ ...form, value: e.target.value })}
-                    options={[
-                      { value: '', label: '—' },
-                      ...connectedPages.map((p) => ({ value: p.page_id, label: p.page_name || p.page_id })),
-                    ]}
-                  />
-                ) : form.field === 'city' && form.operator !== 'in' ? (
-                  // Şehir seçilince Değer alanı 81 il'lik açılır liste olur (serbest yazım yerine seçim).
-                  // 'in' (birden çok il) operatöründe virgülle çoklu giriş için metin kutusu korunur.
-                  <Select
-                    label={tR('value')}
-                    value={form.value}
-                    onChange={e => setForm({ ...form, value: e.target.value })}
-                    options={IL_SELECT_OPTIONS}
-                  />
-                ) : (
-                  <Input
-                    label={tR('value')}
-                    value={form.value}
-                    onChange={e => setForm({ ...form, value: e.target.value })}
-                    placeholder={form.operator === 'in' ? tR('valuePlaceholderMulti') : tR('valuePlaceholder')}
-                  />
+            {/* Condition block — ÇOKLU koşul (VE/VEYA), dinamik sütunlar */}
+            <div className="rounded-lg border border-blue-100 bg-blue-50/50 p-4 space-y-2">
+              <div className="flex items-center justify-between">
+                <p className="text-sm font-semibold text-blue-800">{tR('conditionsTitle')}</p>
+                {form.conditions.length > 1 && (
+                  <div className="flex items-center gap-1.5 text-xs text-gray-600">
+                    <span>{tR('matchLabel')}</span>
+                    <select
+                      value={form.match}
+                      onChange={e => setForm({ ...form, match: e.target.value as 'all' | 'any' })}
+                      className="rounded-md border border-gray-300 bg-white px-2 py-1 text-xs"
+                    >
+                      <option value="all">{tR('matchAll')}</option>
+                      <option value="any">{tR('matchAny')}</option>
+                    </select>
+                  </div>
                 )}
               </div>
+              {form.conditions.map((c, i) => (
+                <div key={i} className="flex items-center gap-2">
+                  <select
+                    value={c.field}
+                    onChange={e => updateCondition(i, { field: e.target.value })}
+                    className="min-w-0 flex-1 rounded-md border border-gray-300 bg-white px-2 py-2 text-sm"
+                  >
+                    {FIELD_OPTIONS.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
+                  </select>
+                  <select
+                    value={c.operator}
+                    onChange={e => updateCondition(i, { operator: e.target.value })}
+                    className="shrink-0 rounded-md border border-gray-300 bg-white px-2 py-2 text-sm"
+                  >
+                    {OPERATOR_OPTIONS.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
+                  </select>
+                  {c.field === 'meta_page_id' ? (
+                    <select value={c.value} onChange={e => updateCondition(i, { value: e.target.value })} className="min-w-0 flex-1 rounded-md border border-gray-300 bg-white px-2 py-2 text-sm">
+                      <option value="">—</option>
+                      {connectedPages.map(p => <option key={p.page_id} value={p.page_id}>{p.page_name || p.page_id}</option>)}
+                    </select>
+                  ) : c.field === 'city' && c.operator !== 'in' ? (
+                    // Şehir → 81 il açılır listesi (serbest yazım yerine seçim, kanonik il ile eşleşir)
+                    <select value={c.value} onChange={e => updateCondition(i, { value: e.target.value })} className="min-w-0 flex-1 rounded-md border border-gray-300 bg-white px-2 py-2 text-sm">
+                      {IL_SELECT_OPTIONS.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
+                    </select>
+                  ) : (
+                    <input
+                      value={c.value}
+                      onChange={e => updateCondition(i, { value: e.target.value })}
+                      placeholder={c.operator === 'in' ? tR('valuePlaceholderMulti') : tR('valuePlaceholder')}
+                      className="min-w-0 flex-1 rounded-md border border-gray-300 bg-white px-2 py-2 text-sm"
+                    />
+                  )}
+                  <button
+                    type="button"
+                    onClick={() => removeCondition(i)}
+                    disabled={form.conditions.length === 1}
+                    className="shrink-0 rounded-md p-1.5 text-gray-400 transition-colors hover:bg-red-50 hover:text-red-500 disabled:cursor-not-allowed disabled:opacity-30"
+                    title={tR('removeCondition')}
+                  >
+                    <Trash2 className="h-4 w-4" />
+                  </button>
+                </div>
+              ))}
+              <button type="button" onClick={addCondition} className="text-sm font-medium text-blue-700 transition-colors hover:text-blue-900">
+                + {tR('addCondition')}
+              </button>
             </div>
 
             {/* Action block */}
