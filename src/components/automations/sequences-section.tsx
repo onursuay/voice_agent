@@ -79,6 +79,7 @@ export function SequencesSection() {
     { value: 'meta_page_id', label: tR('fieldPage') },
     { value: 'form_name', label: tR('fieldFormName') },
     { value: 'campaign_name', label: tR('fieldCampaign') },
+    { value: 'tags', label: tR('fieldTags') },
     ...customFieldKeys.map((k) => ({ value: `custom.${k}`, label: `${tR('fieldCustomPrefix')}: ${k}` })),
   ];
   const OPERATOR_OPTIONS = [
