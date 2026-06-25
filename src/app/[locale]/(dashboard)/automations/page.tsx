@@ -685,7 +685,7 @@ function RoutingRulesSection({ allRules, onRulesChange, members, stages, openSig
               <Button variant="secondary" onClick={() => setModalOpen(false)}>{tCommon('cancel')}</Button>
               <Button
                 onClick={handleSave}
-                disabled={!form.name || !form.value}
+                disabled={!form.name || !form.conditions.some(c => c.value.trim() !== '')}
               >
                 {tCommon('save')}
               </Button>
