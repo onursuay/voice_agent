@@ -1075,6 +1075,8 @@
     "matchAny": "Veya (Birisi)",
     "addCondition": "Koşul ekle",
     "removeCondition": "Koşulu kaldır",
+    "moveUp": "Yukarı taşı",
+    "moveDown": "Aşağı taşı",
     "actionScore": "Skoru değiştir (+/-)",
     "actionScorePlaceholder": "Örn: +10 veya -5",
     "fieldCity": "Şehir",
