@@ -1,5 +1,5 @@
 -- ============================================
--- YO DIJITAL - Seed Data
+-- DijiGrow - Seed Data
 -- Realistic Turkish CRM sample data
 -- ============================================
 
@@ -12,7 +12,7 @@
 -- 1. ORGANIZATION
 -- ============================================
 INSERT INTO organizations (id, name, slug, logo_url, settings) VALUES
-  ('00000000-0000-0000-0000-000000000001', 'Yo Dijital', 'yo-dijital', NULL, '{"timezone": "Europe/Istanbul", "currency": "TRY"}')
+  ('00000000-0000-0000-0000-000000000001', 'DijiGrow', 'dijigrow', NULL, '{"timezone": "Europe/Istanbul", "currency": "TRY"}')
 ON CONFLICT (id) DO NOTHING;
 
 -- ============================================
@@ -216,7 +216,7 @@ INSERT INTO lead_activities (id, lead_id, organization_id, user_id, activity_typ
  NULL, 'call_made', 'Arama yapildi', '5 dakika gorusme gerceklesti, demo talebi alindi', '{"duration": 300}', now() - interval '2 days' + interval '2 hours'),
 
 ('00000000-0000-0000-0000-000000000207', '00000000-0000-0000-0000-000000000108', '00000000-0000-0000-0000-000000000001',
- NULL, 'email_sent', 'E-posta gonderildi', 'Sunum dosyasi ve fiyat listesi gonderildi', '{"subject": "Yo Dijital - Cozum Sunumu"}', now() - interval '1 day'),
+ NULL, 'email_sent', 'E-posta gonderildi', 'Sunum dosyasi ve fiyat listesi gonderildi', '{"subject": "DijiGrow - Cozum Sunumu"}', now() - interval '1 day'),
 
 ('00000000-0000-0000-0000-000000000208', '00000000-0000-0000-0000-000000000111', '00000000-0000-0000-0000-000000000001',
  NULL, 'stage_change', 'Asama degistirildi: Iletisime Gecildi -> Nitelikli', NULL,

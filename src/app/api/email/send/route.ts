@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { createServerSupabaseClient } from '@/lib/supabase/server';
 
 const RESEND_API_KEY = process.env.RESEND_API_KEY || '';
-const FROM_EMAIL = process.env.EMAIL_FROM || 'Yo Dijital <info@yodijital.com>';
+const FROM_EMAIL = process.env.EMAIL_FROM || 'DijiGrow <info@dijigrow.com>';
 
 async function sendViaResend(to: string, subject: string, body: string) {
   const res = await fetch('https://api.resend.com/emails', {

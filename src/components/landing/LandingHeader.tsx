@@ -99,7 +99,7 @@ export default function LandingHeader({ lang = 'tr', ctaSchedule, ctaTrial }: Pr
       <div className="max-w-7xl mx-auto flex items-center justify-between px-6 py-3">
 
         <Link href="/" className="shrink-0">
-          <Image src="/logos/yoai-logo.png" alt="Yo Dijital" width={56} height={22} className="object-contain brightness-0 invert" />
+          <Image src="/logos/dijigrow-logo.png" alt="DijiGrow" width={56} height={22} className="object-contain brightness-0 invert" />
         </Link>
 
         <nav className="hidden lg:flex items-center gap-2">

@@ -1,5 +1,5 @@
 // ============================================
-// YO DIJITAL - Meta Lead Form Helpers
+// DijiGrow - Meta Lead Form Helpers
 // ============================================
 
 export interface ParsedLeadFields {

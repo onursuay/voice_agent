@@ -12,11 +12,11 @@ import LandingHeader from './LandingHeader'
 
 const content = {
   tr: {
-    badge: 'VoiceAgent — AI Destekli Hepsi Bir Arada Lead Yönetimi',
+    badge: 'DijiGrow — AI Destekli Hepsi Bir Arada Lead Yönetimi',
     heroLine1: "Lead'lerinizi Toplayın,",
     heroLine2: 'Satışa Dönüştürün',
     heroSub:
-      "Yo Dijital, Meta reklamlarından gelen tüm lead'lerinizi tek merkezden toplamanızı, CRM pipeline ile yönetmenizi ve yapay zeka destekli aramalarla satışa dönüştürmenizi sağlar. Satış ekipleri ve ajanslar için geliştirilen bu yapı sayesinde operasyonel yükünüz azalır, dönüşüm oranınız artar.",
+      "DijiGrow, Meta reklamlarından gelen tüm lead'lerinizi tek merkezden toplamanızı, CRM pipeline ile yönetmenizi ve yapay zeka destekli aramalarla satışa dönüştürmenizi sağlar. Satış ekipleri ve ajanslar için geliştirilen bu yapı sayesinde operasyonel yükünüz azalır, dönüşüm oranınız artar.",
     ctaTrial: '14 Gün Ücretsiz Dene',
     ctaSchedule: 'Görüşme Planla',
     ctaDemo: 'Panelin Demosu',
@@ -61,7 +61,7 @@ const content = {
     ],
     panelAI: 'AI Optimizasyon: Aktif',
     panelPlatforms: '4 kanal senkron',
-    footer: '2025 Yo Dijital. Tüm hakları saklıdır.',
+    footer: '2025 DijiGrow. Tüm hakları saklıdır.',
     legalLinks: [
       { label: 'Gizlilik Politikası', href: '/privacy-policy' },
       { label: 'Kullanım Koşulları', href: '/terms-of-service' },
@@ -70,11 +70,11 @@ const content = {
     ],
   },
   en: {
-    badge: 'VoiceAgent — AI-Powered All-in-One Lead Management',
+    badge: 'DijiGrow — AI-Powered All-in-One Lead Management',
     heroLine1: 'Collect Your Leads,',
     heroLine2: 'Convert to Sales',
     heroSub:
-      'Yo Dijital helps you collect all your leads from Meta ads in one place, manage them through a CRM pipeline, and convert them to sales with AI-powered calls. Designed for sales teams and agencies to reduce operational load and increase conversion rates.',
+      'DijiGrow helps you collect all your leads from Meta ads in one place, manage them through a CRM pipeline, and convert them to sales with AI-powered calls. Designed for sales teams and agencies to reduce operational load and increase conversion rates.',
     ctaTrial: '14-Day Free Trial',
     ctaSchedule: 'Schedule a Meeting',
     ctaDemo: 'Panel Demo',
@@ -119,7 +119,7 @@ const content = {
     ],
     panelAI: 'AI Optimization: Active',
     panelPlatforms: '4 channels synced',
-    footer: '2025 Yo Dijital. All rights reserved.',
+    footer: '2025 DijiGrow. All rights reserved.',
     legalLinks: [
       { label: 'Privacy Policy', href: '/privacy-policy' },
       { label: 'Terms of Service', href: '/terms-of-service' },
@@ -220,7 +220,7 @@ export default function LandingContent() {
         </div>
         <div className="relative max-w-7xl mx-auto text-center">
           <div className="btn-shimmer inline-flex items-center gap-2.5 text-[14px] font-medium text-emerald-400/90 border border-emerald-400/20 bg-emerald-400/[0.06] px-5 py-2.5 rounded-full mb-6">
-            <Image src="/ai-brain.png" alt="" width={18} height={18} style={{ filter: 'brightness(0) saturate(100%) invert(73%) sepia(52%) saturate(456%) hue-rotate(108deg) brightness(95%) contrast(91%)' }} />
+            <Image src="/dijigrow-brain.png" alt="" width={18} height={18} style={{ filter: 'brightness(0) saturate(100%) invert(73%) sepia(52%) saturate(456%) hue-rotate(108deg) brightness(95%) contrast(91%)' }} />
             {c.badge}
           </div>
           <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-[4.5rem] font-black leading-[1.1] tracking-tight text-white mb-5">
@@ -400,7 +400,7 @@ export default function LandingContent() {
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 text-sm">
           {/* Copyright */}
           <div className="flex items-center gap-3 text-gray-500">
-            <Image src="/logo.png" alt="Yo Dijital" width={50} height={18} className="object-contain brightness-0 invert opacity-40" />
+            <Image src="/dijigrow-logo.png" alt="DijiGrow" width={50} height={18} className="object-contain brightness-0 invert opacity-40" />
             <span>{c.footer}</span>
           </div>
 

@@ -1,5 +1,5 @@
 -- ============================================================================
--- AI Orkestra (Sequences) — lead düşünce plana göre AI arama + funnel mail
+-- DijiOrkestra (Sequences) — lead düşünce plana göre AI arama + funnel mail
 -- sequences / sequence_steps / sequence_enrollments + call_logs genişletme
 -- ============================================================================
 

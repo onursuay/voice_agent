@@ -9,11 +9,11 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: 'Voice Agent',
-  description: 'Voice Agent',
+  title: 'DijiGrow',
+  description: 'DijiGrow',
   icons: {
     icon: '/favicon-32.png',
-    apple: '/logo.png',
+    apple: '/apple-icon.png',
   },
 };
 
