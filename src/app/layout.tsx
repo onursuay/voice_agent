@@ -13,7 +13,7 @@ export const metadata: Metadata = {
   description: 'DijiGrow',
   icons: {
     icon: '/favicon-32.png',
-    apple: '/logo.png',
+    apple: '/apple-icon.png',
   },
 };
 

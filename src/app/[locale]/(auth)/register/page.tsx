@@ -133,7 +133,7 @@ export default function RegisterPage() {
       <div className="w-full max-w-[460px] relative z-10">
         <div className="flex justify-center mb-5">
           <Link href="/">
-            <Image src="/logos/yoai-logo.png" alt="DijiGrow" width={80} height={28} className="brightness-0 invert" priority />
+            <Image src="/logos/dijigrow-logo.png" alt="DijiGrow" width={80} height={28} className="brightness-0 invert" priority />
           </Link>
         </div>
 

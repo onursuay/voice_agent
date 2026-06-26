@@ -220,7 +220,7 @@ export default function LandingContent() {
         </div>
         <div className="relative max-w-7xl mx-auto text-center">
           <div className="btn-shimmer inline-flex items-center gap-2.5 text-[14px] font-medium text-emerald-400/90 border border-emerald-400/20 bg-emerald-400/[0.06] px-5 py-2.5 rounded-full mb-6">
-            <Image src="/ai-brain.png" alt="" width={18} height={18} style={{ filter: 'brightness(0) saturate(100%) invert(73%) sepia(52%) saturate(456%) hue-rotate(108deg) brightness(95%) contrast(91%)' }} />
+            <Image src="/dijigrow-brain.png" alt="" width={18} height={18} style={{ filter: 'brightness(0) saturate(100%) invert(73%) sepia(52%) saturate(456%) hue-rotate(108deg) brightness(95%) contrast(91%)' }} />
             {c.badge}
           </div>
           <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-[4.5rem] font-black leading-[1.1] tracking-tight text-white mb-5">
@@ -400,7 +400,7 @@ export default function LandingContent() {
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 text-sm">
           {/* Copyright */}
           <div className="flex items-center gap-3 text-gray-500">
-            <Image src="/logo.png" alt="DijiGrow" width={50} height={18} className="object-contain brightness-0 invert opacity-40" />
+            <Image src="/dijigrow-logo.png" alt="DijiGrow" width={50} height={18} className="object-contain brightness-0 invert opacity-40" />
             <span>{c.footer}</span>
           </div>
 

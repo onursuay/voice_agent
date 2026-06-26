@@ -32,7 +32,7 @@ export default function PendingApprovalPage() {
         {/* Logo */}
         <div className="flex justify-center mb-6">
           <Image
-            src="/logos/yoai-logo.png"
+            src="/logos/dijigrow-logo.png"
             alt="DijiGrow"
             width={80}
             height={28}

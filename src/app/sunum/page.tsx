@@ -8,7 +8,7 @@ export default function SunumPage() {
       <div className="bg-white border-b border-gray-100 sticky top-0 z-10">
         <div className="max-w-5xl mx-auto px-8 h-14 flex items-center justify-between">
           <div className="flex items-center gap-4">
-            <img src="/logo.png" alt="DijiGrow" className="h-7" />
+            <img src="/dijigrow-logo.png" alt="DijiGrow" className="h-7" />
             <div className="h-5 w-px bg-gray-200" />
             <span className="text-[13px] font-medium tracking-tight">Lead Operasyon Dashboard + CRM</span>
           </div>
@@ -90,7 +90,7 @@ export default function SunumPage() {
                 {/* Center logo */}
                 <div className="absolute inset-0 flex items-center justify-center">
                   <div className="w-16 h-16 rounded-2xl bg-white/10 backdrop-blur-md flex items-center justify-center border border-white/20">
-                    <img src="/logo.png" alt="" className="h-8 brightness-0 invert opacity-80" />
+                    <img src="/dijigrow-logo.png" alt="" className="h-8 brightness-0 invert opacity-80" />
                   </div>
                 </div>
               </div>

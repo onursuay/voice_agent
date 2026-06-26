@@ -224,7 +224,7 @@ export default function DataDeletionPage() {
       <footer className="bg-[#131317] border-t border-emerald-900/20 w-full py-12 px-6">
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-6">
           <div className="flex flex-col items-center sm:items-start gap-2">
-            <Image src="/logo.png" alt="DijiGrow" width={50} height={18} className="object-contain brightness-0 invert opacity-60" />
+            <Image src="/dijigrow-logo.png" alt="DijiGrow" width={50} height={18} className="object-contain brightness-0 invert opacity-60" />
             <span className="text-white text-xs font-light tracking-wide">© 2025 DijiGrow. Tüm hakları saklıdır.</span>
           </div>
           <nav className="flex flex-wrap justify-center gap-6 text-xs text-white">
