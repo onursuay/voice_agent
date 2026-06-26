@@ -1,5 +1,5 @@
 -- ============================================
--- YO DİJİTAL - Lead Operations Dashboard + CRM
+-- DijiGrow - Lead Operations Dashboard + CRM
 -- Supabase Database Schema
 -- ============================================
 
