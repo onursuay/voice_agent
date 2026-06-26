@@ -120,8 +120,17 @@ ailesiyle (DijiMagic) görsel uyumlu. **PC + mobil önizleme** ile sunulur, onay
 ## 7. Dış Sistem Checklist'i (owner — uygulama planında genişler)
 
 ### 7.1 Meta (izin riski — KRİTİK, sıralama bağlayıcı)
-App ID **`968757322162498`**. Onaylı izinler App'e bağlıdır; domain değişimi izinleri revoke etmez —
-yine de adım adım doğrulanır.
+App **`968757322162498`** — durum (owner ekran görüntüsü 2026-06-26): **Mode: Live**, Type: İşletme,
+Business portfolyosu: **"Yo Dijital Medya"**. Ürün `meta-leads` webhook'u kullanıyor → **lead_retrieval**
+izni muhtemelen aktif; bu yüzden app **kritik** (DijiMagic'teki "YoAi Magic" gibi değil ama lead akışı canlı).
+Onaylı izinler App'e bağlıdır; domain değişimi izinleri revoke etmez — yine de adım adım doğrulanır.
+**İzin envanteri (owner ekran görüntüsü 2026-06-26, App Review → Requests):**
+- **Onaylı (Existing access for renewal):** `leads_retrieval`, `business_management`, `pages_show_list`,
+  `pages_manage_metadata`, `pages_manage_ads`, `pages_read_engagement`.
+- **İncelemede / yeni istenen (Requests):** `instagram_basic`, `instagram_manage_messages`, `pages_messaging`,
+  `whatsapp_business_management`, `whatsapp_business_messaging`.
+- 🔴 **Owner kırmızı çizgisi:** "alınmış izinler iptal OLMAMALI." Rebrand boyunca bu liste korunur.
+
 0. **Önce izin baseline kaydet:** `/me/permissions` granted listesi (merkezi token `~/.claude/secrets/meta_credentials.json`,
    app-token ile `debug_token`). Süreç sonunda birebir karşılaştır. → `docs/rebrand/meta-permissions-baseline.md`.
 1. Business Manager → Brand Safety → Domains: `dijigrow.com` ekle + doğrula (DNS TXT / meta-tag).
@@ -133,6 +142,33 @@ yine de adım adım doğrulanır.
    (lead retrieval); **verify token Vercel↔Meta birebir aynı** (GET handshake `?hub.mode=subscribe&...&hub.challenge=X` test).
    Resend webhook: `https://dijigrow.com/api/webhooks/resend`.
 5. Yeni domainde uçtan uca OAuth + webhook doğrulanınca eski `voiceagent.yodijital.com` URL'lerini kaldır.
+
+#### 7.1.1 İzin koruma — DOĞRULANMIŞ kurallar (kaynak: resmi Meta dökümanı, 2026-06-26 araştırma)
+
+> 🔬 4 boyutlu araştırma + adversarial doğrulama (resmi `developers.facebook.com` kaynakları, hepsi
+> `confirmed`). **Sonuç: onaylı izinler App ID'ye (`968757322162498`) bağlı — domaine/redirect'e/portföye
+> DEĞİL.** "Restoring Advanced Access to previously approved permissions does not require re-review"
+> (Access Levels doc). Rebrand'ın KENDİSİ izinleri iptal etmez; ama **yanlış sıra dolaylı düşürebilir** →
+> `permissionsAtRisk = true` (süreç riski, marka riski değil).
+
+**🔴 DEĞİŞMEZ KURALLAR:**
+- App ID **`968757322162498` SABİT** — uygulamayı silme / yeniden oluşturma / yeni App ID'ye geçme **YASAK** (App ID değişirse tüm onaylar gider, full App Review'a döner).
+- Hiçbir izni **Advanced → Standard** çevirme — bu, izni kaybetmenin **belgelenmiş** yoludur (role'süz kullanıcılar için deaktive).
+- Her kritik adımdan **ÖNCE ve SONRA** `GET /{app-id}` + `GET /me/permissions` baseline al + karşılaştır (**ZORUNLU**, özellikle isim değişimi ve portföy taşıması etrafında).
+
+**Güvenli sıra (tüm onaylı izinleri korur):**
+1. **Baseline al** (granted tam liste).
+2. **Yeni domaini hazırla, ESKİSİNİ KORU:** dijigrow.com Privacy/Terms/Data-Deletion sayfaları CANLI ve erişilebilir (404 = en sık yenileme reddi); eski yodijital.com sayfaları cutover'a kadar açık kalır.
+3. **"Önce ekle / sonra sil":** App Domains + OAuth redirect URI (strict **exact-match**, HTTPS) + webhook callback'e dijigrow.com değerlerini **EKLE**; eski yodijital.com değerlerini cutover'a kadar **TUT**.
+4. **Webhook verify-token handshake'i** yeni domainde TEKRAR GEÇİR; gerçek test lead'i ile `meta-leads` teslimatını teyit et (lead-to-Sheets akışı buna bağlı).
+5. Login'i uçtan uca test et → `/me/permissions` baseline ile karşılaştır (tümü granted olmalı).
+6. **Portföy taşıma (gerekiyorsa) — HARD PREREQUISITE:** hedef portföy **ÖNCE Business Verified** olacak. Doğrulanmamış/pending-olmayan portföye taşıma **YASAK** — 1 Şubat 2023 Meta duyurusu birebir: doğrulanmamış işletmeye bağlı app'in advanced izinleri *"revoked"* → `leads_retrieval` CANLI iken inaktif olur. Taşıma sonrası tam liste granted görünene kadar **eski portföyü kaldırma**.
+7. **App adı "Voice Agent" → "DijiGrow": AYRI, izole, SON adım** — domain/redirect ile aynı anda YAPMA. İsim+ikon bir "branding review" tetikler (izinlerin re-review'ı **değil**, App ID'ye bağlı kaldıkları için sıfırlanmaz); ancak Meta yazılı garanti vermez → değişiklik sonrası `/me/permissions` **doğrulaması ZORUNLU**. "DijiGrow" Display Name Guidelines uyumlu (Meta marka terimi içermez).
+8. **Yıllık YENİLEME / Data Access Renewal (eski Data Use Checkup) deadline'ını KAÇIRMA** — app Admin'e 60/30/10/3 gün e-postaları gelir. Kaçarsa app **DEAKTİVE** olur (*"Extensions will not be provided"*) ve tüm use case/izin/feature **full App Review** ister — onayları gerçekten sıfırlayan **TEK** senaryo. Migration'ı yenileme penceresinin DIŞINDA planla.
+9. **Business Verification kesintisiz:** legal seller (Story 77) / işletme adı değişse bile bağlı işletmenin doğrulaması bozulmamalı; aksi halde Advanced Access reddedilir + yenileme başarısız olur.
+10. **90 gün inaktivite:** uzun kesinti (Graph/Marketing API + webhook 90 gün sessiz) → token'lar geçersiz, izinler disuse'dan düşer + yeniden App Review ister. Kesinti penceresini kısa tut.
+
+**Kaynaklar (hepsi resmi `developers.facebook.com`):** Access Levels · Permissions Reference · App Review (Introduction/Tutorial) · Business Verification · Transfer App Ownership · Strict URI Matching · Data Use Checkup / Data Access Renewal · 1 Şubat 2023 "Business Verification for Advanced Access" blog. Tam araştırma çıktısı oturum task `wd8lm1gmj`.
 
 ### 7.2 Diğer (owner)
 - **Vercel (Claude):** `dijigrow.com` domain ekle + production ata; domain-değeri env'ler; proje adı `dijigrow`.
