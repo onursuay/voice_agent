@@ -4,7 +4,7 @@ import { createAdminSupabaseClient } from '@/lib/supabase/admin';
 import { MetaGraphClient } from '@/lib/meta/graph-client';
 
 /**
- * CRM stage → Meta Custom Audience sync (voice_agent port of the YoAi CRM model).
+ * CRM stage → Meta Custom Audience sync (voice_agent port of the DijiGrow CRM model).
  *
  * When a lead's stage changes, the lead's hashed (SHA-256) email/phone is added
  * to the CUSTOMER_LIST custom audience that corresponds to that stage, and
@@ -219,7 +219,7 @@ export async function syncLeadStageToMeta(opts: {
   // 1) Token önceliği:
   //    (a) Merkezi SYSTEM-USER token (env META_SYSTEM_USER_TOKEN) — kalıcı, ads_management
   //        içerir, App Review GEREKTİRMEZ; owner'ın Business Manager'ındaki reklam
-  //        hesapları için Custom Audience yazar (Sponsorlu/YoAi ile aynı yöntem).
+  //        hesapları için Custom Audience yazar (Sponsorlu/DijiGrow ile aynı yöntem).
   //    (b) Yoksa org'un OAuth ile bağladığı hesap token'ı (App Review'a tabi) — geriye
   //        dönük uyum; gelecekte dış (BM dışı) müşteriler için.
   const systemToken = process.env.META_SYSTEM_USER_TOKEN?.trim();
