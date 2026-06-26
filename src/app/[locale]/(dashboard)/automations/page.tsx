@@ -160,7 +160,7 @@ export default function AutomationsPage() {
       {/* ── Routing Rules Section ── */}
       <RoutingRulesSection allRules={rules} onRulesChange={setRules} members={members} stages={stages} openSignal={routeCreateSignal} />
 
-      {/* AI Orkestra: arama + funnel mail senaryoları */}
+      {/* DijiOrkestra: arama + funnel mail senaryoları */}
       <SequencesSection />
 
       {/* Create/Edit General Automation Modal */}

@@ -24,7 +24,7 @@ export async function GET(request: NextRequest) {
   const verifyToken = params.get('hub.verify_token');
   const challenge = params.get('hub.challenge');
 
-  const configuredToken = process.env.META_WEBHOOK_VERIFY_TOKEN || 'voiceagent_meta_2026';
+  const configuredToken = process.env.META_WEBHOOK_VERIFY_TOKEN || 'dijigrow_meta_2026';
 
   if (mode === 'subscribe' && verifyToken && challenge && verifyToken === configuredToken) {
     return new NextResponse(challenge, { status: 200, headers: { 'Content-Type': 'text/plain' } });

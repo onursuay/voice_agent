@@ -181,7 +181,7 @@ export function Sidebar() {
               href="/dashboard"
               className={`absolute inset-0 flex items-center justify-center transition-opacity duration-300 group-hover:opacity-0 ${showHintButton ? 'opacity-0' : 'opacity-100'}`}
             >
-              <img src="/logo.png" alt="Yo Dijital" style={{ width: 36, height: 36 }} className="object-contain" />
+              <img src="/logo.png" alt="DijiGrow" style={{ width: 36, height: 36 }} className="object-contain" />
             </Link>
             <button
               onClick={toggleCollapse}
@@ -194,7 +194,7 @@ export function Sidebar() {
         ) : (
           <>
             <Link href="/dashboard" className="flex-shrink-0">
-              <img src="/logo.png" alt="Yo Dijital" style={{ height: 40 }} className="object-contain cursor-pointer" />
+              <img src="/logo.png" alt="DijiGrow" style={{ height: 40 }} className="object-contain cursor-pointer" />
             </Link>
             <button
               onClick={toggleCollapse}

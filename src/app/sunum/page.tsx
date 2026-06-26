@@ -8,7 +8,7 @@ export default function SunumPage() {
       <div className="bg-white border-b border-gray-100 sticky top-0 z-10">
         <div className="max-w-5xl mx-auto px-8 h-14 flex items-center justify-between">
           <div className="flex items-center gap-4">
-            <img src="/logo.png" alt="Yo Dijital" className="h-7" />
+            <img src="/logo.png" alt="DijiGrow" className="h-7" />
             <div className="h-5 w-px bg-gray-200" />
             <span className="text-[13px] font-medium tracking-tight">Lead Operasyon Dashboard + CRM</span>
           </div>
@@ -445,7 +445,7 @@ export default function SunumPage() {
                   { name: "Salesforce", start: "$25", mid: "$100", ent: "$175", ai: "\u2717", model: "Ki\u015fi ba\u015f\u0131", highlight: false },
                   { name: "Zoho CRM", start: "$14", mid: "$40", ent: "$65", ai: "\u2717", model: "Ki\u015fi ba\u015f\u0131", highlight: false },
                   { name: "Bitrix24", start: "$49", mid: "$99", ent: "$199", ai: "\u2717", model: "Sabit (5-50 user)", highlight: false },
-                  { name: "Yo Dijital", start: "$29", mid: "$79", ent: "$149", ai: "\u2713", model: "Sabit (org)", highlight: true },
+                  { name: "DijiGrow", start: "$29", mid: "$79", ent: "$149", ai: "\u2713", model: "Sabit (org)", highlight: true },
                 ].map((r) => (
                   <tr key={r.name} className={`border-b border-gray-50 ${r.highlight ? 'bg-emerald-50/50' : 'hover:bg-gray-50/50'}`}>
                     <td className={`px-4 py-2 font-semibold ${r.highlight ? 'text-emerald-700' : ''}`}>{r.name}</td>
@@ -459,7 +459,7 @@ export default function SunumPage() {
               </tbody>
             </table>
             <div className="px-4 py-2.5 bg-gray-50 border-t border-gray-100">
-              <p className="text-[10px] text-gray-500">{"\u2022"} Rakipler ki{"\u015f"}i ba{"\u015f"}{"\u0131"} fiyatland{"\u0131"}r{"\u0131"}r (10 ki{"\u015f"}i = 10x fiyat). Yo Dijital sabit organizasyon baz{"\u0131"}nda fiyatland{"\u0131"}r{"\u0131"}r.</p>
+              <p className="text-[10px] text-gray-500">{"\u2022"} Rakipler ki{"\u015f"}i ba{"\u015f"}{"\u0131"} fiyatland{"\u0131"}r{"\u0131"}r (10 ki{"\u015f"}i = 10x fiyat). DijiGrow sabit organizasyon baz{"\u0131"}nda fiyatland{"\u0131"}r{"\u0131"}r.</p>
               <p className="text-[10px] text-gray-500">{"\u2022"} Hi{"\u00e7"}bir rakip dahili AI arama sunmuyor {"\u2014"} 3. parti entegrasyon gerektirir (+$50-200/ay ek maliyet).</p>
               <p className="text-[10px] text-gray-500">{"\u2022"} Meta lead form + WhatsApp + IG DM entegrasyonu rakiplerde ek {"\u00fc"}cretli veya mevcut de{"\u011f"}il.</p>
             </div>
@@ -537,7 +537,7 @@ export default function SunumPage() {
           </div>
         </section>
 
-        <p className="text-center text-[11px] text-gray-400 pt-6 border-t border-gray-100">{"\u00a9"} 2024-2026 Yo Dijital. T{"\u00fc"}m haklar{"\u0131"} sakl{"\u0131"}d{"\u0131"}r.</p>
+        <p className="text-center text-[11px] text-gray-400 pt-6 border-t border-gray-100">{"\u00a9"} 2024-2026 DijiGrow. T{"\u00fc"}m haklar{"\u0131"} sakl{"\u0131"}d{"\u0131"}r.</p>
       </div>
     </div>
   );

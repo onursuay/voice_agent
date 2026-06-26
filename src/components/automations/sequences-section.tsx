@@ -19,7 +19,7 @@ const IL_SELECT_OPTIONS = [
   ...[...IL_LIST].sort((a, b) => a.localeCompare(b, 'tr')).map((il) => ({ value: il, label: il })),
 ];
 
-// AI Orkestra Senaryoları: lead düşünce plana göre AI arama + funnel mail zinciri.
+// DijiOrkestra Senaryoları: lead düşünce plana göre AI arama + funnel mail zinciri.
 // Owner burada kurar: tetik koşulu, arama penceresi, adımlar (Ara/Mail + gecikme + koşul).
 
 interface StepForm {

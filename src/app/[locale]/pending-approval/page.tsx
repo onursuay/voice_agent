@@ -33,7 +33,7 @@ export default function PendingApprovalPage() {
         <div className="flex justify-center mb-6">
           <Image
             src="/logos/yoai-logo.png"
-            alt="Yo Dijital"
+            alt="DijiGrow"
             width={80}
             height={28}
             className="brightness-0 invert"
