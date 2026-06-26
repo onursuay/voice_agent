@@ -19,10 +19,11 @@
  *
  * CONNECTION:
  *   Reads SUPABASE_DB_URL or DATABASE_URL from environment.
- *   TLS is enabled by default (Supabase hosted pooler uses CA-signed certs).
- *   Set sslmode=disable in the URL only if connecting to a local/dev instance
- *   without TLS. If you see a cert error on a custom host, set
- *   NODE_EXTRA_CA_CERTS=<path-to-root-ca.pem> rather than disabling verification.
+ *   TLS with certificate verification (rejectUnauthorized:true) is enforced by
+ *   default — Supabase hosted pooler uses CA-signed certs so this verifies.
+ *   Set sslmode=disable in the URL only for a local/dev instance without TLS.
+ *   On a self-signed/cert error, supply the Supabase CA via ssl:{ ca: ... }
+ *   rather than disabling verification.
  *
  * IDEMPOTENCY:
  *   All token replacements use `REPLACE(col, old, new)`. Re-running after
@@ -94,15 +95,19 @@ async function main() {
     process.exit(1);
   }
 
-  // TLS: honour whatever sslmode is embedded in the URL.
-  // Supabase's hosted pooler (*.supabase.com) uses a valid CA-signed cert,
-  // so full verification works. We do NOT disable rejectUnauthorized globally;
-  // if you see a cert error, add the Supabase root CA to NODE_EXTRA_CA_CERTS
-  // rather than bypassing verification.
-  const sslFromUrl = connectionString.includes('sslmode=disable') ? false : true;
+  // TLS: enforce certificate verification. NOTE: a bare `ssl: true` in the pg
+  // driver enables encryption but sets rejectUnauthorized:false — encrypted yet
+  // UNVERIFIED (MITM-vulnerable). We pass an object so the server cert is checked.
+  // Supabase's hosted pooler is CA-signed, so rejectUnauthorized:true verifies
+  // cleanly. sslmode=disable is the only escape hatch (local/dev no-TLS). If a
+  // controlled run later hits a self-signed/cert error, supply the Supabase CA
+  // via ssl: { ca: ... } rather than disabling verification.
+  const ssl = connectionString.includes('sslmode=disable')
+    ? false
+    : { rejectUnauthorized: true };
   const client = new Client({
     connectionString,
-    ssl: sslFromUrl,
+    ssl,
   });
 
   await client.connect();
