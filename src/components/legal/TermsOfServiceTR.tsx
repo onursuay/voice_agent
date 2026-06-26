@@ -3,8 +3,8 @@ import Image from 'next/image'
 import LandingHeader from '@/components/landing/LandingHeader'
 
 export const metadata: Metadata = {
-  title: 'Kullanım Koşulları - VoiceAgent by Yo Dijital',
-  description: 'VoiceAgent Kullanım Koşulları. Platformu kullanırken geçerli olan kural ve koşullar hakkında bilgi edinin.',
+  title: 'Kullanım Koşulları - DijiGrow',
+  description: 'DijiGrow Kullanım Koşulları. Platformu kullanırken geçerli olan kural ve koşullar hakkında bilgi edinin.',
 }
 
 export default function TermsOfServicePage() {
@@ -19,7 +19,7 @@ export default function TermsOfServicePage() {
           <header className="max-w-4xl mb-4 text-center mx-auto">
             <h1 className="text-5xl md:text-6xl font-bold tracking-tighter text-[#e5e1e7] mb-6 leading-none">Kullanım Koşulları</h1>
             <p className="text-xl text-[#bbcabf] font-light leading-relaxed max-w-2xl mx-auto">
-              Bu koşullar, YO Dijital Medya A.Ş. tarafından sağlanan VoiceAgent platformunun kullanıcıları için geçerlidir. Hizmeti kullanarak bu koşullara bağlı olmayı kabul etmiş olursunuz.
+              Bu koşullar, Story 77 Creative Reklam ve Tanıtım Hizmetleri Ltd. Şti. tarafından sağlanan DijiGrow platformunun kullanıcıları için geçerlidir. Hizmeti kullanarak bu koşullara bağlı olmayı kabul etmiş olursunuz.
             </p>
           </header>
 
@@ -33,7 +33,7 @@ export default function TermsOfServicePage() {
                 <h2 className="text-xl font-bold tracking-tight text-[#e5e1e7]">Taraflar ve Tanımlar</h2>
               </div>
               <p className="text-[#bbcabf] leading-relaxed">
-                Bu koşullar, YO Dijital Medya A.Ş. tarafından sağlanan VoiceAgent platformunun kullanıcıları için geçerlidir. Hizmeti kullanarak bu Kullanım Koşullarına bağlı olmayı kabul etmiş olursunuz. Kabul etmiyorsanız lütfen platformu kullanmayın.
+                Bu koşullar, Story 77 Creative Reklam ve Tanıtım Hizmetleri Ltd. Şti. tarafından sağlanan DijiGrow platformunun kullanıcıları için geçerlidir. Hizmeti kullanarak bu Kullanım Koşullarına bağlı olmayı kabul etmiş olursunuz. Kabul etmiyorsanız lütfen platformu kullanmayın.
               </p>
             </section>
 
@@ -47,7 +47,7 @@ export default function TermsOfServicePage() {
               </div>
               <h4 className="text-emerald-400 font-bold mb-2">Temel İlke</h4>
               <p className="text-[#bbcabf] text-sm leading-relaxed">
-                Verileriniz sizindir. VoiceAgent, kişisel verilerinizi hiçbir koşulda üçüncü taraflara satmaz veya devretmez.
+                Verileriniz sizindir. DijiGrow, kişisel verilerinizi hiçbir koşulda üçüncü taraflara satmaz veya devretmez.
               </p>
             </aside>
 
@@ -58,7 +58,7 @@ export default function TermsOfServicePage() {
                 <h2 className="text-xl font-bold tracking-tight text-[#e5e1e7]">Hizmetin Kapsamı</h2>
               </div>
               <p className="text-[#bbcabf] leading-relaxed">
-                VoiceAgent, işletmelerin müşteri adaylarını toplamasına, yönetmesine ve satışa dönüştürmesine yardımcı olan bir CRM ve lead yönetim platformudur. Hizmetler; çok kanallı lead toplama (Meta Ads, WhatsApp, Instagram, Google Sheets), CRM pipeline yönetimi, AI destekli arama, e-posta kampanya yönetimi ve analitik araçları kapsamaktadır.
+                DijiGrow, işletmelerin müşteri adaylarını toplamasına, yönetmesine ve satışa dönüştürmesine yardımcı olan bir CRM ve lead yönetim platformudur. Hizmetler; çok kanallı lead toplama (Meta Ads, WhatsApp, Instagram, Google Sheets), CRM pipeline yönetimi, AI destekli arama, e-posta kampanya yönetimi ve analitik araçları kapsamaktadır.
               </p>
             </section>
 
@@ -80,7 +80,7 @@ export default function TermsOfServicePage() {
                 <h2 className="text-xl font-bold tracking-tight text-[#e5e1e7]">Politika ve API Uyumu</h2>
               </div>
               <p className="text-[#bbcabf] leading-relaxed">
-                VoiceAgent aracılığıyla gerçekleştirilen işlemler, ilgili platformların (Google, Meta vb.) politikaları ve koşullarına tabidir. Kullanıcılar hizmeti yetkisiz veri toplama, kötüye kullanım veya yanıltıcı içerik gibi platform politikalarını ihlal eden şekillerde kullanamazlar. Google API verilerinin kullanımı, Sınırlı Kullanım gereksinimleri dahil Google API Hizmetleri Kullanıcı Verisi Politikası&apos;na tabidir.
+                DijiGrow aracılığıyla gerçekleştirilen işlemler, ilgili platformların (Google, Meta vb.) politikaları ve koşullarına tabidir. Kullanıcılar hizmeti yetkisiz veri toplama, kötüye kullanım veya yanıltıcı içerik gibi platform politikalarını ihlal eden şekillerde kullanamazlar. Google API verilerinin kullanımı, Sınırlı Kullanım gereksinimleri dahil Google API Hizmetleri Kullanıcı Verisi Politikası&apos;na tabidir.
               </p>
             </section>
 
@@ -116,7 +116,7 @@ export default function TermsOfServicePage() {
                     <h2 className="text-lg font-bold tracking-tight text-[#e5e1e7]">Sorumluluk Sınırlaması</h2>
                   </div>
                   <p className="text-[#bbcabf] text-sm leading-relaxed">
-                    VoiceAgent&apos;ta görüntülenen veriler, bağlı platformlar tarafından sağlanan verilere dayanmaktadır; gecikmeler, kotalar veya kesintiler nedeniyle tutarsızlıklar oluşabilir. Yasaların izin verdiği azami ölçüde dolaylı, tesadüfi veya sonuçsal zararlardan sorumlu değiliz.
+                    DijiGrow&apos;da görüntülenen veriler, bağlı platformlar tarafından sağlanan verilere dayanmaktadır; gecikmeler, kotalar veya kesintiler nedeniyle tutarsızlıklar oluşabilir. Yasaların izin verdiği azami ölçüde dolaylı, tesadüfi veya sonuçsal zararlardan sorumlu değiliz.
                   </p>
                 </div>
                 <div>
@@ -126,7 +126,7 @@ export default function TermsOfServicePage() {
                   </div>
                   <p className="text-[#bbcabf] text-sm leading-relaxed">
                     Kullanıcı, hesabının güvenliğinden ve erişim kimlik bilgilerinin korunmasından sorumludur. Yetkisiz herhangi bir kullanım durumunda lütfen derhal{' '}
-                    <a href="mailto:info@yodijital.com" className="text-emerald-400 hover:text-emerald-300 underline underline-offset-4">info@yodijital.com</a>{' '}
+                    <a href="mailto:info@dijigrow.com" className="text-emerald-400 hover:text-emerald-300 underline underline-offset-4">info@dijigrow.com</a>{' '}
                     adresinden bize bildirin.
                   </p>
                 </div>
@@ -136,7 +136,7 @@ export default function TermsOfServicePage() {
                     <h2 className="text-lg font-bold tracking-tight text-[#e5e1e7]">Fesih</h2>
                   </div>
                   <p className="text-[#bbcabf] text-sm leading-relaxed">
-                    VoiceAgent, kötüye kullanım veya bu koşulların ihlali durumunda erişimi askıya alabilir veya sonlandırabilir. Ücretli planlar için abonelik ücretleri önceden belirtilir; dilediğiniz zaman iptal edebilirsiniz.
+                    DijiGrow, kötüye kullanım veya bu koşulların ihlali durumunda erişimi askıya alabilir veya sonlandırabilir. Ücretli planlar için abonelik ücretleri önceden belirtilir; dilediğiniz zaman iptal edebilirsiniz.
                   </p>
                 </div>
                 <div>
@@ -159,8 +159,8 @@ export default function TermsOfServicePage() {
       <footer className="bg-[#131317] border-t border-emerald-900/20 w-full py-12 px-6">
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-6">
           <div className="flex flex-col items-center sm:items-start gap-2">
-            <Image src="/logo.png" alt="Yo Dijital" width={50} height={18} className="object-contain brightness-0 invert opacity-60" />
-            <span className="text-white text-xs font-light tracking-wide">© 2025 Yo Dijital. Tüm hakları saklıdır.</span>
+            <Image src="/logo.png" alt="DijiGrow" width={50} height={18} className="object-contain brightness-0 invert opacity-60" />
+            <span className="text-white text-xs font-light tracking-wide">© 2025 DijiGrow. Tüm hakları saklıdır.</span>
           </div>
           <nav className="flex flex-wrap justify-center gap-6 text-xs text-white">
             <a href="/privacy-policy" className="hover:text-emerald-300 transition-colors underline underline-offset-4">Gizlilik Politikası</a>

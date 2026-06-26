@@ -6,12 +6,12 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   const { locale } = await params;
   return locale === 'en'
     ? {
-        title: 'Cookie Policy - VoiceAgent by Yo Dijital',
-        description: 'Cookie Policy for VoiceAgent by Yo Dijital.',
+        title: 'Cookie Policy - DijiGrow',
+        description: 'Cookie Policy for DijiGrow.',
       }
     : {
-        title: 'Çerez Politikası - VoiceAgent by Yo Dijital',
-        description: 'VoiceAgent Çerez Politikası.',
+        title: 'Çerez Politikası - DijiGrow',
+        description: 'DijiGrow Çerez Politikası.',
       };
 }
 

@@ -3,8 +3,8 @@ import Image from 'next/image'
 import LandingHeader from '@/components/landing/LandingHeader'
 
 export const metadata: Metadata = {
-  title: 'Çerez Politikası - VoiceAgent by Yo Dijital',
-  description: 'VoiceAgent Çerez Politikası. Çerezleri nasıl kullandığımız ve yönetebileceğiniz hakkında bilgi edinin.',
+  title: 'Çerez Politikası - DijiGrow',
+  description: 'DijiGrow Çerez Politikası. Çerezleri nasıl kullandığımız ve yönetebileceğiniz hakkında bilgi edinin.',
 }
 
 export default function CookiePolicyPage() {
@@ -21,7 +21,7 @@ export default function CookiePolicyPage() {
               Çerez Politikası
             </h1>
             <p className="text-lg text-[#bbcabf] leading-relaxed max-w-3xl font-light">
-              VoiceAgent, hizmetlerimizi sağlamak, korumak ve geliştirmek için çerezler ve benzer teknolojiler kullanmaktadır. Bu politika, bu teknolojileri nasıl ve neden kullandığımızı açıklamaktadır.
+              DijiGrow, hizmetlerimizi sağlamak, korumak ve geliştirmek için çerezler ve benzer teknolojiler kullanmaktadır. Bu politika, bu teknolojileri nasıl ve neden kullandığımızı açıklamaktadır.
             </p>
           </header>
 
@@ -78,7 +78,7 @@ export default function CookiePolicyPage() {
           <div className="bg-[#1b1b1f] rounded-xl overflow-hidden border border-white/[0.04] mb-4">
             <div className="p-6 border-b border-white/[0.04] flex justify-between items-center">
               <h4 className="text-xs font-bold uppercase tracking-[0.2em] text-[#bbcabf]">Çerez Türleri Detayı</h4>
-              <span className="text-[10px] text-emerald-400 font-mono">VoiceAgent · 2025</span>
+              <span className="text-[10px] text-emerald-400 font-mono">DijiGrow · 2025</span>
             </div>
             <div className="p-6 space-y-4">
               {[
@@ -145,7 +145,7 @@ export default function CookiePolicyPage() {
             </h4>
             <p className="text-[#bbcabf] text-sm">
               Çerez politikamız hakkında sorularınız için:{' '}
-              <a href="mailto:info@yodijital.com" className="text-emerald-400 hover:text-emerald-300 underline underline-offset-4">info@yodijital.com</a>
+              <a href="mailto:info@dijigrow.com" className="text-emerald-400 hover:text-emerald-300 underline underline-offset-4">info@dijigrow.com</a>
             </p>
           </div>
 
@@ -156,8 +156,8 @@ export default function CookiePolicyPage() {
       <footer className="bg-[#131317] border-t border-emerald-900/20 w-full py-12 px-6">
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-6">
           <div className="flex flex-col items-center sm:items-start gap-2">
-            <Image src="/logo.png" alt="Yo Dijital" width={50} height={18} className="object-contain brightness-0 invert opacity-60" />
-            <span className="text-white text-xs font-light tracking-wide">© 2025 Yo Dijital. Tüm hakları saklıdır.</span>
+            <Image src="/logo.png" alt="DijiGrow" width={50} height={18} className="object-contain brightness-0 invert opacity-60" />
+            <span className="text-white text-xs font-light tracking-wide">© 2025 DijiGrow. Tüm hakları saklıdır.</span>
           </div>
           <nav className="flex flex-wrap justify-center gap-6 text-xs text-white">
             <a href="/privacy-policy" className="hover:text-emerald-300 transition-colors underline underline-offset-4">Gizlilik Politikası</a>

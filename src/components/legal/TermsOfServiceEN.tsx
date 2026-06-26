@@ -3,8 +3,8 @@ import Image from 'next/image'
 import LandingHeader from '@/components/landing/LandingHeader'
 
 export const metadata: Metadata = {
-  title: 'Terms of Service - VoiceAgent by Yo Dijital',
-  description: 'Terms of Service for VoiceAgent (voiceagent.yodijital.com).',
+  title: 'Terms of Service - DijiGrow',
+  description: 'Terms of Service for DijiGrow (dijigrow.com).',
 }
 
 export default function TermsOfServiceEnPage() {
@@ -19,7 +19,7 @@ export default function TermsOfServiceEnPage() {
           <header className="max-w-4xl mb-4 text-center mx-auto">
             <h1 className="text-5xl md:text-6xl font-bold tracking-tighter text-[#e5e1e7] mb-6 leading-none">Terms of Service</h1>
             <p className="text-xl text-[#bbcabf] font-light leading-relaxed max-w-2xl mx-auto">
-              These terms apply to users of the VoiceAgent platform provided by YO Dijital Medya A.Ş. By using the Service, you agree to be bound by these terms.
+              These terms apply to users of the DijiGrow platform provided by Story 77 Creative Reklam ve Tanıtım Hizmetleri Ltd. Şti. By using the Service, you agree to be bound by these terms.
             </p>
           </header>
 
@@ -33,7 +33,7 @@ export default function TermsOfServiceEnPage() {
                 <h2 className="text-xl font-bold tracking-tight text-[#e5e1e7]">Parties and Definitions</h2>
               </div>
               <p className="text-[#bbcabf] leading-relaxed">
-                These terms apply to users of the VoiceAgent platform provided by YO Dijital Medya A.Ş. By using the Service, you agree to be bound by these Terms of Service. If you do not agree, please do not use the platform.
+                These terms apply to users of the DijiGrow platform provided by Story 77 Creative Reklam ve Tanıtım Hizmetleri Ltd. Şti. By using the Service, you agree to be bound by these Terms of Service. If you do not agree, please do not use the platform.
               </p>
             </section>
 
@@ -47,7 +47,7 @@ export default function TermsOfServiceEnPage() {
               </div>
               <h4 className="text-emerald-400 font-bold mb-2">The Golden Rule</h4>
               <p className="text-[#bbcabf] text-sm leading-relaxed">
-                Your data is yours. VoiceAgent never sells or transfers your personal data to third parties under any circumstances.
+                Your data is yours. DijiGrow never sells or transfers your personal data to third parties under any circumstances.
               </p>
             </aside>
 
@@ -58,7 +58,7 @@ export default function TermsOfServiceEnPage() {
                 <h2 className="text-xl font-bold tracking-tight text-[#e5e1e7]">Scope of Service</h2>
               </div>
               <p className="text-[#bbcabf] leading-relaxed">
-                VoiceAgent is a CRM and lead management platform that helps businesses collect, manage, and convert leads. Services include multi-channel lead collection (Meta Ads, WhatsApp, Instagram, Google Sheets), CRM pipeline management, AI-assisted calling, email campaign management, and analytics tools.
+                DijiGrow is a CRM and lead management platform that helps businesses collect, manage, and convert leads. Services include multi-channel lead collection (Meta Ads, WhatsApp, Instagram, Google Sheets), CRM pipeline management, AI-assisted calling, email campaign management, and analytics tools.
               </p>
             </section>
 
@@ -80,7 +80,7 @@ export default function TermsOfServiceEnPage() {
                 <h2 className="text-xl font-bold tracking-tight text-[#e5e1e7]">Policy and API Compliance</h2>
               </div>
               <p className="text-[#bbcabf] leading-relaxed">
-                Operations carried out through VoiceAgent are subject to the policies and terms of relevant platforms (Google, Meta, etc.). Users may not use the service in ways that violate platform policies — including unauthorized data collection, misuse, or misleading content. Use of Google API data is governed by the Google API Services User Data Policy including Limited Use requirements.
+                Operations carried out through DijiGrow are subject to the policies and terms of relevant platforms (Google, Meta, etc.). Users may not use the service in ways that violate platform policies — including unauthorized data collection, misuse, or misleading content. Use of Google API data is governed by the Google API Services User Data Policy including Limited Use requirements.
               </p>
             </section>
 
@@ -116,7 +116,7 @@ export default function TermsOfServiceEnPage() {
                     <h2 className="text-lg font-bold tracking-tight text-[#e5e1e7]">Limitation of Liability</h2>
                   </div>
                   <p className="text-[#bbcabf] text-sm leading-relaxed">
-                    Data displayed in VoiceAgent is based on data provided by connected platforms; discrepancies may occur due to delays, quotas, or outages. To the maximum extent permitted by law, we are not liable for indirect, incidental, or consequential damages.
+                    Data displayed in DijiGrow is based on data provided by connected platforms; discrepancies may occur due to delays, quotas, or outages. To the maximum extent permitted by law, we are not liable for indirect, incidental, or consequential damages.
                   </p>
                 </div>
                 <div>
@@ -126,7 +126,7 @@ export default function TermsOfServiceEnPage() {
                   </div>
                   <p className="text-[#bbcabf] text-sm leading-relaxed">
                     The user is responsible for the security of their account and the protection of access credentials. Please notify us immediately of any unauthorized use at{' '}
-                    <a href="mailto:info@yodijital.com" className="text-emerald-400 hover:text-emerald-300 underline underline-offset-4">info@yodijital.com</a>.
+                    <a href="mailto:info@dijigrow.com" className="text-emerald-400 hover:text-emerald-300 underline underline-offset-4">info@dijigrow.com</a>.
                   </p>
                 </div>
                 <div>
@@ -135,7 +135,7 @@ export default function TermsOfServiceEnPage() {
                     <h2 className="text-lg font-bold tracking-tight text-[#e5e1e7]">Termination</h2>
                   </div>
                   <p className="text-[#bbcabf] text-sm leading-relaxed">
-                    VoiceAgent may suspend or terminate access in case of misuse or violation of these terms. Subscription fees for paid plans are stated in advance; you may cancel at any time and access continues until the end of the current billing period.
+                    DijiGrow may suspend or terminate access in case of misuse or violation of these terms. Subscription fees for paid plans are stated in advance; you may cancel at any time and access continues until the end of the current billing period.
                   </p>
                 </div>
                 <div>
@@ -158,8 +158,8 @@ export default function TermsOfServiceEnPage() {
       <footer className="bg-[#131317] border-t border-emerald-900/20 w-full py-12 px-6">
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-6">
           <div className="flex flex-col items-center sm:items-start gap-2">
-            <Image src="/logo.png" alt="Yo Dijital" width={50} height={18} className="object-contain brightness-0 invert opacity-60" />
-            <span className="text-white text-xs font-light tracking-wide">© 2025 Yo Dijital. All rights reserved.</span>
+            <Image src="/logo.png" alt="DijiGrow" width={50} height={18} className="object-contain brightness-0 invert opacity-60" />
+            <span className="text-white text-xs font-light tracking-wide">© 2025 DijiGrow. All rights reserved.</span>
           </div>
           <nav className="flex flex-wrap justify-center gap-6 text-xs text-white">
             <a href="/en/privacy-policy" className="hover:text-emerald-300 transition-colors underline underline-offset-4">Privacy Policy</a>

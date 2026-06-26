@@ -3,8 +3,8 @@ import Image from 'next/image'
 import LandingHeader from '@/components/landing/LandingHeader'
 
 export const metadata: Metadata = {
-  title: 'Gizlilik Politikası - VoiceAgent by Yo Dijital',
-  description: 'VoiceAgent Gizlilik Politikası. Verilerinizi nasıl topladığımız, kullandığımız ve koruduğumuz hakkında bilgi edinin.',
+  title: 'Gizlilik Politikası - DijiGrow',
+  description: 'DijiGrow Gizlilik Politikası. Verilerinizi nasıl topladığımız, kullandığımız ve koruduğumuz hakkında bilgi edinin.',
 }
 
 export default function PrivacyPolicyPage() {
@@ -25,7 +25,7 @@ export default function PrivacyPolicyPage() {
                   Gizlilik Politikası.
                 </h1>
                 <p className="text-[#bbcabf] text-sm leading-relaxed max-w-2xl">
-                  YO Dijital Medya A.Ş. olarak gizliliğinizi korumaya kararlıyız. Bu politika, verilerinizi nasıl topladığımızı, kullandığımızı ve koruduğumuzu açıklamaktadır.
+                  Story 77 Creative Reklam ve Tanıtım Hizmetleri Ltd. Şti. olarak gizliliğinizi korumaya kararlıyız. Bu politika, verilerinizi nasıl topladığımızı, kullandığımızı ve koruduğumuzu açıklamaktadır.
                 </p>
               </header>
 
@@ -38,7 +38,7 @@ export default function PrivacyPolicyPage() {
                     01. Giriş
                   </h2>
                   <p>
-                    YO Dijital Medya A.Ş. (&quot;VoiceAgent&quot;, &quot;biz&quot;, &quot;bizim&quot; veya &quot;şirketimiz&quot;) gizliliğinizi korumaya kararlıdır. Bu Gizlilik Politikası, <strong className="text-[#e5e1e7]">voiceagent.yodijital.com</strong> adresindeki platformumuzu (&quot;Hizmet&quot;) kullandığınızda kişisel verilerinizi nasıl topladığımızı, kullandığımızı, açıkladığımızı ve koruduğumuzu açıklamaktadır.
+                    Story 77 Creative Reklam ve Tanıtım Hizmetleri Ltd. Şti. (&quot;DijiGrow&quot;, &quot;biz&quot;, &quot;bizim&quot; veya &quot;şirketimiz&quot;) gizliliğinizi korumaya kararlıdır. Bu Gizlilik Politikası, <strong className="text-[#e5e1e7]">dijigrow.com</strong> adresindeki platformumuzu (&quot;Hizmet&quot;) kullandığınızda kişisel verilerinizi nasıl topladığımızı, kullandığımızı, açıkladığımızı ve koruduğumuzu açıklamaktadır.
                   </p>
                 </section>
 
@@ -111,7 +111,7 @@ export default function PrivacyPolicyPage() {
                     04. Google API Hizmetleri — Sınırlı Kullanım Beyanı
                   </h2>
                   <p className="mb-5">
-                    VoiceAgent&apos;ın Google API&apos;lerinden aldığı bilgilerin kullanımı ve diğer uygulamalara aktarımı, Sınırlı Kullanım gereksinimleri dahil olmak üzere{' '}
+                    DijiGrow&apos;un Google API&apos;lerinden aldığı bilgilerin kullanımı ve diğer uygulamalara aktarımı, Sınırlı Kullanım gereksinimleri dahil olmak üzere{' '}
                     <a href="https://developers.google.com/terms/api-services-user-data-policy" target="_blank" rel="noopener noreferrer" className="text-emerald-400 hover:text-emerald-300 underline underline-offset-4">
                       Google API Hizmetleri Kullanıcı Verisi Politikası
                     </a>
@@ -119,11 +119,11 @@ export default function PrivacyPolicyPage() {
                   </p>
                   <div className="p-6 bg-[#1b1b1f] rounded-lg border-l-4 border-emerald-400/40 space-y-3 text-sm">
                     <div><strong className="text-[#e5e1e7]">İstenen kapsamlar:</strong> <code className="bg-white/10 px-1.5 py-0.5 rounded text-xs text-emerald-300">spreadsheets.readonly</code> ve <code className="bg-white/10 px-1.5 py-0.5 rounded text-xs text-emerald-300">drive.readonly</code> — tablo dosyalarını listelemek ve içe aktarma için seçilen sayfa içeriklerini okumak amacıyla kullanılır.</div>
-                    <div><strong className="text-[#e5e1e7]">Kullanım amacı:</strong> Google kullanıcı verileri yalnızca VoiceAgent CRM&apos;e tablo içe aktarma özelliğini etkinleştirmek için kullanılır.</div>
+                    <div><strong className="text-[#e5e1e7]">Kullanım amacı:</strong> Google kullanıcı verileri yalnızca DijiGrow CRM&apos;e tablo içe aktarma özelliğini etkinleştirmek için kullanılır.</div>
                     <div><strong className="text-[#e5e1e7]">Üçüncü taraf aktarımı yok:</strong> Google kullanıcı verileri, kanunen gerekli olmadıkça üçüncü taraflara aktarılmaz, satılmaz veya ifşa edilmez.</div>
                     <div><strong className="text-[#e5e1e7]">Reklam kullanımı yok:</strong> Google kullanıcı verileri reklam gösterimi, yeniden hedefleme veya kişiselleştirilmiş reklamcılık için kullanılmaz.</div>
                     <div><strong className="text-[#e5e1e7]">Veri satışı yok:</strong> Google kullanıcı verileri hiçbir koşulda herhangi bir tarafa satılmaz.</div>
-                    <div><strong className="text-[#e5e1e7]">İnsan erişim kısıtlamaları:</strong> VoiceAgent personeli, kanunen zorunlu olmadıkça veya güvenlik amaçları dışında Google Sheets içeriğinizi okumaz.</div>
+                    <div><strong className="text-[#e5e1e7]">İnsan erişim kısıtlamaları:</strong> DijiGrow personeli, kanunen zorunlu olmadıkça veya güvenlik amaçları dışında Google Sheets içeriğinizi okumaz.</div>
                     <div><strong className="text-[#e5e1e7]">Token depolama:</strong> Google OAuth erişim tokenınız kısa ömürlü, httpOnly bir çerezde saklanır (1 saat içinde sona erer).</div>
                     <div><strong className="text-[#e5e1e7]">İptal:</strong> <a href="https://myaccount.google.com/permissions" target="_blank" rel="noopener noreferrer" className="text-emerald-400 hover:text-emerald-300 underline underline-offset-4">Google Hesabı İzinleri</a> üzerinden erişimi istediğiniz zaman iptal edebilirsiniz.</div>
                   </div>
@@ -188,7 +188,7 @@ export default function PrivacyPolicyPage() {
                   </h2>
                   <p>
                     GDPR, KVKK ve geçerli gizlilik yasaları kapsamında kişisel verilerinize erişim, düzeltme, silme, kısıtlama veya taşıma hakkına sahipsiniz. Bu hakları kullanmak için{' '}
-                    <a href="mailto:info@yodijital.com" className="text-emerald-400 hover:text-emerald-300 underline underline-offset-4">info@yodijital.com</a>{' '}
+                    <a href="mailto:info@dijigrow.com" className="text-emerald-400 hover:text-emerald-300 underline underline-offset-4">info@dijigrow.com</a>{' '}
                     adresiyle iletişime geçin.
                   </p>
                 </section>
@@ -209,8 +209,10 @@ export default function PrivacyPolicyPage() {
                     11. İletişim
                   </h2>
                   <div className="p-6 bg-[#1b1b1f] rounded-lg border border-white/[0.04]">
-                    <p className="font-medium text-[#e5e1e7] mb-1">YO Dijital Medya A.Ş.</p>
-                    <p>E-posta: <a href="mailto:info@yodijital.com" className="text-emerald-400 hover:text-emerald-300 underline underline-offset-4">info@yodijital.com</a></p>
+                    <p className="font-medium text-[#e5e1e7] mb-1">Story 77 Creative Reklam ve Tanıtım Hizmetleri Ltd. Şti.</p>
+                    <p>VKN: 7811085924 — Doğanbey Vergi Dairesi</p>
+                    <p>Adres: Beytepe Mah. 5360 Sk. No:2 İç Kapı 11 Çankaya/Ankara</p>
+                    <p>E-posta: <a href="mailto:info@dijigrow.com" className="text-emerald-400 hover:text-emerald-300 underline underline-offset-4">info@dijigrow.com</a></p>
                   </div>
                 </section>
 
@@ -224,8 +226,8 @@ export default function PrivacyPolicyPage() {
       <footer className="bg-[#131317] border-t border-emerald-900/20 w-full py-12 px-6">
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-6">
           <div className="flex flex-col items-center sm:items-start gap-2">
-            <Image src="/logo.png" alt="Yo Dijital" width={50} height={18} className="object-contain brightness-0 invert opacity-60" />
-            <span className="text-white text-xs font-light tracking-wide">© 2025 Yo Dijital. Tüm hakları saklıdır.</span>
+            <Image src="/logo.png" alt="DijiGrow" width={50} height={18} className="object-contain brightness-0 invert opacity-60" />
+            <span className="text-white text-xs font-light tracking-wide">© 2025 DijiGrow. Tüm hakları saklıdır.</span>
           </div>
           <nav className="flex flex-wrap justify-center gap-6 text-xs text-white">
             <a href="/privacy-policy" className="hover:text-emerald-300 transition-colors underline underline-offset-4">Gizlilik Politikası</a>

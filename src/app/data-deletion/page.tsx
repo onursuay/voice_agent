@@ -3,8 +3,8 @@ import Image from 'next/image'
 import LandingHeader from '@/components/landing/LandingHeader'
 
 export const metadata: Metadata = {
-  title: 'Veri Silme - VoiceAgent by Yo Dijital',
-  description: 'VoiceAgent platformundan kişisel verilerinizin silinmesini talep edin.',
+  title: 'Veri Silme - DijiGrow',
+  description: 'DijiGrow platformundan kişisel verilerinizin silinmesini talep edin.',
 }
 
 export default function DataDeletionPage() {
@@ -91,11 +91,11 @@ export default function DataDeletionPage() {
                   </div>
                 </div>
                 <a
-                  href="mailto:info@yodijital.com?subject=Veri%20Silme%20Talebi"
+                  href="mailto:info@dijigrow.com?subject=Veri%20Silme%20Talebi"
                   className="inline-flex items-center gap-3 mt-6 bg-gradient-to-br from-emerald-400 to-emerald-600 text-black font-bold px-8 py-3.5 rounded-lg shadow-lg hover:opacity-90 transition-all duration-300 text-sm"
                 >
                   <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 4L8 9L14 4M2 4H14V12H2V4Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                  info@yodijital.com — Talep Gönder
+                  info@dijigrow.com — Talep Gönder
                 </a>
               </div>
 
@@ -191,11 +191,11 @@ export default function DataDeletionPage() {
                   Google Veri Silme
                 </h2>
                 <p className="text-[#bbcabf] text-sm leading-relaxed">
-                  VoiceAgent, Google Sheets içeriğinizi kalıcı olarak depolamaz. Google Sheets içe aktarımı için kullanılan OAuth erişim tokenı kısa ömürlü bir çerezde saklanır ve 1 saat içinde otomatik olarak sona erer.{' '}
+                  DijiGrow, Google Sheets içeriğinizi kalıcı olarak depolamaz. Google Sheets içe aktarımı için kullanılan OAuth erişim tokenı kısa ömürlü bir çerezde saklanır ve 1 saat içinde otomatik olarak sona erer.{' '}
                   <a href="https://myaccount.google.com/permissions" target="_blank" rel="noopener noreferrer" className="text-emerald-400 hover:text-emerald-300 underline underline-offset-4">
                     Google Hesabı İzinleri
                   </a>{' '}
-                  üzerinden VoiceAgent&apos;ın Google hesabınıza erişimini istediğiniz zaman iptal edebilirsiniz.
+                  üzerinden DijiGrow&apos;un Google hesabınıza erişimini istediğiniz zaman iptal edebilirsiniz.
                 </p>
               </section>
 
@@ -209,8 +209,8 @@ export default function DataDeletionPage() {
                     <p className="font-bold text-[#e5e1e7] mb-1">Doğrudan iletişim mi tercih ediyorsunuz?</p>
                     <p className="text-sm text-[#bbcabf]">Veri silme süreciyle ilgili sorularınız için:</p>
                   </div>
-                  <a href="mailto:info@yodijital.com" className="text-emerald-400 font-bold text-sm hover:underline underline-offset-8 transition-all whitespace-nowrap">
-                    info@yodijital.com
+                  <a href="mailto:info@dijigrow.com" className="text-emerald-400 font-bold text-sm hover:underline underline-offset-8 transition-all whitespace-nowrap">
+                    info@dijigrow.com
                   </a>
                 </div>
               </section>
@@ -224,8 +224,8 @@ export default function DataDeletionPage() {
       <footer className="bg-[#131317] border-t border-emerald-900/20 w-full py-12 px-6">
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-6">
           <div className="flex flex-col items-center sm:items-start gap-2">
-            <Image src="/logo.png" alt="Yo Dijital" width={50} height={18} className="object-contain brightness-0 invert opacity-60" />
-            <span className="text-white text-xs font-light tracking-wide">© 2025 Yo Dijital. Tüm hakları saklıdır.</span>
+            <Image src="/logo.png" alt="DijiGrow" width={50} height={18} className="object-contain brightness-0 invert opacity-60" />
+            <span className="text-white text-xs font-light tracking-wide">© 2025 DijiGrow. Tüm hakları saklıdır.</span>
           </div>
           <nav className="flex flex-wrap justify-center gap-6 text-xs text-white">
             <a href="/privacy-policy" className="hover:text-emerald-300 transition-colors underline underline-offset-4">Gizlilik Politikası</a>
