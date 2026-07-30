@@ -4,7 +4,7 @@ import { processSequences } from '@/lib/crm/sequenceEngine';
 export const dynamic = 'force-dynamic';
 export const maxDuration = 300;
 
-// AI Orkestra motoru — her 5 dakikada: devam eden aramaların sonuçlarını çeker,
+// DijiOrkestra motoru — her 5 dakikada: devam eden aramaların sonuçlarını çeker,
 // zamanı gelen senaryo adımlarını (AI arama / funnel mail) çalıştırır.
 // CRON_SECRET ile korumalı (fail-closed).
 export async function GET(request: Request) {

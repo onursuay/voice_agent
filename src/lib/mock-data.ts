@@ -139,7 +139,7 @@ export const MOCK_LEADS: Lead[] = [
     company: 'Taş Gayrimenkul', job_title: 'Broker', city: 'Antalya', country: 'Turkey',
     stage_id: 'stage-1', assigned_to: null, score: 30,
     source_platform: 'website', campaign_name: null, ad_set_name: null, ad_name: null,
-    form_name: 'Website Contact', meta_lead_id: null, meta_page_id: null, utm_source: 'google', utm_medium: 'cpc', utm_campaign: 'search_brand', utm_content: null, utm_term: 'yo dijital',
+    form_name: 'Website Contact', meta_lead_id: null, meta_page_id: null, utm_source: 'google', utm_medium: 'cpc', utm_campaign: 'search_brand', utm_content: null, utm_term: 'dijigrow',
     tags: ['new'], custom_fields: {}, notes_count: 0, activities_count: 1,
     last_activity_at: new Date(Date.now() - 3600000 * 5).toISOString(), first_seen_at: '2026-03-29T17:00:00Z',
     created_at: '2026-03-29T17:00:00Z', updated_at: new Date().toISOString(),
@@ -156,7 +156,7 @@ export const MOCK_ACTIVITIES: LeadActivity[] = [
 ];
 
 export const MOCK_NOTES: LeadNote[] = [
-  { id: 'note-1', lead_id: 'lead-01', organization_id: 'mock-org-1', user_id: 'mock-user-1', content: 'Customer wants a meeting at the start of Q2. Budget approx. 50,000 TL.', is_system: false, created_at: '2026-03-17T14:30:00Z', updated_at: '2026-03-17T14:30:00Z', user: { id: 'mock-user-1', email: 'admin@yodijital.com', full_name: 'Onur Suay', avatar_url: null, phone: null, created_at: '', updated_at: '' } },
-  { id: 'note-2', lead_id: 'lead-01', organization_id: 'mock-org-1', user_id: 'mock-user-1', content: 'Had the first call. Very interested, they have a website redesign project.', is_system: false, created_at: '2026-03-16T11:30:00Z', updated_at: '2026-03-16T11:30:00Z', user: { id: 'mock-user-1', email: 'admin@yodijital.com', full_name: 'Onur Suay', avatar_url: null, phone: null, created_at: '', updated_at: '' } },
-  { id: 'note-3', lead_id: 'lead-04', organization_id: 'mock-org-1', user_id: 'mock-user-1', content: 'Meeting scheduled for April 5. Social media management + ad package will be presented.', is_system: false, created_at: '2026-03-20T09:00:00Z', updated_at: '2026-03-20T09:00:00Z', user: { id: 'mock-user-1', email: 'admin@yodijital.com', full_name: 'Onur Suay', avatar_url: null, phone: null, created_at: '', updated_at: '' } },
+  { id: 'note-1', lead_id: 'lead-01', organization_id: 'mock-org-1', user_id: 'mock-user-1', content: 'Customer wants a meeting at the start of Q2. Budget approx. 50,000 TL.', is_system: false, created_at: '2026-03-17T14:30:00Z', updated_at: '2026-03-17T14:30:00Z', user: { id: 'mock-user-1', email: 'admin@dijigrow.com', full_name: 'Onur Suay', avatar_url: null, phone: null, created_at: '', updated_at: '' } },
+  { id: 'note-2', lead_id: 'lead-01', organization_id: 'mock-org-1', user_id: 'mock-user-1', content: 'Had the first call. Very interested, they have a website redesign project.', is_system: false, created_at: '2026-03-16T11:30:00Z', updated_at: '2026-03-16T11:30:00Z', user: { id: 'mock-user-1', email: 'admin@dijigrow.com', full_name: 'Onur Suay', avatar_url: null, phone: null, created_at: '', updated_at: '' } },
+  { id: 'note-3', lead_id: 'lead-04', organization_id: 'mock-org-1', user_id: 'mock-user-1', content: 'Meeting scheduled for April 5. Social media management + ad package will be presented.', is_system: false, created_at: '2026-03-20T09:00:00Z', updated_at: '2026-03-20T09:00:00Z', user: { id: 'mock-user-1', email: 'admin@dijigrow.com', full_name: 'Onur Suay', avatar_url: null, phone: null, created_at: '', updated_at: '' } },
 ];

@@ -6,12 +6,12 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   const { locale } = await params;
   return locale === 'en'
     ? {
-        title: 'Terms of Service - VoiceAgent by Yo Dijital',
-        description: 'Terms of Service for VoiceAgent by Yo Dijital.',
+        title: 'Terms of Service - DijiGrow',
+        description: 'Terms of Service for DijiGrow.',
       }
     : {
-        title: 'Kullanım Koşulları - VoiceAgent by Yo Dijital',
-        description: 'VoiceAgent Kullanım Koşulları.',
+        title: 'Kullanım Koşulları - DijiGrow',
+        description: 'DijiGrow Kullanım Koşulları.',
       };
 }
 

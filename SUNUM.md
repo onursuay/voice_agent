@@ -1,4 +1,4 @@
-# Yo Dijital — Lead Operasyon Dashboard + CRM
+# DijiGrow — Lead Operasyon Dashboard + CRM
 ## Ürün Sunum Özeti
 
 ---
@@ -39,7 +39,7 @@ Meta reklamlarından (Facebook, Instagram, WhatsApp, Messenger) gelen tüm lead'
 | **Lead'ler** | Ana veri havuzu. Airtable benzeri tablo — tüm lead'ler burada listelenir, aranır, filtrelenir, inline düzenlenir, yeni lead eklenir |
 | **Pipeline** | Kanban board. Lead'ler aşama bazlı kolonlarda görünür (Yeni → İletişime Geçildi → Nitelikli → Toplantı → Teklif → Kazanıldı/Kaybedildi). Sürükle-bırak ile aşama değiştirilir |
 | **İçe Aktar** | CSV/XLSX dosyadan lead yükleme. 4 adımlı wizard: Dosya Yükle → Kolon Eşleştir → Önizle → Sonuç. Mevcut kayıtlarla otomatik merge |
-| **E-posta** | E-posta gönderim merkezi. Tek/toplu gönderim, şablon oluşturma, gönderim geçmişi. Resend API ile info@yodijital.com'dan gönderim |
+| **E-posta** | E-posta gönderim merkezi. Tek/toplu gönderim, şablon oluşturma, gönderim geçmişi. Resend API ile info@dijigrow.com'dan gönderim |
 | **Otomasyonlar** | Kural motoru. "Lead oluşturulduğunda → satış ekibine ata", "3 gün hareketsiz → hatırlatıcı gönder", "Skor 80 üstü → VIP etiketi ekle" gibi tetikleyici-aksiyon kuralları |
 | **AI Aramalar** | Yapay zeka ile otomatik telefon araması. Lead seç → senaryo yaz → ses profili seç → kuyruğa ekle. Arama sonrası transkript, AI özet, sonuç sınıflandırma (ilgili/ilgisiz/geri aranacak) |
 | **Ayarlar** | Organizasyon bilgileri, üye yönetimi, pipeline aşamalarını özelleştirme (renk, sıra, ekleme/silme), profil düzenleme, entegrasyon yönetimi (Meta bağlantısı) |

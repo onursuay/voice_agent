@@ -3,7 +3,7 @@
 import { useState, useMemo, useCallback, useEffect } from 'react'
 import { createPortal } from 'react-dom'
 
-const CONTACT_EMAIL = 'info@yodijital.com'
+const CONTACT_EMAIL = 'info@dijigrow.com'
 
 interface Props {
   label: string
@@ -26,7 +26,7 @@ export default function ScheduleModal({ label, variant = 'nav' }: Props) {
   useEffect(() => { setMounted(true) }, [])
 
   const t = {
-    brand: 'Yo Dijital',
+    brand: 'DijiGrow',
     meetingTitle: 'Strateji Görüşmesi',
     meetingSub: '30 dakikalık birebir ürün tanıtımı',
     duration: '30 dakika',
@@ -140,7 +140,7 @@ export default function ScheduleModal({ label, variant = 'nav' }: Props) {
   async function handleSubmit() {
     if (!selectedDate || !selectedTime || !name.trim() || !email.trim()) return
     try {
-      const subject = encodeURIComponent(`Yo Dijital Görüşme Talebi — ${name}`)
+      const subject = encodeURIComponent(`DijiGrow Görüşme Talebi — ${name}`)
       const body = encodeURIComponent(`Ad Soyad: ${name}\nE-posta: ${email}\nTarih: ${selectedDate}\nSaat: ${selectedTime}\n` + (note ? `Not: ${note}\n` : ''))
       window.open(`mailto:${CONTACT_EMAIL}?subject=${subject}&body=${body}`, '_self')
     } catch { /* noop */ }

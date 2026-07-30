@@ -45,7 +45,7 @@ export default function HesabimPage() {
   if (!profile) return null
 
   const initials = `${profile.firstName.charAt(0)}${profile.lastName.charAt(0)}`.toUpperCase() || 'U'
-  const referralLink = `https://voiceagent.yodijital.com/?referralCode=${profile.referralCode}`
+  const referralLink = `https://dijigrow.com/?referralCode=${profile.referralCode}`
 
   const handleSaveProfile = () => {
     setStoredProfile(profile)

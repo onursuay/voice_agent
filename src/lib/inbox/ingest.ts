@@ -122,7 +122,7 @@ async function findOrCreateLead(
     metadata: { channel: msg.channel, source: msg.ctwa ? 'click_to_whatsapp' : 'organic' },
   });
 
-  // AI Orkestra: mesaj kanalından gelen yeni lead de senaryoya kaydolsun (bloklamaz)
+  // DijiOrkestra: mesaj kanalından gelen yeni lead de senaryoya kaydolsun (bloklamaz)
   void import('@/lib/crm/sequenceEngine')
     .then((m) => m.enrollLeadInSequences(created.id))
     .catch((e) => console.error('[sequence] inbox enroll failed', e));

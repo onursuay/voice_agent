@@ -651,7 +651,7 @@
     "voiceFemaleCasual": "Female - Casual",
     "callScript": "Call Script",
     "callScriptPlaceholder": "Script for AI to say...",
-    "defaultScript": "Hello {{full_name}}, I'm calling from Yo Dijital. I'd like to briefly tell you about our digital marketing services. Is now a good time?",
+    "defaultScript": "Hello {{full_name}}, I'm calling from DijiGrow. I'd like to briefly tell you about our digital marketing services. Is now a good time?",
     "aiSummary": "AI Summary",
     "transcript": "Transcript",
     "serviceStatus": "Service Status",
@@ -696,7 +696,7 @@
     "subjectPlaceholder": "Email subject...",
     "body": "Content",
     "bodyPlaceholder": "Write email content... Variables: {{full_name}}, {{company}} etc.",
-    "sender": "Sender: info@yodijital.com",
+    "sender": "Sender: info@dijigrow.com",
     "sendBtn": "Send",
     "sendBulkBtn": "Send to {count} Leads",
     "sentCount": "{count} sent",
@@ -940,7 +940,7 @@
     },
     "register": {
       "title": "Start Your Free Trial",
-      "subtitle": "Power your lead management with AI via Yo Dijital.",
+      "subtitle": "Power your lead management with AI via DijiGrow.",
       "fullNameLabel": "Full Name",
       "fullNamePlaceholder": "Enter your full name",
       "emailLabel": "Email Address",
@@ -976,10 +976,10 @@
     }
   },
   "landing": {
-    "badge": "VoiceAgent — AI-Powered All-in-One Lead Management",
+    "badge": "DijiGrow — AI-Powered All-in-One Lead Management",
     "heroLine1": "Collect Your Leads,",
     "heroLine2": "Convert to Sales",
-    "heroSubtitle": "Yo Dijital lets you collect all your leads from Meta ads in one place, manage them with a CRM pipeline, and convert them to sales with AI-powered calls.",
+    "heroSubtitle": "DijiGrow lets you collect all your leads from Meta ads in one place, manage them with a CRM pipeline, and convert them to sales with AI-powered calls.",
     "ctaTrial": "Try Free for 14 Days",
     "ctaSchedule": "Schedule a Call",
     "ctaDemo": "View Panel Demo",
@@ -1023,7 +1023,7 @@
     "mockAvgResponse": "Avg. Response",
     "mockAiActive": "AI Optimization: Active",
     "mockChannels": "4 channels synced",
-    "footer": "2025 Yo Dijital. All rights reserved.",
+    "footer": "2025 DijiGrow. All rights reserved.",
     "privacyPolicy": "Privacy Policy",
     "cookiePolicy": "Cookie Policy",
     "terms": "Terms of Service",
@@ -1234,7 +1234,7 @@
     }
   },
   "sequences": {
-    "title": "AI Orchestra Scenarios",
+    "title": "DijiOrkestra Scenarios",
     "desc": "When a lead arrives, the AI calls on schedule; thank-you/funnel emails follow based on the outcome.",
     "newSequence": "New Scenario",
     "editSequence": "Edit Scenario",

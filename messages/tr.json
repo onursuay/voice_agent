@@ -651,7 +651,7 @@
     "voiceFemaleCasual": "Kadın - Samimi",
     "callScript": "Arama Senaryosu",
     "callScriptPlaceholder": "AI'ın söyleyeceği senaryo...",
-    "defaultScript": "Merhaba {{full_name}}, Yo Dijital'den arıyorum. Dijital pazarlama hizmetlerimiz hakkında kısa bilgi vermek istiyorum. Uygun musunuz?",
+    "defaultScript": "Merhaba {{full_name}}, DijiGrow'dan arıyorum. Dijital pazarlama hizmetlerimiz hakkında kısa bilgi vermek istiyorum. Uygun musunuz?",
     "aiSummary": "AI Özet",
     "transcript": "Transkript",
     "serviceStatus": "Servis Durumu",
@@ -696,7 +696,7 @@
     "subjectPlaceholder": "E-posta konusu...",
     "body": "İçerik",
     "bodyPlaceholder": "E-posta içeriğini yazın... Değişkenler: {{full_name}}, {{company}} vb.",
-    "sender": "Gönderici: info@yodijital.com",
+    "sender": "Gönderici: info@dijigrow.com",
     "sendBtn": "Gönder",
     "sendBulkBtn": "{count} Lead'e Gönder",
     "sentCount": "{count} gönderildi",
@@ -940,7 +940,7 @@
     },
     "register": {
       "title": "Ücretsiz Denemenizi Başlatın",
-      "subtitle": "Yo Dijital ile lead yönetiminizi yapay zekâ ile güçlendirin.",
+      "subtitle": "DijiGrow ile lead yönetiminizi yapay zekâ ile güçlendirin.",
       "fullNameLabel": "Ad Soyad",
       "fullNamePlaceholder": "Adınızı ve soyadınızı girin",
       "emailLabel": "E-posta Adresi",
@@ -976,10 +976,10 @@
     }
   },
   "landing": {
-    "badge": "VoiceAgent — AI Destekli Hepsi Bir Arada Lead Yönetimi",
+    "badge": "DijiGrow — AI Destekli Hepsi Bir Arada Lead Yönetimi",
     "heroLine1": "Lead'lerinizi Toplayın,",
     "heroLine2": "Satışa Dönüştürün",
-    "heroSubtitle": "Yo Dijital, Meta reklamlarından gelen tüm lead'lerinizi tek merkezden toplamanızı, CRM pipeline ile yönetmenizi ve yapay zeka destekli aramalarla satışa dönüştürmenizi sağlar.",
+    "heroSubtitle": "DijiGrow, Meta reklamlarından gelen tüm lead'lerinizi tek merkezden toplamanızı, CRM pipeline ile yönetmenizi ve yapay zeka destekli aramalarla satışa dönüştürmenizi sağlar.",
     "ctaTrial": "14 Gün Ücretsiz Dene",
     "ctaSchedule": "Görüşme Planla",
     "ctaDemo": "Panelin Demosu",
@@ -1023,7 +1023,7 @@
     "mockAvgResponse": "Ort. Yanıt",
     "mockAiActive": "AI Optimizasyon: Aktif",
     "mockChannels": "4 kanal senkron",
-    "footer": "2025 Yo Dijital. Tüm hakları saklıdır.",
+    "footer": "2025 DijiGrow. Tüm hakları saklıdır.",
     "privacyPolicy": "Gizlilik Politikası",
     "cookiePolicy": "Çerez Politikası",
     "terms": "Kullanım Koşulları",
@@ -1234,7 +1234,7 @@
     }
   },
   "sequences": {
-    "title": "AI Orkestra Senaryoları",
+    "title": "DijiOrkestra Senaryoları",
     "desc": "Lead düşünce plana göre AI araması yapılır, sonuca göre teşekkür/funnel mailleri gönderilir.",
     "newSequence": "Yeni Senaryo",
     "editSequence": "Senaryoyu Düzenle",

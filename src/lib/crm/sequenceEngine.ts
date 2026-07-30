@@ -7,7 +7,7 @@ import {
   elevenLabsConfigured, formatPhoneForCall, initiateOutboundCall, fetchConversationResult,
 } from '@/lib/calls/elevenlabs';
 
-// ── AI Orkestra motoru ───────────────────────────────────────────────────────
+// ── DijiOrkestra motoru ───────────────────────────────────────────────────────
 // Lead düşünce eşleşen senaryoya kaydolur; cron her 5 dk'da:
 //   1) devam eden aramaların sonucunu ElevenLabs'tan çeker, lead/call_logs'a işler
 //   2) zamanı gelen adımları çalıştırır (ai_call: pencere içinde arar; email: lead'e funnel maili)
@@ -129,7 +129,7 @@ export async function enrollLeadInSequences(leadId: string): Promise<{ enrolled:
       lead_id: leadId,
       organization_id: lead.organization_id,
       activity_type: 'created',
-      title: 'AI orchestra sequence started',
+      title: 'DijiOrkestra sequence started',
       metadata: { sequence_id: matched.id },
     });
     return { enrolled: true, sequenceId: matched.id };

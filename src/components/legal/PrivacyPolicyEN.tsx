@@ -3,9 +3,9 @@ import Image from 'next/image'
 import LandingHeader from '@/components/landing/LandingHeader'
 
 export const metadata: Metadata = {
-  title: 'Privacy Policy - VoiceAgent by Yo Dijital',
+  title: 'Privacy Policy - DijiGrow',
   description:
-    'Privacy Policy for VoiceAgent (voiceagent.yodijital.com). Learn how we collect, use, and protect your data, including our use of Google API Services.',
+    'Privacy Policy for DijiGrow (dijigrow.com). Learn how we collect, use, and protect your data, including our use of Google API Services.',
 }
 
 export default function PrivacyPolicyEnPage() {
@@ -26,7 +26,7 @@ export default function PrivacyPolicyEnPage() {
                   Privacy Policy.
                 </h1>
                 <p className="text-[#bbcabf] text-sm leading-relaxed max-w-2xl">
-                  YO Dijital Medya A.Ş. is committed to protecting your privacy. This policy explains how we collect, use, and safeguard your information.
+                  Story 77 Creative Reklam ve Tanıtım Hizmetleri Ltd. Şti. is committed to protecting your privacy. This policy explains how we collect, use, and safeguard your information.
                 </p>
               </header>
 
@@ -39,7 +39,7 @@ export default function PrivacyPolicyEnPage() {
                     01. Introduction
                   </h2>
                   <p>
-                    YO Dijital Medya A.Ş. (&quot;VoiceAgent&quot;, &quot;we&quot;, &quot;us&quot;, or &quot;our&quot;) is committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our platform at <strong className="text-[#e5e1e7]">voiceagent.yodijital.com</strong> (&quot;Service&quot;).
+                    Story 77 Creative Reklam ve Tanıtım Hizmetleri Ltd. Şti. (&quot;DijiGrow&quot;, &quot;we&quot;, &quot;us&quot;, or &quot;our&quot;) is committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our platform at <strong className="text-[#e5e1e7]">dijigrow.com</strong> (&quot;Service&quot;).
                   </p>
                 </section>
 
@@ -112,7 +112,7 @@ export default function PrivacyPolicyEnPage() {
                     04. Google API Services — Limited Use Disclosure
                   </h2>
                   <p className="mb-5">
-                    VoiceAgent&apos;s use and transfer to any other app of information received from Google APIs will adhere to the{' '}
+                    DijiGrow&apos;s use and transfer to any other app of information received from Google APIs will adhere to the{' '}
                     <a href="https://developers.google.com/terms/api-services-user-data-policy" target="_blank" rel="noopener noreferrer" className="text-emerald-400 hover:text-emerald-300 underline underline-offset-4">
                       Google API Services User Data Policy
                     </a>
@@ -120,11 +120,11 @@ export default function PrivacyPolicyEnPage() {
                   </p>
                   <div className="p-6 bg-[#1b1b1f] rounded-lg border-l-4 border-emerald-400/40 space-y-3 text-sm">
                     <div><strong className="text-[#e5e1e7]">Scopes requested:</strong> <code className="bg-white/10 px-1.5 py-0.5 rounded text-xs text-emerald-300">spreadsheets.readonly</code> and <code className="bg-white/10 px-1.5 py-0.5 rounded text-xs text-emerald-300">drive.readonly</code> — used to list spreadsheet files and read selected sheet contents for import.</div>
-                    <div><strong className="text-[#e5e1e7]">Purpose of use:</strong> Google user data is used solely to enable the spreadsheet import feature into the VoiceAgent CRM. Data is not used for any other purpose.</div>
+                    <div><strong className="text-[#e5e1e7]">Purpose of use:</strong> Google user data is used solely to enable the spreadsheet import feature into the DijiGrow CRM. Data is not used for any other purpose.</div>
                     <div><strong className="text-[#e5e1e7]">No third-party transfer:</strong> Google user data is not transferred, sold, or disclosed to any third party except as required by law.</div>
                     <div><strong className="text-[#e5e1e7]">No advertising use:</strong> Google user data is not used for serving ads, retargeting, or personalized advertising.</div>
                     <div><strong className="text-[#e5e1e7]">No data sales:</strong> Google user data is not sold to any party under any circumstances.</div>
-                    <div><strong className="text-[#e5e1e7]">Human access restrictions:</strong> No VoiceAgent personnel reads your Google Sheets content unless required by law or for security purposes.</div>
+                    <div><strong className="text-[#e5e1e7]">Human access restrictions:</strong> No DijiGrow personnel reads your Google Sheets content unless required by law or for security purposes.</div>
                     <div><strong className="text-[#e5e1e7]">Token storage:</strong> Your Google OAuth access token is stored in a short-lived, httpOnly cookie (expires within 1 hour). Never exposed to client-side JavaScript.</div>
                     <div><strong className="text-[#e5e1e7]">Revocation:</strong> You may revoke access at any time via <a href="https://myaccount.google.com/permissions" target="_blank" rel="noopener noreferrer" className="text-emerald-400 hover:text-emerald-300 underline underline-offset-4">Google Account Permissions</a>.</div>
                   </div>
@@ -189,7 +189,7 @@ export default function PrivacyPolicyEnPage() {
                   </h2>
                   <p>
                     Under GDPR, KVKK, and applicable privacy laws, you have the right to access, correct, delete, restrict, or port your personal data. To exercise these rights, contact us at{' '}
-                    <a href="mailto:info@yodijital.com" className="text-emerald-400 hover:text-emerald-300 underline underline-offset-4">info@yodijital.com</a>.
+                    <a href="mailto:info@dijigrow.com" className="text-emerald-400 hover:text-emerald-300 underline underline-offset-4">info@dijigrow.com</a>.
                   </p>
                 </section>
 
@@ -209,8 +209,10 @@ export default function PrivacyPolicyEnPage() {
                     11. Contact
                   </h2>
                   <div className="p-6 bg-[#1b1b1f] rounded-lg border border-white/[0.04]">
-                    <p className="font-medium text-[#e5e1e7] mb-1">YO Dijital Medya A.Ş.</p>
-                    <p>Email: <a href="mailto:info@yodijital.com" className="text-emerald-400 hover:text-emerald-300 underline underline-offset-4">info@yodijital.com</a></p>
+                    <p className="font-medium text-[#e5e1e7] mb-1">Story 77 Creative Reklam ve Tanıtım Hizmetleri Ltd. Şti.</p>
+                    <p>Tax ID (VKN): 7811085924 — Doğanbey Tax Office</p>
+                    <p>Address: Beytepe Mah. 5360 Sk. No:2 İç Kapı 11 Çankaya/Ankara</p>
+                    <p>Email: <a href="mailto:info@dijigrow.com" className="text-emerald-400 hover:text-emerald-300 underline underline-offset-4">info@dijigrow.com</a></p>
                   </div>
                 </section>
 
@@ -224,8 +226,8 @@ export default function PrivacyPolicyEnPage() {
       <footer className="bg-[#131317] border-t border-emerald-900/20 w-full py-12 px-6">
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-6">
           <div className="flex flex-col items-center sm:items-start gap-2">
-            <Image src="/logo.png" alt="Yo Dijital" width={50} height={18} className="object-contain brightness-0 invert opacity-60" />
-            <span className="text-white text-xs font-light tracking-wide">© 2025 Yo Dijital. All rights reserved.</span>
+            <Image src="/dijigrow-logo.png" alt="DijiGrow" width={50} height={18} className="object-contain brightness-0 invert opacity-60" />
+            <span className="text-white text-xs font-light tracking-wide">© 2025 DijiGrow. All rights reserved.</span>
           </div>
           <nav className="flex flex-wrap justify-center gap-6 text-xs text-white">
             <a href="/en/privacy-policy" className="hover:text-emerald-300 transition-colors underline underline-offset-4">Privacy Policy</a>

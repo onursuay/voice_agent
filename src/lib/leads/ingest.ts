@@ -443,7 +443,7 @@ export async function ingestLead(input: NormalizedLeadInput) {
       void import('@/lib/crm/routingEngine')
         .then((m) => m.evaluateLeadRouting(createdLead.id, { trigger: 'auto' }))
         .catch((e) => console.error('[routing] auto eval failed', e));
-      // AI Orkestra: eşleşen senaryoya kaydet (arama+funnel mail planı). Bloklamaz.
+      // DijiOrkestra: eşleşen senaryoya kaydet (arama+funnel mail planı). Bloklamaz.
       void import('@/lib/crm/sequenceEngine')
         .then((m) => m.enrollLeadInSequences(createdLead.id))
         .catch((e) => console.error('[sequence] enroll failed', e));

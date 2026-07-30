@@ -55,7 +55,7 @@ function useCallTranslations() {
 }
 
 const MOCK_CALLS: CallLog[] = [
-  { id: 'call-1', lead_id: 'lead-01', phone_number: '+905321234567', direction: 'outbound', duration_seconds: 145, status: 'completed', transcript: 'Hello Mr. Ahmet, I am calling from Yo Dijital. We would like to inform you about our digital marketing services. Ahmet: Yes, I am interested. We are especially looking for support with social media management. Alright, we will prepare a detailed proposal for you.', summary: 'Mr. Ahmet is interested in social media management. A detailed proposal will be sent.', result_classification: 'interested', metadata: { voice_profile: 'male-formal', lead_name: 'Ahmet Yılmaz' }, created_at: '2026-03-28T14:30:00Z', lead: { id: 'lead-01', full_name: 'Ahmet Yılmaz', phone: '+905321234567', company: 'Yılmaz Teknoloji' } },
+  { id: 'call-1', lead_id: 'lead-01', phone_number: '+905321234567', direction: 'outbound', duration_seconds: 145, status: 'completed', transcript: 'Hello Mr. Ahmet, I am calling from DijiGrow. We would like to inform you about our digital marketing services. Ahmet: Yes, I am interested. We are especially looking for support with social media management. Alright, we will prepare a detailed proposal for you.', summary: 'Mr. Ahmet is interested in social media management. A detailed proposal will be sent.', result_classification: 'interested', metadata: { voice_profile: 'male-formal', lead_name: 'Ahmet Yılmaz' }, created_at: '2026-03-28T14:30:00Z', lead: { id: 'lead-01', full_name: 'Ahmet Yılmaz', phone: '+905321234567', company: 'Yılmaz Teknoloji' } },
   { id: 'call-2', lead_id: 'lead-02', phone_number: '+905551112233', direction: 'outbound', duration_seconds: null, status: 'pending', transcript: null, summary: null, result_classification: null, metadata: { voice_profile: 'female-casual', lead_name: 'Elif Kaya' }, created_at: '2026-03-30T09:00:00Z', lead: { id: 'lead-02', full_name: 'Elif Kaya', phone: '+905551112233', company: 'Kaya Danışmanlık' } },
   { id: 'call-3', lead_id: 'lead-03', phone_number: '+905443217890', direction: 'outbound', duration_seconds: 30, status: 'completed', transcript: 'Hello, I am calling for Mr. Mehmet. I am not available right now, could you call me back later?', summary: 'Mr. Mehmet was not available, will be called back.', result_classification: 'callback', metadata: { voice_profile: 'male-formal', lead_name: 'Mehmet Demir' }, created_at: '2026-03-27T11:00:00Z', lead: { id: 'lead-03', full_name: 'Mehmet Demir', phone: '+905443217890', company: 'Demir İnşaat' } },
   { id: 'call-4', lead_id: 'lead-07', phone_number: '+905551234890', direction: 'outbound', duration_seconds: 0, status: 'failed', transcript: null, summary: null, result_classification: 'no_answer', metadata: { voice_profile: 'male-formal', lead_name: 'Burak Şahin' }, created_at: '2026-03-26T16:00:00Z', lead: { id: 'lead-07', full_name: 'Burak Şahin', phone: '+905551234890', company: 'Şahin Otomotiv' } },
@@ -300,7 +300,7 @@ function ConfigTab() {
     work_hours_start: '09:00',
     work_hours_end: '18:00',
     max_retries: 2,
-    system_prompt: 'You are a professional sales assistant calling on behalf of Yo Dijital. Be polite, brief and concise. Your goal is to gauge the customer\'s interest and, if appropriate, schedule a meeting.',
+    system_prompt: 'You are a professional sales assistant calling on behalf of DijiGrow. Be polite, brief and concise. Your goal is to gauge the customer\'s interest and, if appropriate, schedule a meeting.',
   });
 
   const services = [
