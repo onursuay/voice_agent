@@ -67,7 +67,7 @@ function normalizePhone(phone: string): string {
 
 // İKİ sabit kova (owner formatı): pozitif aşamalar → "<Marka>/Nitelikli",
 // negatif aşamalar (kaybedildi/niteliksiz) → "<Marka>/Niteliksiz". Marka = reklam
-// hesabı adı (ör. "Fikret Petrol/Nitelikli"); çözülemezse AUDIENCE_PREFIX. Böylece
+// hesabı adı (ör. "<Marka>/Nitelikli"); çözülemezse AUDIENCE_PREFIX. Böylece
 // Meta reklamında Nitelikli DAHİL EDİLİP Niteliksiz HARİÇ tutulabilir.
 const QUALIFIED_LABEL = 'Nitelikli';
 const UNQUALIFIED_LABEL = 'Niteliksiz';
@@ -261,7 +261,7 @@ export async function syncLeadStageToMeta(opts: {
   const account = `act_${adRes.data.account_id}`;
 
   // Audience adlarını markaya göre öneklemek için reklam hesabının adını çek
-  // ("Fikret Petrol"). Çözülemezse jenerik öneke (AUDIENCE_PREFIX) düş.
+  // (reklam hesabının kendi adı). Çözülemezse jenerik öneke (AUDIENCE_PREFIX) düş.
   const acctRes = await client.get<{ name?: string }>(`/${account}`, { fields: 'name' });
   const prefix = (acctRes.ok && acctRes.data?.name?.trim()) ? acctRes.data.name.trim() : AUDIENCE_PREFIX;
 

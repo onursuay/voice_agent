@@ -8,7 +8,7 @@
 ## 1. Amaç ve Değişmez Kural
 
 `voice_agent` projesi (mevcut ürün adı **VoiceAgent**, teknik ad `ai_agent_santral`), ayrılınan
-firma **YO Dijital / `yodijital.com`** izlerinden ve dar **"VoiceAgent"** adından tamamen
+firma **eski firma adı / `eski alan adı`** izlerinden ve dar **"VoiceAgent"** adından tamamen
 arındırılıp **DijiGrow** markasına geçirilecek.
 
 **Neden yeni isim "Voice" değil:** Ürün tek ayaklı değil — kod kanıtıyla **üç ayaklı + otomasyon**:
@@ -24,27 +24,27 @@ birden kucaklar ve DijiMagic ailesiyle "Diji" tutarlılığını korur.
 |------|------|
 | `VoiceAgent` / `voiceagent` (ürün) | **DijiGrow** |
 | `AI Orkestra` (otomasyon alt-modülü) | **DijiOrkestra** (markalı alt-modül; DijiMagic'teki "DijiAlgoritma" gibi) |
-| `voiceagent.yodijital.com` (domain) | **dijigrow.com** (+www) |
-| `info@yodijital.com` / `bildirim@yodijital.com` | **info@dijigrow.com** / **bildirim@dijigrow.com** |
-| `Yo Dijital` / `yodijital` / `yoai` (firma izleri) | **kaldırılır** (marka DijiGrow) |
+| `eski alan adındaki ürün adresi` (domain) | **dijigrow.com** (+www) |
+| `eski firmanın e-posta adresi` / `bildirim@eski alan adı` | **info@dijigrow.com** / **bildirim@dijigrow.com** |
+| `eski firma adı` / `eski alan adı` / `eski ad` (firma izleri) | **kaldırılır** (marka DijiGrow) |
 | `onursuay/voice_agent` (GitHub) · `voiceagent` (Vercel) · `ai_agent_santral` (package) | **dijigrow** |
 
-**🔴 Hard requirement:** working tree'de `VoiceAgent`, `voiceagent`, `Yo Dijital`, `yodijital`,
-`yoai` — **hiçbir formda, hiçbir katmanda kalmayacak.** (Git geçmişi immutable, kapsam dışı.)
+**🔴 Hard requirement:** working tree'de `VoiceAgent`, `voiceagent`, `eski firma adı`, `eski alan adı`,
+`eski ad` — **hiçbir formda, hiçbir katmanda kalmayacak.** (Git geçmişi immutable, kapsam dışı.)
 
 ## 2. İsim Haritası (büyük/küçük harf duyarlı, önce uzun/bileşik tokenlar)
 
 ```
-voiceagent.yodijital.com   → dijigrow.com                 (önce — en uzun token)
-VoiceAgent by Yo Dijital   → DijiGrow
+eski alan adındaki ürün adresi   → dijigrow.com                 (önce — en uzun token)
+VoiceAgent by eski firma adı   → DijiGrow
 VoiceAgent / voiceagent    → DijiGrow / dijigrow
 AI Orkestra                → DijiOrkestra
-Yo Dijital / yodijital     → DijiGrow / dijigrow.com
-yoai                       → dijigrow
-info@yodijital.com         → info@dijigrow.com
-bildirim@yodijital.com     → bildirim@dijigrow.com
-"Yo Dijital'den arıyorum"  → "DijiGrow'dan arıyorum"     (i18n defaultScript)
-© 2025 Yo Dijital          → © 2025 DijiGrow
+eski firma adı / eski alan adı     → DijiGrow / dijigrow.com
+eski ad                       → dijigrow
+eski firmanın e-posta adresi         → info@dijigrow.com
+bildirim@eski alan adı     → bildirim@dijigrow.com
+"eski firma adı'den arıyorum"  → "DijiGrow'dan arıyorum"     (i18n defaultScript)
+© 2025 eski firma adı          → © 2025 DijiGrow
 ```
 
 **İstisna — yasal sayfalar:** `terms-of-service`, `privacy-policy`, `cookie-policy`, `data-deletion`
@@ -58,23 +58,23 @@ Ltd. Şti."** (geçici, DijiMagic ile aynı — VKN 7811085924, Doğanbey VD, Be
 | Token | Yaklaşık geçiş | Dosya |
 |-------|------:|------:|
 | `VoiceAgent` (58) + `voiceagent` (9) + `Voice Agent` (2) | ~69 | ~17 |
-| `Yo Dijital` (73) + `yodijital` (35) + `yoai` (6) | ~114 | ~20 |
+| `eski firma adı` (73) + `eski alan adı` (35) + `eski ad` (6) | ~114 | ~20 |
 
 ### 3.1 Katmanlar
 - **Metin/string:** `messages/tr.json` + `messages/en.json` (landing hero/badge, "Mesajlaşma Kanalları",
   "AI Orkestra Senaryoları", arama scripti, footer, gönderici satırı), UI bileşenleri (`src/components/landing`,
   `layout`), legal sayfa metadata (`src/app/[locale]/{terms-of-service,privacy-policy,cookie-policy}`,
   `src/app/data-deletion`).
-- **Görsel/dosya:** `public/yoai-logo.png`, `public/logo.png` (alt="Yo Dijital"), `public/logos/yoai-logo.png`,
+- **Görsel/dosya:** `public/eski marka logosu dosyası`, `public/logo.png` (alt="eski firma adı"), `public/logos/eski marka logosu dosyası`,
   `public/favicon*.png`, `public/ai-brain.png` → **yeni DijiGrow logosu/favicon üretilir** (§6). Dosya adı
-  `yoai-logo.png` → `dijigrow-logo.png` (`git mv`), referanslar güncellenir.
+  `eski marka logosu dosyası` → `dijigrow-logo.png` (`git mv`), referanslar güncellenir.
 - **DB (Supabase `ckqagsvrleyzvfjwldwh`) — HAFİF:** tablo/kolon/index/policy adları **jenerik**
   (`leads`, `conversations`, `organizations`, `sequences`, `crm_stages`…) → **yapısal RENAME YOK.** ✅
   Yalnız **veri içindeki marka string'leri** güncellenir: e-posta şablonları (`email_templates`),
   varsayılan arama scripti, organizasyon/gönderen adları vb. (transaction + doğrula).
-- **env / domain değerleri:** `EMAIL_FROM` ("YO Dijital <bildirim@yodijital.com>"), `APP_BASE_URL`
+- **env / domain değerleri:** `EMAIL_FROM` ("eski firma adı <bildirim@eski alan adı>"), `APP_BASE_URL`
   (boş → `https://dijigrow.com`), Google OAuth redirect, Meta redirect/webhook, `RESEND_*`.
-  Marka adı taşıyan **özel env yok** (DijiMagic'teki `YOAI_*` muadili yok) → env katmanı sadece değer.
+  Marka adı taşıyan **özel env yok** (DijiMagic'teki `ESKİ AD_*` muadili yok) → env katmanı sadece değer.
 - **Apps Script:** `apps_script.js` + `apps_script_template.js` (Google Sheets entegrasyonu) — marka
   string'i taşıyorsa güncellenir.
 
@@ -97,9 +97,9 @@ yasal satıcı blokları + isim haritası muafiyetleri elle. EN/TR `messages` pa
 ## 5. Faz Sırası
 
 1. **Metin/string replace** (kod-içi + i18n) — isim haritası; legal satıcı blokları elle. → build+tsc.
-2. **Dosya/görsel** — `yoai-logo.png` → `dijigrow-logo.png` (`git mv`) + referanslar; yeni logo/favicon (§6). → build.
+2. **Dosya/görsel** — `eski marka logosu dosyası` → `dijigrow-logo.png` (`git mv`) + referanslar; yeni logo/favicon (§6). → build.
 3. **DB veri-içi string (Supabase, canlı — hafif):** `scripts/rebrand/update-data-strings.mjs` —
-   `email_templates`, varsayılan arama scripti, org/gönderen adlarındaki "Yo Dijital"/"VoiceAgent" →
+   `email_templates`, varsayılan arama scripti, org/gönderen adlarındaki "eski firma adı"/"VoiceAgent" →
    "DijiGrow". Transaction + önce SELECT ile etki sayısı + doğrula-veya-rollback. Yapısal değişiklik yok.
 4. **env + Vercel (Claude/CLI):** `EMAIL_FROM`, `APP_BASE_URL`, OAuth/Meta redirect değerleri →
    dijigrow.com; Vercel proje adı `voiceagent` → `dijigrow`; `dijigrow.com`+www domain ekle (www SSL);
@@ -109,10 +109,10 @@ yasal satıcı blokları + isim haritası muafiyetleri elle. EN/TR `messages` pa
 7. **Dış panolar (checklist, §7)** — Vercel domain (Claude), Meta/Google/Resend/Turnstile/Supabase-Auth/
    ElevenLabs/DNS (owner). Meta izin koruması §7.1.
 8. **Doğrulama** — `next build` + `tsc` + smoke (signup→e-posta linki, Meta OAuth, gelen lead/çağrı/mesaj
-   akışı, legal sayfalar) + `git grep` ile sıfır-iz kontrolü (VoiceAgent/voiceagent/Yo Dijital/yodijital/yoai = 0).
+   akışı, legal sayfalar) + `git grep` ile sıfır-iz kontrolü (VoiceAgent/voiceagent/eski firma adı/eski alan adı/eski ad = 0).
 
 ## 6. Logo Tasarımı (alt-teslimat)
-`yoai-logo.png` / `logo.png` görsel olarak eski markayı taşıyor → dosya adı değişimi yetmez.
+`eski marka logosu dosyası` / `logo.png` görsel olarak eski markayı taşıyor → dosya adı değişimi yetmez.
 Tasarımcı kararıyla (global persona kuralı) **DijiGrow wordmark + ikon + favicon** üretilir; "Diji"
 ailesiyle (DijiMagic) görsel uyumlu. **PC + mobil önizleme** ile sunulur, onay sonrası yerleştirilir.
 `frontend-design` skill'i bu adımda çağrılır.
@@ -121,8 +121,8 @@ ailesiyle (DijiMagic) görsel uyumlu. **PC + mobil önizleme** ile sunulur, onay
 
 ### 7.1 Meta (izin riski — KRİTİK, sıralama bağlayıcı)
 App **`968757322162498`** — durum (owner ekran görüntüsü 2026-06-26): **Mode: Live**, Type: İşletme,
-Business portfolyosu: **"Yo Dijital Medya"**. Ürün `meta-leads` webhook'u kullanıyor → **lead_retrieval**
-izni muhtemelen aktif; bu yüzden app **kritik** (DijiMagic'teki "YoAi Magic" gibi değil ama lead akışı canlı).
+Business portfolyosu: **"eski firma"**. Ürün `meta-leads` webhook'u kullanıyor → **lead_retrieval**
+izni muhtemelen aktif; bu yüzden app **kritik** (DijiMagic tarafındaki eski adlı uygulama gibi değil, lead akışı canlı).
 Onaylı izinler App'e bağlıdır; domain değişimi izinleri revoke etmez — yine de adım adım doğrulanır.
 **İzin envanteri (owner ekran görüntüsü 2026-06-26, App Review → Requests):**
 - **Onaylı (Existing access for renewal):** `leads_retrieval`, `business_management`, `pages_show_list`,
@@ -141,7 +141,7 @@ Onaylı izinler App'e bağlıdır; domain değişimi izinleri revoke etmez — y
 4. **Webhook callback** `https://dijigrow.com/api/webhooks/meta` + `https://dijigrow.com/api/webhooks/meta-leads`
    (lead retrieval); **verify token Vercel↔Meta birebir aynı** (GET handshake `?hub.mode=subscribe&...&hub.challenge=X` test).
    Resend webhook: `https://dijigrow.com/api/webhooks/resend`.
-5. Yeni domainde uçtan uca OAuth + webhook doğrulanınca eski `voiceagent.yodijital.com` URL'lerini kaldır.
+5. Yeni domainde uçtan uca OAuth + webhook doğrulanınca eski `eski alan adındaki ürün adresi` URL'lerini kaldır.
 
 #### 7.1.1 İzin koruma — DOĞRULANMIŞ kurallar (kaynak: resmi Meta dökümanı, 2026-06-26 araştırma)
 
@@ -158,8 +158,8 @@ Onaylı izinler App'e bağlıdır; domain değişimi izinleri revoke etmez — y
 
 **Güvenli sıra (tüm onaylı izinleri korur):**
 1. **Baseline al** (granted tam liste).
-2. **Yeni domaini hazırla, ESKİSİNİ KORU:** dijigrow.com Privacy/Terms/Data-Deletion sayfaları CANLI ve erişilebilir (404 = en sık yenileme reddi); eski yodijital.com sayfaları cutover'a kadar açık kalır.
-3. **"Önce ekle / sonra sil":** App Domains + OAuth redirect URI (strict **exact-match**, HTTPS) + webhook callback'e dijigrow.com değerlerini **EKLE**; eski yodijital.com değerlerini cutover'a kadar **TUT**.
+2. **Yeni domaini hazırla, ESKİSİNİ KORU:** dijigrow.com Privacy/Terms/Data-Deletion sayfaları CANLI ve erişilebilir (404 = en sık yenileme reddi); eski eski alan adı sayfaları cutover'a kadar açık kalır.
+3. **"Önce ekle / sonra sil":** App Domains + OAuth redirect URI (strict **exact-match**, HTTPS) + webhook callback'e dijigrow.com değerlerini **EKLE**; eski eski alan adı değerlerini cutover'a kadar **TUT**.
 4. **Webhook verify-token handshake'i** yeni domainde TEKRAR GEÇİR; gerçek test lead'i ile `meta-leads` teslimatını teyit et (lead-to-Sheets akışı buna bağlı).
 5. Login'i uçtan uca test et → `/me/permissions` baseline ile karşılaştır (tümü granted olmalı).
 6. **Portföy taşıma (gerekiyorsa) — HARD PREREQUISITE:** hedef portföy **ÖNCE Business Verified** olacak. Doğrulanmamış/pending-olmayan portföye taşıma **YASAK** — 1 Şubat 2023 Meta duyurusu birebir: doğrulanmamış işletmeye bağlı app'in advanced izinleri *"revoked"* → `leads_retrieval` CANLI iken inaktif olur. Taşıma sonrası tam liste granted görünene kadar **eski portföyü kaldırma**.
@@ -207,5 +207,5 @@ Onaylı izinler App'e bağlıdır; domain değişimi izinleri revoke etmez — y
 ## 11. Kapsam Dışı
 - Git geçmişi/log yeniden yazımı (immutable).
 - 301 yönlendirme (genel kullanıcıya açılmadı — gerekirse minimal eklenir).
-- Eski `voiceagent.yodijital.com`'un Vercel'de tutulması (kaldırılır).
+- Eski `eski alan adındaki ürün adresi`'un Vercel'de tutulması (kaldırılır).
 - DB yapısal şema değişikliği (tablolar zaten jenerik — yalnız veri-içi string).

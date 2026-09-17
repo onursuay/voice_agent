@@ -2,7 +2,7 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** `voice_agent` (ürün "VoiceAgent", firma "Yo Dijital/yodijital") kod tabanını **DijiGrow / dijigrow.com** markasına, sıfır eski-marka izi bırakacak şekilde taşımak.
+**Goal:** `voice_agent` (ürün "VoiceAgent", firma "eski firma adı/eski alan adı") kod tabanını **DijiGrow / dijigrow.com** markasına, sıfır eski-marka izi bırakacak şekilde taşımak.
 
 **Architecture:** Tek branch (`rebrand/dijigrow`), katmanlı + faz-arası `next build` + `tsc` doğrulamalı. Kod/marka/i18n/legal/görsel/DB-veri-string'leri Claude (CLI); dış panolar (Meta/DNS/Vercel-env/Resend/Google/Turnstile/ElevenLabs) owner checklist. **Meta App `968757322162498` izinleri ASLA riske girmez** (§ izin-koruma, spec §7.1.1).
 
@@ -11,13 +11,13 @@
 ## Global Constraints
 
 - **Marka adı:** `DijiGrow` (her yerde) · alt-modül `AI Orkestra` → `DijiOrkestra`.
-- **Domain:** `voiceagent.yodijital.com` → `dijigrow.com` · **E-posta:** `info@`/`bildirim@dijigrow.com`.
+- **Domain:** `eski alan adındaki ürün adresi` → `dijigrow.com` · **E-posta:** `info@`/`bildirim@dijigrow.com`.
 - **Token map (case-sensitive, compound/longest FIRST):**
-  `voiceagent.yodijital.com`→`dijigrow.com` · `VoiceAgent by Yo Dijital`→`DijiGrow` · `VoiceAgent`/`voiceagent`→`DijiGrow`/`dijigrow` · `Voice Agent`→`DijiGrow` · `AI Orkestra`/`AI Orchestra`→`DijiOrkestra` · `Yo Dijital`/`YO Dijital`/`YO DİJİTAL`→`DijiGrow` · `yodijital`→`dijigrow.com`(URL)/`DijiGrow`(brand) · `yoai`→`dijigrow` · `info@yodijital.com`→`info@dijigrow.com` · `bildirim@yodijital.com`→`bildirim@dijigrow.com`.
+  `eski alan adındaki ürün adresi`→`dijigrow.com` · `VoiceAgent by eski firma adı`→`DijiGrow` · `VoiceAgent`/`voiceagent`→`DijiGrow`/`dijigrow` · `Voice Agent`→`DijiGrow` · `AI Orkestra`/`AI Orchestra`→`DijiOrkestra` · `eski firma adı`/`eski firma adı`/`eski firma adı`→`DijiGrow` · `eski alan adı`→`dijigrow.com`(URL)/`DijiGrow`(brand) · `eski ad`→`dijigrow` · `eski firmanın e-posta adresi`→`info@dijigrow.com` · `bildirim@eski alan adı`→`bildirim@dijigrow.com`.
 - **EN/TR parite:** her i18n/legal değişikliği `messages/tr.json` + `messages/en.json` (ve TR/EN legal bileşenleri) birlikte (proje kuralı).
-- **YASAL SATICI (m.5):** `YO Dijital Medya A.Ş.` → `Story 77 Creative Reklam ve Tanıtım Hizmetleri Ltd. Şti.` (VKN 7811085924, Doğanbey VD, Beytepe Mah. 5360 Sk. No:2 İç Kapı 11 Çankaya/Ankara). **Exact ticari unvan mali müşavir onayı bekliyor** — owner doğrulayana kadar bu unvanı kullan, doğrulanınca tek yerden düzelt.
+- **YASAL SATICI (m.5):** `eski firma unvanı` → `Story 77 Creative Reklam ve Tanıtım Hizmetleri Ltd. Şti.` (VKN 7811085924, Doğanbey VD, Beytepe Mah. 5360 Sk. No:2 İç Kapı 11 Çankaya/Ankara). **Exact ticari unvan mali müşavir onayı bekliyor** — owner doğrulayana kadar bu unvanı kullan, doğrulanınca tek yerden düzelt.
 - **DOKUNMA listesi:** `apps_script.js` + `apps_script_template.js` (AdaTrust **müşterisine** ait, bizim marka değil — rebrand'lanmaz); `public/platform-icons/meta.svg` + `google-ads.svg` (3rd-party logo); `public/next.svg`/`vercel.svg`/`file.svg`/`globe.svg`/`window.svg` (Next.js scaffold).
-- **Karar gerektiren (owner — DEFAULT: değiştirme):** `ZAPIER_INGEST_SECRET` değeri (`yoai_...` — external coupling, rotate riski) ve `GOOGLE_SHEETS_STORAGE_KEY` (`voiceagent_...` — rename = kullanıcı localStorage kaybı). İkisi de **kozmetik**; default AS-IS bırak.
+- **Karar gerektiren (owner — DEFAULT: değiştirme):** `ZAPIER_INGEST_SECRET` değeri (eski marka önekli değer — external coupling, rotate riski) ve `GOOGLE_SHEETS_STORAGE_KEY` (`voiceagent_...` — rename = kullanıcı localStorage kaybı). İkisi de **kozmetik**; default AS-IS bırak.
 - **Meta DEĞİŞMEZ:** App ID `968757322162498` sabit; app silme/yeniden-oluşturma + Advanced→Standard çevirme YASAK; her kritik adım önce/sonra `GET /me/permissions` baseline.
 - **Her faz sonu:** `npx tsc --noEmit` + `npm run build` yeşil → commit. cutover'a kadar `main`'e dokunma.
 
@@ -43,9 +43,9 @@
 **Interfaces:** Hiçbir key adı değişmez, yalnız değerler. EN/TR parite zorunlu.
 
 - [ ] **Step 1:** Appendix A'daki 7 TR + 7 EN occurrence'ı uygula (badge, heroSubtitle, footer, subtitle, defaultScript, sender, sequences.title). Her biri exact current→replacement.
-- [ ] **Step 2: Parite kontrolü.** Run: `git -C <repo> grep -nE 'VoiceAgent|Yo Dijital|AI Orkestra|yodijital' messages/` → Expected: 0 satır.
+- [ ] **Step 2: Parite kontrolü.** Run: `git -C <repo> grep -nE 'VoiceAgent|eski firma adı|AI Orkestra|eski alan adı' messages/` → Expected: 0 satır.
 - [ ] **Step 3: Build.** Run: `npm run build` → Expected: PASS.
-- [ ] **Step 4: Commit.** `git add messages/ && git commit -m "rebrand(i18n): VoiceAgent/Yo Dijital → DijiGrow + AI Orkestra → DijiOrkestra (TR+EN)"`
+- [ ] **Step 4: Commit.** `git add messages/ && git commit -m "rebrand(i18n): VoiceAgent/eski firma adı → DijiGrow + AI Orkestra → DijiOrkestra (TR+EN)"`
 
 ---
 
@@ -54,7 +54,7 @@
 **Files (Appendix B — 29 occurrence, 18 dosya):**
 - Modify: `src/app/layout.tsx` (title/description), `src/components/landing/LandingContent.tsx`, `LandingHeader.tsx` (alt+src), `ScheduleModal.tsx` (CONTACT_EMAIL, brand, subject), `src/components/layout/sidebar.tsx` (alt), `src/app/[locale]/(auth)/login/page.tsx` + `register/page.tsx` (alt+src), `pending-approval/page.tsx`, `src/app/[locale]/(dashboard)/hesabim/page.tsx` (referralLink), `calls/page.tsx` (mock transcript + system_prompt), `automations/page.tsx` (yorum), `src/components/automations/sequences-section.tsx` (yorum), `src/app/api/cron/sequences/route.ts` (yorum), `src/app/api/email/send/route.ts` (FROM fallback), `src/app/api/webhooks/meta/route.ts` (verify-token fallback), `src/app/sunum/page.tsx`.
 
-**Not:** Logo `src` path değişiklikleri (`/logos/yoai-logo.png`→`/logos/dijigrow-logo.png`, `/logo.png`→`/dijigrow-logo.png`) **Task 4 (görseller)** ile birlikte yapılır — burada yalnız `alt="Yo Dijital"`→`alt="DijiGrow"` metin değişimini uygula, `src` path'i Task 4'e bırak. (Aynı satırda iki değişiklik varsa Task 4'te tamamla.)
+**Not:** Logo `src` path değişiklikleri (`/logos/eski marka logosu dosyası`→`/logos/dijigrow-logo.png`, `/logo.png`→`/dijigrow-logo.png`) **Task 4 (görseller)** ile birlikte yapılır — burada yalnız `alt="eski firma adı"`→`alt="DijiGrow"` metin değişimini uygula, `src` path'i Task 4'e bırak. (Aynı satırda iki değişiklik varsa Task 4'te tamamla.)
 
 - [ ] **Step 1:** Appendix B'deki tüm `alt`/metin/comment/fallback occurrence'larını uygula. **DİKKAT:** `src/app/api/webhooks/meta/route.ts:27` fallback token `voiceagent_meta_2026`→`dijigrow_meta_2026` — yalnız env unset iken etkili; **canlı `META_WEBHOOK_VERIFY_TOKEN` Meta paneliyle birlikte (Task 9) değişene kadar prod davranışı değişmez** (commit'te not düş).
 - [ ] **Step 2: Karar — DEĞİŞTİRME.** `src/app/[locale]/(dashboard)/import/page.tsx:545` `GOOGLE_SHEETS_STORAGE_KEY` AS-IS bırak (Global Constraints; rename = kullanıcı localStorage kaybı). Plana göre dokunma.
@@ -69,10 +69,10 @@
 - Modify (route metadata): `src/app/[locale]/{terms-of-service,privacy-policy,cookie-policy}/page.tsx`, `src/app/data-deletion/page.tsx`
 - Modify (içerik bileşenleri): `src/components/legal/{TermsOfServiceTR,TermsOfServiceEN,PrivacyPolicyTR,PrivacyPolicyEN,CookiePolicyTR,CookiePolicyEN}.tsx`
 
-- [ ] **Step 1: Standart token swap.** Tüm metadata title/description (`VoiceAgent by Yo Dijital`→`DijiGrow`, `voiceagent.yodijital.com`→`dijigrow.com`), body brand (`VoiceAgent`→`DijiGrow`), mailto+görünür e-posta (`info@yodijital.com`→`info@dijigrow.com`), footer (`© 2025 Yo Dijital`→`© 2025 DijiGrow`), logo alt → Appendix C.
+- [ ] **Step 1: Standart token swap.** Tüm metadata title/description (`VoiceAgent by eski firma adı`→`DijiGrow`, `eski alan adındaki ürün adresi`→`dijigrow.com`), body brand (`VoiceAgent`→`DijiGrow`), mailto+görünür e-posta (`eski firmanın e-posta adresi`→`info@dijigrow.com`), footer (`© 2025 eski firma adı`→`© 2025 DijiGrow`), logo alt → Appendix C.
 - [ ] **Step 2: TR ek/suffix proofread.** `VoiceAgent'ta`→`DijiGrow'da`, `VoiceAgent'ın`→`DijiGrow'un` (ünlü uyumu: DijiGrow art ünlü → `-da`/`-un`). Etkilenen: `data-deletion/page.tsx:198`, `PrivacyPolicyTR.tsx:114`, `TermsOfServiceTR.tsx:119`.
-- [ ] **Step 3: Story 77 SATICI bloğu (elle).** Aşağıdaki body satırlarında yasal entity `YO Dijital Medya A.Ş.`→`Story 77 Creative Reklam ve Tanıtım Hizmetleri Ltd. Şti.` (Appendix C — TermsTR ~22/~36, TermsEN ~22/~36, PrivacyTR ~28/~41/~212, PrivacyEN ~29/~42/~212). **AYRICA** `PrivacyPolicyTR.tsx`+`PrivacyPolicyEN.tsx` "11. İletişim/Contact" kartına (satır ~212-214) **tam satıcı kimlik bloğu EKLE** (m.5 zorunlu): ünvan + VKN 7811085924 + Doğanbey VD + açık adres. Exact unvan mali müşavir onayını bekliyor (Global Constraints).
-- [ ] **Step 4: Build + grep.** Run: `npm run build && git -C <repo> grep -nE 'VoiceAgent|YO Dijital Medya|info@yodijital|voiceagent\.yodijital' src/app/\[locale\]/{terms,privacy,cookie}* src/app/data-deletion src/components/legal` → Expected: 0.
+- [ ] **Step 3: Story 77 SATICI bloğu (elle).** Aşağıdaki body satırlarında yasal entity `eski firma unvanı`→`Story 77 Creative Reklam ve Tanıtım Hizmetleri Ltd. Şti.` (Appendix C — TermsTR ~22/~36, TermsEN ~22/~36, PrivacyTR ~28/~41/~212, PrivacyEN ~29/~42/~212). **AYRICA** `PrivacyPolicyTR.tsx`+`PrivacyPolicyEN.tsx` "11. İletişim/Contact" kartına (satır ~212-214) **tam satıcı kimlik bloğu EKLE** (m.5 zorunlu): ünvan + VKN 7811085924 + Doğanbey VD + açık adres. Exact unvan mali müşavir onayını bekliyor (Global Constraints).
+- [ ] **Step 4: Build + grep.** Run: `npm run build && git -C <repo> grep -nE 'VoiceAgent|eski firma|info@eski alan adı|voiceagent\.eski alan adı' src/app/\[locale\]/{terms,privacy,cookie}* src/app/data-deletion src/components/legal` → Expected: 0.
 - [ ] **Step 5: Commit.** `git add -A && git commit -m "rebrand(legal): DijiGrow + Story 77 satıcı bloğu (TR+EN)"`
 
 ---
@@ -81,13 +81,13 @@
 
 **Files (Appendix D — 5 rename + 23 ref):**
 - Design+Create: `public/logos/dijigrow-logo.png`, `public/dijigrow-logo.png`, `public/dijigrow-brain.png`, `public/favicon-32.png` (rebytes), `src/app/favicon.ico` (rebytes), apple-touch.
-- Rename (git mv): `public/logos/yoai-logo.png`→`dijigrow-logo.png`; `public/logo.png`→`public/dijigrow-logo.png`; `public/ai-brain.png`→`public/dijigrow-brain.png`. Orphan sil: `public/yoai-logo.png`, `public/favicon.png` (referans yok — owner onayıyla).
+- Rename (git mv): `public/logos/eski marka logosu dosyası`→`dijigrow-logo.png`; `public/logo.png`→`public/dijigrow-logo.png`; `public/ai-brain.png`→`public/dijigrow-brain.png`. Orphan sil: `public/eski marka logosu dosyası`, `public/favicon.png` (referans yok — owner onayıyla).
 - Modify (src path refs): Appendix D'deki tüm `src=` path'leri + kalan `alt` (Task 2'de yapılmadıysa) + `src/app/layout.tsx:16` apple `/logo.png`→`/dijigrow-logo.png`.
 
 - [ ] **Step 1: Yeni logo/favicon TASARLA.** `frontend-design` skill'ini çağır → DijiGrow wordmark (DijiMagic ailesiyle uyumlu, `brightness-0 invert` filtreleri altında düzgün render). PC+mobil önizleme → owner onayı → `public/`'e yerleştir. (Owner "ben tasarlayayım" derse onun varlıklarını bekle.)
 - [ ] **Step 2: git mv renames.** Appendix D fileRenames'i `git mv` ile (geçmiş korunur).
-- [ ] **Step 3: Ref güncelle.** Tüm `src="/logos/yoai-logo.png"`→`/logos/dijigrow-logo.png`, `src="/logo.png"`→`/dijigrow-logo.png`, `src="/ai-brain.png"`→`/dijigrow-brain.png` + apple icon path (Appendix D).
-- [ ] **Step 4: Build + grep.** Run: `npm run build && git -C <repo> grep -nE 'yoai-logo|/logo\.png|ai-brain\.png' src/` → Expected: 0 (tümü dijigrow-*).
+- [ ] **Step 3: Ref güncelle.** Tüm `src="/logos/eski marka logosu dosyası"`→`/logos/dijigrow-logo.png`, `src="/logo.png"`→`/dijigrow-logo.png`, `src="/ai-brain.png"`→`/dijigrow-brain.png` + apple icon path (Appendix D).
+- [ ] **Step 4: Build + grep.** Run: `npm run build && git -C <repo> grep -nE 'eski marka logosu|/logo\.png|ai-brain\.png' src/` → Expected: 0 (tümü dijigrow-*).
 - [ ] **Step 5: Commit.** `git add -A && git commit -m "rebrand(assets): DijiGrow logo/favicon + dosya rename + ref"`
 
 ---
@@ -100,8 +100,8 @@
 
 **Not:** Tablo/kolon/index/policy adları **jenerik** → yapısal RENAME YOK (doğrulandı). Yalnız veri-içi string.
 
-- [ ] **Step 1:** `schema.sql`/`seed.sql`/migration yorum + seed VALUES occurrence'larını uygula (Appendix E) — `organizations` seed name `Yo Dijital`→`DijiGrow`, slug `yo-dijital`→`dijigrow`; `lead_activities` JSON subject; comment'ler.
-- [ ] **Step 2: Canlı veri script'i yaz.** `scripts/rebrand/update-live-data-strings.mjs` — Supabase Root CA pinli `pg` bağlantısı (DijiMagic deseni `scripts/rebrand/_db.mjs`), `BEGIN`/`COMMIT`, önce `lead_backups` snapshot (reason='pre_restore'). UPDATE'ler: (a) `organizations SET name='DijiGrow', slug='dijigrow' WHERE slug='yo-dijital'` (slug UNIQUE — çakışma kontrolü); (b) `lead_activities` metadata `subject` token replace; (c) `email_templates` subject+body token taraması (compound-first); (d) audit: `email_log`, `lead_notes.content`, `call_logs.transcript/summary`, `sequences.name`, `automation_rules` config — brand token varsa replace. Her UPDATE öncesi `SELECT count(*)` ile etki sayısı logla.
+- [ ] **Step 1:** `schema.sql`/`seed.sql`/migration yorum + seed VALUES occurrence'larını uygula (Appendix E) — `organizations` seed name `eski firma adı`→`DijiGrow`, slug `eski-firma-slug`→`dijigrow`; `lead_activities` JSON subject; comment'ler.
+- [ ] **Step 2: Canlı veri script'i yaz.** `scripts/rebrand/update-live-data-strings.mjs` — Supabase Root CA pinli `pg` bağlantısı (DijiMagic deseni `scripts/rebrand/_db.mjs`), `BEGIN`/`COMMIT`, önce `lead_backups` snapshot (reason='pre_restore'). UPDATE'ler: (a) `organizations SET name='DijiGrow', slug='dijigrow' WHERE slug='eski-firma-slug'` (slug UNIQUE — çakışma kontrolü); (b) `lead_activities` metadata `subject` token replace; (c) `email_templates` subject+body token taraması (compound-first); (d) audit: `email_log`, `lead_notes.content`, `call_logs.transcript/summary`, `sequences.name`, `automation_rules` config — brand token varsa replace. Her UPDATE öncesi `SELECT count(*)` ile etki sayısı logla.
 - [ ] **Step 2b: Dry-run.** Script'i önce SELECT-only modda çalıştır (etki sayıları). Beklenmedik yüksek sayı varsa durdur.
 - [ ] **Step 3: Çalıştır + doğrula.** Transaction'ı uygula; `SELECT name,slug FROM organizations WHERE id='00000000-0000-0000-0000-000000000001'` → `DijiGrow`/`dijigrow`. `git grep`'le SQL dosyalarında token 0.
 - [ ] **Step 4: Commit.** `git add supabase/ scripts/rebrand/ && git commit -m "rebrand(db): seed/şema yorumları + canlı veri-string transaction"`
@@ -111,13 +111,13 @@
 ## Task 6: Kod-içi domain + env fallback değerleri
 
 **Files (Appendix F):**
-- Modify: `src/app/[locale]/(dashboard)/hesabim/page.tsx:48` (referralLink `voiceagent.yodijital.com`→`dijigrow.com`) — *Task 2'de yapıldıysa atla, değilse burada.*
-- Modify: `src/app/api/email/send/route.ts:5` (FROM fallback `Yo Dijital <info@yodijital.com>`→`DijiGrow <info@dijigrow.com>`) — *Task 2 kapsamında; teyit et.*
+- Modify: `src/app/[locale]/(dashboard)/hesabim/page.tsx:48` (referralLink `eski alan adındaki ürün adresi`→`dijigrow.com`) — *Task 2'de yapıldıysa atla, değilse burada.*
+- Modify: `src/app/api/email/send/route.ts:5` (FROM fallback `eski firma adı <eski firmanın e-posta adresi>`→`DijiGrow <info@dijigrow.com>`) — *Task 2 kapsamında; teyit et.*
 
 **Not:** `src/lib/meta/oauth-state.ts` ve OAuth redirect URI'leri **runtime `request.nextUrl.origin`'den türüyor** → kod değişmez; domain cutover'da otomatik dijigrow.com olur. `APP_BASE_URL` boş + referanssız → dokunma.
 
 - [ ] **Step 1:** Kalan kod-içi domain/fallback occurrence'larını uygula (Appendix F).
-- [ ] **Step 2: build + grep.** Run: `npm run build && git -C <repo> grep -nE 'yodijital\.com|voiceagent' src/` → Expected: 0 (yalnız Task 2'de AS-IS bırakılan `GOOGLE_SHEETS_STORAGE_KEY` kalabilir — kasıtlı; commit mesajında belirt).
+- [ ] **Step 2: build + grep.** Run: `npm run build && git -C <repo> grep -nE 'eski alan adı\.com|voiceagent' src/` → Expected: 0 (yalnız Task 2'de AS-IS bırakılan `GOOGLE_SHEETS_STORAGE_KEY` kalabilir — kasıtlı; commit mesajında belirt).
 - [ ] **Step 3: Commit.** `git add -A && git commit -m "rebrand(domain): kod-içi referral + e-posta fallback → dijigrow.com"`
 
 ---
@@ -136,7 +136,7 @@
 
 ## Task 8: Final doğrulama (sıfır-iz + build + smoke)
 
-- [ ] **Step 1: Zero-trace grep.** Run: `git -C <repo> grep -niE 'voiceagent|voice agent|yo ?dijital|yodijital|yoai|AI Orkestra' -- ':!docs' ':!apps_script*.js'` → Expected: 0 (AdaTrust `apps_script*` ve `docs/` hariç; kasıtlı `GOOGLE_SHEETS_STORAGE_KEY`/`ZAPIER_INGEST_SECRET` owner kararıyla kalabilir — varsa not).
+- [ ] **Step 1: Zero-trace grep.** Run: `git -C <repo> grep -niE 'voiceagent|voice agent|yo ?dijital|eski alan adı|eski ad|AI Orkestra' -- ':!docs' ':!apps_script*.js'` → Expected: 0 (AdaTrust `apps_script*` ve `docs/` hariç; kasıtlı `GOOGLE_SHEETS_STORAGE_KEY`/`ZAPIER_INGEST_SECRET` owner kararıyla kalabilir — varsa not).
 - [ ] **Step 2: tsc + build.** Run: `npx tsc --noEmit && npm run build` → Expected: 0 hata, Compiled successfully.
 - [ ] **Step 3: Smoke (lokal `npm run dev`).** Landing (badge "DijiGrow"), login/register/sidebar logosu, legal sayfalar (DijiGrow + Story 77), data-deletion (info@dijigrow.com). Ekran görüntüsü ile PC+mobil doğrula (global persona kuralı).
 - [ ] **Step 4: Commit.** `git add -A && git commit -m "rebrand: final sıfır-iz doğrulama"`
@@ -165,12 +165,12 @@
 ### Appendix A — i18n (messages/tr.json + en.json, 14)
 | Satır | Key | Değişim |
 |------|-----|---------|
-| 654 | calls.defaultScript | `Yo Dijital'den arıyorum`→`DijiGrow'dan arıyorum` (TR) / `from Yo Dijital`→`from DijiGrow` (EN) |
-| 699 | email.sender | `info@yodijital.com`→`info@dijigrow.com` |
-| 943 | auth.register.subtitle | `Yo Dijital`→`DijiGrow` |
+| 654 | calls.defaultScript | `eski firma adı'den arıyorum`→`DijiGrow'dan arıyorum` (TR) / `from eski firma adı`→`from DijiGrow` (EN) |
+| 699 | email.sender | `eski firmanın e-posta adresi`→`info@dijigrow.com` |
+| 943 | auth.register.subtitle | `eski firma adı`→`DijiGrow` |
 | 979 | landing.badge | `VoiceAgent`→`DijiGrow` |
-| 982 | landing.heroSubtitle | baştaki `Yo Dijital`→`DijiGrow` |
-| 1026 | landing.footer | `2025 Yo Dijital`→`2025 DijiGrow` |
+| 982 | landing.heroSubtitle | baştaki `eski firma adı`→`DijiGrow` |
+| 1026 | landing.footer | `2025 eski firma adı`→`2025 DijiGrow` |
 | 1237 | sequences.title | `AI Orkestra`/`AI Orchestra`→`DijiOrkestra` (TR+EN aynı marka) |
 
 ### Appendix B — UI (29, 18 dosya) — token map + ÖZEL:
@@ -181,7 +181,7 @@
 - `sidebar.tsx:184,197` alt.
 - `login/page.tsx:92`, `register/page.tsx:136`, `pending-approval/page.tsx:35-36` alt (src Task 4).
 - `hesabim/page.tsx:48` referralLink `dijigrow.com`.
-- `calls/page.tsx:58,303` mock transcript + system_prompt `Yo Dijital`→`DijiGrow`.
+- `calls/page.tsx:58,303` mock transcript + system_prompt `eski firma adı`→`DijiGrow`.
 - `automations/page.tsx:163`, `sequences-section.tsx:22`, `cron/sequences/route.ts:7` yorum `AI Orkestra`→`DijiOrkestra`.
 - `email/send/route.ts:5` fallback `'DijiGrow <info@dijigrow.com>'`.
 - `webhooks/meta/route.ts:27` fallback `'dijigrow_meta_2026'` (⚠️ canlı token Task 9).
@@ -189,21 +189,21 @@
 - **AS-IS:** `import/page.tsx:545` `GOOGLE_SHEETS_STORAGE_KEY` (karar — değiştirme).
 
 ### Appendix C — Legal (87, 10 dosya)
-**Standart (her dosyada):** metadata `VoiceAgent by Yo Dijital`→`DijiGrow`, `voiceagent.yodijital.com`→`dijigrow.com`; body `VoiceAgent`→`DijiGrow`; mailto+text `info@yodijital.com`→`info@dijigrow.com`; footer `© 2025 Yo Dijital`→`© 2025 DijiGrow`; logo alt `Yo Dijital`→`DijiGrow`. Dosyalar: `terms-of-service/page.tsx`, `privacy-policy/page.tsx`, `cookie-policy/page.tsx`, `data-deletion/page.tsx`, `legal/{TermsOfService,PrivacyPolicy,CookiePolicy}{TR,EN}.tsx`.
-**ÖZEL — Story 77 (elle):** `YO Dijital Medya A.Ş.`→`Story 77 Creative Reklam ve Tanıtım Hizmetleri Ltd. Şti.` @ TermsTR/EN ~22,~36; PrivacyTR ~28,~41,~212; PrivacyEN ~29,~42,~212. **+ EKLE** PrivacyTR/EN ~212-214 İletişim kartına VKN 7811085924 + Doğanbey VD + açık adres.
+**Standart (her dosyada):** metadata `VoiceAgent by eski firma adı`→`DijiGrow`, `eski alan adındaki ürün adresi`→`dijigrow.com`; body `VoiceAgent`→`DijiGrow`; mailto+text `eski firmanın e-posta adresi`→`info@dijigrow.com`; footer `© 2025 eski firma adı`→`© 2025 DijiGrow`; logo alt `eski firma adı`→`DijiGrow`. Dosyalar: `terms-of-service/page.tsx`, `privacy-policy/page.tsx`, `cookie-policy/page.tsx`, `data-deletion/page.tsx`, `legal/{TermsOfService,PrivacyPolicy,CookiePolicy}{TR,EN}.tsx`.
+**ÖZEL — Story 77 (elle):** `eski firma unvanı`→`Story 77 Creative Reklam ve Tanıtım Hizmetleri Ltd. Şti.` @ TermsTR/EN ~22,~36; PrivacyTR ~28,~41,~212; PrivacyEN ~29,~42,~212. **+ EKLE** PrivacyTR/EN ~212-214 İletişim kartına VKN 7811085924 + Doğanbey VD + açık adres.
 **ÖZEL — suffix:** data-deletion ~198 `DijiGrow'un`; PrivacyTR ~114 `DijiGrow'un`; TermsTR ~119 `DijiGrow'da`.
 **Badge:** CookieTR/EN ~81 `VoiceAgent · 2025`→`DijiGrow · 2025`.
 
 ### Appendix D — Assets (5 rename + 23 ref)
-**Renames (git mv):** `public/logos/yoai-logo.png`→`public/logos/dijigrow-logo.png`; `public/logo.png`→`public/dijigrow-logo.png`; `public/ai-brain.png`→`public/dijigrow-brain.png`. **Sil (onayla):** `public/yoai-logo.png`, `public/favicon.png` (orphan).
-**Ref güncelle (src=):** `/logos/yoai-logo.png`→`/logos/dijigrow-logo.png` @ login:92, register:136, pending-approval:35, LandingHeader:102. `/logo.png`→`/dijigrow-logo.png` @ data-deletion:227, sunum:11,93, LandingContent:403, sidebar:184,197, legal 6× (~159-162), layout:16(apple). `/ai-brain.png`→`/dijigrow-brain.png` @ LandingContent:223.
+**Renames (git mv):** `public/logos/eski marka logosu dosyası`→`public/logos/dijigrow-logo.png`; `public/logo.png`→`public/dijigrow-logo.png`; `public/ai-brain.png`→`public/dijigrow-brain.png`. **Sil (onayla):** `public/eski marka logosu dosyası`, `public/favicon.png` (orphan).
+**Ref güncelle (src=):** `/logos/eski marka logosu dosyası`→`/logos/dijigrow-logo.png` @ login:92, register:136, pending-approval:35, LandingHeader:102. `/logo.png`→`/dijigrow-logo.png` @ data-deletion:227, sunum:11,93, LandingContent:403, sidebar:184,197, legal 6× (~159-162), layout:16(apple). `/ai-brain.png`→`/dijigrow-brain.png` @ LandingContent:223.
 **Rebytes-in-place (design):** `public/favicon-32.png` (layout:15), `src/app/favicon.ico`.
 **Design (manual):** yeni DijiGrow wordmark + favicon + glyph — `frontend-design`.
 
 ### Appendix E — DB (5 + canlı script)
-- `schema.sql:2` `-- YO DİJİTAL`→`-- DijiGrow`; `seed.sql:2` `-- YO DIJITAL`→`-- DijiGrow`.
-- `seed.sql:15` organizations: name `'Yo Dijital'`→`'DijiGrow'`, slug `'yo-dijital'`→`'dijigrow'`.
-- `seed.sql:219` lead_activities JSON `"subject": "Yo Dijital - Cozum Sunumu"`→`"DijiGrow - Cozum Sunumu"`.
+- `schema.sql:2` `-- eski firma adı`→`-- DijiGrow`; `seed.sql:2` `-- eski firma adı`→`-- DijiGrow`.
+- `seed.sql:15` organizations: name `'eski firma adı'`→`'DijiGrow'`, slug `'eski-firma-slug'`→`'dijigrow'`.
+- `seed.sql:219` lead_activities JSON `"subject": "eski firma adı - Cozum Sunumu"`→`"DijiGrow - Cozum Sunumu"`.
 - `migrations/20260612_sequences.sql:2` `-- AI Orkestra`→`-- DijiOrkestra` (doc-only, migration re-run YOK).
 - **Canlı script:** organizations(name/slug), lead_activities(subject), email_templates, email_log, lead_notes, call_logs, sequences.name, automation_rules — token replace (compound-first), BEGIN/COMMIT + lead_backups snapshot.
 

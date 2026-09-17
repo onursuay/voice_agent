@@ -1,7 +1,7 @@
 import 'server-only';
 
 // ElevenLabs Conversational AI — outbound çağrı + sonuç çekme.
-// Ada Trust için çalışan apps_script.js otomasyonuyla AYNI endpoint ve karar mantığı:
+// Bir müşteri için çalışan apps_script.js otomasyonuyla AYNI endpoint ve karar mantığı:
 //   initiate: POST /v1/convai/sip-trunk/outbound-call → { conversation_id }
 //   result:   GET  /v1/convai/conversations/{id} → status==='done' && transcript>2 ⇒ görüşüldü
 

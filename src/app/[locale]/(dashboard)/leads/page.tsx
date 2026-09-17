@@ -90,7 +90,7 @@ export default function LeadsPage() {
 
   // Sayfaya her girişte (ör. Satış Hattı'ndan client-side geçiş) store'da ÖNCEKİ
   // görünümün lead'leri kalır. pagesReady kapısı açılana dek grid bunları bir an
-  // "yanlış hesap" (ör. Fikret Petrol, en alttaki lead üstte) olarak gösterip
+  // "yanlış hesap" (ör. başka bir müşteri, en alttaki lead üstte) olarak gösterip
   // sonra doğru seçili hesaba atlardı. Mount'ta listeyi temizle → doğru hesapla
   // fetch gelene kadar yükleniyor görünür; yanlış-hesap flaş'ı olmaz.
   useEffect(() => {
